@@ -2,6 +2,7 @@
 #define _VECTOR3_HH_INCLUDE
 
 #include <cmath>
+#include <iostream>
 
 class Vector3
 {
@@ -11,33 +12,69 @@ public:
     Vector3();
     Vector3(float x, float y, float z);
     
-    inline float x() const;    
-    inline float y() const;
-    inline float z() const;
-    inline float r() const;
-    inline float g() const;
-    inline float b() const;
+    float x() const;    
+    float y() const;
+    float z() const;
+    float r() const;
+    float g() const;
+    float b() const;
     
-    inline const Vector3& operator+() const;
-    inline Vector3 operator-() const;
-    inline float operator[](int i) const;
+    const Vector3& operator+() const;
+    Vector3 operator-() const;
+    float operator[](int i) const;
+    float& operator[](int i);
     
-    inline Vector3& operator+=(const Vector3 &v2);
-    inline Vector3& operator-=(const Vector3 &v2);
-    inline Vector3& operator*=(const Vector3 &v2);
-    inline Vector3& operator/=(const Vector3 &v2);
-    inline Vector3& operator*=(const float t);
-    inline Vector3& operator/=(const float t);
+    Vector3& operator+=(const Vector3 &v2);
+    Vector3& operator-=(const Vector3 &v2);
+    Vector3& operator*=(const Vector3 &v2);
+    Vector3& operator/=(const Vector3 &v2);
     
-    inline static Vector3 Zero(void);
-    inline static Vector3 One(void);
+    Vector3& operator*=(const float t);
+    Vector3& operator/=(const float t);
     
-    inline float length() const;
-    inline float squared_length() const;
-    inline void make_unit_vector();
+    static Vector3 Zero(void);
+    static Vector3 One(void);
+    
+    float length() const;
+    float squared_length() const;
+    void make_unit_vector();
+    float dot(const Vector3 &v1, const Vector3 &v2);
+    Vector3 cross(const Vector3 &v1, const Vector3 &v2);
+    Vector3 unit_vector(Vector3 v);
 
-private:
     float v[3];
 };
+
+inline std::istream& operator>>(std::istream &is, Vector3 &t){
+    is >> t.v[0] >> t.v[1] >> t.v[2];
+}
+
+inline std::ostream& operator<<(std::ostream &os, const Vector3 &t){
+    os << t.v[0] << " " << t.v[1] << " " << t.v[2];
+}
+
+inline Vector3 operator+(const Vector3 &v1, const Vector3 &v2){
+    return Vector3(v1.v[0] + v2.v[0], v1.v[1] + v2.v[1], v1.v[2] + v2.v[2]);
+}
+
+inline Vector3 operator-(const Vector3 &v1, const Vector3 &v2){
+    return Vector3(v1.v[0] - v2.v[0], v1.v[1] - v2.v[1], v1.v[2] - v2.v[2]);
+}
+
+inline Vector3 operator*(const Vector3 &v1, const Vector3 &v2){
+    return Vector3(v1.v[0] * v2.v[0], v1.v[1] * v2.v[1], v1.v[2] * v2.v[2]);
+}
+
+inline Vector3 operator/(const Vector3 &v1, const Vector3 &v2){
+    return Vector3(v1.v[0] / v2.v[0], v1.v[1] / v2.v[1], v1.v[2] / v2.v[2]);
+}
+
+inline Vector3 operator*(const Vector3 &v1, float c){
+    return Vector3(v1.v[0] * c, v1.v[1] * c, v1.v[2] * c);
+}
+
+inline Vector3 operator/(const Vector3 &v1, float c){
+    return Vector3(v1.v[0] / c, v1.v[1] / c, v1.v[2] / c);
+}
 
 #endif /* _VECTOR3_HH_INCLUDE */
