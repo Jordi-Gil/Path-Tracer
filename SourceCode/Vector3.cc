@@ -66,3 +66,27 @@ inline void Vector3::make_unit_vector(){
     float k = 1.0/ sqrt(v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
     v[0] *= k; v[1] *= k; v[2] *= k;
 }
+
+inline Vector3 Vector3::operator+(const Vector3 &v1, &const Vector3 &vs){
+    return Vector3(v1.v[0] + v.v2[0], v1.v[1] + v.v2[1], v1.v[2] + v.v2[2]);
+}
+
+inline Vector3 Vector3::operator-(const Vector3 &v1, &const Vector3 &vs){
+    return Vector3(v1.v[0] - v.v2[0], v1.v[1] - v.v2[1], v1.v[2] - v.v2[2]);
+}
+
+inline Vector3 Vector3::operator*(const Vector3 &v1, &const Vector3 &vs){
+    return Vector3(v1.v[0] * v.v2[0], v1.v[1] * v.v2[1], v1.v[2] * v.v2[2]);
+}
+
+inline Vector3 Vector3::operator/(const Vector3 &v1, &const Vector3 &vs){
+    return Vector3(v1.v[0] / v.v2[0], v1.v[1] / v.v2[1], v1.v[2] / v.v2[2]);
+}
+
+inline Vector3 Vector3::operator*(const Vector3 &v1, float c){
+    return Vector3(v1.v[0] * c, v1.v[1] * c, v1.v[2] * c);
+}
+
+inline Vector3 Vector3::operator/(const Vector3 &v1, float c){
+    return Vector3(v1.v[0] / c, v1.v[1] / c, v1.v[2] / c);
+}
