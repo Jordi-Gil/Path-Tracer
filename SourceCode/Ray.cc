@@ -16,5 +16,5 @@ Vector3 Ray::direction() const{
 }
 
 Vector3 Ray::point_at_paremeter(float c) const{
-    return A + t*B;
+    return A + B*c;
 }

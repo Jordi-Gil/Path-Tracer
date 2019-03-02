@@ -15,6 +15,6 @@ public:
     
     Vector3 A;
     Vector3 B;
-}
+};
 
 #endif /* _RAY_HH_INCLUDE */

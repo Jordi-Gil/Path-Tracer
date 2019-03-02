@@ -71,6 +71,7 @@ void Vector3::make_unit_vector(){
     v[0] *= k; v[1] *= k; v[2] *= k;
 }
 
+
 float Vector3::dot(const Vector3 &v1, const Vector3 &v2){
     return (v1.v[0] * v2.v[0]) + (v1.v[1] * v2.v[1]) + (v1.v[2] * v2.v[2]);
 }
@@ -127,6 +128,3 @@ Vector3& Vector3::operator/=(const float t){
     return *this;
 }
 
-Vector3 Vector3::unit_vector(Vector3 v){
-    return v / v.length();
-}

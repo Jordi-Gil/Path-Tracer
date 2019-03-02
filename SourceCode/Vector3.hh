@@ -40,7 +40,7 @@ public:
     void make_unit_vector();
     float dot(const Vector3 &v1, const Vector3 &v2);
     Vector3 cross(const Vector3 &v1, const Vector3 &v2);
-    Vector3 unit_vector(Vector3 v);
+    
 
     float v[3];
 };
