@@ -11,7 +11,7 @@ public:
     Vector3 origin() const;
     Vector3 direction() const;
     
-    Vector3 point_at_paremeter(float t) const;
+    Vector3 point_at_parameter(float t) const;
     
     Vector3 A;
     Vector3 B;
