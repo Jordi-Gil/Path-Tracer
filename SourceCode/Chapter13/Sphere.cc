@@ -1,7 +1,7 @@
 #include "Sphere.hh"
 
 bool Sphere::hit(const Ray& r, float t_min, float t_max, hit_record &rec) const{
-  
+    
   Vector3 oc = r.origin() - center;
   float a = dot(r.direction(), r.direction());
   float b = dot(oc, r.direction());

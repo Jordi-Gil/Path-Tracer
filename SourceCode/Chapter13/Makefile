@@ -1,10 +1,12 @@
-OPTIONS = -O2 -Wall -Wextra -Werror -Wno-uninitialized -Wno-sign-compare -std=c++17
-OPTIONS2 = -O2 -Wall -Wextra -Wno-sign-compare -std=c++17
+OPTIONS = -O2 -Wall -Wextra -Werror -Wno-uninitialized -Wno-sign-compare -std=c++17 -pthread
+OPTIONS2 = -O2 -Wall -Wextra -Wno-sign-compare -std=c++17 -Werror=unknown-pragmas -pthread
+
+OMP = -fopenmp
 
 OBJECTS = main.o Vector3.o Ray.o Sphere.o HitableList.o Camera.o Material.o MovingSphere.o
 
 main.exe: main.cc $(OBJECTS) Hitable.hh 
-	g++ -o main $(OBJECTS) $(OPTIONS2)
+	g++ -o main $(OBJECTS) $(OMP) $(OPTIONS2)
 
 main.o: main.cc
 	g++ -c main.cc $(OPTIONS)

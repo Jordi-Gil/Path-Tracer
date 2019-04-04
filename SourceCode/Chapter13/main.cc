@@ -7,12 +7,16 @@
 #include "Material.hh"
 
 Hitable *random_scene(){
-  int n = 50000;
+  
+  
+  int dist = 4;
+  int n = (2*dist)*(2*dist) - 2 + 4 - 1;
+  
   Hitable **list = new Hitable*[n+1];
   list[0] = new Sphere(Vector3(0,-1000,0),1000, new Lambertian(Vector3(0.5,0.5,0.5)));
   int i = 1;
-  for(int a = -10; a < 10; a++){
-    for(int b = -10; b < 10; b++){
+  for(int a = -dist; a < dist; a++){
+    for(int b = -dist; b < dist; b++){
       float choose_mat = (rand()/(RAND_MAX + 1.0));
       Vector3 center(a+0.9*(rand()/(RAND_MAX + 1.0)), 0.2, b+0.9*(rand()/(RAND_MAX + 1.0)));
       
@@ -41,15 +45,18 @@ Hitable *random_scene(){
   list[i++] = new Sphere(Vector3(-4,1,0),1.0, new Lambertian(Vector3(0.4,0.2,0.1)));
   list[i++] = new Sphere(Vector3(4,1,0),1.0, new Metal(Vector3(0.7,0.6,0.5),0.0));
   
+  std::cerr << "Hay " << i << " esferas" << std::endl;
+  
   return new HitableList(list, i);
 }
 
 Vector3 color(const Ray& ray, Hitable *world, int depth){
+    
     hit_record rec;
     if(world->hit(ray, 0.001, MAXFLOAT, rec)){
         Ray scattered;
         Vector3 attenuation;
-        if(depth < 500 && rec.mat_ptr->scatter(ray, rec, attenuation, scattered)){
+        if(depth < 50 && rec.mat_ptr->scatter(ray, rec, attenuation, scattered)){
             return attenuation*color(scattered, world, depth+1);
         }
         else return Vector3::Zero();
@@ -66,12 +73,14 @@ int main()
 
   int nx = 2000;
   int ny = 1000;
-  int ns = 1000;
+  int ns = 50;
 
   std::cout << "P3\n" << nx << " " <<  ny << "\n255" << std::endl;
   
   
   Hitable *world = random_scene();
+  
+  std::cerr << "Escena random creada" << std::endl;
   
   Vector3 lookfrom(13,2,3);
   Vector3 lookat(0,0,0);
@@ -80,12 +89,17 @@ int main()
 
   Camera cam(lookfrom, lookat, Vector3(0,1,0), 20, float(nx)/float(ny), aperture, dist_to_focus, 0.0, 1.0);
   
+  
+//#pragma omp parallel
+//{
+//  #pragma omp for collapse(2)
   for(int j = ny - 1; j >= 0; j--){
     for(int i = 0; i < nx; i++){
         
       Vector3 col = Vector3::Zero();
       
       for(int s = 0; s < ns; s++){
+                  
         float u = float(i + (rand()/(RAND_MAX + 1.0))) / float(nx);
         float v = float(j + (rand()/(RAND_MAX + 1.0))) / float(ny);
         
@@ -105,4 +119,5 @@ int main()
       std::cout << ir << " " << ig << " " << ib << std::endl;
     }
   }
+//}
 }
