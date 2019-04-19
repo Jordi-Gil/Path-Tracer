@@ -36,7 +36,7 @@ Hitable *random_scene(){
           ), 0.5*(rand()/(RAND_MAX + 1.0))));
         }
         else{
-          list[i++] = new Sphere(center, 0.2, new Dielectric(1.5));
+          list[i++] = new Sphere(center, (rand()/(RAND_MAX + 4.0)), new Dielectric(1.5));
         }
       }
     }
