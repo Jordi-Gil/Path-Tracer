@@ -1,10 +1,22 @@
 #include <iostream>
 #include <cfloat>
+#include <sys/time.h>
+
 #include "Sphere.hh"
 #include "MovingSphere.hh"
 #include "HitableList.hh"
 #include "Camera.hh"
 #include "Material.hh"
+
+double getusec_() {
+  struct timeval time;
+  gettimeofday(&time, NULL);
+  return ((double)time.tv_sec * (double)1e6 + (double)time.tv_usec);
+}
+
+#define START_COUNT_TIME stamp = getusec_();
+#define STOP_COUNT_TIME stamp = getusec_() - stamp;\
+                        stamp = stamp/1e6;
 
 Hitable *random_scene(){
   
@@ -45,8 +57,6 @@ Hitable *random_scene(){
   list[i++] = new Sphere(Vector3(-4,1,0),1.0, new Lambertian(Vector3(0.4,0.2,0.1)));
   list[i++] = new Sphere(Vector3(4,1,0),1.0, new Metal(Vector3(0.7,0.6,0.5),0.0));
   
-  std::cerr << "Hay " << i << " esferas" << std::endl;
-  
   return new HitableList(list, i);
 }
 
@@ -80,8 +90,6 @@ int main()
   
   Hitable *world = random_scene();
   
-  std::cerr << "Escena random creada" << std::endl;
-  
   Vector3 lookfrom(13,2,3);
   Vector3 lookat(0,0,0);
   float dist_to_focus = 10.0;
@@ -89,10 +97,9 @@ int main()
 
   Camera cam(lookfrom, lookat, Vector3(0,1,0), 20, float(nx)/float(ny), aperture, dist_to_focus, 0.0, 1.0);
   
+  double stamp;
+  START_COUNT_TIME;
   
-//#pragma omp parallel
-//{
-//  #pragma omp for collapse(2)
   for(int j = ny - 1; j >= 0; j--){
     for(int i = 0; i < nx; i++){
         
@@ -119,5 +126,9 @@ int main()
       std::cout << ir << " " << ig << " " << ib << std::endl;
     }
   }
-//}
+  
+  /* End timing  */
+  STOP_COUNT_TIME;
+  std::cerr << "Total execution time " << stamp << "seconds " << std::endl;
+  
 }

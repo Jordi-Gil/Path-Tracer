@@ -1,14 +1,47 @@
 #include <iostream>
 #include <cfloat>
 #include <omp.h>
+#include <vector>
+#include <sys/time.h>
+
 #include "Sphere.hh"
 #include "MovingSphere.hh"
 #include "HitableList.hh"
 #include "Camera.hh"
 #include "Material.hh"
 
+double getusec_() {
+  struct timeval time;
+  gettimeofday(&time, NULL);
+  return ((double)time.tv_sec * (double)1e6 + (double)time.tv_usec);
+}
+
+#define START_COUNT_TIME stamp = getusec_();
+#define STOP_COUNT_TIME stamp = getusec_() - stamp;\
+                        stamp = stamp/1e6;
+
+
+void disp_img(const std::vector<std::vector<Vector3>> &pic,int nx, int ny){
+    
+    std::cout << "P3\n" << nx << " " <<  ny << "\n255" << std::endl;
+    
+    for(int j = ny - 1; j >= 0; j--){
+        for(int i = 0; i < nx; i++){
+            
+            Vector3 col = pic[i][j];
+            
+            int ir = int(255.99*col[0]);
+            int ig = int(255.99*col[1]);
+            int ib = int(255.99*col[2]);
+
+            std::cout << ir << " " << ig << " " << ib << std::endl;
+            
+        }
+    }
+    
+}
+
 Hitable *random_scene(){
-  
   
   int dist = 4;
   int n = (2*dist)*(2*dist) - 2 + 4 - 1;
@@ -46,8 +79,6 @@ Hitable *random_scene(){
   list[i++] = new Sphere(Vector3(-4,1,0),1.0, new Lambertian(Vector3(0.4,0.2,0.1)));
   list[i++] = new Sphere(Vector3(4,1,0),1.0, new Metal(Vector3(0.7,0.6,0.5),0.0));
   
-  std::cerr << "Hay " << i << " esferas" << std::endl;
-  
   return new HitableList(list, i);
 }
 
@@ -75,13 +106,8 @@ int main()
   int nx = 2000;
   int ny = 1000;
   int ns = 50;
-
-  std::cout << "P3\n" << nx << " " <<  ny << "\n255" << std::endl;
-  
   
   Hitable *world = random_scene();
-  
-  std::cerr << "Escena random creada" << std::endl;
   
   Vector3 lookfrom(13,2,3);
   Vector3 lookat(0,0,0);
@@ -90,11 +116,21 @@ int main()
 
   Camera cam(lookfrom, lookat, Vector3(0,1,0), 20, float(nx)/float(ny), aperture, dist_to_focus, 0.0, 1.0);
   
+  std::vector<std::vector<Vector3>> pic(nx,std::vector<Vector3>(ny, Vector3(-1,-1,-1)));
   
-
-  #pragma omp parallel for
-  for(int j = ny - 1; j >= 0; j--){
-    for(int i = 0; i < nx; i++){
+  
+  int maxthreads = omp_get_max_threads();
+  omp_set_num_threads(maxthreads);
+  int numthreads = maxthreads;
+    
+  int i,j;
+  
+  double stamp;
+  START_COUNT_TIME;
+  
+  #pragma omp parallel for num_threads(numthreads) private(i,j)
+  for(j = ny - 1; j >= 0; j--){
+    for(i = 0; i < nx; i++){
         
       Vector3 col = Vector3::Zero();
       
@@ -112,11 +148,19 @@ int main()
       col /= float(ns);
       col = Vector3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));
 
-      int ir = int(255.99*col[0]);
-      int ig = int(255.99*col[1]);
-      int ib = int(255.99*col[2]);
-
-      std::cout << ir << " " << ig << " " << ib << std::endl;
+      if(pic[i][j][0] != -1){
+        std::cerr << "Error! otro thread calculo este punto" << std::endl;
+        exit(1);
+      }
+      
+      pic[i][j] = Vector3(col);
+      
     }
   }
+  
+  /* End timing  */
+  STOP_COUNT_TIME;
+  std::cerr << "Total execution time " << stamp << "seconds " << std::endl;
+  disp_img(pic, nx, ny);
+  
 }
