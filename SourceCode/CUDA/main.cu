@@ -1,106 +1,122 @@
 #include <iostream>
 #include <cfloat>
-#include "Sphere.hh"
-#include "HitableList.hh"
-#include "Camera.hh"
-#include "Material.hh"
+#include <ctime>
+#include "Ray.cuh"
 
-Hitable *random_scene(){
-  int n = 500;
-  Hitable **list = new Hitable*[n+1];
-  list[0] = new Sphere(Vector3(0,-1000,0),1000, new Lambertian(Vector3(0.5,0.5,0.5)));
-  int i = 1;
-  for(int a = -11; a < 11; a++){
-    for(int b = -11; b < 11; b++){
-      float choose_mat = (rand()/(RAND_MAX + 1.0));
-      Vector3 center(a+0.9*(rand()/(RAND_MAX + 1.0)), 0.2, b+0.9*(rand()/(RAND_MAX + 1.0)));
-      
-      if((center-Vector3(4,0.2,0)).length() > 0.9){
-        if(choose_mat < 0.8){ //diffuse
-          list[i++] = new Sphere(center, 0.2, new Lambertian(Vector3(
-            (rand()/(RAND_MAX + 1.0))*(rand()/(RAND_MAX + 1.0)), 
-            (rand()/(RAND_MAX + 1.0))*(rand()/(RAND_MAX + 1.0)), 
-            (rand()/(RAND_MAX + 1.0)))));
-        }
-        else if(choose_mat < 0.95){ //metal
-          list[i++] = new Sphere(center, 0.2, new Metal(Vector3(
-            0.5*(1+(rand()/(RAND_MAX + 1.0))),
-            0.5*(1+(rand()/(RAND_MAX + 1.0))),
-            0.5*(1+(rand()/(RAND_MAX + 1.0)))
-          ), 0.5*(rand()/(RAND_MAX + 1.0))));
-        }
-        else{
-          list[i++] = new Sphere(center, 0.2, new Dielectric(1.5));
-        }
-      }
+#define checkCudaErrors(val) check_cuda( (val), #val, __FILE__, __LINE__ )
+
+void check_cuda(cudaError_t result, char const *const func, const char *const file, int const line){
+    if(result){
+        std::cerr << "CUDA error = " << static_cast<unsigned int>(result) << " at " << file << ":" << line << " '" << func << std::endl;
+        std::cerr << cudaGetErrorString(result) << std::endl;
+        cudaDeviceReset();
+        exit(99);
     }
-  }
-  list[i++] = new Sphere(Vector3(0,1,0), 1.0, new Dielectric(1.5));
-  list[i++] = new Sphere(Vector3(-4,1,0),1.0, new Lambertian(Vector3(0.4,0.2,0.1)));
-  list[i++] = new Sphere(Vector3(4,1,0),1.0, new Metal(Vector3(0.7,0.6,0.5),0.0));
-  
-  return new HitableList(list, i);
 }
 
-Vector3 color(const Ray& ray, Hitable *world, int depth){
-    hit_record rec;
-    if(world->hit(ray, 0.001, MAXFLOAT, rec)){
-        Ray scattered;
-        Vector3 attenuation;
-        if(depth < 500 && rec.mat_ptr->scatter(ray, rec, attenuation, scattered)){
-            return attenuation*color(scattered, world, depth+1);
-        }
-        else return Vector3::Zero();
-    }
-    else{
-        Vector3 unit_direction = unit_vector(ray.direction());
-        float t = 0.5 * (unit_direction.y() + 1.0);
-        return (1.0-t) * Vector3::One() + t*Vector3(0.5, 0.7, 1.0);
-    }
+__device__ bool hit_sphere(const Vector3& center, float radius, const Ray& ray){
+    Vector3 oc = ray.origin() - center;
+    float a = dot(ray.direction(), ray.direction());
+    float b = 2.0 * dot(oc, ray.direction());
+    float c = dot(oc, oc) - radius*radius;
+    float discriminant = b*b - 4*a*c;
+    return (discriminant > 0);
+}
+
+__device__ Vector3 color(const Ray& ray){
+  
+  if(hit_sphere(Vector3(0, 0, -1), 0.5, ray)){
+    return Vector3(1, 0, 0);
+  }
+  
+  Vector3 unit_direction = unit_vector(ray.direction());
+  float t = 0.5*(unit_direction.y() + 1.0);
+  return (1.0-t) * Vector3(1.0,1.0,1.0) + t*Vector3(0.5, 0.7, 1.0);
+}
+
+__global__ void render(Vector3 *fb, int max_x, int max_y, Vector3 lower_left_corner, Vector3 horizontal, Vector3 vertical, Vector3 origin){
+  int i = threadIdx.x + blockIdx.x * blockDim.x;
+  int j = threadIdx.y + blockIdx.y * blockDim.y;
+  
+  if( (i < max_x) && (j < max_y) ){
+    int pixel_index = j*max_x + i;
+    
+    float u = float(i) / float(max_x);
+    float v = float(j) / float(max_y);
+    
+    Ray r(origin, lower_left_corner + u*horizontal + v*vertical);
+    
+    fb[pixel_index] = color(r);
+    
+  }
 }
 
 int main()
 {
+  
+  cudaEvent_t E0, E1;
+  cudaEventCreate(&E0);
+  cudaEventCreate(&E1);
+  
+  float GPUtime;
 
   int nx = 2000;
   int ny = 1000;
-  int ns = 1000;
+  
 
-  std::cout << "P3\n" << nx << " " <<  ny << "\n255" << std::endl;
+  int num_pixels = nx*ny;
+  float fb_size = num_pixels*sizeof(Vector3); // frame buffer, RGB para cada pixel
   
+  Vector3 *frameBuffer;
+  checkCudaErrors(cudaMallocManaged((void **)&frameBuffer, fb_size)); //Reservamos memoria
   
-  Hitable *world = random_scene();
+  int tx = 8;
+  int ty = 8;
   
-  Vector3 lookfrom(13,2,3);
-  Vector3 lookat(0,0,0);
-  float dist_to_focus = 10.0;
-  float aperture = 0.1;
+  dim3 blocks(nx/tx+1, ny/ty+1); // Dividmos el trabajo en 8x8 threads
+  dim3 threads(tx,ty);
+  
+  Vector3 lower_left_corner(-2.0, -1.0, -1.0);
+  Vector3 horizontal(4.0, 0.0, 0.0);
+  Vector3 vertical(0.0, 2.0, 0.0);
+  Vector3 origin(0.0, 0.0, 0.0);
 
-  Camera cam(lookfrom, lookat, Vector3(0,1,0), 20, float(nx)/float(ny), aperture, dist_to_focus);
   
-  for(int j = ny - 1; j >= 0; j--){
+  cudaEventRecord(E0,0);
+  cudaEventSynchronize(E0);
+  
+  render<<<blocks, threads>>>(frameBuffer, nx, ny, lower_left_corner, horizontal, vertical, origin);
+  
+  checkCudaErrors(cudaGetLastError());
+  checkCudaErrors(cudaDeviceSynchronize());
+  
+  cudaEventRecord(E1,0);
+  cudaEventSynchronize(E1);
+  
+  cudaEventElapsedTime(&time,E0,E1);
+  cudaEventDestroy(E0); cudaEventDestroy(E1);
+  
+  std::cout << "P3\n" << nx << " " << ny << "\n255\n";
+  
+  for(int j = ny-1; j >= 0; j--){
     for(int i = 0; i < nx; i++){
-        
-      Vector3 col = Vector3::Zero();
-      
-      for(int s = 0; s < ns; s++){
-        float u = float(i + (rand()/(RAND_MAX + 1.0))) / float(nx);
-        float v = float(j + (rand()/(RAND_MAX + 1.0))) / float(ny);
-        
-        Ray r = cam.get_ray(u, v);
-        //Vector3 p = r.point_at_parameter(2.0);
-        
-        col += color(r, world, 0);
-      }
-      
-      col /= float(ns);
-      col = Vector3(sqrt(col[0]), sqrt(col[1]), sqrt(col[2]));
 
-      int ir = int(255.99*col[0]);
-      int ig = int(255.99*col[1]);
-      int ib = int(255.99*col[2]);
+      size_t pixel_index = j*nx + i;
+      
+      Vector3 col = frameBuffer[pixel_index];
 
+      float r = col.x();
+      float g = col.y();
+      float b = col.z();
+      
+      int ir = int(255.99*r);
+      int ig = int(255.99*g);
+      int ib = int(255.99*b);
+      
       std::cout << ir << " " << ig << " " << ib << std::endl;
     }
   }
+  checkCudaErrors(cudaFree(frameBuffer));
+  std::cerr << "GPU Time: " << GPUtime << " milisegs."<< std::endl;
+  
 }

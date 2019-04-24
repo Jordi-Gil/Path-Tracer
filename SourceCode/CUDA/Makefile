@@ -1,32 +1,39 @@
-OPTIONS = -O2 -Wall -Wextra -Werror -Wno-uninitialized -Wno-sign-compare -std=c++17
-OPTIONS2 = -O2 -Wall -Wextra -Wno-sign-compare -std=c++17
+CUDA_HOME 	= /usr/local/cuda
+HOST_COMPILER 	= g++
+NVCC 		= $(CUDA_HOME)/bin/nvcc -ccbin $(HOST_COMPILER)
+NVCC_DBG	= -g -G
+NVCC_FLAGS	= $(NVCC_DBG) -m64 -std=c++11 -cudart=shared -rdc=true
 
-OBJECTS = main.o Vector3.o Ray.o Sphere.o HitableList.o Camera.o Material.o
+GENCODE_FLAGS	= -gencode arch=compute_60,code=sm_60
 
-main.exe: main.cc $(OBJECTS) Hitable.hh 
-	g++ -o main $(OBJECTS) $(OPTIONS2)
+OBJS = main.o Vector3.o Ray.o 
 
+ray_traicing:  $(OBJS)
+	$(NVCC) $(NVCC_FLAGS) $(GENCODE_FLAGS) -o ray_traicing $(OBJS)
 
-Vector3.o: Vector3.cc Vector3.hh
-	g++ -c Vector3.cc $(OPTIONS)
+main.o: main.cu
+	$(NVCC) $(NVCC_FLAGS) $(GENCODE_FLAGS) -o main.o -c main.cu
 
-Ray.o: Ray.cc Ray.hh
-	g++ -c Ray.cc $(OPTIONS)
+Vector3.o: Vector3.cu Vector3.cuh
+	$(NVCC) $(NVCC_FLAGS) $(GENCODE_FLAGS) -o Vector3.o -c Vector3.cu
 
-Sphere.o: Sphere.cc Sphere.hh
-	g++ -c Sphere.cc $(OPTIONS)
+Ray.o: Ray.cu Ray.cuh
+	$(NVCC) $(NVCC_FLAGS) $(GENCODE_FLAGS) -o Ray.o -c Ray.cu
 
-HitableList.o: HitableList.cc HitableList.hh
-	g++ -c HitableList.cc $(OPTIONS)
+pic.ppm: ray_traicing
+	rm -f pic.ppm
+	./ray_traicing > pic.ppm
 
-Camera.o: Camera.cc Camera.hh
-	g++ -c Camera.cc $(OPTIONS)
+pic.jpg: pic.ppm
+	rm -f pic.jpg
+	pnmtojpeg pic.ppm > pic.jpg
+	xdg-open pic.jpg
 
-Material.o: Material.cc Material.hh
-	g++ -c Material.cc $(OPTIONS2)
+profile_basic: ray_traicing
+	nvprof ./ray_traicing > pic.ppm
 
-main.o: main.cc
-	g++ -c main.cc $(OPTIONS)
+profile_metrics: ray_traicing
+	nvprof --metrics achieved_occupancy,inst_executed,inst_fp_32,inst_fp_64,inst_integer ./ray_traicing > pic.ppm
 
 clean:
-	rm -rf *.o main
+	rm -rf ray_traicing *.o pic.ppm pic.jpg
