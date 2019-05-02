@@ -42,10 +42,11 @@ int main()
   
   Vector3 lookfrom(3,3,2);
   Vector3 lookat(0,0,-1);
+  Vector3 up(0,1,0);
   float dist_to_focus = (lookfrom-lookat).length();
   float aperture = 2.0;
   
-  Camera cam(lookfrom, lookat, Vector3(0,1,0), 20, float(nx)/float(ny), aperture, dist_to_focus);
+  Camera cam(lookfrom, lookat, up, 20, float(nx)/float(ny), aperture, dist_to_focus);
   
   for(int j = ny - 1; j >= 0; j--){
     for(int i = 0; i < nx; i++){

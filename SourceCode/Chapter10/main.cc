@@ -25,9 +25,9 @@ Vector3 color(const Ray& ray, Hitable *world, int depth){
 int main()
 {
 
-  int nx = 2000;
-  int ny = 1000;
-  int ns = 1000;
+  int nx = 1200;
+  int ny = 600;
+  int ns = 100;
 
   std::cout << "P3\n" << nx << " " <<  ny << "\n255" << std::endl;
   
