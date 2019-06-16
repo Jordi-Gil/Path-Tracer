@@ -1,12 +1,87 @@
 #include <iostream>
 #include <cfloat>
+#include <fstream>
+#include <string>
 #include "Sphere.hh"
 #include "HitableList.hh"
 #include "Camera.hh"
 #include "Material.hh"
 
+void error(const char *message){
+  std::cout << message << std::endl;
+  exit(0);
+}
+
+void help(){
+  std::cout << "\n"  << std::endl;
+  std::cout << "\t[-d] [--defult] Set the parameters to default values"  << std::endl;
+  std::cout << "\t                size: (1200x600) | AAit: 10 | depth: 50 | spheres: 11 | nthreads: 8"  << std::endl;
+  std::cout << "\t[-sizeX]        Size in pixels of coordinate X. Number greater than 0."  << std::endl;
+  std::cout << "\t[-sizeY]        Size in pixels of coordinate Y. Number greater than 0."  << std::endl;
+  std::cout << "\t[-AAit]         Number of iterations to calculate color in one pixel. Number greater than 0."  << std::endl;
+  std::cout << "\t[-depth]        The attenuation of scattered ray. Number greater than 0."  << std::endl;
+  std::cout << "\t[-spheres]      Factor number to calculate the number of spheres in the scene. Number greater than 0." << std::endl;
+  std::cout << "\t[-f][--file]    File name of pic generated." << std::endl;
+  std::cout << "\t[-h][--help]    Show help." << std::endl;
+  std::cout << "\t                #spheres = (2*spheres)*(2*spheres) + 4" << std::endl;
+  std::cout << "\n" << std::endl;
+  std::cout << "Examples of usage:" << std::endl;
+  std::cout << "./path_tracing_sec -d"  << std::endl;
+  std::cout << "./path_tracing_sec -nthreads 16 -sizeX 2000"<< std::endl;
+  exit(0);
+  
+}
+
+void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, int &dist, std::string &filename){
+  
+  if(argc <= 1) error("Error usage. Use [-h] [--help] to see the usage.");
+  
+  nx = 512; ny = 512; ns = 50; depth = 50; dist = 11; filename = "spheres.ppm";
+  
+  bool v_default = false;
+  
+  for(int i = 1; i < argc; i += 2){
+    
+    if(v_default) error("Error usage. Use [-h] [--help] to see the usage.");
+    
+  	if (std::string(argv[i]) == "-d" || std::string(argv[i]) == "--default") {
+  		if ((i+1) < argc) error("The default parameter cannot have more arguments.");
+  		std::cerr << "Default\n";
+  		v_default = true;
+  	} else if (std::string(argv[i]) == "-sizeX"){
+  		if ((i+1) >= argc) error("-sizeX value expected");
+  		nx = atoi(argv[i+1]);
+  		if(nx == 0) error("-sizeX value expected or cannot be 0");
+  	} else if (std::string(argv[i]) == "-sizeY"){
+  		if ((i+1) >= argc) error("-sizeY value expected");
+  		ny = atoi(argv[i+1]);
+  		if(ny == 0) error("-sizeY value expected or cannot be 0");
+  	} else if (std::string(argv[i]) == "-AAit"){
+  		if ((i+1) >= argc) error("-AAit value expected");
+  		ns = atoi(argv[i+1]);
+  		if(ns == 0) error("-AAit value expected or cannot be 0");
+  	} else if (std::string(argv[i]) == "-depth"){
+  		if ((i+1) >= argc) error("-depth value expected");
+  		depth = atoi(argv[i+1]);
+  		if(depth == 0) error("-depth value expected or cannot be 0");
+  	} else if (std::string(argv[i]) == "-spheres"){
+  		if ((i+1) >= argc) error("-spheres value expected");
+  		depth = atoi(argv[i+1]);
+  		if(depth == 0) error("-spheres value expected or cannot be 0");
+  	} else if (std::string(argv[i]) == "-f" || std::string(argv[i]) == "--file"){
+  		if ((i+1) >= argc) error("--file / -f value expected");
+  		filename = std::string(argv[i+1]);
+  		filename = filename+".ppm";
+  	} else if (std::string(argv[i]) == "-h" || std::string(argv[i]) == "--help" ){
+  		help();
+  	} else {
+  		error("Error usage. Use [-h] [--help] to see the usage.");
+  	}
+  }
+}
+
 Hitable *random_scene(){
-  int n = 500;
+  int n = (2*22)*(2*22)+4;
   Hitable **list = new Hitable*[n+1];
   list[0] = new Sphere(Vector3(0,-1000,0),1000, new Lambertian(Vector3(0.5,0.5,0.5)));
   int i = 1;
@@ -15,7 +90,7 @@ Hitable *random_scene(){
       float choose_mat = (rand()/(RAND_MAX + 1.0));
       Vector3 center(a+0.9*(rand()/(RAND_MAX + 1.0)), 0.2, b+0.9*(rand()/(RAND_MAX + 1.0)));
       
-      if((center-Vector3(4,0.2,0)).length() > 0.9){
+      if((center-Vector3(0,0,0)).length() > 0.995){
         if(choose_mat < 0.8){ //diffuse
           list[i++] = new Sphere(center, 0.2, new Lambertian(Vector3(
             (rand()/(RAND_MAX + 1.0))*(rand()/(RAND_MAX + 1.0)), 
@@ -30,14 +105,18 @@ Hitable *random_scene(){
           ), 0.5*(rand()/(RAND_MAX + 1.0))));
         }
         else{
-          list[i++] = new Sphere(center, 0.2, new Dielectric(1.5));
+          list[i++] = new Sphere(center, 0.2, new Dielectric(Vector3::One(),1.5));
         }
       }
     }
   }
-  list[i++] = new Sphere(Vector3(0,1,0), 1.0, new Dielectric(1.5));
+  
+  list[i++] = new Sphere(Vector3(0,1,0), 1.0, new Dielectric(Vector3::One(),1.5));
   list[i++] = new Sphere(Vector3(-4,1,0),1.0, new Lambertian(Vector3(0.4,0.2,0.1)));
   list[i++] = new Sphere(Vector3(4,1,0),1.0, new Metal(Vector3(0.7,0.6,0.5),0.0));
+  
+  list[i++] = new Sphere(Vector3( 4, 1, 5), 1.0, new Metal(Vector3(0.9, 0.2, 0.2),0.0));
+  
   
   return new HitableList(list, i);
 }
@@ -47,7 +126,7 @@ Vector3 color(const Ray& ray, Hitable *world, int depth){
     if(world->hit(ray, 0.001, MAXFLOAT, rec)){
         Ray scattered;
         Vector3 attenuation;
-        if(depth < 500 && rec.mat_ptr->scatter(ray, rec, attenuation, scattered)){
+        if(depth < 50 && rec.mat_ptr->scatter(ray, rec, attenuation, scattered)){
             return attenuation*color(scattered, world, depth+1);
         }
         else return Vector3::Zero();
@@ -59,14 +138,24 @@ Vector3 color(const Ray& ray, Hitable *world, int depth){
     }
 }
 
-int main()
+int main(int argc, char **argv)
 {
-
-  int nx = 2000;
-  int ny = 1000;
-  int ns = 1000;
-
-  std::cout << "P3\n" << nx << " " <<  ny << "\n255" << std::endl;
+  
+  int nx, ny, ns, depth, dist;
+  std::string filename;
+  
+  parse_argv(argc, argv, nx, ny, ns, depth, dist, filename);
+  
+  int n = (2*dist)*(2*dist)+5;
+  
+  std::cout << "Creating " << filename << " with (" << nx << "," << ny << ") pixels" << std::endl;
+  std::cout << "With " << ns << " iterations for AntiAliasing and depth of " << depth << "." << std::endl;
+  std::cout << "The world have " << n << " spheres." << std::endl;
+  
+  std::ofstream pic;
+  pic.open(filename.c_str());
+  
+  pic << "P3\n" << nx << " " <<  ny << "\n255" << "\n";
   
   
   Hitable *world = random_scene();
@@ -78,6 +167,8 @@ int main()
 
   Camera cam(lookfrom, lookat, Vector3(0,1,0), 20, float(nx)/float(ny), aperture, dist_to_focus);
   
+  std::cout << "Creating image..." << std::endl;
+  
   for(int j = ny - 1; j >= 0; j--){
     for(int i = 0; i < nx; i++){
         
@@ -88,7 +179,6 @@ int main()
         float v = float(j + (rand()/(RAND_MAX + 1.0))) / float(ny);
         
         Ray r = cam.get_ray(u, v);
-        //Vector3 p = r.point_at_parameter(2.0);
         
         col += color(r, world, 0);
       }
@@ -100,7 +190,9 @@ int main()
       int ig = int(255.99*col[1]);
       int ib = int(255.99*col[2]);
 
-      std::cout << ir << " " << ig << " " << ib << std::endl;
+      pic << ir << " " << ig << " " << ib << "\n";
     }
   }
+  pic.close();
+  std::cout << "Image created" << std::endl;
 }
