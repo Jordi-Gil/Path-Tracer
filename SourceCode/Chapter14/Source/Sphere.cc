@@ -29,3 +29,14 @@ bool Sphere::hit(const Ray& r, float t_min, float t_max, hit_record &rec) const{
   }
   return false;
 }
+
+bool Sphere::bounding_box(float t0, float t1, aabb& box) const {
+
+  t0 = t0;
+  t1 = t1;
+  
+  box = aabb(center - Vector3(radius,radius,radius), center + Vector3(radius,radius,radius));
+  
+  return true;
+  
+}

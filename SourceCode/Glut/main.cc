@@ -4,6 +4,8 @@
 #include <string>
 #include <sys/time.h>
 
+#include <GLUT/glut.h>
+#include <GLUT/glew.h>
 
 #include "Sphere.hh"
 #include "MovingSphere.hh"

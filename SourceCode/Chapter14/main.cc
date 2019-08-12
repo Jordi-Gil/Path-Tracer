@@ -9,6 +9,7 @@
 #include "HitableList.hh"
 #include "Camera.hh"
 #include "Material.hh"
+#include "BVH_node.hh"
 
 double getusec_() {
   struct timeval time;
@@ -79,7 +80,7 @@ void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, in
   		if(depth == 0) error("-depth value expected or cannot be 0");
   	} else if (std::string(argv[i]) == "-spheres"){
   		if ((i+1) >= argc) error("-spheres value expected");
-  		depth = atoi(argv[i+1]);
+  		dist = atoi(argv[i+1]);
   		if(depth == 0) error("-spheres value expected or cannot be 0");
   	} else if (std::string(argv[i]) == "-f" || std::string(argv[i]) == "--file"){
   		if ((i+1) >= argc) error("--file / -f value expected");
@@ -93,13 +94,13 @@ void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, in
   }
 }
 
-Hitable *random_scene(){
+Hitable *random_scene(int dist){
   int n = (2*22)*(2*22)+4;
   Hitable **list = new Hitable*[n+1];
   list[0] = new Sphere(Vector3(0,-1000,0),1000, new Lambertian(Vector3(0.5,0.5,0.5)));
   int i = 1;
-  for(int a = -11; a < 11; a++){
-    for(int b = -11; b < 11; b++){
+  for(int a = -dist; a < dist; a++){
+    for(int b = -dist; b < dist; b++){
       float choose_mat = (rand()/(RAND_MAX + 1.0));
       Vector3 center(a+0.9*(rand()/(RAND_MAX + 1.0)), 0.2, b+0.9*(rand()/(RAND_MAX + 1.0)));
       
@@ -131,17 +132,16 @@ Hitable *random_scene(){
   
   list[i++] = new Sphere(Vector3( 4, 1, 5), 1.0, new Metal(Vector3(0.9, 0.2, 0.2),0.0));
   
-  
-  return new HitableList(list, i);
+  return new BVH_node(list,i,0,1);
 }
 
-Vector3 color(const Ray& ray, Hitable *world, int depth){
+Vector3 color(const Ray& ray, Hitable *world, int depth, int const _depth){
     hit_record rec;
     if(world->hit(ray, 0.001, MAXFLOAT, rec)){
         Ray scattered;
         Vector3 attenuation;
-        if(depth < 50 && rec.mat_ptr->scatter(ray, rec, attenuation, scattered)){
-            return attenuation*color(scattered, world, depth+1);
+        if(depth < _depth && rec.mat_ptr->scatter(ray, rec, attenuation, scattered)){
+            return attenuation*color(scattered, world, depth+1, _depth);
         }
         else return Vector3::Zero();
     }
@@ -172,7 +172,7 @@ int main(int argc, char **argv)
   pic << "P3\n" << nx << " " <<  ny << "\n255" << "\n";
   
   
-  Hitable *world = random_scene();
+  Hitable *world = random_scene(dist);
   
   Vector3 lookfrom(13,2,3);
   Vector3 lookat(0,0,0);
@@ -196,7 +196,7 @@ int main(int argc, char **argv)
         
         Ray r = cam.get_ray(u, v);
         
-        col += color(r, world, 0);
+        col += color(r, world, 0, depth);
       }
       
       col /= float(ns);
@@ -213,3 +213,13 @@ int main(int argc, char **argv)
   STOP_COUNT_TIME;
   std::cout << "Image created in " << stamp << " seconds" << std::endl;
 }
+
+
+/*
+ * int seconds, hours, minutes;
+cin >> seconds;
+minutes = seconds / 60;
+hours = minutes / 60;
+cout << seconds << " seconds is equivalent to " << int(hours) << " hours " << int(minutes%60) 
+     << " minutes " << int(seconds%60) << " seconds.";
+*/

@@ -11,6 +11,7 @@ public:
     MovingSphere(Vector3 cen0, Vector3 cen1, float t0, float t1, float r, Material *mat): center0(cen0), center1(cen1), time0(t0), time1(t1), radius(r), mat_ptr(mat){};
     
     virtual bool hit(const Ray& r, float t_min, float t_max, hit_record& rec) const;
+    virtual bool bounding_box(float t0, float t1, aabb& box) const;
     
     Vector3 center(float time) const;
     
