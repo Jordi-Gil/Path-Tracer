@@ -21,7 +21,7 @@ double getusec_() {
 Hitable *random_scene(){
   
   
-  int dist = 4;
+  int dist = 5;
   int n = (2*dist)*(2*dist) - 2 + 4 - 1;
   
   Hitable **list = new Hitable*[n+1];
@@ -81,9 +81,9 @@ Vector3 color(const Ray& ray, Hitable *world, int depth){
 int main()
 {
 
-  int nx = 2000;
-  int ny = 1000;
-  int ns = 50;
+  int nx = 2048;
+  int ny = 1080;
+  int ns = 100;
 
   std::cout << "P3\n" << nx << " " <<  ny << "\n255" << std::endl;
   
