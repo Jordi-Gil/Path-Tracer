@@ -34,8 +34,6 @@ Vector3 random_in_unit_sphere(){
 
 bool Lambertian::scatter(const Ray& r_in, const hit_record &rec, Vector3 &attenuation, Ray& scattered) const {
     
-    
-    
     Vector3 target = rec.point + rec.normal + random_in_unit_sphere();
     
     scattered = Ray(rec.point, target-rec.point, r_in.time());
@@ -70,6 +68,7 @@ bool Dielectric::scatter(const Ray& r_in, const hit_record& rec, Vector3& attenu
         outward_normal = -rec.normal;
         ni_over_nt = ref_idx;
         cosine = ref_idx * dot(r_in.direction(), rec.normal) / r_in.direction().length();
+        cosine = sqrt(1 - ref_idx*ref_idx*(1-cosine*cosine));
     }
     else {
         outward_normal = rec.normal;
@@ -81,7 +80,7 @@ bool Dielectric::scatter(const Ray& r_in, const hit_record& rec, Vector3& attenu
         reflect_prob = schlick(cosine, ref_idx);
     }
     else{
-        scattered = Ray(rec.point, reflected);
+        //scattered = Ray(rec.point, reflected);
         reflect_prob = 1.0;
     }
     
@@ -92,5 +91,6 @@ bool Dielectric::scatter(const Ray& r_in, const hit_record& rec, Vector3& attenu
         scattered = Ray(rec.point, refracted);
     }
     return true;
-    
 }
+
+

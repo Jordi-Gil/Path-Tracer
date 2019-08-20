@@ -45,4 +45,5 @@ public:
     Vector3 albedo;
     float ref_idx;
 };
+
 #endif /* _MATERIAL_HH_INCLUDE */
