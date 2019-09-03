@@ -3,6 +3,8 @@
 
 #include "Hitable.hh"
 
+#include <algorithm>
+
 class BVH_node: public Hitable {
 public:
   BVH_node() {}
