@@ -31,6 +31,7 @@ public:
     
   }
 
+private:
   
   Vector3 _min;
   Vector3 _max;

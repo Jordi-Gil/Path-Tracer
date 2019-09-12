@@ -6,7 +6,6 @@
 
 #include "Sphere.hh"
 #include "MovingSphere.hh"
-#include "HitableList.hh"
 #include "Camera.hh"
 #include "Material.hh"
 #include "BVH_node.hh"

@@ -7,8 +7,8 @@ MovingSphere::MovingSphere(Vector3 cen0, Vector3 cen1, float t0, float t1, float
     time1 = t1;
     radius = r; 
     mat_ptr = mat;
-    morter_code_0 = Helper::morton3D(cen0.x(), cen0.y(), cen0.z());
-    morter_code_1 = Helper::morton3D(cen1.x(), cen1.y(), cen1.z());
+    morton_code_0 = Helper::morton3D(cen0.x(), cen0.y(), cen0.z());
+    morton_code_1 = Helper::morton3D(cen1.x(), cen1.y(), cen1.z());
 }
 
 bool MovingSphere::hit(const Ray& r, float t_min, float t_max, hit_record& rec) const{

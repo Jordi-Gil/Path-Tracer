@@ -35,8 +35,6 @@ public:
         return n;
     }
     
-private:
-    
     // Expands a 10-bit integer into 30 bits
     // by inserting 2 zeros after each bit.
     static unsigned int expandBits(unsigned int v)

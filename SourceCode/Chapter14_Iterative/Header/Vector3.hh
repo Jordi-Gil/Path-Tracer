@@ -38,7 +38,7 @@ public:
     float length() const;
     float squared_length() const;
     void make_unit_vector();
-
+    
     float v[3];
 };
 
