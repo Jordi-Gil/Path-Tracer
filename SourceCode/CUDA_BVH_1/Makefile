@@ -2,7 +2,7 @@ CUDA_HOME = /usr/local/cuda-10.1
 HOST_COMPILER = g++
 NVCC = $(CUDA_HOME)/bin/nvcc -ccbin $(HOST_COMPILER)
 NVCC_DBG = -g -G
-NVCC_FLAGS = -m64 -rdc=true -lcudadevrt -I Header/
+NVCC_FLAGS = -m64 -rdc=true -lcudadevrt -I Header/ -lineinfo
 
 OBJDIR = Object
 1GPUDIR = 1GPU

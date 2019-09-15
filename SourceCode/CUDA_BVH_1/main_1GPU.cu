@@ -11,6 +11,7 @@
 #include "MovingSphere.cuh"
 #include "Camera.cuh"
 #include "Material.cuh"
+#include "Node.cuh"
 
 #define MAX 3.402823466e+38
 #define MIN 1.175494351e-38
@@ -21,8 +22,8 @@ __device__ int size;
 
 void error(const char *message) {
   
-	std::cout << message << std::endl;
-	exit(0);
+    std::cout << message << std::endl;
+    exit(0);
 }
 
 void help(){
@@ -146,62 +147,6 @@ __device__ void compare(Vector3 &max, Vector3 &min, Vector3 point) {
     if(point[2] < min[2]) min[2] = point[2]; //z
 }
 
-__global__ void create_world(Hitable **d_list, Camera **d_cam, int nx, int ny, int dist, curandState *random){
-  
-	printf("Kernel create_world\n");
-	
-	if (threadIdx.x == 0 && blockIdx.x == 0) {
-		curandState local_random = *random;
-		
-		Vector3 max(MIN);
-		Vector3 min(MAX);
-		
-		int i = 0;
-		
-		d_list[i] = new Sphere(Vector3(0,-1000,-1), 1000, new Lambertian(Vector3(0.5, 0.5, 0.5)));
-		compare(max,min, d_list[i]->getCenter());
-		
-		i++;
-		/*
-		for (int a = -dist; a < dist; a++) {
-			for (int b = -dist; b < dist; b++) {
-				float material = Random;
-				Vector3 center(a+0.9*Random, 0.2, b+0.9*Random);
-	
-				if ((center-Vector3(0,0,0)).length() > 0.995) {
-					if (material < 0.8) d_list[i] = new MovingSphere(center, center+Vector3(0,0.5*Random,0),0.0,1.0,.2,new Lambertian(Vector3(Random*Random, Random*Random, Random*Random)));
-					else if (material < 0.95) d_list[i] = new Sphere(center, 0.2, new Metal(Vector3(0.5*(1.0+Random), 0.5*(1.0+Random), 0.5*(1.0+Random)),0.5*Random));
-					else d_list[i] = new Sphere(center, 0.2, new Dielectric(1.5));
-					
-					compare(max,min,d_list[i]->getCenter());
-					i++;
-					
-				}
-			}
-		}
-		*/
-		d_list[i] = new Sphere(Vector3( 0, 1, 0), 1.0, new Dielectric(1.5));
-		compare(max,min,d_list[i]->getCenter()); i++;
-		d_list[i] = new Sphere(Vector3(-4, 1, 0), 1.0, new Lambertian(Vector3(0.4, 0.2, 0.1)));
-		compare(max,min,d_list[i]->getCenter()); i++;
-		d_list[i] = new Sphere(Vector3( 4, 1, 0), 1.0, new Metal(Vector3(0.7, 0.6, 0.5),0.0));
-		compare(max,min,d_list[i]->getCenter()); i++;
-		d_list[i] = new Sphere(Vector3( 4, 1, 5), 1.0, new Metal(Vector3(0.9, 0.2, 0.2),0.0));
-		compare(max,min,d_list[i]->getCenter()); i++;
-		
-		size = i;
-		printf("Esferas %d.\n",i);
-		Vector3 lookfrom(13,2,3);
-		Vector3 lookat(0,0,0);
-		Vector3 up(0,1,0);
-		float dist_to_focus = 10; (lookfrom-lookat).length();
-		float aperture = 0.1;
-		*d_cam = new Camera(lookfrom, lookat, up, 20, float(nx)/float(ny), aperture, dist_to_focus,0.0,0.1);
-		
-		
-	}
-}
-
 __device__ Vector3 color(const Ray& ray, Hitable **world, int depth, curandState *random){
   
 	Ray cur_ray = ray;
@@ -230,12 +175,89 @@ __device__ Vector3 color(const Ray& ray, Hitable **world, int depth, curandState
 	
 }
 
+__device__ int2 determineRange(Hitable **list, int idx, int objs) {
+    
+    if(idx == objs) printf("%d\n",idx);
+    
+    int numberObj = objs-1;
+    
+    if(idx == 0)
+        return make_int2(0,numberObj);
+    
+    unsigned int idxCode = list[idx]->getMorton();
+    unsigned int idxCodeUp = list[idx+1]->getMorton();
+    unsigned int idxCodeDown = list[idx-1]->getMorton();
+    
+    if((idxCode == idxCodeDown) and (idxCode == idxCodeUp)) {
+    
+        int idxInit = idx;
+        bool dif = false;
+        while(!dif and idx > 0 and idx < numberObj){
+            ++idx;
+            if(idx >= numberObj) dif = true;
+                
+            if(list[idx]->getMorton() != list[idx+1]->getMorton()) dif = true;
+        }
+        
+        return make_int2(idxInit, idx);
+        
+    } else {
+        
+        int prefixUp = __clz(idxCode ^ idxCodeUp);
+        int prefixDown = __clz(idxCode ^ idxCodeDown);
+        
+        int d = Helper::sgn( prefixUp - prefixDown );
+        int dmin;
+        
+        if(d < 0) dmin = prefixUp;
+        else if (d > 0) dmin = prefixDown;
+        
+        int lmax = 2;
+        
+        int newBoundary;
+        int bitPrefix;
+        do {
+            
+            newBoundary = idx + lmax * d;
+            bitPrefix = -1;
+            
+            if(newBoundary >= 0 and newBoundary <= numberObj){
+                unsigned int newCode = list[idx + lmax * d]->getMorton();
+                
+                bitPrefix = __clz(idxCode ^ newCode);
+                if(bitPrefix > dmin) lmax *= 2;
+                
+            }
+            
+        } while(bitPrefix > dmin);
+        
+        int l = 0;
+        
+        for(int t = lmax/2; t >= 1; t /= 2){
+            
+            int newUpperBound = idx + (l + t) * d;
+            
+            if(newUpperBound <= numberObj and newUpperBound >= 0){
+                unsigned int splitCode = list[newUpperBound]->getMorton();
+                int splitPrefix = __clz(idxCode ^ splitCode);
+                
+                if(splitPrefix > dmin) l += t;
+            }
+            
+        }
+        
+        int jdx = idx + l * d;
+        
+        if(jdx < idx) return make_int2(jdx,idx);
+        else return make_int2(idx,jdx);
+    }
+}
+
 __global__ void rand_init(curandState *random, int seed) {
   
-	if(threadIdx.x == 0 && blockIdx.x == 0){
-		curand_init(seed, 0, 0, random);
-	}
-	
+    if(threadIdx.x == 0 && blockIdx.x == 0){
+        curand_init(seed, 0, 0, random);
+    }
 }
 
 __global__ void render_init(int max_x, int max_y, curandState *rand_state,unsigned long long seed) {
@@ -250,7 +272,91 @@ __global__ void render_init(int max_x, int max_y, curandState *rand_state,unsign
   int pixel_index = num;
     
   curand_init((seed << 20) + pixel_index, 0, 0, &rand_state[pixel_index]);
-  
+}
+
+__global__ void create_world(Hitable **d_list, Camera **d_cam, int nx, int ny, int dist, curandState *random){
+
+    if (threadIdx.x == 0 && blockIdx.x == 0) {
+		curandState local_random = *random;
+		
+		Vector3 max(MIN);
+		Vector3 min(MAX);
+		
+		int i = 0;
+		
+		d_list[i] = new Sphere(Vector3(0,-1000,-1), 1000, new Lambertian(Vector3(0.5, 0.5, 0.5)));
+		compare(max,min, d_list[i]->getCenter());
+		
+		i++;
+		
+		for (int a = -dist; a < dist; a++) {
+			for (int b = -dist; b < dist; b++) {
+				float material = Random;
+				Vector3 center(a+0.9*Random, 0.2, b+0.9*Random);
+	
+				if ((center-Vector3(0,0,0)).length() > 0.995) {
+					if (material < 0.8) d_list[i] = new MovingSphere(center, center+Vector3(0,0.5*Random,0),0.0,1.0,.2,new Lambertian(Vector3(Random*Random, Random*Random, Random*Random)));
+					else if (material < 0.95) d_list[i] = new Sphere(center, 0.2, new Metal(Vector3(0.5*(1.0+Random), 0.5*(1.0+Random), 0.5*(1.0+Random)),0.5*Random));
+					else d_list[i] = new Sphere(center, 0.2, new Dielectric(1.5));
+					
+					compare(max,min,d_list[i]->getCenter());
+					i++;
+					
+				}
+			}
+		}
+		
+		d_list[i] = new Sphere(Vector3( 0, 1, 0), 1.0, new Dielectric(1.5));
+		compare(max,min,d_list[i]->getCenter()); i++;
+		d_list[i] = new Sphere(Vector3(-4, 1, 0), 1.0, new Lambertian(Vector3(0.4, 0.2, 0.1)));
+		compare(max,min,d_list[i]->getCenter()); i++;
+		d_list[i] = new Sphere(Vector3( 4, 1, 0), 1.0, new Metal(Vector3(0.7, 0.6, 0.5),0.0));
+		compare(max,min,d_list[i]->getCenter()); i++;
+		d_list[i] = new Sphere(Vector3( 4, 1, 5), 1.0, new Metal(Vector3(0.9, 0.2, 0.2),0.0));
+		compare(max,min,d_list[i]->getCenter()); i++;
+        
+        size = i;
+        
+        float max_x = max[0]; float max_y = max[1]; float max_z = max[2];
+        float min_x = min[0]; float min_y = min[1]; float min_z = min[2];
+        
+        for(int j = 0; i < size; j++) {
+        
+            Vector3 point = d_list[j]->getCenter();
+            
+            point[0] = ((point[0] - min_x)/(max_x - min_x));
+            point[1] = ((point[1] - min_y)/(max_y - min_y));
+            point[2] = ((point[2] - min_z)/(max_z - min_z));
+            
+            d_list[j]->setMorton(Helper::morton3D(point[0],point[1],point[2])+j);
+        }
+        
+        printf("%d esferas\n",i);
+        Vector3 lookfrom(13,2,3);
+        Vector3 lookat(0,0,0);
+        Vector3 up(0,1,0);
+        float dist_to_focus = 10; (lookfrom-lookat).length();
+        float aperture = 0.1;
+        *d_cam = new Camera(lookfrom, lookat, up, 20, float(nx)/float(ny), aperture, dist_to_focus,0.0,0.1);
+    }
+}
+
+__global__ void initLeafNodes(Node *leafNodes, int objs, Hitable **list) {
+    
+    int idx = blockIdx.x*blockDim.x + threadIdx.x;
+    
+    if(idx >= objs) return;
+    
+    leafNodes[idx].obj = list[idx];
+}
+
+__global__ void constructBVH(Node *internalNodes, Node *leafNodes, int objs, Hitable **list) {
+    
+    int idx = blockIdx.x*blockDim.x + threadIdx.x;
+    
+    if(idx >= objs) return;
+    
+    int2 range = determineRange(list, idx, objs+1);
 }
 
 __global__ void render(Vector3 *fb, int max_x, int max_y, int ns, Camera **cam, Hitable **world, curandState *d_rand_state, int depth) {
@@ -299,11 +405,14 @@ int main(int argc, char **argv) {
 	cudaGetDevice(&device);
     
 	cudaDeviceProp properties;
-	//checkCudaErrors( cudaDeviceSetLimit( cudaLimitStackSize, 4000 ) );
+	checkCudaErrors( cudaDeviceSetLimit( cudaLimitMallocHeapSize, 67108864 ) );
+    //checkCudaErrors( cudaDeviceSetLimit( cudaLimitStackSize, 131072 ) );
 	checkCudaErrors( cudaGetDeviceProperties( &properties, device ) );
 	
-	size_t limit;
-	checkCudaErrors( cudaDeviceGetLimit( &limit, cudaLimitStackSize ) );
+	size_t limit1;
+	checkCudaErrors( cudaDeviceGetLimit( &limit1, cudaLimitMallocHeapSize ) );
+    size_t limit2;
+	checkCudaErrors( cudaDeviceGetLimit( &limit2, cudaLimitStackSize ) );
     
 	if( properties.major > 3 || ( properties.major == 3 && properties.minor >= 5 ) )
 	{
@@ -312,13 +421,16 @@ int main(int argc, char **argv) {
 		std::cout << "Concurrent Kernels: " << properties.concurrentKernels << std::endl;
 		std::cout << "Warp size: " << properties.warpSize << std::endl;
 		std::cout << "Major: " << properties.major << " Minor: " << properties.minor << std::endl;
-		std::cout << "Cuda limit stack size: " << limit << "\n\n" << std::endl;
+		std::cout << "Cuda limit heap size: " << limit1 << std::endl;
+        std::cout << "Cuda limit stack size: " << limit2 << "\n\n" << std::endl;
 	}
 	else std::cout << "GPU " << device << " (" << properties.name << ") does not support CUDA Dynamic Parallelism" << std::endl;
 
   
 	cudaEvent_t E0, E1;
-	cudaEventCreate(&E0); cudaEventCreate(&E1);
+	cudaEventCreate(&E0); 
+    cudaEventCreate(&E1);
+    checkCudaErrors(cudaGetLastError());
   
 	float totalTime;
   
@@ -356,6 +468,9 @@ int main(int argc, char **argv) {
 	Camera **d_cam;
 	curandState *d_rand_state;
 	curandState *d_rand_state2;
+        
+    Node *internalNodes;
+    Node *leafNodes;
   
 	/* Allocate memory on device */
 	cudaMallocManaged((void **)&d_frameBuffer, fb_size);
@@ -367,40 +482,56 @@ int main(int argc, char **argv) {
   
 	cudaEventRecord(E0,0);
 	cudaEventSynchronize(E0);
+    checkCudaErrors(cudaGetLastError());
 	
 	rand_init<<<1,1>>>(d_rand_state2, seed);
 	checkCudaErrors(cudaGetLastError());
 	
+    render_init<<<blocks, nthreads>>>(nx, ny, d_rand_state, seed);
+	checkCudaErrors(cudaGetLastError());
+        
 	create_world<<<1,1>>>(d_list, d_cam, nx, ny, dist, d_rand_state2);
 	checkCudaErrors(cudaGetLastError());
-/*	
-	render_init<<<blocks, nthreads>>>(nx, ny, d_rand_state, seed);
-	checkCudaErrors(cudaGetLastError());
-
+        
+    /* Get the exact total number of objects in the scene */
+    int objs;
+	cudaGetSymbolAddress((void **)&objs, size);
+	cudaMemcpyFromSymbol(&objs, size, sizeof(int), 0, cudaMemcpyDeviceToHost);
+	
+    std::cout << objs << " esferas" << std::endl;
+    
+    cudaMalloc((void **)&internalNodes, (objs-1)*sizeof(Node *));
+    checkCudaErrors(cudaGetLastError());
+    cudaMalloc((void **)&leafNodes, objs*sizeof(Node *));
+    checkCudaErrors(cudaGetLastError());
+    
+    dim3 blockDim(256, 1);
+    dim3 gridDim(((objs-1) + 256 - 1) / 256, 1);
+    
+    initLeafNodes<<<blockDim, gridDim>>>(leafNodes, (objs-1), d_list);
+    checkCudaErrors(cudaGetLastError());
+    
+    constructBVH<<<blockDim, gridDim>>>(internalNodes, leafNodes, objs-1, d_list);
+    checkCudaErrors(cudaGetLastError());
+/*        
 	render<<<blocks, nthreads>>>(d_frameBuffer, nx, ny, ns, d_cam, d_world, d_rand_state, depth);
 	checkCudaErrors(cudaGetLastError());
 
 	cudaMemcpy(h_frameBuffer, d_frameBuffer, fb_size, cudaMemcpyDeviceToHost);
 	checkCudaErrors(cudaGetLastError());
-*/  
-
-	int p;
-	cudaGetSymbolAddress((void **)&p, size);
-	
-	cudaMemcpyFromSymbol(&p, size, sizeof(int), 0, cudaMemcpyDeviceToHost);
-	std::cout << p << std::endl;
-	
-	cudaEventRecord(E1,0);
+	*/  
+    
+    cudaEventRecord(E1,0);
+    checkCudaErrors(cudaGetLastError());
+    
 	cudaEventSynchronize(E1);
-  
+    checkCudaErrors(cudaGetLastError());
+    
 	cudaEventElapsedTime(&totalTime,E0,E1);
-  
 	checkCudaErrors(cudaGetLastError());
-  
-	exit(0);
 	
 	std::cout << "Total time: " << totalTime << " milisegs. " << std::endl;
-  
+    exit(0);
 	std::cout << "Generating file image..." << std::endl;
 	std::ofstream pic;
 	pic.open(filename.c_str());
