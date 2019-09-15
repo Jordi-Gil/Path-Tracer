@@ -39,8 +39,7 @@ bool MovingSphere::bounding_box(float t0, float t1, aabb& box) const {
   aabb box0(center(t0) - Vector3(radius, radius, radius), center(t0) + Vector3(radius, radius, radius));
   aabb box1(center(t1) - Vector3(radius, radius, radius), center(t1) + Vector3(radius, radius, radius));
   
-  box = surrounding_box(box0, box1);
+  box surrounding_box(box0, box1);
   
   return true;
-  
 }

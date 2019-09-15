@@ -14,8 +14,6 @@ public:
     float time() const;
     Vector3 point_at_parameter(float t) const;
     
-private:    
-    
     Vector3 A;
     Vector3 B;
     float _time;

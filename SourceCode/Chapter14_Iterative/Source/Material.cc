@@ -34,8 +34,6 @@ Vector3 random_in_unit_sphere(){
 
 bool Lambertian::scatter(const Ray& r_in, const hit_record &rec, Vector3 &attenuation, Ray& scattered) const {
     
-    
-    
     Vector3 target = rec.point + rec.normal + random_in_unit_sphere();
     
     scattered = Ray(rec.point, target-rec.point, r_in.time());

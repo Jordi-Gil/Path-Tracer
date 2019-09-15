@@ -28,7 +28,7 @@ void error(const char *message){
 void help(){
   std::cout << "\n"  << std::endl;
   std::cout << "\t[-d] [--defult] Set the parameters to default values"  << std::endl;
-  std::cout << "\t                size: (1200x600) | AAit: 10 | depth: 50 | spheres: 11 | nthreads: 8"  << std::endl;
+  std::cout << "\t                size: (1280x720) | AAit: 50 | depth: 50 | spheres: 11"  << std::endl;
   std::cout << "\t[-sizeX]        Size in pixels of coordinate X. Number greater than 0."  << std::endl;
   std::cout << "\t[-sizeY]        Size in pixels of coordinate Y. Number greater than 0."  << std::endl;
   std::cout << "\t[-AAit]         Number of iterations to calculate color in one pixel. Number greater than 0."  << std::endl;
@@ -49,7 +49,7 @@ void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, in
   
   if(argc <= 1) error("Error usage. Use [-h] [--help] to see the usage.");
   
-  nx = 512; ny = 512; ns = 50; depth = 50; dist = 11; filename = "spheres.ppm";
+  nx = 1280; ny = 720; ns = 50; depth = 50; dist = 11; filename = "pic.ppm";
   
   bool v_default = false;
   

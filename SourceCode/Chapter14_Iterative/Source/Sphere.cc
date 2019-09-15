@@ -4,7 +4,8 @@ Sphere::Sphere(Vector3 cen, float r, Material *mat) {
     center = cen; 
     radius = r; 
     mat_ptr = mat;
-    morton_code = Helper::morton3D(cen.x(), cen.y(), cen.z());
+    morton_code = 0;
+    bounding_box(0,1,box);
 }
 
 bool Sphere::hit(const Ray& r, float t_min, float t_max, hit_record &rec) const{
@@ -37,13 +38,27 @@ bool Sphere::hit(const Ray& r, float t_min, float t_max, hit_record &rec) const{
   return false;
 }
 
-bool Sphere::bounding_box(float t0, float t1, aabb& box) const {
+aabb Sphere::getBox() const {
+    return box;
+}
+
+unsigned int Sphere::getMorton() const {
+    return morton_code;
+}
+
+void Sphere::setMorton(unsigned int code) {
+    morton_code = code;
+}
+
+void Sphere::bounding_box(float t0, float t1, aabb& box) const {
 
   t0 = t0;
   t1 = t1;
   
   box = aabb(center - Vector3(radius,radius,radius), center + Vector3(radius,radius,radius));
   
-  return true;
-  
+}
+
+Vector3 Sphere::getCenter() const {
+    return center;
 }

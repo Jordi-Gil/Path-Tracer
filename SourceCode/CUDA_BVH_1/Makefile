@@ -36,7 +36,7 @@ OBJS_2 = $(OBJ) $(OBJDIR)/$(NGPUDIR)/mainNGPUs.o
 OBJS_3 = $(OBJ) $(OBJDIR)/$(NGPUDYNDIR)/mainNGPUs_dynamic.o
 
 
-all: $(OBJDIR) $(OBJDIR)/$(1GPUDIR) $(OBJDIR)/$(NGPUDIR) $(OBJDIR)/$(NGPUDYNDIR) path_tracing_1GPU path_tracing_NGPUs path_tracing_NGPUs_dynamic
+all: $(OBJDIR) $(OBJDIR)/$(1GPUDIR) $(OBJDIR)/$(NGPUDIR) $(OBJDIR)/$(NGPUDYNDIR) path_tracing_1GPU #path_tracing_NGPUs path_tracing_NGPUs_dynamic
 
 $(OBJDIR):
 	mkdir $(OBJDIR)

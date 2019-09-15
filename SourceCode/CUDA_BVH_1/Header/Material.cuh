@@ -6,17 +6,16 @@ struct hit_record;
 #include <curand.h>
 #include <curand_kernel.h>
 
-
 #include "Ray.cuh"
 #include "Hitable.cuh"
-
-
 
 class Material {
 
 public:
     
     __device__ virtual bool scatter(const Ray& r_in, const hit_record& rec, Vector3& attenuation, Ray& scattered, curandState *random) const = 0;
+
+	Vector3 albedo = Vector3::One();
 
 };
 

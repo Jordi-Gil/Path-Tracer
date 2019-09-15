@@ -11,6 +11,7 @@ public:
     
     __host__ __device__ Vector3();
     __host__ __device__ Vector3(float x, float y, float z);
+    __host__ __device__ Vector3(float val);
     
     __host__ __device__ float x() const;
     __host__ __device__ float y() const;

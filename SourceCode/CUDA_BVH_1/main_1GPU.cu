@@ -3,16 +3,17 @@
 #include <string>
 #include <cfloat>
 #include <ctime>
+#include <limits>
 #include <curand.h>
 #include <curand_kernel.h>
 
 #include "Sphere.cuh"
 #include "MovingSphere.cuh"
-#include "HitableList.cuh"
 #include "Camera.cuh"
 #include "Material.cuh"
-#include "BVH_node.cuh"
 
+#define MAX 3.402823466e+38
+#define MIN 1.175494351e-38
 #define checkCudaErrors(val) check_cuda( (val), #val, __FILE__, __LINE__ )
 #define Random (curand_uniform(&local_random))
 
@@ -26,7 +27,7 @@ void help(){
 
 	std::cout << "\n"  << std::endl;
 	std::cout << "\t[-d] [--defult] Set the parameters to default values"  << std::endl;
-	std::cout << "\t                size: (2048x1080) | AAit: 10 | depth: 10 | spheres: 4 | nthreads: 32"  << std::endl;
+	std::cout << "\t                size: (1280x720) | AAit: 50 | depth: 50 | spheres: 11 | nthreads: 32"  << std::endl;
 	std::cout << "\t[-sizeX]        Size in pixels of coordinate X. Number greater than 0."  << std::endl;
 	std::cout << "\t[-sizeY]        Size in pixels of coordinate Y. Number greater than 0."  << std::endl;
 	std::cout << "\t[-AAit]         Number of iterations to calculate color in one pixel. Number greater than 0."  << std::endl;
@@ -49,7 +50,7 @@ void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, in
   
 	if(argc <= 1) error("Error usage. Use [-h] [--help] to see the usage.");
   
-	nx = 2048; ny = 1080; ns = 10; depth = 10; dist = 4; nthreads = 32; filename = "pic.ppm"; numGPUs = 1;
+	nx = 1280; ny = 720; ns = 50; depth = 50; dist = 11; nthreads = 32; filename = "pic.ppm"; numGPUs = 1;
   
 	bool v_default = false;
   
@@ -121,9 +122,8 @@ void check_cuda(cudaError_t result, char const *const func, const char *const fi
 	}
 }
 
-__global__ void free_world(Hitable **d_list, Hitable **d_world, Camera **d_cam) {
-	
-	int n = (*d_world)->length();
+__global__ void free_world(Hitable **d_list, Hitable **d_world, Camera **d_cam, int n) {
+
 	for(int i = 0; i < n; i++){
 		delete ((Sphere *)d_list[i])->mat_ptr;
 		delete d_list[i];
@@ -133,37 +133,56 @@ __global__ void free_world(Hitable **d_list, Hitable **d_world, Camera **d_cam) 
 	
 }
 
-__global__ void create_world(Hitable **d_list, Hitable **d_world, Camera **d_cam, int nx, int ny, int dist, curandState *random){
+__device__ void compare(Vector3 &max, Vector3 &min, Vector3 point) {
+    
+    if(point[0] > max[0]) max[0] = point[0]; //x
+    if(point[1] > max[1]) max[1] = point[1]; //y
+    if(point[2] > max[2]) max[2] = point[2]; //z
+    
+    if(point[0] < min[0]) min[0] = point[0]; //x
+    if(point[1] < min[1]) min[1] = point[1]; //y
+    if(point[2] < min[2]) min[2] = point[2]; //z
+}
+
+__global__ void create_world(Hitable **d_list, Camera **d_cam, int nx, int ny, int dist, curandState *random, int &n){
   
 	if (threadIdx.x == 0 && blockIdx.x == 0) {
 		curandState local_random = *random;
-
-		d_list[0] = new Sphere(Vector3(0,-1000,-1), 1000, new Lambertian(Vector3(0.5, 0.5, 0.5)));
-    
-		int i = 1;
+		
+		Vector3 max(MIN);
+		Vector3 min(MAX);
+		
+		int i = 0;
+		
+		d_list[i] = new Sphere(Vector3(0,-1000,-1), 1000, new Lambertian(Vector3(0.5, 0.5, 0.5)));
+		compare(max,min, d_list[i]->getCenter());
+		
+		i++;
 		for (int a = -dist; a < dist; a++) {
 			for (int b = -dist; b < dist; b++) {
 				float material = Random;
 				Vector3 center(a+0.9*Random, 0.2, b+0.9*Random);
 	
 				if ((center-Vector3(0,0,0)).length() > 0.995) {
-					if (material < 0.8) d_list[i++] = new MovingSphere(center, center+Vector3(0,0.5*Random,0),0.0,1.0,.2,new Lambertian(Vector3(Random*Random, Random*Random, Random*Random)));
-					else if (material < 0.95) d_list[i++] = new Sphere(center, 0.2, new Metal(Vector3(0.5*(1.0+Random), 0.5*(1.0+Random), 0.5*(1.0+Random)),0.5*Random));
-					else d_list[i++] = new Sphere(center, 0.2, new Dielectric(1.5));
+					if (material < 0.8) d_list[i] = new MovingSphere(center, center+Vector3(0,0.5*Random,0),0.0,1.0,.2,new Lambertian(Vector3(Random*Random, Random*Random, Random*Random)));
+					else if (material < 0.95) d_list[i] = new Sphere(center, 0.2, new Metal(Vector3(0.5*(1.0+Random), 0.5*(1.0+Random), 0.5*(1.0+Random)),0.5*Random));
+					else d_list[i] = new Sphere(center, 0.2, new Dielectric(1.5));
 				}
+				compare(max,min,d_list[i]->getCenter());
+				i++;
 			}
 		}
 	
-		d_list[i++] = new Sphere(Vector3( 0, 1, 0), 1.0, new Dielectric(1.5));
-		d_list[i++] = new Sphere(Vector3(-4, 1, 0), 1.0, new Lambertian(Vector3(0.4, 0.2, 0.1)));
-		d_list[i++] = new Sphere(Vector3( 4, 1, 0), 1.0, new Metal(Vector3(0.7, 0.6, 0.5),0.0));
+		d_list[i] = new Sphere(Vector3( 0, 1, 0), 1.0, new Dielectric(1.5));
+		compare(max,min,d_list[i]->getCenter()); i++;
+		d_list[i] = new Sphere(Vector3(-4, 1, 0), 1.0, new Lambertian(Vector3(0.4, 0.2, 0.1)));
+		compare(max,min,d_list[i]->getCenter()); i++;
+		d_list[i] = new Sphere(Vector3( 4, 1, 0), 1.0, new Metal(Vector3(0.7, 0.6, 0.5),0.0));
+		compare(max,min,d_list[i]->getCenter()); i++;
+		d_list[i] = new Sphere(Vector3( 4, 1, 5), 1.0, new Metal(Vector3(0.9, 0.2, 0.2),0.0));
+		compare(max,min,d_list[i]->getCenter()); i++;
 		
-		d_list[i++] = new Sphere(Vector3( 4, 1, 5), 1.0, new Metal(Vector3(0.9, 0.2, 0.2),0.0));
-	
-		*random = local_random;
-		
-		//*d_world = new HitableList(d_list, i);
-		*d_world = new BVH_node(d_list, i, 0, 1, &local_random, 0, "Init");
+		n = i;
 		
 		Vector3 lookfrom(13,2,3);
 		Vector3 lookat(0,0,0);
@@ -271,7 +290,7 @@ int main(int argc, char **argv) {
 	cudaGetDevice(&device);
     
 	cudaDeviceProp properties;
-	checkCudaErrors( cudaDeviceSetLimit( cudaLimitStackSize, 4000 ) );
+	//checkCudaErrors( cudaDeviceSetLimit( cudaLimitStackSize, 4000 ) );
 	checkCudaErrors( cudaGetDeviceProperties( &properties, device ) );
 	
 	size_t limit;
@@ -279,7 +298,6 @@ int main(int argc, char **argv) {
     
 	if( properties.major > 3 || ( properties.major == 3 && properties.minor >= 5 ) )
 	{
-      
 		std::cout << "Running on GPU " << device << " (" << properties.name << ")" << std::endl;
 		std::cout << "Compute mode: " << properties.computeMode << std::endl;
 		std::cout << "Concurrent Kernels: " << properties.concurrentKernels << std::endl;
@@ -344,9 +362,9 @@ int main(int argc, char **argv) {
 	rand_init<<<1,1>>>(d_rand_state2, seed);
 	checkCudaErrors(cudaGetLastError());
 	
-	create_world<<<1,1>>>(d_list, d_world, d_cam, nx, ny, dist, d_rand_state2);
+	create_world<<<1,1>>>(d_list, d_cam, nx, ny, dist, d_rand_state2, n);
 	checkCudaErrors(cudaGetLastError());
-	
+/*	
 	render_init<<<blocks, nthreads>>>(nx, ny, d_rand_state, seed);
 	checkCudaErrors(cudaGetLastError());
 
@@ -355,7 +373,10 @@ int main(int argc, char **argv) {
 
 	cudaMemcpy(h_frameBuffer, d_frameBuffer, fb_size, cudaMemcpyDeviceToHost);
 	checkCudaErrors(cudaGetLastError());
-  
+*/  
+	std::cout << n << std::endl;
+	exit(0);
+	
 	cudaEventRecord(E1,0);
 	cudaEventSynchronize(E1);
   
@@ -388,7 +409,7 @@ int main(int argc, char **argv) {
   
 	pic.close();
   
-	free_world<<<1,1>>>(d_list,d_world,d_cam);
+	free_world<<<1,1>>>(d_list,d_world,d_cam,n);
 	cudaFree(d_cam);
 	cudaFree(d_world);
 	cudaFree(d_list);

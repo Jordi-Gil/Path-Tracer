@@ -3,27 +3,29 @@
 #include <fstream>
 #include <string>
 #include <sys/time.h>
-
+#include <utility>
+#include <stack>
+#include <queue>
+#include <limits>
 
 #include "Sphere.hh"
 #include "MovingSphere.hh"
 #include "Camera.hh"
 #include "Material.hh"
-//#include "Node.hh"
-#include "BVH_node.hh"
-
-typedef std::vector<unsigned int> uiv;
-typedef std::vector<Hitable*> hv;
+#include "Node.hh"
 
 double getusec_() {
   struct timeval time;
   gettimeofday(&time, NULL);
+  
   return ((double)time.tv_sec * (double)1e6 + (double)time.tv_usec);
 }
 
+#define INF std::numeric_limits<float>::infinity()
+#define MIN std::numeric_limits<float>::min()
 #define START_COUNT_TIME stamp = getusec_();
 #define STOP_COUNT_TIME stamp = getusec_() - stamp;\
-                        stamp = stamp/1e6;
+                        stamp = stamp/1e6;               
 
 void error(const char *message){
   std::cout << message << std::endl;
@@ -31,35 +33,35 @@ void error(const char *message){
 }
 
 void help(){
-  std::cout << "\n"  << std::endl;
-  std::cout << "\t[-d] [--defult] Set the parameters to default values"  << std::endl;
-  std::cout << "\t                (2048x1080) | AAit: 10 | depth: 10 | spheres: 4 " << std::endl;
-  std::cout << "\t[-sizeX]        Size in pixels of coordinate X. Number greater than 0."  << std::endl;
-  std::cout << "\t[-sizeY]        Size in pixels of coordinate Y. Number greater than 0."  << std::endl;
-  std::cout << "\t[-AAit]         Number of iterations to calculate color in one pixel. Number greater than 0."  << std::endl;
-  std::cout << "\t[-depth]        The attenuation of scattered ray. Number greater than 0."  << std::endl;
-  std::cout << "\t[-spheres]      Factor number to calculate the number of spheres in the scene. Number greater than 0." << std::endl;
-  std::cout << "\t[-f][--file]    File name of pic generated." << std::endl;
-  std::cout << "\t[-h][--help]    Show help." << std::endl;
-  std::cout << "\t                #spheres = (2*spheres)*(2*spheres) + 4" << std::endl;
-  std::cout << "\n" << std::endl;
-  std::cout << "Examples of usage:" << std::endl;
-  std::cout << "./path_tracing_sec -d"  << std::endl;
-  std::cout << "./path_tracing_sec -sizeX 2000"<< std::endl;
-  exit(0);
+    std::cout << "\n"  << std::endl;
+    std::cout << "\t[-d] [--defult] Set the parameters to default values"  << std::endl;
+    std::cout << "\t                size: (1280x720) | AAit: 50 | depth: 50 | spheres: 11"  << std::endl;
+    std::cout << "\t[-sizeX]        Size in pixels of coordinate X. Number greater than 0."  << std::endl;
+    std::cout << "\t[-sizeY]        Size in pixels of coordinate Y. Number greater than 0."  << std::endl;
+    std::cout << "\t[-AAit]         Number of iterations to calculate color in one pixel. Number greater than 0."  << std::endl;
+    std::cout << "\t[-depth]        The attenuation of scattered ray. Number greater than 0."  << std::endl;
+    std::cout << "\t[-spheres]      Factor number to calculate the number of spheres in the scene. Number greater than 0." << std::endl;
+    std::cout << "\t[-f][--file]    File name of pic generated." << std::endl;
+    std::cout << "\t[-h][--help]    Show help." << std::endl;
+    std::cout << "\t                #spheres = (2*spheres)*(2*spheres) + 4" << std::endl;
+    std::cout << "\n" << std::endl;
+    std::cout << "Examples of usage:" << std::endl;
+    std::cout << "./path_tracing_sec -d"  << std::endl;
+    std::cout << "./path_tracing_sec -sizeX 2000"<< std::endl;
+    exit(0);
   
 }
 
-void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, int &dist, std::string &filename) {
+void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, int &dist, std::string &filename){
   
     if(argc <= 1) error("Error usage. Use [-h] [--help] to see the usage.");
   
-    nx = 2048; ny = 1080; ns = 10; depth = 10; dist = 4; filename = "pic.ppm";
+    nx = 1280; ny = 720; ns = 50; depth = 50; dist = 11; filename = "pic.ppm";
   
     bool v_default = false;
   
     for(int i = 1; i < argc; i += 2){
-    
+
         if(v_default) error("Error usage. Use [-h] [--help] to see the usage.");
     
         if (std::string(argv[i]) == "-d" || std::string(argv[i]) == "--default") {
@@ -98,12 +100,49 @@ void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, in
     }
 }
 
-/*
-unsigned int findSplit(int first, int last) {
+void iterativeTraversal(Node* root) {
+
+    std::stack <Node *> stack;
+    std::queue <Node *> queue;
     
-    unsigned int firstCode = sortedMortonCodes[first];
-    unsigned int lastCode = sortedMortonCodes[last];
- 
+    queue.push(root);
+    
+    while(!queue.empty()) {
+        
+        root = queue.front();
+
+        queue.pop();
+        stack.push(root);
+        
+        if(root->left) queue.push(root->left);
+        if(root->right) queue.push(root->right);
+    }
+    
+    while(!stack.empty()) {
+        
+        root = stack.top();
+        
+        if(root->obj) {
+            root->box = root->obj->getBox(); //Leaf node
+        }
+        else { //Internal node
+            
+            aabb left_aabb = root->left->box;
+            aabb right_aabb = root->right->box;
+            
+            root->box = surrounding_box(left_aabb, right_aabb);
+            
+        }
+        stack.pop();
+    }
+    
+}
+
+unsigned int findSplit(const vh &sortedMortonCodes, int first, int last) {
+    
+    unsigned int firstCode = sortedMortonCodes[first]->getMorton();
+    unsigned int lastCode = sortedMortonCodes[last]->getMorton();
+    
     if(firstCode == lastCode)
         return (first + last) >> 1;
      
@@ -118,7 +157,7 @@ unsigned int findSplit(int first, int last) {
         
         if(newSplit < last){
       
-            unsigned int splitCode = sortedMortonCodes[newSplit];
+            unsigned int splitCode = sortedMortonCodes[newSplit]->getMorton();
             
             int splitPrefix = Helper::clz32d(firstCode ^ splitCode);
       
@@ -134,191 +173,250 @@ unsigned int findSplit(int first, int last) {
         
 }
 
-int2 determineRange(int size, int idx) {
+int2 determineRange(const vh &sortedMortonCodes, int idx) {
     
-    int numberObj = size-1;
+    int numberObj = sortedMortonCodes.size()-1;
     
     if(idx == 0) return int2(0,numberObj);
     
-    unsigned int idxCode = sortedMortonCodes[idx];
-    unsigned int idxCodeUp = sortedMortonCodes[idx+1];
-    unsigned int idxCodeDown = sortedMortonCodes[idx-1];
+    unsigned int idxCode = sortedMortonCodes[idx]->getMorton();
+    unsigned int idxCodeUp = sortedMortonCodes[idx+1]->getMorton();
+    unsigned int idxCodeDown = sortedMortonCodes[idx-1]->getMorton();
+    if((idxCode == idxCodeDown) and (idxCode == idxCodeUp)) {
     
-    int prefixUp = Helper::clz32d(idxCode ^ idxCodeUp);
-    int prefixDown = Helper::clz32d(idxCode ^ idxCodeDown);
-    
-    int d = Helper::sgn( prefixUp - prefixDown );
-    int dmin;
-    
-    if(d < 0) dmin = prefixUp;
-    else if (d > 0) dmin = prefixDown;
-    
-    int lmax = 2;
-    
-    int newBoundary;
-    int bitPrefix;
-    do {
+        int idxInit = idx;
+        bool dif = false;
+        while(!dif and idx > 0 and idx < numberObj){
+            ++idx;
+            if(idx >= numberObj) dif = true;
+                
+            if(sortedMortonCodes[idx]->getMorton() != sortedMortonCodes[idx+1]->getMorton()) dif = true;
+        }
         
-        newBoundary = idx + lmax * d;
-        bitPrefix = -1;
+        return int2(idxInit, idx);
         
-        if(newBoundary >= 0 and newBoundary <= numberObj){
-            unsigned int newCode = sortedMortonCodes[idx + lmax * d];
+    } else {
+        
+        int prefixUp = Helper::clz32d(idxCode ^ idxCodeUp);
+        int prefixDown = Helper::clz32d(idxCode ^ idxCodeDown);
+        
+        int d = Helper::sgn( prefixUp - prefixDown );
+        int dmin;
+        
+        if(d < 0) dmin = prefixUp;
+        else if (d > 0) dmin = prefixDown;
+        
+        int lmax = 2;
+        
+        int newBoundary;
+        int bitPrefix;
+        do {
             
-            bitPrefix = Helper::clz32d(idxCode ^ newCode);
-            if(bitPrefix > dmin) lmax *= 2;
+            newBoundary = idx + lmax * d;
+            bitPrefix = -1;
+            
+            if(newBoundary >= 0 and newBoundary <= numberObj){
+                unsigned int newCode = sortedMortonCodes[idx + lmax * d]->getMorton();
+                
+                bitPrefix = Helper::clz32d(idxCode ^ newCode);
+                if(bitPrefix > dmin) lmax *= 2;
+                
+            }
+            
+        } while(bitPrefix > dmin);
+        
+        int l = 0;
+        
+        for(int t = lmax/2; t >= 1; t /= 2){
+            
+            int newUpperBound = idx + (l + t) * d;
+            
+            if(newUpperBound <= numberObj and newUpperBound >= 0){
+                unsigned int splitCode = sortedMortonCodes[newUpperBound]->getMorton();
+                int splitPrefix = Helper::clz32d(idxCode ^ splitCode);
+                
+                if(splitPrefix > dmin) l += t;
+            }
             
         }
         
+        int jdx = idx + l * d;
         
-    } while(bitPrefix > dmin);
-    
-    int l = 0;
-    
-    for(int t = lmax/2; t >= 1; t /= 2){
-        
-        int newUpperBound = idx + (l + t) * d;
-        
-        if(newUpperBound <= numberObj and newUpperBound >= 0){
-            unsigned int splitCode = sortedMortonCodes[newUpperBound];
-            int splitPrefix = Helper::clz32d(idxCode ^ splitCode);
-            
-            if(splitPrefix > dmin) l += t;
-        }
-        
+        if(jdx < idx) return int2(jdx,idx);
+        else return int2(idx,jdx);
     }
-    
-    int jdx = idx + l * d;
-    
-    if(jdx < idx) return int2(jdx,idx);
-    else return int2(idx,jdx);
-    
 }
 
-Node *generateHierarchy(Hitable **list, const uiv &sortedMortonCodes, int numberObj) {
+Node* generateHierarchy(const vh &sortedMortonCodes, int numberObj) {
+    
+    std::ofstream graph;
+    graph.open("graph.dot");
+    
+    graph << "digraph BST { \n";
+    graph << "\tnode [fontname=\"Arial\"];\n";
     
     
     Node* leafNodes = new Node[numberObj];
     Node* internalNodes = new Node[numberObj - 1];
     
-    internalNodes[0].obj = NULL;
+    internalNodes[0].name = "i_0";
     
-    for(int i = 0; i < numberObj; i++) 
-        leafNodes[i].obj = list[i];
-    
-    for(int i = 0; i < numberObj - 1; i++) {
+    for(int idx = 0; idx < numberObj; idx++) {
+        
+        sortedMortonCodes[idx]->setMorton(sortedMortonCodes[idx]->getMorton()+idx);
+        
+        leafNodes[idx].obj = sortedMortonCodes[idx];
+        leafNodes[idx].name = "l_"+std::to_string(sortedMortonCodes[idx]->getMorton());
+        graph << "\t" << leafNodes[idx].name << " [ label = \"" <<  leafNodes[idx].name.substr(2) << "\"];\n";
+    }
+
+    for(int idx = 0; idx < numberObj - 1; idx++) {
         
         //determine range
         
-        int2 range = determineRange(sortedMortonCodes, i);
+        graph << "\t" << "i_" << idx << " [ label = \"" << idx << "\"];\n";
+        
+        int2 range = determineRange(sortedMortonCodes, idx);
         
         int first = range.x;
         int last = range.y;
+        
+        //find partition point
         
         int split = findSplit(sortedMortonCodes, first, last);
         
         Node *childA;
         Node *childB;
         
-        if(split == first) 
+        if(split == first) childA = &leafNodes[split];
+        else{ 
+            internalNodes[split].name = "i_"+std::to_string(split);
+            childA = &internalNodes[split];
+        }
         
+        if (split + 1 == last) childB = &leafNodes[split + 1];
+        else{
+            internalNodes[split+1].name = "i_"+std::to_string(split+1);
+            childB = &internalNodes[split + 1];
+        }
+        
+        internalNodes[idx].name = "i_"+std::to_string(idx);
+        
+        internalNodes[idx].left = childA;
+        internalNodes[idx].right = childB;
+        childA->parent = &internalNodes[idx];
+        childB->parent = &internalNodes[idx];
+        
+        graph << "\t" << internalNodes[idx].name << " -> {" << childA->name << " " << childB->name << "};\n";
         
     }
+    graph << "}";
+    graph.close();
     
     return &internalNodes[0];
 }
-*/
-Hitable *random_scene(int dist) {
-  
-    //int n = (2*dist)*(2*dist) + 5;
-  
-    //Hitable **list = new Hitable*[n+1];
+
+void compare(Vector3 &max, Vector3 &min, Vector3 point) {
     
-    hv list;
+    if(point[0] > max[0]) max[0] = point[0]; //x
+    if(point[1] > max[1]) max[1] = point[1]; //y
+    if(point[2] > max[2]) max[2] = point[2]; //z
     
-    //uiv sortedMortonCodes;
+    if(point[0] < min[0]) min[0] = point[0]; //x
+    if(point[1] < min[1]) min[1] = point[1]; //y
+    if(point[2] < min[2]) min[2] = point[2]; //z
+}
+
+Node *random_scene(int dist) {
   
-    //list[0] = new Sphere(Vector3(0,-1000,0),1000, new Lambertian(Vector3(0.5,0.5,0.5)));
+    vh list;
+    
+    Vector3 max(MIN);
+    Vector3 min(INF);
     
     list.push_back(new Sphere(Vector3(0,-1000,0),1000, new Lambertian(Vector3(0.5,0.5,0.5))));
-  
+    
+    compare(max, min, list.back()->getCenter());
+    
     for(int a = -dist; a < dist; a++){
         for(int b = -dist; b < dist; b++){
             float choose_mat = (rand()/(RAND_MAX + 1.0));
             Vector3 center(a+0.9*(rand()/(RAND_MAX + 1.0)), 0.2, b+0.9*(rand()/(RAND_MAX + 1.0)));
-      
             if((center-Vector3(0,0,0)).length() > 0.995){
                 if(choose_mat < 0.8){ //diffuse
-                    /*
-                    list[i] = new MovingSphere(center, center+Vector3(0,0.5*(rand()/(RAND_MAX + 1.0)),0), 0.0, 1.0, 0.2, 
-                        new Lambertian(Vector3(
-                            (rand()/(RAND_MAX + 1.0))*(rand()/(RAND_MAX + 1.0)), 
-                            (rand()/(RAND_MAX + 1.0))*(rand()/(RAND_MAX + 1.0)), 
-                            (rand()/(RAND_MAX + 1.0)))));
-                    */
+                    
                     list.push_back(new MovingSphere(center, center+Vector3(0,0.5*(rand()/(RAND_MAX + 1.0)),0), 0.0, 1.0, 0.2, 
                         new Lambertian(Vector3(
                             (rand()/(RAND_MAX + 1.0))*(rand()/(RAND_MAX + 1.0)), 
                             (rand()/(RAND_MAX + 1.0))*(rand()/(RAND_MAX + 1.0)), 
                             (rand()/(RAND_MAX + 1.0))))));
-                    //sortedMortonCodes.push_back(list[i++].get_morton_code());
                 }
                 else if(choose_mat < 0.95){ //metal
-                    /*
-                    list[i] = new Sphere(center, 0.2, new Metal(Vector3(
-                        0.5*(1+(rand()/(RAND_MAX + 1.0))),
-                        0.5*(1+(rand()/(RAND_MAX + 1.0))),
-                        0.5*(1+(rand()/(RAND_MAX + 1.0)))
-                    ),  0.5*(rand()/(RAND_MAX + 1.0))));
-                    */
+                    
                     list.push_back(new Sphere(center, 0.2, new Metal(Vector3(
                         0.5*(1+(rand()/(RAND_MAX + 1.0))),
                         0.5*(1+(rand()/(RAND_MAX + 1.0))),
                         0.5*(1+(rand()/(RAND_MAX + 1.0)))
                     ),  0.5*(rand()/(RAND_MAX + 1.0)))));
-                    //sortedMortonCodes.push_back(list[i++].get_morton_code());
                 }
                 else{
-                    //list[i] = new Sphere(center, 0.2, new Dielectric(Vector3::One(),1.5));
+                    
                     list.push_back(new Sphere(center, 0.2, new Dielectric(Vector3::One(),1.5)));
-                    //sortedMortonCodes.push_back(list[i++].get_morton_code());
                 }
             }
+            compare(max, min, list.back()->getCenter());
         }
     }
-  
-    //list[i] = new Sphere(Vector3(0,1,0), 1.0, new Dielectric(Vector3::One(),1.5));
+    
     list.push_back(new Sphere(Vector3(0,1,0), 1.0, new Dielectric(Vector3::One(),1.5)));
-    //sortedMortonCodes.push_back(list[i++].get_morton_code());
-    //list[i] = new Sphere(Vector3(-4,1,0),1.0, new Lambertian(Vector3(0.4,0.2,0.1)));
+    compare(max, min, list.back()->getCenter());
+    
     list.push_back(new Sphere(Vector3(-4,1,0),1.0, new Lambertian(Vector3(0.4,0.2,0.1))));
-    //sortedMortonCodes.push_back(list[i++].get_morton_code());
-    //list[i] = new Sphere(Vector3(4,1,0),1.0, new Metal(Vector3(0.7,0.6,0.5),0.0));
+    compare(max, min, list.back()->getCenter());
+    
     list.push_back(new Sphere(Vector3(4,1,0),1.0, new Metal(Vector3(0.7,0.6,0.5),0.0)));
-    //sortedMortonCodes.push_back(list[i++].get_morton_code());
-    //list[i++] = new Sphere(Vector3( 4, 1, 5), 1.0, new Metal(Vector3(0.9, 0.2, 0.2),0.0));
-    list.push_back(new Sphere(Vector3( 4, 1, 5), 1.0, new Metal(Vector3(0.9, 0.2, 0.2),0.0)));
-    //sortedMortonCodes.push_back(list[i++].get_morton_code());
+    compare(max, min, list.back()->getCenter());
     
-    //std::sort(sortedMortonCodes.begin(),sortedMortonCodes().end());
+    list.push_back(new Sphere(Vector3(4,1,5), 1.0, new Metal(Vector3(0.9, 0.2, 0.2),0.0)));
+    compare(max, min, list.back()->getCenter());
     
-    //Node *root = generateHierarchy(list, sortedMortonCodes, i);
+    std::cout << max << " " << min << std::endl;
     
-    //return root;
+    float max_x = max[0]; float max_y = max[1]; float max_z = max[2];
+    float min_x = min[0]; float min_y = min[1]; float min_z = min[2];
     
-    int size = list.size();
+    for(int i = 0; i < list.size(); i++) {
+        
+        Vector3 point = list[i]->getCenter();
+        
+        point[0] = ((point[0] - min_x)/(max_x - min_x));
+        point[1] = ((point[1] - min_y)/(max_y - min_y));
+        point[2] = ((point[2] - min_z)/(max_z - min_z));
+        
+        list[i]->setMorton(Helper::morton3D(point[0],point[1],point[2]));
+    }
     
-    Hitable **l = list.data();
+    std::sort(list.begin(), list.end(), ObjEval());
     
-    return new BVH_node(l,size,0,1);
+    double stamp;
+    START_COUNT_TIME;
+    
+    Node *root = generateHierarchy(list, list.size());
+    
+    STOP_COUNT_TIME;
+    std::cout << "BVH created in " << stamp << " seconds" << std::endl;
+    
+    iterativeTraversal(root);
+    
+    return root;
 }
 
-Vector3 color(const Ray& ray, Hitable *world, int depth, int const _depth) {
+Vector3 color(const Ray& ray, Node *world, int depth, int const _depth) {
     hit_record rec;
-    if(world->hit(ray, 0.001, MAXFLOAT, rec)){
+    if(world->checkCollision(ray, 0.001, MAXFLOAT, rec)){
         Ray scattered;
         Vector3 attenuation;
-        if(depth < _depth && rec.mat_ptr->scatter(ray, rec, attenuation, scattered)){
+        if(depth < _depth and rec.mat_ptr->scatter(ray, rec, attenuation, scattered)){
             return attenuation*color(scattered, world, depth+1, _depth);
         }
         else return Vector3::Zero();
@@ -330,6 +428,19 @@ Vector3 color(const Ray& ray, Hitable *world, int depth, int const _depth) {
     }
 }
 
+int depthTree(Node *root){
+    
+    if (root == NULL) return 0;
+    else {
+        
+        int depth_L = depthTree(root->left);
+        int depth_R = depthTree(root->right);
+        
+        if(depth_L > depth_R) return depth_L+1;
+        else return depth_R+1;
+        
+    }
+}
 
 int main(int argc, char **argv) {
     
@@ -344,7 +455,11 @@ int main(int argc, char **argv) {
     std::cout << "With " << ns << " iterations for AntiAliasing and depth of " << depth << "." << std::endl;
     std::cout << "The world have " << n << " spheres." << std::endl;
   
-    Hitable *world = random_scene(dist);
+    Node *world = random_scene(dist);
+    
+    std::cout << depthTree(world) << std::endl;
+    
+    //exit(0);
   
     Vector3 lookfrom(13,2,3);
     Vector3 lookat(0,0,0);

@@ -29,7 +29,7 @@ __device__ Vector3 random_in_unit_sphere(curandState *random){
     p = 2.0*Vector3(curand_uniform(random), 
                     curand_uniform(random),
                     curand_uniform(random)
-                   ) - Vector3(1.0,1.0,1.0);
+                   ) - Vector3::One();
   }
   while(p.squared_length() >= 1.0);
   return p;
