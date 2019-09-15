@@ -17,6 +17,8 @@
 #define checkCudaErrors(val) check_cuda( (val), #val, __FILE__, __LINE__ )
 #define Random (curand_uniform(&local_random))
 
+__device__ int size;
+
 void error(const char *message) {
   
 	std::cout << message << std::endl;
@@ -122,9 +124,9 @@ void check_cuda(cudaError_t result, char const *const func, const char *const fi
 	}
 }
 
-__global__ void free_world(Hitable **d_list, Hitable **d_world, Camera **d_cam, int n) {
+__global__ void free_world(Hitable **d_list, Hitable **d_world, Camera **d_cam) {
 
-	for(int i = 0; i < n; i++){
+	for(int i = 0; i < size; i++){
 		delete ((Sphere *)d_list[i])->mat_ptr;
 		delete d_list[i];
 	}
@@ -144,8 +146,10 @@ __device__ void compare(Vector3 &max, Vector3 &min, Vector3 point) {
     if(point[2] < min[2]) min[2] = point[2]; //z
 }
 
-__global__ void create_world(Hitable **d_list, Camera **d_cam, int nx, int ny, int dist, curandState *random, int &n){
+__global__ void create_world(Hitable **d_list, Camera **d_cam, int nx, int ny, int dist, curandState *random){
   
+	printf("Kernel create_world\n");
+	
 	if (threadIdx.x == 0 && blockIdx.x == 0) {
 		curandState local_random = *random;
 		
@@ -158,6 +162,7 @@ __global__ void create_world(Hitable **d_list, Camera **d_cam, int nx, int ny, i
 		compare(max,min, d_list[i]->getCenter());
 		
 		i++;
+		/*
 		for (int a = -dist; a < dist; a++) {
 			for (int b = -dist; b < dist; b++) {
 				float material = Random;
@@ -167,12 +172,14 @@ __global__ void create_world(Hitable **d_list, Camera **d_cam, int nx, int ny, i
 					if (material < 0.8) d_list[i] = new MovingSphere(center, center+Vector3(0,0.5*Random,0),0.0,1.0,.2,new Lambertian(Vector3(Random*Random, Random*Random, Random*Random)));
 					else if (material < 0.95) d_list[i] = new Sphere(center, 0.2, new Metal(Vector3(0.5*(1.0+Random), 0.5*(1.0+Random), 0.5*(1.0+Random)),0.5*Random));
 					else d_list[i] = new Sphere(center, 0.2, new Dielectric(1.5));
+					
+					compare(max,min,d_list[i]->getCenter());
+					i++;
+					
 				}
-				compare(max,min,d_list[i]->getCenter());
-				i++;
 			}
 		}
-	
+		*/
 		d_list[i] = new Sphere(Vector3( 0, 1, 0), 1.0, new Dielectric(1.5));
 		compare(max,min,d_list[i]->getCenter()); i++;
 		d_list[i] = new Sphere(Vector3(-4, 1, 0), 1.0, new Lambertian(Vector3(0.4, 0.2, 0.1)));
@@ -182,14 +189,16 @@ __global__ void create_world(Hitable **d_list, Camera **d_cam, int nx, int ny, i
 		d_list[i] = new Sphere(Vector3( 4, 1, 5), 1.0, new Metal(Vector3(0.9, 0.2, 0.2),0.0));
 		compare(max,min,d_list[i]->getCenter()); i++;
 		
-		n = i;
-		
+		size = i;
+		printf("Esferas %d.\n",i);
 		Vector3 lookfrom(13,2,3);
 		Vector3 lookat(0,0,0);
 		Vector3 up(0,1,0);
 		float dist_to_focus = 10; (lookfrom-lookat).length();
 		float aperture = 0.1;
 		*d_cam = new Camera(lookfrom, lookat, up, 20, float(nx)/float(ny), aperture, dist_to_focus,0.0,0.1);
+		
+		
 	}
 }
 
@@ -362,7 +371,7 @@ int main(int argc, char **argv) {
 	rand_init<<<1,1>>>(d_rand_state2, seed);
 	checkCudaErrors(cudaGetLastError());
 	
-	create_world<<<1,1>>>(d_list, d_cam, nx, ny, dist, d_rand_state2, n);
+	create_world<<<1,1>>>(d_list, d_cam, nx, ny, dist, d_rand_state2);
 	checkCudaErrors(cudaGetLastError());
 /*	
 	render_init<<<blocks, nthreads>>>(nx, ny, d_rand_state, seed);
@@ -374,8 +383,12 @@ int main(int argc, char **argv) {
 	cudaMemcpy(h_frameBuffer, d_frameBuffer, fb_size, cudaMemcpyDeviceToHost);
 	checkCudaErrors(cudaGetLastError());
 */  
-	std::cout << n << std::endl;
-	exit(0);
+
+	int p;
+	cudaGetSymbolAddress((void **)&p, size);
+	
+	cudaMemcpyFromSymbol(&p, size, sizeof(int), 0, cudaMemcpyDeviceToHost);
+	std::cout << p << std::endl;
 	
 	cudaEventRecord(E1,0);
 	cudaEventSynchronize(E1);
@@ -384,6 +397,8 @@ int main(int argc, char **argv) {
   
 	checkCudaErrors(cudaGetLastError());
   
+	exit(0);
+	
 	std::cout << "Total time: " << totalTime << " milisegs. " << std::endl;
   
 	std::cout << "Generating file image..." << std::endl;
@@ -409,7 +424,7 @@ int main(int argc, char **argv) {
   
 	pic.close();
   
-	free_world<<<1,1>>>(d_list,d_world,d_cam,n);
+	free_world<<<1,1>>>(d_list,d_world,d_cam);
 	cudaFree(d_cam);
 	cudaFree(d_world);
 	cudaFree(d_list);
