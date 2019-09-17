@@ -13,7 +13,7 @@ __host__ __device__ Camera::Camera(Vector3 lookfrom, Vector3 lookat, Vector3 vup
     this->time0 = time0;
     this->time1 = time1;
   
-    Vector3 w,u,v;
+    lens_radius = aperture/2;
     float theta = vfov*M_PI/180.0;
     float half_height = tan(theta/2);
     float half_width = aspect * half_height;
@@ -22,10 +22,9 @@ __host__ __device__ Camera::Camera(Vector3 lookfrom, Vector3 lookat, Vector3 vup
     u = unit_vector(cross(vup, w));
     v = cross(w, u);
     
-    lower_left_corner = Vector3(-half_width, -half_height, -1.0);
-    lower_left_corner = origin - half_width*u - half_height*v - w;
-    horizontal = 2*half_width*u;
-    vertical = 2*half_height*v;
+    lower_left_corner = origin - half_width*focus_dist*u - half_height*focus_dist*v - focus_dist*w;
+    horizontal = 2*half_width*focus_dist*u;
+    vertical = 2*half_height*focus_dist*v;
 }
 
 

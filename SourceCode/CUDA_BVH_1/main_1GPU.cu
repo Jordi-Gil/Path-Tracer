@@ -52,8 +52,8 @@ void help(){
 void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, int &dist, int &nthreads, std::string &filename, int &numGPUs,const int count){
   
 	if(argc <= 1) error("Error usage. Use [-h] [--help] to see the usage.");
-  
-	nx = 1280; ny = 720; ns = 50; depth = 50; dist = 11; nthreads = 32; filename = "pic.ppm"; numGPUs = 1;
+	
+	nx = 720; ny = 348; ns = 50; depth = 50; dist = 11; nthreads = 32; filename = "pic.ppm"; numGPUs = 1;
   
 	bool v_default = false;
   
@@ -331,7 +331,6 @@ __global__ void create_world(Hitable **d_list, Camera **d_cam, int nx, int ny, i
             d_list[j]->setMorton(Helper::morton3D(point[0],point[1],point[2])+j);
         }
         
-        printf("%d esferas\n",i);
         Vector3 lookfrom(13,2,3);
         Vector3 lookat(0,0,0);
         Vector3 up(0,1,0);
@@ -355,7 +354,9 @@ __global__ void constructBVH(Node *internalNodes, Node *leafNodes, int objs, Hit
     int idx = blockIdx.x*blockDim.x + threadIdx.x;
     
     if(idx >= objs) return;
-    
+	
+	printf("idx: %d\n",idx);
+	
     int2 range = determineRange(list, idx, objs+1);
 }
 
@@ -426,7 +427,6 @@ int main(int argc, char **argv) {
 	}
 	else std::cout << "GPU " << device << " (" << properties.name << ") does not support CUDA Dynamic Parallelism" << std::endl;
 
-  
 	cudaEvent_t E0, E1;
 	cudaEventCreate(&E0); 
     cudaEventCreate(&E1);
@@ -440,7 +440,7 @@ int main(int argc, char **argv) {
 	parse_argv(argc, argv, nx, ny, ns, depth, dist, nthreads, filename, numGPUs, 1);
 
 	int n = (2*dist)*(2*dist)+5;
-  
+	
 	std::cout << "Creating " << filename << " with (" << nx << "," << ny << ") pixels with " << nthreads << " threads, using " << numGPUs << " GPUs." << std::endl;
 	std::cout << "With " << ns << " iterations for AntiAliasing and depth of " << depth << "." << std::endl;
 	std::cout << "The world have " << n << " spheres." << std::endl;
@@ -486,41 +486,39 @@ int main(int argc, char **argv) {
 	
 	rand_init<<<1,1>>>(d_rand_state2, seed);
 	checkCudaErrors(cudaGetLastError());
-	
+
     render_init<<<blocks, nthreads>>>(nx, ny, d_rand_state, seed);
 	checkCudaErrors(cudaGetLastError());
-        
+
 	create_world<<<1,1>>>(d_list, d_cam, nx, ny, dist, d_rand_state2);
 	checkCudaErrors(cudaGetLastError());
         
     /* Get the exact total number of objects in the scene */
-    int objs;
+	int objs;
 	cudaGetSymbolAddress((void **)&objs, size);
 	cudaMemcpyFromSymbol(&objs, size, sizeof(int), 0, cudaMemcpyDeviceToHost);
 	
     std::cout << objs << " esferas" << std::endl;
-    
-    cudaMalloc((void **)&internalNodes, (objs-1)*sizeof(Node *));
-    checkCudaErrors(cudaGetLastError());
+    std::cout << "Allocating memory for BVH" << std::endl;
+ 
+	
+	cudaMalloc((void **)&internalNodes, (objs-1)*sizeof(Node *));
     cudaMalloc((void **)&leafNodes, objs*sizeof(Node *));
     checkCudaErrors(cudaGetLastError());
-    
-    dim3 blockDim(256, 1);
-    dim3 gridDim(((objs-1) + 256 - 1) / 256, 1);
-    
+	
     initLeafNodes<<<blockDim, gridDim>>>(leafNodes, (objs-1), d_list);
     checkCudaErrors(cudaGetLastError());
     
     constructBVH<<<blockDim, gridDim>>>(internalNodes, leafNodes, objs-1, d_list);
     checkCudaErrors(cudaGetLastError());
-/*        
+/*       
 	render<<<blocks, nthreads>>>(d_frameBuffer, nx, ny, ns, d_cam, d_world, d_rand_state, depth);
 	checkCudaErrors(cudaGetLastError());
 
 	cudaMemcpy(h_frameBuffer, d_frameBuffer, fb_size, cudaMemcpyDeviceToHost);
 	checkCudaErrors(cudaGetLastError());
-	*/  
-    
+*/
+
     cudaEventRecord(E1,0);
     checkCudaErrors(cudaGetLastError());
     
@@ -529,9 +527,9 @@ int main(int argc, char **argv) {
     
 	cudaEventElapsedTime(&totalTime,E0,E1);
 	checkCudaErrors(cudaGetLastError());
-	
+
 	std::cout << "Total time: " << totalTime << " milisegs. " << std::endl;
-    exit(0);
+    
 	std::cout << "Generating file image..." << std::endl;
 	std::ofstream pic;
 	pic.open(filename.c_str());

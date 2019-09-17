@@ -255,7 +255,6 @@ Node* generateHierarchy(const vh &sortedMortonCodes, int numberObj) {
     graph << "digraph BST { \n";
     graph << "\tnode [fontname=\"Arial\"];\n";
     
-    
     Node* leafNodes = new Node[numberObj];
     Node* internalNodes = new Node[numberObj - 1];
     
