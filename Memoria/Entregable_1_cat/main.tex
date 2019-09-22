@@ -1,0 +1,115 @@
+\documentclass[a4paper,titlepage]{article}
+
+\input{./includes/declarations.tex}
+
+\begin{document}
+
+\iftrue
+\input{./includes/title.tex}
+\newpage
+\tableofcontents*
+\fi
+
+\newpage
+
+\section{Introducció}
+
+En l'actualitat les imatges generades per ordinador són molt presents en el nostre dia a dia, ja sigui en un entorn de treball o un de lúdic. La creació d'imatges realistes mitjançant l'ús de computadores s'ha convertit en una necessitat. Indústries com el cinema o els videojocs requereixen d'algorismes capaços de poder reproduir el món real en un entorn virtual i en el menor temps possible.
+
+El principal propòsit d'aquest projecte es veure com podem explotar de forma efectiva el hardware que tenim i fer un anàlisis comparatiu del rendiment d'un algorisme capaç de genera imatges realistes entre una CPU i una GPU. 
+
+En computació gràfica hi ha un conjunt de mètodes que permeten generar imatges realistes: \textit{Ray Tracing} \cite{Whitted1980}, \textit{Path Tracing} \cite{Kajiya1986}, \textit{Bidirectional Path Tracing} \cite{Lafortune1993}, \textit{Photon Mapping} \cite{Jensen1996}, \textit{Metropolis light Transport} \cite{Veach1997}, entre d'altres. A excepció del \textit{Ray Tracing}, la resta de mètodes llistats tracten d'aproximar la \textit{Rendering Equation} presentada per Kajiya et al. \cite{Kajiya1986}. 
+
+En aquest projecte ens centrarem en la implementació del \textit{Path Tracing}.
+
+Ens plantegem tres grans reptes:
+
+\begin{enumerate}
+	\item \label{a} Cerca de tècniques d'optimització
+	\item Implementació per CPU i GPU de les tècniques vistes al punt \ref{a}
+	\item Anàlisi i comparació dels resultats obtinguts
+\end{enumerate}
+
+\newpage
+
+\section{Contextualització}
+
+\subsection{Context}
+
+La renderització d'imatges realistes és una àrea de gran interès en el camp de la computació gràfica. Un dels principals objectius d'aquesta és ser capaços de renderitzar imatges que siguin indistingibles de les del món real, com ara fotografies. Per això és molt important poder reproduir el comportament de la llum en un entorn virtual. Per tal d'obtenir aquest realisme és necessària la il·luminació global, és a dir, hem de ser capaços de poder simular la llum directa (llum que incideix de forma directa a un objecte des del focus de llum) i la llum indirecta ( llum que incideix a un objecte dels rebots d'altres objectes de l'escena).
+
+L'algorisme de \textit{Ray Tracing} és un dels mètodes més populars d'aquest conjunt. És tracta d'una tècnica que consisteix en traçar rajos des del focus de llum (\textit{Forward Ray Tracing}) als objectes de l'escena, o des de l'ull, o càmera virutal, (\textit{Backward Ray Tracing}) als objectes de l'escena. Aquest algorisme és molt sensible al nombre de polígons d'una escena, a més complexa és una escena més ineficient és l'algorisme. Tot i proporcionar un alt grau de realisme, no és capaç d'aconseguir un efecte foto-realista degut a que no té en compta la il·luminació indirecta. Per tal d'aconseguir aquest efecte de foto-realisme hem de tenir presenta tant la il·luminació directa com la indirecta, per això és va presentar la \textit{Rendering Equation} \cite{Kajiya1986}.
+
+L'algorisme de \textit{Path Tracing} és una millora del \textit{Ray Tracing}. L'objectiu d'aquest, és donar una aproximació de l'equació de renderització per tal de resoldre la il·luminació global és per això que l'algorisme per mitjà de la integració de Montecarlo tracta d'aproximar la \textit{Rendering Equation}. Gràcies a resoldre la \textit{RE} és capaç de forma implícita reproduir efectes naturals com ombres suaus, \textit{motion blur}, \textit{ambient oclussion} i il·luminació indirecta entre d'altres sense necessitat de fer-ho manualment nosaltres. Aquest algorisme és indiferent al nombre de polígons de l'escena però per a que l'algorisme convergeixi el nombre de mostres per cada píxel és molt elevat i això provoca que aquest algorisme no es pugui utilitzar en aplicacions en temps real com ara videojocs.
+
+Degut a que cada píxel és independent, tenim un algorisme amb una alta capacitat de paral·lelització. Gràcies això podem fer ús dels diferents cores que componen una CPU i una GPU per calcular més d'un pixel a la vegada i així millorar el rendiment de la nostra aplicació.
+
+\subsection{Stakeholders}
+
+En aquest secció presentarem els diversos actors implicats en un projecte, els quals descriurem en les següents seccions.
+
+\subsubsection{Desenvolupador}
+
+Aquest actor és l'encarregat de realitzar el pla del projecte, recerca de la informació, documentació, desenvolupament del software requerit, solució de possibles problemes/obstacles, i les proves i anàlisis dels experiments. Aquest actor ha de treballar conjuntament amb el director, i codirector i/o ponent en el cas d'haver-hi i és la última persona encarregada de complir els terminis establerts. 
+
+\subsubsection{Director del projecte}
+
+Aquest actor és l'encarregat de guiar al desenvolupador en cas de dificultats així com en l'assessorament de possibles solucions.
+
+\subsubsection{Usuaris beneficiats}
+
+Tot i que aquest projecte no té la intenció de crear un producte, no vol dir que no hi hagin beneficiaris. Optimitzar i adaptar un algorisme per veure el seu rendiment en diverses plataformes pot ser útil per investigadors en el camp de la computació gràfica.
+
+\section{Justificació}
+
+\section{Abast del projecte}
+
+Per tal de solucionar el problema presentat en el nostre projecte necessitem un programa que sigui capaç de generar imatges realistes. A \cite{Shirley2018a}, \cite{Shirley2018b} i \cite{Shirley2018c} es presenten les bases per crear un Path Tracing. A partir d'aquesta base estendrem la nostra aplicació a un versió paral·lela en CPU i GPU. S'aplicaran també diverses tècniques d'optimització utilitzades en aquests tipus de mètodes com ara l'ús d'estructures de dades acceleradores \cite{Hunt2008}. L'estructura acceleradora que utilitzarem per representar internament la nostra escena serà en una \textit{Bounding Volume Hierarchy}. La BVH és una estructura de tipus arbre on tots els objectes de la escena estan representats per la seva capsa englobant a les fulles de l'arbre. Cada node intermedi  
+
+\subsection{Abast}
+
+En aquest apartat es presenten els diferents objectius i possibles obstacles del projecte.
+
+\subsection{Objectius}
+
+L'objectiu principal d'aquest projecte és implementar una aplicació que donada una escena, renderitzar imatges mitjançant \textit{Path Tracing} i analitzar el rendiment que ens dóna en una  aplicació paral·lela fent ús de la CPU i la GPU i fer un anàlisis sobre aquest.
+
+La gestió de la memòria en una aplicació paral·lela, ja sigui en CPU o en GPU és molt important i tenir una mala gestió d'aquest pot fer que el rendiment de la nostre aplicació no sigui l'esperat. Per tal de garantir una bona gestió de memòria, definirem un altre objectiu secundari on s'estudiaran quines són les millors pràctiques.
+
+Com a sub-objectius tenim:
+
+\begin{enumerate}
+	\item Implementar de forma eficient l'algorisme presentat a \citep{Shirley2018a} i \cite{Karras2012}
+	\item 
+	\item
+\end{enumerate}
+
+\subsection{Obstacles i riscos del projecte}
+
+Els temes principals que tractem al projecte com ara la implementació del \textit{Path Tracing} estan molt estudiats i desenvolupats. No obstant, això no implica que el desenvolupament del projecte sigui un camí senzill, son molts els obstacles als quals podem enfrontar-nos.
+
+\subsubsection{Programa principal}
+
+Com bé hem comentat en la secció d'objectius, la gestió de la memòria és un tret molt important. Una mala gestió de la memòria pot provar errors en la nostre aplicació, fent que no sigui possible generar les imatges representades i això és un greu problem
+
+\subsubsection{Algorisme utilitzat}
+
+L'algorisme que utilitzem calcula el color a partir de la intersecció dels rajos amb els objectes de l'escena i aquest és un punt molt important. El càlcul d'intersecció dels rajos amb les diferents superfícies que conformen els objecte han d'estar implementats de la forma més eficient possible degut a que són operacions que s'han de dur a terme milers de milions de vegades en la creació d'una imatge. Tenir una pobre implementació pot afectar negativament en el rendiment de l'aplicació i tenir un impacte en el temps per fer les proves.
+
+\section{Metodologia i rigor}
+
+\subsection{Eines de desenvolupament}
+
+El desenvolupament de la nostra aplicació es durà a terme utilitzant C++, \textit{OpenMP} i \textit{CUDA}. \textit{OpenMP} és una API dissenyada per afegir concurrència a programes escrits en  C, C++ i Fortran. El principal avantatge d'utilitzar aquesta API és que és multiplataforma i per tant el mateix codi ens serveix per \textit{Linux}, \textit{Microsft} o \textit{MacOS} i ens permet crear fàcilment aplicacions paral·leles en una CPU. \textit{CUDA} és una plataforma de computació paral·lela i una API desenvolupada per NVIDIA que ens permet accedir al conjunt d'instruccions i elements paral·lels de còmput de les GPU de NVIDIA per a l'execució de \textit{kernels}. Un gran avantatge d'aquesta API és la seva accessibilitat en contraposició d'altres APIs com per exemple \textit{OpenGL} o \textit{DirectX}. 
+
+\subsection{Validació de resultats}
+
+
+
+\newpage
+\pagestyle{empty}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{./includes/library}
+
+\end{document}

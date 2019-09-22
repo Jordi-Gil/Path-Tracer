@@ -1,0 +1,21 @@
+\babel@toc {spanish}{}
+\contentsline {chapter}{\numberline {1}Contextualizaci\IeC {\'o}n y alcance del proyecto}{3}{chapter.1}
+\contentsline {section}{\numberline {1.1}Introducci\IeC {\'o}n}{3}{section.1.1}
+\contentsline {section}{\numberline {1.2}Contextualizaci\IeC {\'o}n}{4}{section.1.2}
+\contentsline {subsection}{\numberline {1.2.1}Contexto}{4}{subsection.1.2.1}
+\contentsline {subsection}{\numberline {1.2.2}Stakeholders}{5}{subsection.1.2.2}
+\contentsline {subsubsection}{Desarrollador}{5}{section*.2}
+\contentsline {subsubsection}{Director del proyecto}{5}{section*.3}
+\contentsline {subsubsection}{Usuarios beneficiados}{5}{section*.4}
+\contentsline {section}{\numberline {1.3}Justificaci\IeC {\'o}n}{5}{section.1.3}
+\contentsline {section}{\numberline {1.4}Alcance del proyecto}{6}{section.1.4}
+\contentsline {subsection}{\numberline {1.4.1}Alcance}{7}{subsection.1.4.1}
+\contentsline {subsection}{\numberline {1.4.2}Objetivo}{7}{subsection.1.4.2}
+\contentsline {subsection}{\numberline {1.4.3}Obst\IeC {\'a}culos i riesgos del proyecto}{7}{subsection.1.4.3}
+\contentsline {subsubsection}{Programa principal}{7}{section*.5}
+\contentsline {subsubsection}{Algoritmo utilizado}{8}{section*.6}
+\contentsline {section}{\numberline {1.5}Metodolog\IeC {\'\i }a y rigor}{8}{section.1.5}
+\contentsline {subsection}{\numberline {1.5.1}Herramientas de desarrollo}{8}{subsection.1.5.1}
+\contentsline {subsection}{\numberline {1.5.2}Herramientas de seguimiento}{8}{subsection.1.5.2}
+\contentsline {subsection}{\numberline {1.5.3}Validaci\IeC {\'o}n de resultados}{8}{subsection.1.5.3}
+\contentsline {chapter}{Bibliograf\'{\i }a}{9}{subsection.1.5.3}
