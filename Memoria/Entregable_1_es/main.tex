@@ -1,4 +1,4 @@
-\documentclass[twoside,a4paper,titlepage,11pt]{report}
+\documentclass[titlepage,12pt]{report}
 
 \input{./includes/declarations.tex}
 
@@ -14,57 +14,44 @@
 
 \chapter{Contextualización y alcance del proyecto}
 
-\section{Introducción}
+\section{Introducción} \label{introduction}
 
-En la actualidad las imágenes generadas por ordenador están muy presentes en nuestro día a día, ya sea en un entorno de trabajo o en un lúdico. La creación de imágenes realistas mediante el uso de computadoras se ha convertido en una necesidad de actualidad. Industrias como el cine o los videojuegos requieren de algoritmos capaces de poder reproducir el mundo real en un entorno virtual en el menor tiempo posible.
+En la actualidad, las imágenes generadas por ordenador están muy presentes tanto en el entorno profesional como en el lúdico. La creación de imágenes realistas mediante el uso de computadoras se ha convertido en una necesidad a la orden del día. Industrias como el cine o los videojuegos requieren de algoritmos capaces de reproducir el mundo real en un entorno virtual y, si siempre que se pueda, en el menor tiempo posible.
 
-El estudio de métodos que permiten renderizar imágenes realistas no es nuevo. Entre principios y mediados de los años 70 comenzaron a publicarse los primeros artículos científicos sobre iluminación realista. El sombreado Gouraud (\textit{Gouraud Shading}), el sombredado Phong (\textit{Phong Gouraud}) y el sombreado Blinn-Phong (\textit{Blinn-Phong Shading}) son ejemplo de ello. Estos algoritmos tienen en cuenta solamente la luz ambiente, la luz difusa y la luz especular. 
+El estudio de métodos que permiten renderizar imágenes realistas no es nuevo. Entre principios y mediados de los años 70 comenzaron a publicarse los primeros artículos científicos sobre iluminación realista. El sombreado Gouraud (\textit{Gouraud Shading}) presentado por Henri Gouraud \cite{Henri1971}, el sombreado Phong (\textit{Phong Shading}) presentado por Bui Tuong Phong \cite{Phong1975} y el sombreado Blinn-Phong (\textit{Blinn-Phong Shading}) presentado por James F. Blinn \cite{Blinn1977} son buen ejemplo de ello. A pesar de que estos métodos supusieron en lo concerniente al realismo, éstos tan sólo tiene en cuenta la luz ambiente, difusa y especular. Lo métodos anteriormente mencionados no tienen presente la iluminación indirecta de la escena en el cálculo del color. Dicha iluminación es muy importante a la hora de crear imágenes que produzcan efectos como, por ejemplo, reflejos.
 
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.5]{media/shading_idi.png}
-	\caption{}
-    \label{fig:idi}
-\end{figure}
+No fue hasta los años 80 en que aparecieron los primeros métodos capaces de renderizar imágenes realistas. Turner Whitted nos presentaba en la sexta conferencia anual sobre \textit{Computer graphics and interactive techniques (SIGGRAPH)} el método de trazado de rayos, conocido popularmente por su nombre en inglés, \textit{Ray Tracing} \cite{Whitted1980}. Este método está basado en el algoritmo de \textit{Ray Casting}, presentado por Arthur Appel \cite{Appel1968}, consistente en trazar rayos desde el observador, uno por pixel, para determinar cual es el objeto más cercano. Además, una vez el rayo impacta en una superficie, en base a las propiedades de los materiales definidos en el objecto y las propiedades de la luz, se calcula el color. Se puede hacer uso de \textit{texture maps} para simular efectos como sombras. En 1986, David Immel et al. y James T. Kajiya, investigadores de la Cornell University y del California Institute of Technology (Caltech) respectivamente, presentaban de forma conjunta, en la décimo tercera conferencia anual sobre \textit{Computer graphics and interactive techniques (SIGGRAPH)}, la \textit{Rendering Equation} \citep{Kajiya1986, Immel1986}. Dicha ecuación integral trata de resumir en una sola fórmula como la luz interactúa cuando impacta con una superficie haciendo uso de funciones probabilísticas llamadas "función de distribución de la reflectividad bidireccional", (BRDF por sus siglas en inglés). Ésta también tiene presente el ángulo en el que incide el rayo, la cantidad de fotones que llegan, los fotones emitidos desde otros puntos de la escena (iluminación indirecta), etc.
 
-En computación gráfica existe un conjunto de métodos que nos permiten generar imágenes realistas: \textit{Ray Tracing} \cite{Whitted1980}, \textit{Path Tracing} \cite{Kajiya1986}, \textit{Bidirectional Path Tracing} \cite{Lafortune1993}, \textit{Photon Mapping} \cite{Jensen1996}, \textit{Metropolis light Transport} \cite{Veach1997}, entre otros. A excepción del \textit{Ray Tracing}, el resto de métodos listados tratan de aproximar la \textit{Rendering Equation} presentada por Kajiya et al. \cite{Kajiya1986}.
-
-
-
-En éste proyecto nos centraremos en la implementación del \textit{Path Tracing} presentada por \cite{Shirley2018a} en su libro.
-
-Nos planteamos tres grandes objetivos:
-
-\begin{enumerate}
-	\item \label{a} Búsqueda de información sobre técnicas de optimización usadas en éste tipo de métodos
-	\item Implementación para CPU y GPU de les técnicas vistas en el punto \ref{a}
-	\item Análisis y comparación de los resultados obtenidos en ambas implementaciones.
-\end{enumerate}
+Otros métodos que nos permiten generar imágenes realistas a partir de calcular aproximaciones de la RE son: \textit{Bidirectional Path Tracing} presentado por Eric P. Lafortune et. al. \cite{Lafortune1993}, \textit{Photon Mapping}  formulado por Henrik Wann Jensen \cite{Jensen1996} y \textit{Metropolis light Transport} introducido por Erich Veach et. al. \cite{Veach1997}.
 
 \section{Contextualización}
 
-\subsection{Contexto}
+\subsection{Contexto} \label{ref:contexto}
 
-La renderización de imágenes realistas es un área de gran interés en el campo de la computación gráfica. Un de los principales objetivos de ésta, es ser capaces de renderizar imágenes que sean indistinguibles de las del mundo real, como por ejemplo fotografías. Es por eso, que es muy importante poder reproducir el comportamiento de la luz en un entorno virtual. Para poder obtener este realismo es necesario la iluminación global, es decir, hemos de ser capaces de poder simular la luz directa (luz que incide de forma directa a un objeto de la escena desde el foco de luz) i la luz indirecta (luz que incide a un objeto de los rebotes en otros objetos de la escena).
+Como hemos indicado en la sección anterior, la renderización de imágenes realistas es un área de gran interés en el campo de la computación gráfica. Uno de los principales objetivos de ésta es ser capaces de renderizar imágenes indistinguibles de las del mundo real como, por ejemplo, fotografías. Siguiendo estas coordenadas, poder reproducir el comportamiento de la luz en un entorno virtual supone una tarea una importancia capital. Es primordial tener presente la iluminación global de una escena para poder obtener un alto grado de realismo. La iluminación global de una escena se compone de: \begin{enumerate*}[label=\roman*)] \item luz directa \label{item:dl}, \item luz indirecta \label{item:il} \end{enumerate*}.
 
-El algoritmo de \textit{Ray Tracing} es un de los métodos más populares de este conjunt. Se trata de una técnica que consiste en trazar rayos desd el foco de luz (\textit{Forward Ray Tracing}) a los diferentes objetos de la escena, o des de el ojo, o cáaera virtual, (\textit{Backward Ray Tracing}). Éste es muy sensible al nombre de polígonos que contiene las escena, a más compleja es más infeciente será. Todo y proporcionarnos un alt grado de realismo, no es capaz de conseguir un efecto foto-realista debido a no tener en cuenta la iluminación indirecta. Para conseguir este efecte, hemos de tener presente tanto la iluminación directa com la indirecta, es por eso que Kajiya et al. presentó la \textit{Rendering Equation} \cite{Kajiya1986}. A pesar de tener ciertas limitaciones y no representar todos los efectos que la luz produce en el mundo real como por ejemplo el \textit{Subsurface Scattering}, un método que aproxime esta ecuación ya nos permitirá renderizar imágenes foto-realistas.
+\ref{item:dl} La luz directa es aquella que incide en un punto desde el foco de luz. \\
+\ref{item:il} La luz indirecta es aquella que incide en un punto proveniente de la luz que rebota en otros puntos de la escena.
 
-El algoritmo de \textit{Path Tracing} surge como mejora del \textit{Ray Tracing} con el objetivo de dar una solución a la \textit{Rendering Equation} mediante la integración de Monte Carlo. Gracias a ésto, el algoritmo es capaz, de forma natural, representar efectos como \textit{Motion Blur}, \textit{Ambient Oclussion} e iluminación indirecta sin necesidad de uso de shaders a posterior. En el \textit{Path Tracing} es indiferente el número de polígonos que conforman una escena, pero su mayor desventaja es el ruido. Se necesitan muchas muestras por cada píxel de la imagen para que la imagen converja, es por eso que resulta un algoritmo muy costoso para aplicaciones en tiempo real como videojuegos. En cambio, se lleva utilizando muchos años en industrias como el cine de animación dónde el tiempo de procesado de un frame no es tan importante en comparación a la calidad de imagen deseada.
+Recuperando lo expuesto en la introducción, el primer método capaz de renderizar imágenes realistas fue el \textit{Ray Tracing}, basado en la técnica de \textit{Ray Casting} de trazar rayos desde el observador a todos los pixeles de la imágen. La gran novedad respecto al algoritmo presentado por Appel \cite{Appel1968} es la incorporación de la recursividad. Cuando un rayo impacta contra un superficie puede generar tres tipos de rayos nuevos: \begin{enumerate*}[label=\roman*)] \item rayo de relfexión \label{ray:reflected}, \item rayo de refracción y \item rayo de sombra \end{enumerate*}. Al trazar los rayos nuevos somos capaces de conseguir efectos como reflejos, sombras, etc. debido a que para calcular el color estamos teniendo en cuenta como los demás objetos de la escena se afectan entre si. Una gran desventaja de este método es la dependencia que éste tiene respeco a los polígonos de la escena; a más compleja es más ineficiente será. A pesar de ofrecernos una alto grado de realismo al ser capaz de tratar con precisión efectos ópticos como la refracción, reflexión, los resultados obtenidos en una imagen renderizada mediante \textit{Ray Tracing} no son necesariamente foto-realistas. Para conseguir renderizar imégenes foto-realistas debemos aproximar la RE, un buen ejemplo de ello es el método de \textit{Path Tracing} presentado por Kajiya \cite{Kajiya1986}.
 
-Debido a que cada píxel es independiente de los demás, tenemos un algoritmo con una alta capacidad de paralelismo. Gracias a ésto, podemos explotar la capacidad que tiene la CPU y la GPU para ejecutar aplicaciones en paralelo y calcular más de un píxel al mismo tiempo. 
+El algoritmo de \textit{Path Tracing} surge como mejora del \textit{Ray Tracing} con el objetivo de dar una solución a la RE mediante la integración de Monte Carlo. Es gracias a ésto que el algoritmo es capaz, de forma natural, representar efectos como \textit{Motion Blur}, \textit{Ambient Oclussion} e iluminación indirecta sin necesidad de posprocesado. A diferencia del \textit{Ray Tracing}, el \textit{Path Tracing} es indiferente al número de polígonos presentes en la escena. Como hemos mencionado anteriormente, en el primer método se traza un rayo por cada objeto de la escena, en cambio en el método de Kajiya el rayo se traza por pixel. Debido a que cada pixel es independiente de los demás, tenemos un algoritmo con una alta capacidad de paralelismo. En consecuencia, podemos explotar la capacidad de concurrencia que nos proporcionan las CPUs y GPUs; y poder así calcular más de un pixel de la imagen al mismo tiempo.
 
+En este proyecto partiremos de la base de la implementación propuesta por Peter Shirley en su ''saga'' de libros sobre \textit{Ray Tracing} \citep{Shirley2018a, Shirley2018b, Shirley2018b} para implementar nuestro \textit{Path Tracing}. 
+
+La forma en que representemos nuestra escena tendrá un gran impacto a la hora de calcular el color de la imagen final. Como hemos comentado, la base del método es trazar rayos por la escena para calcular el color de cada pixel. Si nuestra representación de la escena consiste en almacenar todos los objetos en una estructura de datos de tipo lista o vector ordenados por orden de creación, a la hora de calcular un punto de la imagen en el peor caso estaremos recorriendo todo el conjunto de polígonos de la escena para determinar el color final. Tratar de renderizar una escena que, muy posiblemente, esté compuesta de millones de polígonos puede traducirse en horas y horas de procesado. Es por eso que haremos uso de una estructura de datos aceleradora que nos permita representar la escena de una forma más inteligente, para que a la hora de determinar si un rayo impacta o no un polígono se determine de la forma más rápida posible.
 
 \subsection{Stakeholders}
 
-En esta sección presentaremos los diferentes actores implicados en un proyecto.
+En esta sección presentaremos cuales son los diferentes actores implicados en un proyecto.
 
 \subsubsection{Desarrollador}
 
-Este actor es el encargada de realizar la planificación del proyecto, búsqueda de información, documentación, desarrollo del software requerido, solución de posibles obstáculos y/o problemas que puedan aparecer a lo largo del desarrollo y realización y análisis de los experimentos. Debe trabajar de forma conjunta y coordinada con el director, y co-director i/o ponente en caso de haber, y es la última persona encargada del cumplimiento de los términos establecidos.
+Este actor es el encargado de realizar la planificación del proyecto, búsqueda de información, documentación, desarrollo del software requerido, solución de posibles obstáculos y/o problemas que puedan aparecer a lo largo del desarrollo y realización y análisis de los experimentos. Debe trabajar de forma conjunta y coordinada con el director, y co-director y/o ponente si lo hay, y es la última persona encargada del cumplimiento de los términos establecidos.
 
 \subsubsection{Director del proyecto}
 
-Este acto es el encargada de guiar al desarrollador en caso de dificultades, así como del asesoramiento de posibles soluciones.
+Este actor es el encargado de guiar al desarrollador en caso de dificultades, así como del asesoramiento de posibles soluciones.
 
 \subsubsection{Usuarios beneficiados}
 
@@ -72,23 +59,27 @@ Aunque este proyecto no tiene la intención de crear un producto, no quiere deci
 
 \section{Justificación}
 
-En la actualidad son muchas las librerías orientadas a la programación en GPU. Tenemos librerías como \texttt{OpenCL} u \texttt{OpenACC} que nos permiten una mayor portabilidad entre tarjetas gráficas de distintos fabricantes como por ejemplo \texttt{AMD} y \texttt{NVIDIA}. Pero para este proyecto hemos decidido escoger la API \texttt{CUDA} implementada por \texttt{NVIDIA} específicamente para sus tarjetas gráficas y aceleradores. Decidimos usar esta API debido a que al ser sotfware propietario de \texttt{NVIDIA} éste está mejor optimizado para las tarjetas de dicha empresa, que son las que utilizaremos en este proyecto.
+En la actualidad son muchas las librerías orientadas a la programación en GPU. Tenemos librerías como \texttt{OpenCL} y \texttt{OpenACC}, que nos permiten una mayor portabilidad entre tarjetas gráficas de distintos fabricantes como por ejemplo \texttt{AMD} y \texttt{NVIDIA}. Pero para este proyecto hemos decidido escoger el entorno de \texttt{CUDA} desarrollado por \texttt{NVIDIA} específicamente para sus tarjetas gráficas y aceleradores. Decidimos usar esta API debido a que se trata de sotfware propietario, mejor optimizado para las tarjetas de dicha empresa, las cuales utilizaremos en este proyecto.
 
-Es posible que al comentar que usaremos tarjetas/aceleradores \texttt{NVIDIA} y el proyecto está enfocado al tema de renderizado de gráficos realistas nos venga a la mente la nueva gama de tarjetas RTX. En un inicio se planteó guiar el proyecto hacia el uso de tarjetas con tecnología RTX debido a que han sido diseñadas específicamente para el uso de \textit{Ray Tracing} en tiempo real. Esta idea fue descartada en seguida debido al elevado precio de éstas, el rango de precios de las tarjetas de esta gama está entre los 350€ en los modelos más barato hasta los varios miles de euros en modelos destinados a entornos profesionales. Finalmente, se adquirió una tarjeta Nvidia RTX 280 Super de 8Gb de memoria, pero debido al corto periodo de tiempo de desarrollo no guiamos el proyecto a utilizar dicha tarjeta de forma exclusiva estudiando y poniendo en práctica las nuevas mejoras que otras tarjetas de gamas inferiores no incluyen (RT Cores, Tensor Cores, Mesh Shaders, etc.). Es por eso que esta tarjeta gráfica será usada para probar nuestra aplicación, pero no en un sentido exclusivo.
+Es posible que, citadas tarjetas/aceleradores \texttt{NVIDIA} y, teniendo presente que el proyecto está enfocado al tema de renderizado de gráficos realistas, el lector del presente Trabajo de Fin de Grado le venga a la mente la nueva gama de tarjetas RTX diseñada por \texttt{NVIDIA}. En un inicio se planteó guiar el proyecto hacia el uso de tarjetas con tecnología RTX debido a que éstas han sido diseñadas específicamente para el uso de \textit{Ray Tracing} en tiempo real. Esta idea fue descartada en seguida debido al elevado precio de éstas. El rango de precios de las tarjetas de esta gama oscila entre los 350€ en los modelos más económicos, hasta los varios miles de euros en modelos destinados a entornos profesionales. Finalmente, aunque el autor de dicho trabajo adquirió una tarjeta gráfica NVIDIA RTX 280 Super con 8Gb de memoria, se decidió no guiar el proyecto a utilizarla de forma exclusiva, estudiando y poniendo en práctica las nuevas mejoras que ésta ofrece (RT Cores, Tensor Cores, Mesh Shaders, etc.), frente a otras tarjetas de gamas inferiores que no incluyen, debido al corto plazo de tiempo para el desarrollo. Es por eso que esta tarjeta gráfica será usada para testar nuestra aplicación, pero no en un sentido exclusivo.
 
-Como hemos comentado al inicio de esta sección, \texttt{CUDA} es un API que está muy bien optimizada para hardware de \texttt{NVIDIA}. Esto nos da un punto a favor debido a que el la aplicación que vamos a desarrollar será probada en diferentes entornos:
+Como hemos comentado al inicio de esta sección, \texttt{CUDA} es un API que está muy bien optimizada para hardware de \texttt{NVIDIA}. Esto nos da un punto a favor debido a que la aplicación que vamos a desarrollar será probada en diferentes entornos:
 
 \begin{enumerate}
-	\item Computador portátil - Lenovo Legion Y520 con Nvidia GTX1050 - 4GB 
-	\item Cluster docencia BOADA - 4 GPUs Nvidia Tesla K40c
-	\item Computador personal - Nvidia RTX 2080 Super - 8Gb 
+	\item Computador portátil - Lenovo Legion Y520 con Nvidia GTX1050 Mobile - 4GB.
+	\item Computador personal - Nvidia RTX 2080 Super - 8Gb.
+	\item Cluster docencia BOADA - 4 GPUs Nvidia Tesla K40c.
 \end{enumerate}
 
-Al usar tarjetas en entornos diferentes podremos analizar como nuestra aplicación responde en dichos entornos. Estudiar como es el rendimiento cuando utilizamos 4 tarjetas pensadas para un entorno de investigación en contra posición con dos tarjetas gráficas pensadas para el uso cotidiano. También podremos ver como es el rendimiento en una tarjeta gráfica de gama media (Nvidia GTX1050) y un gráfica de gama alta (Nvidia RTX 2080 Super).
+Al usar tarjetas en entornos diferentes podremos analizar como nuestra aplicación responde en cada uno de ellos y estudiar así cómo es el rendimiento cuando utilizamos varias tarjetas pensadas para un entorno de investigación/profesional, en contraposición con otras dos pensadas para un uso más cotidiano. También podremos ver como es el rendimiento en una tarjeta gráfica de gama media (Nvidia GTX1050 Mobile) y una de gama alta (Nvidia RTX 2080 Super); y hacer así una comparativa entre ellas.
 
 \section{Alcance del proyecto}
 
-Para solucionar el problema presentado en nuestro proyecto necesitamos una aplicación que sea capaz de renderizar imágenes realistas. En \cite{Shirley2018a}, \cite{Shirley2018b} i \cite{Shirley2018c} se presentan las bases para crear un \textit{Path Tracing}. A partir de esta base extenderemos nuestra aplicación a una versión paralela haciendo uso de la CPU y otra haciendo uso de la GPU. Se hará uso de diferentes técnicas de optimización comúnmente utilizadas en este tipo de aplicaciones, como por ejemplo el uso de estructuras de datos aceleradoras \cite{Hunt2008} para representar la escena de forma interna. En concreto, la estructura de datos que utilizaremos para genera la escena se trata de una \textit{Bounding Volume Hierarchy}, que se trata de una estructura de tipo árbol, ya sea binario o n-ario, donde cada hoja representa la caja englobante (\textit{Bounding Box}) de cada primitiva que existe en la escena, y cada nodo intermedio representa la caja englobante de sus hijos.
+Para solucionar el problema presentado en nuestro proyecto necesitamos una aplicación que sea capaz de renderizar imágenes realistas. Como hemos comentado unas secciones más atrás, en \cite{Shirley2018a, Shirley2018b, Shirley2018c} se nos presentan las bases para crear un \textit{Ray Tracing}. A partir de esta base extenderemos nuestra aplicación a una versión paralela haciendo uso de la CPU y otra haciendo uso de la GPU.
+
+También, como hemos comentado en la sección sobre el contexto, el uso de estructuras de datos aceleradoras es un factor importante en este tipo de aplicaciones y se llevan estudiando durante muchos años (p.e. \cite{Rubin1980}) por parte de la comunidad científica. En este proyecto haremos uso de la \textit{Bounding Volume Hierarchy}, que se trata de una estructura de tipo árbol, ya sea binario o n-aria, en el cual cada hoja representa la caja delimitadora (\textit{Bounding Box}) de cada primitiva de la escena; y cada nodo intermedio representa la caja delimitadora de sus hijos. De este modo, estamos representando la escena como un conjunto de cajas que nos permitirá saber de forma eficiente si un rayo impacta o no con un polígono y con cual de todos los que componen la escena.
+
+Existen muchas formas de construir un BVH, en nuestro caso nos hemos decantado por versión la presentada por Tero Karras \cite{Karras2012, Karras2013}. La forma en la que se construye el árbol nos permite explotar al máximo la concurrencia que nos proporciona la CPU y la GPU ya que es posible construir cada nodo del árbol de forma independiente. 
 
 \subsection{Alcance}
 
@@ -96,52 +87,51 @@ En este apartado se presentan los diferentes objetivos y posibles obstáculos de
 
 \subsection{Objetivo}
 
-El objetivo principal de este proyecto es desarrollar una aplicación que dada un escena, la renderice mediante \textit{Path Tracing} y analizar el rendimiento que éste nos da en su versión paralela en CPU y en GPU.
+Son varios los objetivos principales que nos proponemos en este proyecto. El primero se trata de desarrollar aplicación que dada una escena renderice una escena mediante el método \textit{Path Tracing} y analizar el rendimiento que éste nos ofrece en su versión paralela en CPU y en su versión en GPU.
 
-La gestión de memoria en una aplicación paralela, ya sea en CPU o en GPU, es muy importante y tener una mala gestión de ésta puede suponer que el rendimiento de nuestra aplicación no sea el esperado. Por eso definiremos como objetivo secundario, pero no menos importante, estudiar y llevar a cabo cuales son las mejores prácticas en este campo.
+Otro objetivo principal es estudiar y poner en práctica cuales son las mejores prácticas en la gestión de memoria en una aplicación paralela se refiere.
 
-Como a sub-objetivos tenemos:
+Como objetivos secundarios tenemos:
 
 \begin{enumerate}
-	\item Implementar de forma eficiente los algoritmos presentados en \citep{Shirley2018a} y \cite{Karras2012}
-	\item Implementar de forma eficiente los cálculos de intersección rayo-objeto
+	\item Implementar de forma eficiente el método presentado por P. Shirley \cite{Shirley2018a,Shirley2018b,Shirley2018a} y T. Karras \cite{Karras2012}.
+	\item \label{ref:info} Buscar información sobre técnicas de optimización en el cálculo de intersección rayo-objeto.
+	\item Implementar de forma eficiente los cálculos de intersección rayo-objeto.
+	\item Extender la aplicación para renderizar modelos 3D.
 \end{enumerate}
 
-\subsection{Obstáculos i riesgos del proyecto}
+\subsection{Obstáculos y riesgos del proyecto}
 
-Los temas principales que se tratan en el proyecto, como por ejemplo implementaciones del \textit{Path Tracing} o diferentes métodos de construcción de un BVH, están muy estudiados y desarrollados. No obstante, eso no implica que el desarrollo del proyecto sea un camino sencillo, son muchos los problemas a los cuales podemos enfrentarnos por el camino.
+Los temas principales en los que se centra el presente proyecto han sido muy estudiados por parte de la comunidad científica. No obstante, esto no implica que el desarrollo de éste sea una tarea sencilla, pues son muchos los problemas u obstáculos a los cuales podemos enfrentarnos.
 
 \subsubsection{Programa principal}
 
-Como bien hemos comentado en la sección de objetivos, la gestión de memoria es un factor muy importante. Una mala gestión puede provocar errores en nuestra aplicación provocando que ésta no funcione correctamente o directamente no funcione.
+Como bien hemos comentado en la sección de objetivos, la gestión de memoria es un factor muy importante. Una mala gestión de ésta puede provocar errores que no permitan el correcto funcionamiento de la aplicación.
 
 \subsubsection{Algoritmo utilizado}
 
-El algoritmo utilizado calcula el color a partir de la intersección de los rayos emitidos desde la cámara a los diferentes objetos de la escena. El cálculo de esta intersección debe ser muy eficiente ya que se trata de operaciones que se llevarán a cabo miles de millones de veces en la creación de una sola imagen. Tener una mala implementación puede afectar de manera negativa en el rendimiento de nuestra aplicación y en los experimentos a realizar.
+El algoritmo utilizado calcula el color a partir de la intersección de los rayos emitidos desde la cámara a los diferentes pixeles de la escena. Al tratarse operaciones que se llevarán a cabo miles de millones de veces en la creación de una imagen, tener una mala implementación de éstas puede afectar al rendimiento de nuestra aplicación de forma negativa.
 
 \section{Metodología y rigor}
 
-En esta sección veremos el conjunto de herramientas que se usaran a lo largo del desarrollo del proyecto. Para poder llevar un buen desarrollo de nuestro proyecto nos organizaremos de la siguiente forma. Cada 15 días habrá una reunión con el director para comentar el estado del proyecto, resultados obtenidos, carencias, objetivos cumplidos, no cumplidos y acordar los siguientes pasos a realizar. De cara a la fase final las reuniones serán semanales.
+En esta sección veremos el conjunto de herramientas que se usarán a lo largo del desarrollo del presente proyecto. Para poder llevar un buen desarrollo de éste nos organizaremos de la siguiente forma: \begin{enumerate*}[label=\roman*)] \item Reuniones cada 15 días con el director del presente proyecto para comentar el estado de éste, resultados obtenidos, carencias, objetivos cumplidos y no cumplidos y acordar los siguientes pasos a realizar. \item Reuniones semanales de cara a la fase final del desarrollo. \end{enumerate*}
 
 \subsection{Herramientas de desarrollo}
 
 El desarrollo de nuestra aplicación se llevará a cabo en C++ haciendo uso de la librerías \texttt{OpenMP} y \texttt{CUDA}. 
 
-\texttt{OpenMP} es una API diseñada para añadir concurrencia a programas escritos en \texttt{C}, \texttt{C++} y \texttt{Fortan}. La principal ventaja de usar esta API, en contra de otras de características similares, es que nos permite escribir un código portable entre diferentes sistemas operativos como Linux, Windows o MAC. Nos permite crear de forma sencillas aplicaciones paralelas haciendo uso de la CPU.
+\texttt{OpenMP} es una API diseñada para añadir concurrencia a programas escritos en \texttt{C}, \texttt{C++} y \texttt{Fortan}. La principal ventaja de usar esta API, en contra de otras de características similares, es que nos permite escribir un código portable entre diferentes sistemas operativos como podría ser Linux, Windows o MAC y nos permite crear de forma sencilla aplicaciones paralelas haciendo uso de la CPU.
 
-\texttt{CUDA} es una plataforma de computación paralela y una API desarrollada por \texttt{NVIDIA} y nos permite acceder al conjunto de instrucciones y elementos de las tarjetas gráficas de \texttt{NVIDIA}. Una gran ventaja de esta API es la gran accesibilidad, para usuarios novel, que tiene en contra de otras APIs orientadas a programación en GPU como por ejemplo \texttt{OpenGL}, \texttt{OpenCL} y \texttt{DirectX}.
+\texttt{CUDA} es una plataforma de computación paralela y una API desarrollada por \texttt{NVIDIA} que nos permite acceder al conjunto de instrucciones y elementos de cómputo de las tarjetas gráficas y aceleradores de \texttt{NVIDIA} para poder crear aplicaciones paralelas haciendo uso de la GPU.
 
 \subsection{Herramientas de seguimiento}
 
-Para poder llevar a cabo un buen seguimiento del desarrollo se hará uso de \texttt{git}. Esta herramienta nos permite llevar un control de versiones para poder acceder a versiones anteriores de nuestro código en caso de ser necesario.
-
-\subsection{Validación de resultados}
-
+Por tal de llevar a cabo un buen seguimiento del desarrollo del presente proyecto se hará uso de \texttt{git}. Esta herramienta nos permite llevar un control de versiones que nos permitirá consultar versiones anteriores de nuestro código en caso de ser necesario.
 
 
 \newpage
-
-\bibliographystyle{ACM-Reference-Format}
+\nocite{*}
+\bibliographystyle{unsrt}
 \bibliography{./includes/library}
 
 \end{document}
