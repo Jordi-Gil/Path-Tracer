@@ -89,7 +89,7 @@ void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, in
 		else if(std::string(argv[i]) == "-spheres"){
 			if((i+1) >= argc) error("-spheres value expected");
 			dist = atoi(argv[i+1]);
-			if(dist == 0) error("-spheres value expected or cannot be 0");
+			if(dist < 0) error("-spheres value expected or cannot be 0");
 		}
 		else if(std::string(argv[i]) == "-nthreads"){
 			if((i+1) >= argc) error("-nthreads value expected");
@@ -177,7 +177,7 @@ __device__ Vector3 color(const Ray& ray, Hitable **world, int depth, curandState
 
 __device__ int2 determineRange(Hitable **list, int idx, int objs) {
     
-    if(idx == objs) printf("%d\n",idx);
+    printf("%d\n",idx);
     
     int numberObj = objs-1;
     
@@ -185,6 +185,7 @@ __device__ int2 determineRange(Hitable **list, int idx, int objs) {
         return make_int2(0,numberObj);
     
     unsigned int idxCode = list[idx]->getMorton();
+    printf("CodeIdx: %d \n",idxCode);
     unsigned int idxCodeUp = list[idx+1]->getMorton();
     unsigned int idxCodeDown = list[idx-1]->getMorton();
     
@@ -340,24 +341,24 @@ __global__ void create_world(Hitable **d_list, Camera **d_cam, int nx, int ny, i
     }
 }
 
-__global__ void initLeafNodes(Node *leafNodes, int objs, Hitable **list) {
+__global__ void initLeafNodes(Node *leafNodes, int objs, Hitable **d_list) {
     
     int idx = blockIdx.x*blockDim.x + threadIdx.x;
     
     if(idx >= objs) return;
     
-    leafNodes[idx].obj = list[idx];
+    leafNodes[idx].obj = d_list[idx];
 }
 
-__global__ void constructBVH(Node *internalNodes, Node *leafNodes, int objs, Hitable **list) {
+__global__ void constructBVH(Node *internalNodes, Node *leafNodes, int objs, Hitable **d_list) {
     
     int idx = blockIdx.x*blockDim.x + threadIdx.x;
     
     if(idx >= objs) return;
 	
-	printf("idx: %d\n",idx);
-	
-    int2 range = determineRange(list, idx, objs+1);
+    int2 range = determineRange(d_list, idx, objs+1);
+    
+    printf("idx: %d\n range = [%d,%d]",idx,range.x, range.y);
 }
 
 __global__ void render(Vector3 *fb, int max_x, int max_y, int ns, Camera **cam, Hitable **world, curandState *d_rand_state, int depth) {
@@ -501,24 +502,38 @@ int main(int argc, char **argv) {
     std::cout << objs << " esferas" << std::endl;
     std::cout << "Allocating memory for BVH" << std::endl;
  
-	
 	cudaMalloc((void **)&internalNodes, (objs-1)*sizeof(Node *));
     cudaMalloc((void **)&leafNodes, objs*sizeof(Node *));
+    Hitable ** h_list = (Hitable **) malloc(n*sizeof(Hitable *));
     checkCudaErrors(cudaGetLastError());
-	
-    initLeafNodes<<<blockDim, gridDim>>>(leafNodes, (objs-1), d_list);
+    std::cout << "Memory allocated for BVH" << std::endl;
+    
+    int threads = nthreads;
+    while(objs < threads) threads /= 2;
+    //int blocks2 = objs/threads;
+    std::cout << "Threads: " << threads << std::endl;
+    cudaMemcpy(h_list, d_list, n*sizeof(Hitable *), cudaMemcpyDeviceToHost);
     checkCudaErrors(cudaGetLastError());
     
-    constructBVH<<<blockDim, gridDim>>>(internalNodes, leafNodes, objs-1, d_list);
+    std::cout << "Printing... " << n << std::endl;
+    for(int i = 0; i < n; i++) {
+        std::cout << "Esfera " << i << " codigo Morton -> ";
+        std::cout << h_list[i]->getMorton() << std::endl;
+    }
+    
+/*    
+    initLeafNodes<<<blocks2,threads>>>(leafNodes, (objs-1), d_list);
     checkCudaErrors(cudaGetLastError());
-/*       
+    
+    constructBVH<<<blocks2,threads>>>(internalNodes, leafNodes, objs-1, d_list);
+    checkCudaErrors(cudaGetLastError());
+       
 	render<<<blocks, nthreads>>>(d_frameBuffer, nx, ny, ns, d_cam, d_world, d_rand_state, depth);
 	checkCudaErrors(cudaGetLastError());
 
 	cudaMemcpy(h_frameBuffer, d_frameBuffer, fb_size, cudaMemcpyDeviceToHost);
 	checkCudaErrors(cudaGetLastError());
 */
-
     cudaEventRecord(E1,0);
     checkCudaErrors(cudaGetLastError());
     
@@ -532,6 +547,9 @@ int main(int argc, char **argv) {
     
 	std::cout << "Generating file image..." << std::endl;
 	std::ofstream pic;
+    
+    exit(0);
+    
 	pic.open(filename.c_str());
   
 	pic << "P3\n" << nx << " " << ny << "\n255\n";

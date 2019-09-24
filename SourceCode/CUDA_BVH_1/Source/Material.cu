@@ -1,12 +1,12 @@
 #include "Material.cuh"
 
-__device__ float schlick(float cosine, float ref_idx){
+__host__ __device__ float schlick(float cosine, float ref_idx){
     float r0 = (1-ref_idx) / (1+ref_idx);
     r0 = r0*r0;
     return r0 + (1-r0) * pow((1-cosine), 5);
 }
 
-__device__ bool refract(const Vector3 &v, const Vector3 &n, float ni_over_nt, Vector3 &refracted){
+__host__ __device__ bool refract(const Vector3 &v, const Vector3 &n, float ni_over_nt, Vector3 &refracted){
     Vector3 uv = unit_vector(v);
     float dt = dot(uv, n);
     float discriminant = 1.0 - ni_over_nt*ni_over_nt*(1-dt*dt);
@@ -19,7 +19,7 @@ __device__ bool refract(const Vector3 &v, const Vector3 &n, float ni_over_nt, Ve
     else return false;
 }
 
-__device__ Vector3 reflect(const Vector3& v, const Vector3& n){
+__host__ __device__ Vector3 reflect(const Vector3& v, const Vector3& n){
     return v - 2.0*dot(v,n)*n;
 }
 

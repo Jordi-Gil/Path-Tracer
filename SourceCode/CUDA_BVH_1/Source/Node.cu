@@ -1,6 +1,6 @@
 #include "Node.cuh"
 
-__device__ Node::Node() {
+__host__ __device__ Node::Node() {
     obj = NULL;
     left = NULL;
     right = NULL;
@@ -8,7 +8,7 @@ __device__ Node::Node() {
     name = "";
 }
 
-__device__ bool Node::checkCollision(const Ray& r, float tmin, float tmax, hit_record& rec) {
+__host__ __device__ bool Node::checkCollision(const Ray& r, float tmin, float tmax, hit_record& rec) {
     
     if(box.hit(r, tmin, tmax)) {
         hit_record left_rec, right_rec;

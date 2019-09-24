@@ -1,6 +1,6 @@
 #include "Sphere.cuh"
 
-__device__ Sphere::Sphere(Vector3 cen, float r, Material *mat) {
+__host__ __device__ Sphere::Sphere(Vector3 cen, float r, Material *mat) {
     center = cen; 
     radius = r; 
     mat_ptr = mat;
@@ -8,7 +8,7 @@ __device__ Sphere::Sphere(Vector3 cen, float r, Material *mat) {
     bounding_box(0,1,box);
 }
 
-__device__ bool Sphere::hit(const Ray& r, float t_min, float t_max, hit_record &rec) const{
+__host__ __device__ bool Sphere::hit(const Ray& r, float t_min, float t_max, hit_record &rec) const{
   
   Vector3 oc = r.origin() - center;
   float a = dot(r.direction(), r.direction());
@@ -38,7 +38,7 @@ __device__ bool Sphere::hit(const Ray& r, float t_min, float t_max, hit_record &
   return false;
 }
 
-__device__ void Sphere::bounding_box (float t0, float t1, aabb &box) const {
+__host__ __device__ void Sphere::bounding_box (float t0, float t1, aabb &box) const {
 	
 	t0 = t0;
 	t1 = t1;
@@ -46,18 +46,18 @@ __device__ void Sphere::bounding_box (float t0, float t1, aabb &box) const {
 	box = aabb(center - Vector3(radius,radius,radius), center + Vector3(radius,radius,radius));
 }
 
-__device__ aabb Sphere::getBox() const {
+__host__ __device__ aabb Sphere::getBox() const {
     return box;
 }
 
-__device__ unsigned int Sphere::getMorton() const {
+__host__ __device__ unsigned int Sphere::getMorton() const {
     return morton_code;
 }
 
-__device__ void Sphere::setMorton(unsigned int code) {
+__host__ __device__ void Sphere::setMorton(unsigned int code) {
     morton_code = code;
 }
 
-__device__ Vector3 Sphere::getCenter() const {
+__host__ __device__ Vector3 Sphere::getCenter() const {
     return center;
 }

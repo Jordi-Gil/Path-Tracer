@@ -3,19 +3,19 @@
 
 #include "Ray.cuh"
 
-__device__ inline float ffmin(float a, float b) {return a < b ? a : b;}
-__device__ inline float ffmax(float a, float b) {return a > b ? a : b;}
+__host__  __device__ inline float ffmin(float a, float b) {return a < b ? a : b;}
+__host__  __device__ inline float ffmax(float a, float b) {return a > b ? a : b;}
 
 class aabb {
 public:
-  __device__ aabb() {}
-  __device__ aabb(const Vector3& a, const Vector3& b);
+  __host__ __device__ aabb() {}
+  __host__ __device__ aabb(const Vector3& a, const Vector3& b);
   
-  __device__ Vector3 min() const;
-  __device__ Vector3 max() const;
+  __host__ __device__ Vector3 min() const;
+  __host__ __device__ Vector3 max() const;
 
   
-  __device__ inline bool hit(const Ray& r, float tmin, float tmax) const {
+  __host__ __device__ inline bool hit(const Ray& r, float tmin, float tmax) const {
     for (int i = 0; i < 3; i++) {
     
       float invD = 1.0f / r.direction()[i];
@@ -42,7 +42,7 @@ public:
   
 };
 
-__device__ inline aabb surrounding_box(aabb box0, aabb box1) {
+__host__ __device__ inline aabb surrounding_box(aabb box0, aabb box1) {
     Vector3 small(  fmin(box0.min().x(), box1.min().x()),
                     fmin(box0.min().y(), box1.min().y()),
                     fmin(box0.min().z(), box1.min().z()));

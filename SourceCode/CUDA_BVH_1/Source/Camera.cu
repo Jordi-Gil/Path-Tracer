@@ -37,4 +37,3 @@ __device__ Ray Camera::get_ray(float s, float t, curandState *random){
                 lower_left_corner + s*horizontal + t*vertical - origin - offset, time);
   
 }
-

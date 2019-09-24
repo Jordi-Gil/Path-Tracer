@@ -8,7 +8,7 @@ static const uint8_t clz_table_4bit[16] = { 4, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 
 
 struct ObjEval{
     
-    __device__ inline bool operator()(Hitable *a, Hitable *b){
+    __host__ __device__ inline bool operator()(Hitable *a, Hitable *b){
         return (a->getMorton() < b->getMorton());
     }
 
@@ -18,11 +18,11 @@ class Helper {
   
 public:
     
-    __device__ static int sgn(int val) {
+    __host__ __device__ static int sgn(int val) {
         return (int(0) < val) - (val < int(0));
     }
     
-    __device__ static unsigned int clz32d( uint32_t x ) /* 32-bit clz */
+    __host__ __device__ static unsigned int clz32d( uint32_t x ) /* 32-bit clz */
     {
         unsigned int n = 0;
         if ((x & 0xFFFF0000) == 0) {n  = 16; x <<= 16;}
@@ -34,7 +34,7 @@ public:
     
     // Expands a 10-bit integer into 30 bits
     // by inserting 2 zeros after each bit.
-    __device__ static unsigned int expandBits(unsigned int v) {
+    __host__ __device__ static unsigned int expandBits(unsigned int v) {
         v = (v * 0x00010001u) & 0xFF0000FFu;
         v = (v * 0x00000101u) & 0x0F00F00Fu;
         v = (v * 0x00000011u) & 0xC30C30C3u;
@@ -42,17 +42,17 @@ public:
         return v;
     }
     
-    __device__ static float max(float a, float b){
+    __host__ __device__ static float max(float a, float b){
 		if(a >= b) return a;
 		else return b;
 	}
 	
-	__device__ static float min(float a, float b){
+	__host__ __device__ static float min(float a, float b){
 		if(a <= b) return a;
 		else return b;
 	}
     
-    __device__ static unsigned int morton3D(float x, float y, float z) {
+    __host__ __device__ static unsigned int morton3D(float x, float y, float z) {
         x = min(max(x * 1024.0f, 0.0f), 1023.0f);
         y = min(max(y * 1024.0f, 0.0f), 1023.0f);
         z = min(max(z * 1024.0f, 0.0f), 1023.0f);
