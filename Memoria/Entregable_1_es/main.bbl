@@ -1,5 +1,11 @@
 \begin{thebibliography}{10}
 
+\bibitem{Lotto1999}
+R.~Beau Lotto, S.~Mark Williams, and Dale Purves.
+\newblock {Mach bands as empirically derived associations}.
+\newblock {\em Proceedings of the National Academy of Sciences of the United
+  States of America}, 1999.
+
 \bibitem{Henri1971}
 Gouraud Henri.
 \newblock {Continuous Shading of Curved Surfaces}.
@@ -8,13 +14,7 @@ Gouraud Henri.
 \bibitem{Phong1975}
 Bui~Tuong Phong.
 \newblock {Illumination for Computer Generated Pictures}.
-\newblock {\em Communications of the ACM}, 1975.
-
-\bibitem{Blinn1977}
-James~F. Blinn.
-\newblock {Models of light reflection for computer synthesized pictures}.
-\newblock In {\em Proceedings of the 4th Annual Conference on Computer Graphics
-  and Interactive Techniques, SIGGRAPH 1977}, 1977.
+\newblock {\em Communications of the ACM}, 18(6):311----317, 1975.
 
 \bibitem{Whitted1980}
 Turner Whitted.
@@ -89,6 +89,12 @@ Tero Karras and Timo Aila.
   hierarchies}.
 \newblock In {\em Proceedings - High-Performance Graphics 2013, HPG 2013},
   2013.
+
+\bibitem{Blinn1977}
+James~F. Blinn.
+\newblock {Models of light reflection for computer synthesized pictures}.
+\newblock In {\em Proceedings of the 4th Annual Conference on Computer Graphics
+  and Interactive Techniques, SIGGRAPH 1977}, 1977.
 
 \bibitem{Hunt2008}
 Warren Hunt and William~R. Mark.
