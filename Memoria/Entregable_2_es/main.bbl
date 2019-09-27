@@ -1,0 +1,105 @@
+\begin{thebibliography}{10}
+
+\bibitem{Lotto1999}
+R.~Beau Lotto, S.~Mark Williams, and Dale Purves.
+\newblock {Mach bands as empirically derived associations}.
+\newblock {\em Proceedings of the National Academy of Sciences of the United
+  States of America}, 1999.
+
+\bibitem{Henri1971}
+Gouraud Henri.
+\newblock {Continuous Shading of Curved Surfaces}.
+\newblock {\em IEEE Transactions on Computers}, 1971.
+
+\bibitem{Phong1975}
+Bui~Tuong Phong.
+\newblock {Illumination for Computer Generated Pictures}.
+\newblock {\em Communications of the ACM}, 18(6):311----317, 1975.
+
+\bibitem{Whitted1980}
+Turner Whitted.
+\newblock {An Improved Illumination Model for Shaded Display}.
+\newblock {\em Communications of the ACM}, 1980.
+
+\bibitem{Appel1968}
+Arthur Appel.
+\newblock {Some techniques for shading machine renderings of solids}.
+\newblock 1968.
+
+\bibitem{Kajiya1986}
+James~T. Kajiya.
+\newblock {The rendering equation}.
+\newblock In {\em Proceedings of the 13th Annual Conference on Computer
+  Graphics and Interactive Techniques, SIGGRAPH 1986}, 1986.
+
+\bibitem{Immel1986}
+David~S. Immel, Michael~F. Cohen, and Donald~P. Greenberg.
+\newblock {A radiosity method for non-diffuse environments}.
+\newblock In {\em Proceedings of the 13th Annual Conference on Computer
+  Graphics and Interactive Techniques, SIGGRAPH 1986}, 1986.
+
+\bibitem{Lafortune1993}
+Eric~P. Lafortune and Yves~D. Willems.
+\newblock {Bi-Directional Path Tracing}.
+\newblock {\em Proc. SIGGRAPH}, 1993.
+
+\bibitem{Jensen1996}
+Henrik~Wann Jensen.
+\newblock {Global Illumination using Photon Maps}.
+\newblock 1996.
+
+\bibitem{Veach1997}
+Eric Veach and Leonidas~J. Guibas.
+\newblock {Metropolis light transport}.
+\newblock In {\em Proceedings of the 24th Annual Conference on Computer
+  Graphics and Interactive Techniques, SIGGRAPH 1997}, 1997.
+
+\bibitem{Shirley2018a}
+Peter Shirley.
+\newblock {\em {Ray Tracing in One Weekend}}.
+\newblock 2018.
+
+\bibitem{Shirley2018b}
+Peter Shirley.
+\newblock {\em {Ray Tracing : The Next Week}}.
+\newblock 2018.
+
+\bibitem{Shirley2018c}
+Peter Shirley.
+\newblock {\em {Ray Tracing: The Rest of Your Life}}.
+\newblock 2018.
+
+\bibitem{Rubin1980}
+Steven~M. Rubin and Turner Whitted.
+\newblock {A 3-dimensional representation for fast rendering of complex
+  scenes}.
+\newblock In {\em Proceedings of the 7th Annual Conference on Computer Graphics
+  and Interactive Techniques, SIGGRAPH 1980}, 1980.
+
+\bibitem{Karras2012}
+Tero Karras.
+\newblock {Maximizing parallelism in the construction of bvhs, octrees, and k-d
+  trees}.
+\newblock In {\em High-Performance Graphics 2012, HPG 2012 - ACM SIGGRAPH /
+  Eurographics Symposium Proceedings}, 2012.
+
+\bibitem{Karras2013}
+Tero Karras and Timo Aila.
+\newblock {Fast parallel construction of high-quality bounding volume
+  hierarchies}.
+\newblock In {\em Proceedings - High-Performance Graphics 2013, HPG 2013},
+  2013.
+
+\bibitem{Blinn1977}
+James~F. Blinn.
+\newblock {Models of light reflection for computer synthesized pictures}.
+\newblock In {\em Proceedings of the 4th Annual Conference on Computer Graphics
+  and Interactive Techniques, SIGGRAPH 1977}, 1977.
+
+\bibitem{Hunt2008}
+Warren Hunt and William~R. Mark.
+\newblock {Ray-specialized acceleration structures for ray tracing}.
+\newblock In {\em RT'08 - IEEE/EG Symposium on Interactive Ray Tracing 2008,
+  Proceedings}, pages 3--10, 2008.
+
+\end{thebibliography}
