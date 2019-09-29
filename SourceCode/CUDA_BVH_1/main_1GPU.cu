@@ -4,11 +4,13 @@
 #include <cfloat>
 #include <ctime>
 #include <limits>
-#include <curand.h>
-#include <curand_kernel.h>
 #include <algorithm>
 #include <stack>
 #include <queue>
+
+#include <curand.h>
+#include <curand_kernel.h>
+#include <device_launch_parameters.h>
 
 #include "MovingSphere.cuh"
 #include "Camera.cuh"
@@ -183,7 +185,7 @@ void iterativeTraversal(Node* root) {
         }
         i++;
     }
-    
+    std::cout << "salimos" << std::endl;
     while(!stack.empty()) {
         
         root = stack.top();
@@ -477,14 +479,47 @@ __global__ void constructBVH(Node *d_internalNodes, Node *leafNodes, int objs, M
     }
     
     if (split + 1 == last) {
-        current->left = leafNodes + split + 1;
+        current->right = leafNodes + split + 1;
         (leafNodes + split + 1)->parent = current;
     }
     else{
-        current->left = d_internalNodes + split + 1;
+        current->right = d_internalNodes + split + 1;
         (d_internalNodes + split + 1)->parent = current;
     }
     
+}
+
+__global__ void boundingBoxBVH(Node *d_internalNodes, Node *d_leafNodes, int objs, int *nodeCounter) {
+    
+    int idx = blockIdx.x*blockDim.x + threadIdx.x;
+    
+    if(idx >= objs) return;
+
+    Node *leaf = d_leafNodes + idx;
+
+    leaf->box = leaf->obj->box;
+    
+    Node* current = leaf->parent;
+    
+    int currentIdx = current - d_internalNodes;
+    int res = atomicAdd(nodeCounter + currentIdx, 1);
+    
+    while (res != 0) {
+        
+        aabb leftBoundingBox = current->left->box;
+        aabb rightBoundingBox = current->right->box;
+
+        current->box = surrounding_box(leftBoundingBox, rightBoundingBox);
+
+    
+        if (current == d_internalNodes) {
+            return;
+        }
+        
+        current = current->parent;
+        currentIdx = current - d_internalNodes;
+        res = atomicAdd(nodeCounter + currentIdx, 1);
+    }
 }
 
 __global__ void render(Vector3 *fb, int max_x, int max_y, int ns, Camera **cam, Node *world, curandState *d_rand_state, int depth) {
@@ -525,23 +560,23 @@ __global__ void render(Vector3 *fb, int max_x, int max_y, int ns, Camera **cam, 
 }
 
 int main(int argc, char **argv) {
-	
+    
     properties();
 
-	cudaEvent_t E0, E1;
-	cudaEventCreate(&E0); 
+    cudaEvent_t E0, E1;
+    cudaEventCreate(&E0); 
     cudaEventCreate(&E1);
     checkCudaErrors(cudaGetLastError());
   
-	float totalTime;
+    float totalTime;
   
-	int nx, ny, ns, depth, dist, nthreads, numGPUs;
-	std::string filename;
+    int nx, ny, ns, depth, dist, nthreads, numGPUs;
+    std::string filename;
   
-	parse_argv(argc, argv, nx, ny, ns, depth, dist, nthreads, filename, numGPUs, 1);
+    parse_argv(argc, argv, nx, ny, ns, depth, dist, nthreads, filename, numGPUs, 1);
+    
+    int n = (2*dist)*(2*dist)+5;
 
-	int n = (2*dist)*(2*dist)+5;
-	
 	std::cout << "Creating " << filename << " with (" << nx << "," << ny << ") pixels with " << nthreads << " threads, using " << numGPUs << " GPUs." << std::endl;
 	std::cout << "With " << ns << " iterations for AntiAliasing and depth of " << depth << "." << std::endl;
 	std::cout << "The world have " << n << " spheres." << std::endl;
@@ -578,7 +613,8 @@ int main(int argc, char **argv) {
     Camera **d_cam;
     curandState *d_rand_state;
     Node *d_internalNodes;
-    Node *leafNodes;
+    Node *d_leafNodes;
+    int *nodeCounter;
   
     /* Create world */
     std::cout << "Creating world..." << std::endl;
@@ -593,6 +629,7 @@ int main(int argc, char **argv) {
     std::cout << "Threads: " << threads << std::endl;
     
     float internal_size = (size-1)*sizeof(Node);
+    float leaves_size = size*sizeof(Node);
     
     cudaMallocHost((Node **)&h_internalNodes, internal_size);
     checkCudaErrors(cudaGetLastError());
@@ -603,7 +640,9 @@ int main(int argc, char **argv) {
     cudaMalloc((void **)&d_cam, cam_size);
     cudaMalloc((void **)&d_rand_state, drand_size);
     cudaMalloc((void **)&d_internalNodes, internal_size);
-    cudaMalloc((void **)&leafNodes, size*sizeof(Node));
+    cudaMalloc((void **)&d_leafNodes, leaves_size);
+    cudaMallocManaged((void **)&nodeCounter, sizeof(int)*size);
+    cudaMemset(nodeCounter, 0, sizeof(int)*size);
     
     cudaEventRecord(E0,0);
     cudaEventSynchronize(E0);
@@ -618,23 +657,18 @@ int main(int argc, char **argv) {
     render_init<<<blocks, nthreads>>>(nx, ny, d_rand_state, seed);
     checkCudaErrors(cudaGetLastError());
     
-    initLeafNodes<<<blocks2,threads>>>(leafNodes, (size-1), d_objects);
+    initLeafNodes<<<blocks2,threads>>>(d_leafNodes, size, d_objects);
     checkCudaErrors(cudaGetLastError());
     
-    constructBVH<<<blocks2,threads>>>(d_internalNodes, leafNodes, size-1, d_objects);
+    constructBVH<<<blocks2,threads>>>(d_internalNodes, d_leafNodes, size-1, d_objects);
     checkCudaErrors(cudaGetLastError());
     
-    cudaMemcpy(h_internalNodes, d_internalNodes, internal_size, cudaMemcpyDeviceToHost);
+    boundingBoxBVH<<<blocks2,threads>>>(d_internalNodes, d_leafNodes, size, nodeCounter);
     checkCudaErrors(cudaGetLastError());
     
-    iterativeTraversal(h_internalNodes);
-/*    
-    cudaMemcpy(d_internalNodes, h_internalNodes, internal_size, cudaMemcpyHostToDevice);
+    render<<<blocks, nthreads>>>(d_frameBuffer, nx, ny, ns, d_cam, d_internalNodes, d_rand_state, depth);
     checkCudaErrors(cudaGetLastError());
-    
-    render<<<blocks, nthreads>>>(d_frameBuffer, nx, ny, ns, d_cam, &d_internalNodes[0], d_rand_state, depth);
-    checkCudaErrors(cudaGetLastError());
-*/
+
     /* Copiamos del Device al Host*/
     cudaMemcpy(h_frameBuffer, d_frameBuffer, fb_size, cudaMemcpyDeviceToHost);
     checkCudaErrors(cudaGetLastError());
