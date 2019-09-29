@@ -1,7 +1,7 @@
 #ifndef Node_HH_INCLUDE
 #define Node_HH_INCLUDE
 
-#include "Hitable.cuh"
+#include "MovingSphere.cuh"
 #include "Helper.cuh"
 
 class Node{
@@ -16,7 +16,7 @@ public:
     Node *right;  // Right child
     Node *parent; // Parent
   
-    Hitable *obj; //Null if is an internal node, Object if is a Leaf
+    MovingSphere *obj; //Null if is an internal node, Object if is a Leaf
   
     aabb box;
     

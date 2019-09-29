@@ -2,17 +2,8 @@
 #define Helper_HH_INCLUDE
 #include <iostream>
 #include <stdint.h>
-#include "Hitable.cuh"
 
 static const uint8_t clz_table_4bit[16] = { 4, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0 };
-
-struct ObjEval{
-    
-    __host__ __device__ inline bool operator()(Hitable *a, Hitable *b){
-        return (a->getMorton() < b->getMorton());
-    }
-
-};
 
 class Helper {
   

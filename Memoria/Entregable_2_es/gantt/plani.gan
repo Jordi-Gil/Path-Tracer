@@ -1,12 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2019-08-01" view-index="0" gantt-divider-location="192" resource-divider-location="300" version="2.8.10" locale="en_US">
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2019-08-01" view-index="0" gantt-divider-location="386" resource-divider-location="300" version="2.8.10" locale="en_US">
     <description/>
     <view zooming-state="default:8" id="gantt-chart">
-        <field id="tpd3" name="Name" width="86" order="0"/>
-        <field id="tpd4" name="Begin date" width="44" order="1"/>
-        <field id="tpd5" name="End date" width="43" order="2"/>
+        <field id="tpd3" name="Name" width="151" order="0"/>
+        <field id="tpd4" name="Begin date" width="108" order="1"/>
+        <field id="tpd5" name="End date" width="108" order="2"/>
         <option id="taskLabelUp" value=""/>
         <option id="taskLabelLeft" value="name"/>
-        <timeline><![CDATA[31]]></timeline>
         <option id="color.recent"><![CDATA[#e06d3b #009999 #ff3333 #3333ff #33ff33]]></option>
     </view>
     <view id="resource-table">
@@ -82,7 +81,7 @@
                 </task>
                 <task id="158" name="Experimentos" color="#3333ff" meeting="false" start="2019-11-07" duration="2" complete="0" thirdDate="2019-10-26" thirdDate-constraint="0" expand="true"/>
             </task>
-            <task id="171" name="Tercer Ciclo" color="#ff3333" meeting="false" start="2019-11-09" duration="14" complete="0" thirdDate="2019-10-12" thirdDate-constraint="0" expand="true">
+            <task id="171" name="Tercer Ciclo" color="#ff3333" meeting="false" start="2019-11-09" duration="12" complete="0" thirdDate="2019-10-12" thirdDate-constraint="0" expand="true">
                 <depend id="205" type="2" difference="0" hardness="Strong"/>
                 <task id="178" name="Versión secuencial" color="#ff3333" meeting="false" start="2019-11-09" duration="2" complete="0" thirdDate="2019-11-09" thirdDate-constraint="0" expand="true">
                     <depend id="184" type="2" difference="0" hardness="Strong"/>
@@ -93,7 +92,7 @@
                     <depend id="199" type="2" difference="0" hardness="Strong"/>
                 </task>
                 <task id="191" name="Versión paralela CPU" color="#ff3333" meeting="false" start="2019-11-19" duration="2" complete="0" thirdDate="2019-11-09" thirdDate-constraint="0" expand="true"/>
-                <task id="199" name="Experimentos" color="#ff3333" meeting="false" start="2019-11-21" duration="2" complete="0" thirdDate="2019-11-09" thirdDate-constraint="0" expand="true"/>
+                <task id="199" name="Experimentos" color="#ff3333" meeting="false" start="2019-11-19" duration="2" complete="0" thirdDate="2019-11-09" thirdDate-constraint="0" expand="true"/>
             </task>
             <task id="205" name="Cuarto Ciclo" color="#e06d3b" meeting="false" start="2019-11-23" duration="24" complete="0" thirdDate="2019-10-12" thirdDate-constraint="0" expand="true">
                 <task id="212" name="Versión secuencial" color="#e06d3b" meeting="false" start="2019-11-23" duration="2" complete="0" thirdDate="2019-11-23" thirdDate-constraint="0" expand="true">

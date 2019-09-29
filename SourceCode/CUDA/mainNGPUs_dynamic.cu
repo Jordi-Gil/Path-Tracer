@@ -137,7 +137,7 @@ __global__ void create_world(Hitable **d_list, Hitable **d_world, Camera **d_cam
 	if (threadIdx.x == 0 && blockIdx.x == 0) {
 		curandState local_random = *random;
 
-        d_list[0] = new Sphere(Vector3(0,-1000,-1), 1000, new Lambertian(Vector3(0.5, 0.5, 0.5)));
+        d_list[0] = new MovingSphere(Vector3(0,-1000,-1),Vector3(0,-1000,-1),0.0,1.0, 1000, new Lambertian(Vector3(0.5, 0.5, 0.5)));
     
 		int i = 1;
 		for (int a = -dist; a < dist; a++) {
@@ -147,17 +147,17 @@ __global__ void create_world(Hitable **d_list, Hitable **d_world, Camera **d_cam
 	
 				if ((center-Vector3(0,0,0)).length() > 0.995) {
 					if (material < 0.8) d_list[i++] = new MovingSphere(center, center+Vector3(0,0.5*Random,0),0.0,1.0,.2,new Lambertian(Vector3(Random*Random, Random*Random, Random*Random)));
-					else if (material < 0.95) d_list[i++] = new Sphere(center, 0.2, new Metal(Vector3(0.5*(1.0+Random), 0.5*(1.0+Random), 0.5*(1.0+Random)),0.5*Random));
-					else d_list[i++] = new Sphere(center, 0.2, new Dielectric(1.5));
+					else if (material < 0.95) d_list[i++] = new MovingSphere(center,center,0.0,1.0, 0.2, new Metal(Vector3(0.5*(1.0+Random), 0.5*(1.0+Random), 0.5*(1.0+Random)),0.5*Random));
+					else d_list[i++] = new MovingSphere(center,center,0.0,1.0, 0.2, new Dielectric(1.5));
 				}
 			}
 		}
 	
-		d_list[i++] = new Sphere(Vector3( 0, 1, 0), 1.0, new Dielectric(1.5));
-		d_list[i++] = new Sphere(Vector3(-4, 1, 0), 1.0, new Lambertian(Vector3(0.4, 0.2, 0.1)));
-		d_list[i++] = new Sphere(Vector3( 4, 1, 0), 1.0, new Metal(Vector3(0.7, 0.6, 0.5),0.0));
+		d_list[i++] = new MovingSphere(Vector3( 0, 1, 0), Vector3( 0, 1, 0), 0.0, 1.0, 1.0, new Dielectric(1.5));
+		d_list[i++] = new MovingSphere(Vector3(-4, 1, 0), Vector3(-4, 1, 0), 0.0, 1.0, 1.0, new Lambertian(Vector3(0.4, 0.2, 0.1)));
+		d_list[i++] = new MovingSphere(Vector3( 4, 1, 0), Vector3( 4, 1, 0), 0.0, 1.0, 1.0, new Metal(Vector3(0.7, 0.6, 0.5),0.0));
 		
-		d_list[i++] = new Sphere(Vector3( 4, 1, 5), 1.0, new Metal(Vector3(0.9, 0.2, 0.2),0.0));
+		d_list[i++] = new MovingSphere(Vector3( 4, 1, 5), Vector3( 4, 1, 5), 0.0, 1.0, 1.0, new Metal(Vector3(0.9, 0.2, 0.2),0.0));
 	
 		*random = local_random;
 		
@@ -166,7 +166,7 @@ __global__ void create_world(Hitable **d_list, Hitable **d_world, Camera **d_cam
 		Vector3 lookfrom(13,2,3);
 		Vector3 lookat(0,0,0);
 		Vector3 up(0,1,0);
-		float dist_to_focus = 10; (lookfrom-lookat).length();
+		float dist_to_focus = 10.0;
 		float aperture = 0.1;
 		*d_cam = new Camera(lookfrom, lookat, up, 20, float(nx)/float(ny), aperture, dist_to_focus,0.0,0.1);
 	}
