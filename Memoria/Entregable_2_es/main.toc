@@ -1,18 +1,16 @@
 \babel@toc {spanish}{}
-\contentsline {chapter}{\numberline {1}Planificaci\IeC {\'o}n temporal}{3}{chapter.1}
-\contentsline {section}{\numberline {1.1}Planificaci\IeC {\'o}n y programaci\IeC {\'o}n}{3}{section.1.1}
-\contentsline {section}{\numberline {1.2}Descripci\IeC {\'o}n de tareas y recursos utilizados}{3}{section.1.2}
-\contentsline {subsection}{\numberline {1.2.1}Descripci\IeC {\'o}n de tareas}{3}{subsection.1.2.1}
-\contentsline {subsubsection}{Estudio de conceptos}{3}{section*.1}
-\contentsline {subsubsection}{Configuraci\IeC {\'o}n del sistema}{4}{section*.2}
-\contentsline {subsubsection}{Planificaci\IeC {\'o}n del proyecto}{4}{section*.3}
-\contentsline {subsubsection}{Desarrollo}{4}{section*.4}
-\contentsline {subsubsection}{Etapa final}{5}{section*.5}
-\contentsline {subsection}{\numberline {1.2.2}Tabla resumen y Estimaci\IeC {\'o}n}{5}{subsection.1.2.2}
-\contentsline {subsection}{\numberline {1.2.3}Recursos utilizados}{6}{subsection.1.2.3}
-\contentsline {subsubsection}{Software}{6}{section*.6}
-\contentsline {subsubsection}{Hardware}{6}{section*.7}
-\contentsline {section}{\numberline {1.3}Diagrama de Gannt}{6}{section.1.3}
-\contentsline {section}{\numberline {1.4}Gesti\IeC {\'o}n de riesgos: Planes alternativos y obst\IeC {\'a}culos}{7}{section.1.4}
-\contentsline {chapter}{Anexos}{8}{section*.11}
-\contentsline {chapter}{\numberline {2}Anexo I: Diagrama de Gantt}{9}{chapter.2}
+\contentsline {chapter}{\numberline {1}Planificaci\IeC {\'o}n temporal}{3}{chapter.1}% 
+\contentsline {section}{\numberline {1.1}Planificaci\IeC {\'o}n y programaci\IeC {\'o}n}{3}{section.1.1}% 
+\contentsline {section}{\numberline {1.2}Descripci\IeC {\'o}n de tareas y recursos utilizados}{3}{section.1.2}% 
+\contentsline {subsection}{\numberline {1.2.1}Descripci\IeC {\'o}n de tareas}{3}{subsection.1.2.1}% 
+\contentsline {subsubsection}{Estudio de conceptos}{3}{section*.1}% 
+\contentsline {subsubsection}{Configuraci\IeC {\'o}n del sistema}{3}{section*.2}% 
+\contentsline {subsubsection}{Planificaci\IeC {\'o}n del proyecto}{4}{section*.3}% 
+\contentsline {subsubsection}{Desarrollo}{4}{section*.4}% 
+\contentsline {subsubsection}{Etapa final}{5}{section*.5}% 
+\contentsline {subsection}{\numberline {1.2.2}Tabla resumen y Estimaci\IeC {\'o}n}{5}{subsection.1.2.2}% 
+\contentsline {subsection}{\numberline {1.2.3}Recursos utilizados}{5}{subsection.1.2.3}% 
+\contentsline {subsubsection}{Software}{5}{section*.6}% 
+\contentsline {subsubsection}{Hardware}{5}{section*.7}% 
+\contentsline {section}{\numberline {1.3}Diagrama de Gannt}{6}{section.1.3}% 
+\contentsline {section}{\numberline {1.4}Gesti\IeC {\'o}n de riesgos: Planes alternativos y obst\IeC {\'a}culos}{7}{section.1.4}% 

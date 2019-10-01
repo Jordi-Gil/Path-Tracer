@@ -1,5 +1,5 @@
 \usepackage[utf8]{inputenc}
-\usepackage[a4paper,headheight=14pt]{geometry}
+\usepackage[a4paper,headheight=15pt]{geometry}
 \usepackage{newtxtext,newtxmath}
 \usepackage[scaled=1]{couriers}
 \usepackage[spanish]{babel}
@@ -18,7 +18,8 @@
 \usepackage[nottoc, notlot, notlof]{tocbibind}
 \usepackage{listingsutf8}
 \usepackage{url}
-\usepackage[square,numbers]{natbib}
+%\usepackage[authoryear, round, comma]{natbib}
+\usepackage[sorting=none,backend=bibtex8,maxcitenames=1,natbib=true,style=authoryear,doi=false]{biblatex}
 \usepackage{adjustbox}
 \usepackage[makeroom]{cancel}
 \usepackage[hidelinks]{hyperref}
@@ -27,7 +28,16 @@
 \usepackage{fancyhdr}
 \usepackage[inline]{enumitem}
 \usepackage[framemethod=tikz]{mdframed}
+\usepackage[style=english]{csquotes}
 
+\DefineBibliographyStrings{spanish}{%
+  andothers = {et\addabbrvspace al\adddot}
+}
+
+\bibliography{./includes/library}
+%\bibliographystyle{unsrtnat}
+
+%\bibpunct[: ]{[}{]}{,}{a}{ --}{/}
 
 \pagestyle{fancy}
 \fancyhf{}
@@ -45,7 +55,6 @@
   \renewcommand{\headrulewidth}{0pt}% Line at the header invisible
   \renewcommand{\footrulewidth}{0.6pt}% Line at the footer visible
 }
-
 
 \renewcommand{\cftpartleader}{\cftdotfill{\cftdotsep}}%
 \renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}%

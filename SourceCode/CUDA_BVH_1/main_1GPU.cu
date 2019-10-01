@@ -503,6 +503,8 @@ __global__ void boundingBoxBVH(Node *d_internalNodes, Node *d_leafNodes, int obj
     
     int currentIdx = current - d_internalNodes;
     int res = atomicAdd(nodeCounter + currentIdx, 1);
+	
+	printf("While %d ", idx);
     
     while (res != 0) {
         
@@ -641,7 +643,7 @@ int main(int argc, char **argv) {
     cudaMalloc((void **)&d_rand_state, drand_size);
     cudaMalloc((void **)&d_internalNodes, internal_size);
     cudaMalloc((void **)&d_leafNodes, leaves_size);
-    cudaMallocManaged((void **)&nodeCounter, sizeof(int)*size);
+    cudaMalloc((void **)&nodeCounter, sizeof(int)*size);
     cudaMemset(nodeCounter, 0, sizeof(int)*size);
     
     cudaEventRecord(E0,0);
