@@ -222,17 +222,13 @@ void create_world(MovingSphere *h_objects, Camera **h_cam, int &size, int nx, in
     Vector3 min(MAX);
     
     int i = 0;
-        
-    h_objects[i] = MovingSphere(Vector3(0,-1000,-1), Vector3(0,-1000,-1), 0.0, 1.0, 1000, new Lambertian(Vector3(0.5, 0.5, 0.5))); 
-    
-    compare(max,min, h_objects[i].getCenter());
-    i++;
+    //i++;
     for (int a = -dist; a < dist; a++) {
         for (int b = -dist; b < dist; b++) {
             float material = Random;
             Vector3 center(a+0.9*Random, 0.2, b+0.9*Random);
-
-            if ((center-Vector3(0,0,0)).length() > 0.995) {
+            
+            //if ((center-Vector3(0,0,0)).length() > 0.995) {
                 if (material < 0.8) h_objects[i] = MovingSphere(center, center+Vector3(0,0.5*Random,0),0.0,1.0,.2,new Lambertian(Vector3(Random*Random, Random*Random, Random*Random)));
                 else if (material < 0.95) h_objects[i] = MovingSphere(center, center, 0.0, 1.0, 0.2, new Metal(Vector3(0.5*(1.0+Random), 0.5*(1.0+Random), 0.5*(1.0+Random)),0.5*Random));
                 else h_objects[i] = MovingSphere(center, center, 0.0, 1.0, 0.2, new Dielectric(1.5));
@@ -240,18 +236,23 @@ void create_world(MovingSphere *h_objects, Camera **h_cam, int &size, int nx, in
                 compare(max,min,h_objects[i].getCenter());
                 i++;
                 
-            }
+            //}
         }
     }
+    h_objects[0] = MovingSphere(Vector3(0,-1000,-1), Vector3(0,-1000,-1), 0.0, 1.0, 1000, new Lambertian(Vector3(0.5, 0.5, 0.5))); 
+    compare(max,min, h_objects[0].getCenter());
     
-    h_objects[i] = MovingSphere(Vector3( 0, 1, 0), Vector3( 0, 1, 0), 0.0, 1.0, 1.0, new Dielectric(1.5));
-    compare(max,min,h_objects[i].getCenter()); i++;
-    h_objects[i] = MovingSphere(Vector3(-4, 1, 0), Vector3(-4, 1, 0), 0.0, 1.0, 1.0, new Lambertian(Vector3(0.4, 0.2, 0.1)));
-    compare(max,min,h_objects[i].getCenter()); i++;
-    h_objects[i] = MovingSphere(Vector3( 4, 1, 0), Vector3( 4, 1, 0), 0.0, 1.0, 1.0, new Metal(Vector3(0.7, 0.6, 0.5),0.0));
-    compare(max,min,h_objects[i].getCenter()); i++;
-    h_objects[i] = MovingSphere(Vector3( 4, 1, 5), Vector3( 4, 1, 5), 0.0, 1.0, 1.0, new Metal(Vector3(0.9, 0.2, 0.2),0.0));
-    compare(max,min,h_objects[i].getCenter()); i++;
+    h_objects[1] = MovingSphere(Vector3( 0, 1, 0), Vector3( 0, 1, 0), 0.0, 1.0, 1.0, new Dielectric(1.5));
+    compare(max,min,h_objects[1].getCenter()); //i++;
+    
+    h_objects[2] = MovingSphere(Vector3(-4, 1, 0), Vector3(-4, 1, 0), 0.0, 1.0, 1.0, new Lambertian(Vector3(0.4, 0.2, 0.1)));
+    compare(max,min,h_objects[2].getCenter()); //i++;
+    
+    h_objects[3] = MovingSphere(Vector3( 4, 1, 0), Vector3( 4, 1, 0), 0.0, 1.0, 1.0, new Metal(Vector3(0.7, 0.6, 0.5),0.0));
+    compare(max,min,h_objects[3].getCenter()); //i++;
+    
+    h_objects[4] = MovingSphere(Vector3( 4, 1, 5), Vector3( 4, 1, 5), 0.0, 1.0, 1.0, new Metal(Vector3(0.9, 0.2, 0.2),0.0));
+    compare(max,min,h_objects[4].getCenter()); //i++;
     
     float max_x = max[0]; float max_y = max[1]; float max_z = max[2];
     float min_x = min[0]; float min_y = min[1]; float min_z = min[2];
@@ -343,8 +344,6 @@ __device__ unsigned int findSplit(MovingSphere *d_list, int first, int last) {
 }
 
 __device__ int2 determineRange(MovingSphere *d_list, int idx, int objs) {
-    
-    //printf("%d\n",idx);
     
     int numberObj = objs-1;
     
@@ -452,6 +451,9 @@ __global__ void initLeafNodes(Node *leafNodes, int objs, MovingSphere *d_list) {
     if(idx >= objs) return;
     
     leafNodes[idx].obj = &d_list[idx];
+    leafNodes[idx].box = d_list[idx].box;
+    leafNodes[idx].name = "l_";
+    leafNodes[idx].id = idx;
 }
 
 __global__ void constructBVH(Node *d_internalNodes, Node *leafNodes, int objs, MovingSphere *d_list) {
@@ -470,23 +472,30 @@ __global__ void constructBVH(Node *d_internalNodes, Node *leafNodes, int objs, M
     Node *current = d_internalNodes + idx;
     
     if(split == first) {
+        //printf("Leaf left %d en %d\n", split, idx);
         current->left = leafNodes + split;
-        (leafNodes+split)->parent = current;
+        (leafNodes + split)->parent = current;
     }
-    else{ 
+    else{
+        //printf("Internal left %d en %d\n", split, idx);
         current->left = d_internalNodes + split;
         (d_internalNodes + split)->parent = current;
+        (d_internalNodes + split)->name = "i_";
+        (d_internalNodes + split)->id = split;
     }
     
     if (split + 1 == last) {
+        //printf("Leaf right %d en %d\n", split+1, idx);
         current->right = leafNodes + split + 1;
         (leafNodes + split + 1)->parent = current;
     }
     else{
+        //printf("Internal right %d en %d\n", split+1, idx);
         current->right = d_internalNodes + split + 1;
         (d_internalNodes + split + 1)->parent = current;
+        (d_internalNodes + split + 1)->name = "i_";
+        (d_internalNodes + split + 1)->id = split+1;
     }
-    
 }
 
 __global__ void boundingBoxBVH(Node *d_internalNodes, Node *d_leafNodes, int objs, int *nodeCounter) {
@@ -494,33 +503,43 @@ __global__ void boundingBoxBVH(Node *d_internalNodes, Node *d_leafNodes, int obj
     int idx = blockIdx.x*blockDim.x + threadIdx.x;
     
     if(idx >= objs) return;
-
-    Node *leaf = d_leafNodes + idx;
-
-    leaf->box = leaf->obj->box;
+    
+    Node *leaf = &d_leafNodes[idx];
     
     Node* current = leaf->parent;
     
     int currentIdx = current - d_internalNodes;
     int res = atomicAdd(nodeCounter + currentIdx, 1);
-	
-	printf("While %d ", idx);
     
-    while (res != 0) {
+    //printf(" ||| Node -> %d, parent => %s%d ||| ", idx, leaf->name, leaf->id);
+    printf("IDX: %d, %d parent %d, res = %d\n",idx, idx, currentIdx, res);
+    while (true) {
         
+        if(res == 0){
+            printf("IDX %d returned\n");
+            return;
+        }
+        if(currentIdx == 0) printf("IDX %d, Rooted\n");
         aabb leftBoundingBox = current->left->box;
         aabb rightBoundingBox = current->right->box;
 
         current->box = surrounding_box(leftBoundingBox, rightBoundingBox);
-
-    
+        
+        if(currentIdx == 0) printf("IDX %d, Rooted\n");
+        
         if (current == d_internalNodes) {
+            printf("IDX %d, Rooted\n");
             return;
         }
         
         current = current->parent;
+        int aux = currentIdx;
         currentIdx = current - d_internalNodes;
         res = atomicAdd(nodeCounter + currentIdx, 1);
+        
+        printf("IDX: %d, %d parent %d, res = %d\n",idx, aux, currentIdx,res);
+        
+        if(currentIdx == 0) printf("IDX %d, Rooted\n");
     }
 }
 
@@ -563,6 +582,8 @@ __global__ void render(Vector3 *fb, int max_x, int max_y, int ns, Camera **cam, 
 
 int main(int argc, char **argv) {
     
+    cudaDeviceReset();
+    
     properties();
 
     cudaEvent_t E0, E1;
@@ -583,6 +604,7 @@ int main(int argc, char **argv) {
 	std::cout << "With " << ns << " iterations for AntiAliasing and depth of " << depth << "." << std::endl;
 	std::cout << "The world have " << n << " spheres." << std::endl;
 
+    
 	/* Seed for CUDA cuRandom */
 	unsigned long long int seed = 1000;
   
@@ -599,15 +621,24 @@ int main(int argc, char **argv) {
     MovingSphere *h_objects;
     Camera **h_cam;
     Node *h_internalNodes;
-    MovingSphere *h_objects_aux;
     
 	int blocks = (nx * ny)/(numGPUs * nthreads);
-	
+    
 	/* Allocate Memory Host */
 	cudaMallocHost((Vector3**)&h_frameBuffer, fb_size);
     cudaMallocHost((MovingSphere**)&h_objects, ob_size);
-    cudaMallocHost((MovingSphere**)&h_objects_aux, ob_size);
     cudaMallocHost((Camera **)&h_cam, cam_size);
+    
+    /* Create world */
+    std::cout << "Creating world..." << std::endl;
+    create_world(h_objects, h_cam, size, nx, ny, dist);
+    std::cout << "Wolrd created" << std::endl;
+    std::cout << size << " esferas" << std::endl;
+    
+    int threads = nthreads;
+    while(size < threads) threads /= 2;
+    int blocks2 = size/(numGPUs * threads);
+    std::cout << "Threads: " << threads << std::endl;
     
     /* Device variables */
     Vector3 *d_frameBuffer;
@@ -617,18 +648,6 @@ int main(int argc, char **argv) {
     Node *d_internalNodes;
     Node *d_leafNodes;
     int *nodeCounter;
-  
-    /* Create world */
-    std::cout << "Creating world..." << std::endl;
-    create_world(h_objects, h_cam, size, nx, ny, dist);
-    std::cout << "Wolrd created" << std::endl;
-    
-    std::cout << size << " esferas" << std::endl;
-    ob_size = size*sizeof(MovingSphere);
-    int threads = nthreads;
-    while(size < threads) threads /= 2;
-    int blocks2 = size/threads;
-    std::cout << "Threads: " << threads << std::endl;
     
     float internal_size = (size-1)*sizeof(Node);
     float leaves_size = size*sizeof(Node);
@@ -668,12 +687,16 @@ int main(int argc, char **argv) {
     boundingBoxBVH<<<blocks2,threads>>>(d_internalNodes, d_leafNodes, size, nodeCounter);
     checkCudaErrors(cudaGetLastError());
     
-    render<<<blocks, nthreads>>>(d_frameBuffer, nx, ny, ns, d_cam, d_internalNodes, d_rand_state, depth);
-    checkCudaErrors(cudaGetLastError());
+    //cudaDeviceSynchronize();
+    
+    //std::cout << "Render.." << std::endl;
+    
+    //render<<<blocks, nthreads>>>(d_frameBuffer, nx, ny, ns, d_cam, d_internalNodes, d_rand_state, depth);
+    //checkCudaErrors(cudaGetLastError());
 
     /* Copiamos del Device al Host*/
-    cudaMemcpy(h_frameBuffer, d_frameBuffer, fb_size, cudaMemcpyDeviceToHost);
-    checkCudaErrors(cudaGetLastError());
+    //cudaMemcpy(h_frameBuffer, d_frameBuffer, fb_size, cudaMemcpyDeviceToHost);
+    //checkCudaErrors(cudaGetLastError());
 
     cudaEventRecord(E1,0);
     checkCudaErrors(cudaGetLastError());

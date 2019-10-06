@@ -1,0 +1,217 @@
+\documentclass[titlepage,10.5pt]{report}
+
+\input{./includes/declarations.tex}
+
+\begin{document}
+
+\iftrue
+\input{./includes/title.tex}
+\newpage
+\tableofcontents*
+\fi
+
+\newpage
+
+\chapter{Presupuesto y sostenibilidad}
+
+En este capítulo trataremos los temas de presupuesto y sostenibilidad. Veremos una descripción detallada de los costes del proyecto, de los recursos tanto materiales como humanos, y un análisis de cómo podrían afectar a nuestro presupuesto los diferentes obstáculos que pueden acaecer en el trascurso del desarrollo. Haremos también una evaluación de la sostenibilidad del proyecto.
+
+El presupuesto puede estar sujeto a modificaciones a lo largo del desarrollo del proyecto.
+
+\section{Presupuesto}
+
+En esta sección veremos como hacer una estimación del presupuesto por tal de poder desarrollar el proyecto. Podemos dividir el presupuesto en dos grandes secciones: \begin{enumerate*}[label=\roman*)] \item Costes directos y \item Costes indirectos
+\end{enumerate*}.
+
+\subsection{Costes directos}
+
+Los costes directos los dividiremos en función de los diferentes tipos de recursos que tenemos en este proyecto: \begin{enumerate*}[label=\roman*)] \item software, \item hardware y \item humanos \end{enumerate*}.
+
+Para el cálculo de la amortización tendremos en consideración que el proyecto tiene una duración aproximada de cinco meses.
+
+\subsubsection{Recursos de Software}
+
+El software que vamos a utilizar en nuestro proyecto es de código libre. Y en caso de necesitar software adicional intentaremos que este sea también de código libre. La Tabla \ref{soft} muestra el coste del software utilizado en el desarrollo.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\textbf{Producto} & \textbf{Precio} & \textbf{Vida útil} & \textbf{Amortización} \\ \hline \hline
+		Ubuntu 18.04 	& 0,00€ & - & 0,00€ \\ \hline
+		\LaTeX\ 		& 0,00€ & - & 0,00€ \\ \hline
+		CUDA 			& 0,00€ & - & 0,00€ \\ \hline
+		OpenMP 			& 0,00€ & - & 0,00€ \\ \hline
+		C++ 			& 0,00€ & - & 0,00€ \\ \hline	\hline
+		Total 			& 0,00€ & - & 0,00€ \\ \hline
+	\end{tabular}
+	\caption{Coste recursos de software}
+	\label{soft}
+\end{table}
+
+\subsubsection{Recursos de Hardware}
+
+La Tabla \ref{hard} muestra el coste del hardware utilizado en el desarrollo.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\textbf{Producto} 	& \textbf{Precio} & \textbf{Vida útil (en años)} & \textbf{Amortización} \\ \hline \hline
+		PC Sobremesa 		& 2210,09€ & 5 &  92,09€\\ \hline
+		Lenovo Legion Y520 	&  900,00€ & 5 &  37,50€ \\ \hline
+		BOADA 				& 3500.00€ & 5 & 145,83€ \\ \hline \hline	
+		Total 				& 6610.09€ & - & 275,42€ \\ \hline
+	\end{tabular}
+	\caption{Coste recursos de hardware}
+	\label{hard}
+\end{table}
+
+En el coste del cluster de docencia, BOADA, no se tienen presente las cuatro tarjetas gráficas NVIDIA Tesla K40c puesto que fueron una donación de \textit{NVIDIA}, por lo tanto su coste es nulo.
+
+\subsubsection{Recursos Humanos}
+
+
+Para cada tarea especificada le identificaremos el rol más adecuado. 
+\begin{itemize}
+	\item \textbf{Responsable del proyecto:} Planificación del proyecto y Fase final.
+	\item \textbf{Desarrollador de software:} Desarrollo de las tres aplicaciones y experimentos.
+	\item \textbf{Técnico informático:} Configuración del sistema.
+\end{itemize}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		\textbf{Categoría} & \textbf{Salario neto €/h} & \textbf{Salario bruto €/h} & \textbf{Horas Totales} & \textbf{Coste estimado} \\ \hline \hline
+		Director de proyecto 	  & 18€/h & 24,30€/h & 80h  & 1944,00€ \\ \hline
+		Responsable de proyecto   & 15€/h & 20,25€/h & 250h & 5062,50€ \\ \hline
+		Desarrollador de software & 13€/h & 17,55€/h & 330h & 5791,50€ \\ \hline
+		Técnico informático 	  & 11€/h & 14,85€/h & 10h  &  148,50€ \\ \hline \hline			
+		Total 					  & - 	  & - 		 & -    & 9590,50€ \\ \hline
+	\end{tabular}
+	\caption{Coste recursos de RRHH}
+	\label{rrhh_1}
+\end{table}
+
+En la Tabla \ref{rrhh_1} podemos observar la relación del sueldo percibido por hora y el número de horas por cada uno de los roles. Para determinar el sueldo se ha consultado el portal web \footnote{\texttt{https://tusalario.es}}.
+
+\subsection{Costes indirectos}
+
+En esta sección tendremos en cuenta los costes que se relacionan con el proyecto de forma indirecta como el derivado del consumo energética y el coste de la red de Internet.
+
+Teniendo presente las diferentes máquinas que se utilizan en el proyecto el consumo de cada una de ellas es el siguiente:
+
+\begin{enumerate}
+	\item \textbf{PC Sobremesa:} 320W.
+	\item \textbf{Lenovo Legion Y520:} 160W.
+	\item \textbf{Cluster docencia BOADA:} 1500W.
+\end{enumerate}
+
+A continuación, en la Tabla \ref{ci_1} podemos observar la relación entre las tareas realizadas y, la máquina utilizada en cada una de ellas.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|}
+	\hline
+	\multirow{2}{*}{\textbf{Máquina}} & \multicolumn{5}{c|}{\textbf{Tareas}} & \textbf{Coste} \\ \cline{2-6} 
+			& Configuración & Planificación & Desarrollo & Experimentos & Fase final & \textbf{Estimado} \\ \hline \hline
+		PC Sobremesa 			& 5h  & 130h & 240h & 30h &	120h & 525h \\ \hline
+		Lenovo Legion Y520 		& 5h  & -	 & -    & 30h &	-	 & 35h\\ \hline
+		BOADA 					& -	  & -	 & -    & 30h &	-	 & 30h\\ \hline
+	\end{tabular}
+	\caption{Horas por tarea y recurso}
+	\label{ci_1}
+\end{table}
+
+Teniendo presentes las horas totales por cada máquina a un precio de 0,1198€/kWh y los demás costes mencionados al inicio de esta sección, el coste indirecto total es:
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\textbf{Máquina} & \textbf{Precio} & \textbf{Unidades} & \textbf{Coste estimado} \\ \hline \hline
+		PC Sobremesa 			& 0,1198€/kWh & 168kWh 	& 20,13€ 	\\ \hline
+		Lenovo Legion Y520 		& 0,1198€/kWh & 5,6kWh 	& 0,67€ 	\\ \hline
+		BOADA 					& 0,1198€/kWh & 45kWh 	& 5,40€ 	\\ \hline 
+		Internet				& 50€		  & 6 meses	& 300,00€ 	\\ \hline \hline
+		Total 					& - 		  & -		& 326,2€	\\ \hline
+	\end{tabular}
+	\caption{Coste de consumo por máquina}
+	\label{ci2}
+\end{table}
+
+\subsection{Costes inesperados}
+
+En caso de alguna desviación en la planificación del proyecto, destinaremos una parte del presupuesto a los contratiempos que puedan surgir.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		\textbf{Categoría} & \textbf{Salario neto €/h} & \textbf{Salario bruto €/h} & \textbf{Horas Totales} & \textbf{Coste estimado} \\ \hline \hline
+		Director de proyecto 	  & 18€/h & 24,30€/h & 20h  &  486,00€  \\ \hline
+		Responsable de proyecto   & 15€/h & 20,25€/h & 10h  &  202,50€  \\ \hline
+		Desarrollador de software & 13€/h & 17,55€/h & 20h  &  351,00€  \\ \hline
+		Técnico informático 	  & 11€/h & 14,85€/h &  2h  &   29,70€  \\ \hline \hline			
+		Total 					  & - 	  & - 		 & -    & 1069,20€  \\ \hline
+	\end{tabular}
+	\caption{Coste inesperados}
+	\label{rrhh_2}
+\end{table}
+
+\subsection{Presupuesto total}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|}
+		\hline
+		\textbf{Concepto} 		& \textbf{Coste estimado} \\ \hline \hline
+		\multicolumn{2}{|c|}{Coste directo}  \\ \hline
+		Software 				&    00,00€  \\
+		Hardware				&  6610,50€  \\ 
+		RRHH 					&  9590,50€  \\ \hline 
+		Coste indirecto			&   326,20€  \\ \hline
+		Coste inesperado		&  1069,20€	 \\ \hline		
+		\textbf{Subtotal}		& 17596,40€  \\ \hline
+		Contingencia (10$\%$) 	&  1759,64€  \\ \hline \hline
+		\textbf{Total}			& 19356,04€  \\ \hline
+	\end{tabular}
+	\caption{Presupuesto total}
+	\label{total}
+\end{table}
+
+\section{Control de gestión}
+
+Con tal de hacer un control presupuestario, al final de cada una de las tareas haremos un recuento de las horas empleadas y el coste del material extra utilizado, si se diera el caso. Con esta información podremos hacer una comparativa con los datos estimados previamente y calcular la desviación.
+
+$$
+	\text{desviación en el coste} = (CE - CR) \cdot HR \footnote{CE = Coste estimado; CR = Coste real;}
+$$
+$$	
+	\text{desviación en el consumo} = (HE - HR) \cdot CE \footnote{HE = Horas estimadas; HR = Horas reales;}
+$$
+
+\section{Sostenibilidad}
+
+\subsection{Impacto ambiental}
+
+El impacto ambiental producido por el presente proyecto no es más que el resultado del consumo de electricidad por parte de las máquinas que utilizamos. Al tratarse de un proyecto experimental sobre un algoritmo en concreto, no estamos creando ningún tipo de producto físico por lo que no se ha planteado el uso de material reciclado o material de proyectos similares anteriores. 
+
+Como hemos comentado en la sección anterior, utilizamos tres máquinas diferentes para realizar los experimentos, pero para el desarrollo íntegro del proyecto solamente estamos utilizando una de ellas. El proyecto se realiza en la máquina que tiene un consumo de 250Wh. Si bien es cierto que no se analizó el impacto ambiental que el presente proyecto pudiera tener para así minimizarlo, teniendo una mayor perspectiva podríamos haber optado por realizar el proyecto en la máquina de menor consumo energético y remitir las otras solamente a los experimentos (que requieren menos horas y por ende menos consumo energético).
+
+Por último, cabe mencionar que el presente proyecto no ofrece ningún tipo de mejora ambiental respecto a proyecto/productos similares. El impacto ambiental que pueda suponer el consumo de electricidad depende exclusivamente del suministrador y no tiene el mismo impacto el uso de energías renovables que el uso de energías fósiles.
+
+\subsection{Impacto económico}
+
+Todos los costes relativos al presente proyecto han sido detallados en la sección anterior de los recursos utilizados, tanto humanos como de software y hardware. A pesar de haber varios roles definidos, estos serán llevados por una sola persona (a excepción del rol de "Director del proyecto"). Esto supone que el coste humano se reduce a solamente dos personas. 
+
+El principal coste económico que observamos en el proyecto es el de hardware. Éste podría reducirse haciendo, quizás, un menor uso de máquinas, pero limitando así los objetivos del proyecto. Es por eso que creemos que el gasto económico es el adecuado.
+
+\subsection{Impacto social}
+
+A título personal, este proyecto me permite adquirir nuevos conocimientos no vistos a lo largo del grado y definir también los pasos a seguir en el futuro, ayudándome a guiar mi futuro profesional y/o académico.
+
+Una vez finalizado el proyecto no tendrá gran trascendencia en la sociedad en general. Como comentamos en capítulos anteriores, este proyecto no propone ninguna alternativa respecto a soluciones existentes sino más bien dar una serie de herramientas al autor de éste para adentrarse en el mundo de la computación gráfica realista. Por lo tanto, es difícil de determinar el impacto social que pueda tener más allá del divulgativo o académico.
+
+\end{document}

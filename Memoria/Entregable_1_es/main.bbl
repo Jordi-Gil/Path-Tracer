@@ -1,5 +1,5 @@
 % $ biblatex auxiliary file $
-% $ biblatex bbl format version 3.0 $
+% $ biblatex bbl format version 2.9 $
 % Do not modify the above lines!
 %
 % This is an auxiliary file used by the 'biblatex' package.
@@ -38,7 +38,7 @@
          giveni={D\bibinitperiod},
       }}%
     }
-    \strng{namehash}{LRBWSMPD1}
+    \strng{namehash}{LRB+1}
     \strng{fullhash}{LRBWSMPD1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
@@ -307,7 +307,7 @@
     }
     \keyw{Bi-directional reflectance,Depth
   buffer,Hidden-surface,Intensity,Non-diffuse reflection,Radiosity}
-    \strng{namehash}{IDSCMFGDP1}
+    \strng{namehash}{IDS+1}
     \strng{fullhash}{IDSCMFGDP1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
@@ -352,7 +352,7 @@
     }
     \keyw{illumination and photorealistic render-,rendering and visualisation
   global}
-    \strng{namehash}{LEPWYD1}
+    \strng{namehash}{LEP+1}
     \strng{fullhash}{LEPWYD1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
@@ -440,7 +440,7 @@
     \keyw{Markov Chain Monte Carlo methods,Metropolis-Hastings algorithm,Monte
   Carlo integration,global illumination,lighting simulation,physically-based
   rendering,radiative heat transfer,variance reduction}
-    \strng{namehash}{VEGLJ1}
+    \strng{namehash}{VE+1}
     \strng{fullhash}{VEGLJ1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
@@ -601,7 +601,7 @@
          giveni={F\bibinitperiod},
       }}%
     }
-    \strng{namehash}{KKDNGHF1}
+    \strng{namehash}{KK+1}
     \strng{fullhash}{KKDNGHF1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
@@ -663,7 +663,7 @@
       }}%
     }
     \keyw{CUDA,OpenCL,Performance Comparison}
-    \strng{namehash}{FJVALSH1}
+    \strng{namehash}{FJ+1}
     \strng{fullhash}{FJVALSH1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
@@ -713,7 +713,7 @@
     }
     \keyw{Computer graphics,Hierarchical data structures,Object
   descriptions,Visible surface algorithms}
-    \strng{namehash}{RSMWT1}
+    \strng{namehash}{RSM+1}
     \strng{fullhash}{RSMWT1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
@@ -803,7 +803,7 @@
       }}%
     }
     \keyw{Bounding volume hierarchies,Ray tracing}
-    \strng{namehash}{KTAT1}
+    \strng{namehash}{KT+1}
     \strng{fullhash}{KTAT1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
@@ -889,7 +889,7 @@
       }}%
     }
     \keyw{I.3.7 [computing methodologies]: computer graphics}
-    \strng{namehash}{HWMWR1}
+    \strng{namehash}{HW+1}
     \strng{fullhash}{HWMWR1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}

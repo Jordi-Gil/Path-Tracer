@@ -3,6 +3,7 @@
 
 #include "MovingSphere.cuh"
 #include "Helper.cuh"
+#include <cstring>
 
 class Node{
 
@@ -20,6 +21,7 @@ public:
   
     aabb box;
     
+    int id;
     char *name;
   
 };
