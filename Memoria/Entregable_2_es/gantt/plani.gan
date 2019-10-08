@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2019-08-01" view-index="0" gantt-divider-location="386" resource-divider-location="300" version="2.8.10" locale="en_US">
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2019-08-01" view-index="0" gantt-divider-location="507" resource-divider-location="300" version="2.8.10" locale="en_US">
     <description/>
     <view zooming-state="default:8" id="gantt-chart">
-        <field id="tpd3" name="Name" width="151" order="0"/>
-        <field id="tpd4" name="Begin date" width="108" order="1"/>
-        <field id="tpd5" name="End date" width="108" order="2"/>
+        <field id="tpd3" name="Name" width="295" order="0"/>
+        <field id="tpd4" name="Begin date" width="100" order="1"/>
+        <field id="tpd5" name="End date" width="93" order="2"/>
         <option id="taskLabelUp" value=""/>
         <option id="taskLabelLeft" value="name"/>
         <option id="color.recent"><![CDATA[#e06d3b #009999 #ff3333 #3333ff #33ff33]]></option>
@@ -114,4 +114,8 @@
     <vacations/>
     <previous/>
     <roles roleset-name="Default"/>
+    <roles>
+        <role id="1" name="Desarrollador"/>
+        <role id="2" name="Técnico Informático"/>
+    </roles>
 </project>

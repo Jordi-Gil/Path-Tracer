@@ -579,6 +579,162 @@
     \field{year}{2019}
   \endentry
 
+  \entry{Karras2012}{inproceedings}{}
+    \name{author}{1}{}{%
+      {{hash=KT}{%
+         family={Karras},
+         familyi={K\bibinitperiod},
+         given={Tero},
+         giveni={T\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{KT1}
+    \strng{fullhash}{KT1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2012}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    A number of methods for constructing bounding volume hierarchies and
+  point-based octrees on the GPU are based on the idea of ordering primitives
+  along a space-filling curve. A major shortcoming with these methods is that
+  they construct levels of the tree sequentially, which limits the amount of
+  parallelism that they can achieve. We present a novel approach that improves
+  scalability by constructing the entire tree in parallel. Our main
+  contribution is an in-place algorithm for constructing binary radix trees,
+  which we use as a building block for other types of trees.%
+    }
+    \field{booktitle}{High-Performance Graphics 2012, HPG 2012 - ACM SIGGRAPH /
+  Eurographics Symposium Proceedings}
+    \verb{doi}
+    \verb 10.2312/EGGH/HPG12/033-037
+    \endverb
+    \field{isbn}{9783905674415}
+    \field{title}{{Maximizing parallelism in the construction of bvhs, octrees,
+  and k-d trees}}
+    \field{year}{2012}
+  \endentry
+
+  \entry{Christensen2018}{article}{}
+    \name{author}{13}{}{%
+      {{hash=CP}{%
+         family={Christensen},
+         familyi={C\bibinitperiod},
+         given={Per},
+         giveni={P\bibinitperiod},
+      }}%
+      {{hash=FJ}{%
+         family={Fong},
+         familyi={F\bibinitperiod},
+         given={Julian},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=SJ}{%
+         family={Shade},
+         familyi={S\bibinitperiod},
+         given={Jonathan},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=WW}{%
+         family={Wooten},
+         familyi={W\bibinitperiod},
+         given={Wayne},
+         giveni={W\bibinitperiod},
+      }}%
+      {{hash=SB}{%
+         family={Schubert},
+         familyi={S\bibinitperiod},
+         given={Brenden},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=KA}{%
+         family={Kensler},
+         familyi={K\bibinitperiod},
+         given={Andrew},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=FS}{%
+         family={Friedman},
+         familyi={F\bibinitperiod},
+         given={Stephen},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=KC}{%
+         family={Kilpatrick},
+         familyi={K\bibinitperiod},
+         given={Charlie},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=RC}{%
+         family={Ramshaw},
+         familyi={R\bibinitperiod},
+         given={Cliff},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=BM}{%
+         family={Bannister},
+         familyi={B\bibinitperiod},
+         given={Marc},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=RB}{%
+         family={Rayner},
+         familyi={R\bibinitperiod},
+         given={Brenton},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=BJ}{%
+         family={Brouillat},
+         familyi={B\bibinitperiod},
+         given={Jonathan},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=LM}{%
+         family={Liani},
+         familyi={L\bibinitperiod},
+         given={Max},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \keyw{Complex scenes,Computergenerated images,Global illumination,Path
+  tracing,Pixar,Production rendering,Ray tracing,RenderMan,Visual effects}
+    \strng{namehash}{CP+1}
+    \strng{fullhash}{CPFJSJWWSBKAFSKCRCBMRBBJLM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2018}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    Pixar's RenderMan renderer is used to render all of Pixar's films and by
+  many film studios to render visual effects for live-action movies. RenderMan
+  started as a scanline renderer based on the Reyes algorithm, and it was
+  extended over the years with ray tracing and several global illumination
+  algorithms. This article describes the modern version of RenderMan, a new
+  architecture for an extensible and programmable path tracer with many
+  features that are essential to handle the fiercely complex scenes in movie
+  production. Users can write their own materials using a bxdf interface and
+  their own light transport algorithms using an integrator interface—or they
+  can use the materials and light transport algorithms provided with RenderMan.
+  Complex geometry and textures are handled with efficient multi-resolution
+  representations, with resolution chosen using path differentials. We trace
+  rays and shade ray hit points in medium-sized groups, which provides the
+  benefits of SIMD execution without excessive memory overhead or data
+  streaming. The path-tracing architecture handles surface, subsurface, and
+  volume scattering. We show examples of the use of path tracing, bidirectional
+  path tracing, VCM, and UPBP light transport algorithms. We also describe our
+  progressive rendering for interactive use and our adaptation of denoising
+  techniques.%
+    }
+    \verb{doi}
+    \verb 10.1145/3182162
+    \endverb
+    \field{issn}{15577368}
+    \field{title}{{RenderMan: An advanced path-tracing architecture for movie
+  rendering}}
+    \field{journaltitle}{ACM Transactions on Graphics}
+    \field{year}{2018}
+  \endentry
+
   \entry{Karimi2010}{article}{}
     \name{author}{3}{}{%
       {{hash=KK}{%
@@ -747,42 +903,6 @@
     \field{title}{{A 3-dimensional representation for fast rendering of complex
   scenes}}
     \field{year}{1980}
-  \endentry
-
-  \entry{Karras2012}{inproceedings}{}
-    \name{author}{1}{}{%
-      {{hash=KT}{%
-         family={Karras},
-         familyi={K\bibinitperiod},
-         given={Tero},
-         giveni={T\bibinitperiod},
-      }}%
-    }
-    \strng{namehash}{KT1}
-    \strng{fullhash}{KT1}
-    \field{labelnamesource}{author}
-    \field{labeltitlesource}{title}
-    \field{labelyear}{2012}
-    \field{labeldatesource}{year}
-    \field{abstract}{%
-    A number of methods for constructing bounding volume hierarchies and
-  point-based octrees on the GPU are based on the idea of ordering primitives
-  along a space-filling curve. A major shortcoming with these methods is that
-  they construct levels of the tree sequentially, which limits the amount of
-  parallelism that they can achieve. We present a novel approach that improves
-  scalability by constructing the entire tree in parallel. Our main
-  contribution is an in-place algorithm for constructing binary radix trees,
-  which we use as a building block for other types of trees.%
-    }
-    \field{booktitle}{High-Performance Graphics 2012, HPG 2012 - ACM SIGGRAPH /
-  Eurographics Symposium Proceedings}
-    \verb{doi}
-    \verb 10.2312/EGGH/HPG12/033-037
-    \endverb
-    \field{isbn}{9783905674415}
-    \field{title}{{Maximizing parallelism in the construction of bvhs, octrees,
-  and k-d trees}}
-    \field{year}{2012}
   \endentry
 
   \entry{Karras2013}{inproceedings}{}

@@ -80,7 +80,7 @@ Recuperando lo expuesto en la introducción, el primer método capaz de renderiz
 
 El algoritmo de \textit{Path Tracing} surge como mejora del \textit{Ray Tracing} con el objetivo de dar una solución a la RE mediante la integración de Monte Carlo. Es gracias a ésto que el algoritmo es capaz, de forma natural, representar efectos como \textit{Motion Blur}, \textit{Ambient Oclussion} e iluminación indirecta sin necesidad de posprocesado. A diferencia del \textit{Ray Tracing}, el \textit{Path Tracing} es indiferente al número de polígonos presentes en la escena. Como hemos mencionado anteriormente, en el primer método se traza un rayo por cada polígono de la escena, en cambio en el método de Kajiya el rayo se traza por pixel. Debido a que cada uno es independiente de los demás, tenemos un algoritmo con una alta capacidad de paralelismo. En consecuencia, podemos explotar la capacidad de concurrencia que nos proporcionan las CPUs y GPUs; y poder así calcular más de un pixel de la imagen al mismo tiempo.
 
-En el presente proyecto trataremos de crear un aplicación que implemente el método de \textit{Path Tracing} para generar imágenes de carácter realista. Dicha aplicación calculará cada pixel de la imagen final de forma secuencia, es decir, uno tras otro y no servirá de base para crear una solución paralela haciendo uso de la GPU y otra haciendo uso de la CPU. El porque de realizar estas tres aplicaciones es para poder realizar un análisis del rendimiento que nuestro algoritmo obtiene explorando en profundidad la capacidad de concurrencia que nos ofrecen hoy día las CPUs y GPUs; y ver así que arquitectura nos ofrece mayor rendimiento.
+En el presente proyecto trataremos de crear un aplicación que implemente el método de \textit{Path Tracing} para generar imágenes de carácter realista. Dicha aplicación calculará cada pixel de la imagen final de forma secuencia, es decir, uno tras otro y nos servirá de base para crear una solución paralela haciendo uso de la GPU y otra haciendo uso de la CPU. El porque de realizar estas tres aplicaciones es para ser capaces de realizar un análisis del rendimiento que nuestro algoritmo obtiene explorando en profundidad la capacidad de concurrencia que nos ofrecen a día de hoy las CPUs y GPUs; y ver así que arquitectura nos ofrece mayor rendimiento.
 
 Como base, partiremos de la implementación propuesta por Peter Shirley en su ''saga'' de libros sobre \textit{Ray Tracing} \citep{ShirleyRTA, ShirleyRTB, ShirleyRTC} para implementar nuestro \textit{Path Tracing}. La idea principal es desarrollar tres aplicaciones (una secuencia, una paralela en CPU y otra paralela en GPU) partiendo de la base que nos presenta Shirley, para poder hacer un análisis que como es el rendimiento de un \textit{Path Traing} explotando la capacidad de concurrencia de una CPU contra la de una GPU.
 
@@ -106,7 +106,11 @@ Aunque este proyecto no tiene la intención de crear un producto, no quiere deci
 
 \section{Justificación}
 
-En la actualidad son muchas las librerías orientadas a la programación en GPU. Tenemos librerías como \texttt{OpenCL} y \texttt{OpenACC}, que nos permiten una mayor portabilidad entre tarjetas gráficas de distintos fabricantes como por ejemplo \texttt{AMD} y \texttt{NVIDIA}. Pero para este proyecto hemos decidido escoger el entorno de \texttt{CUDA} desarrollado por \texttt{NVIDIA} específicamente para sus tarjetas gráficas y aceleradores. Decidimos usar esta API debido a que se trata de software propietario, mejor optimizado para las tarjetas de dicha empresa como bien nos indican Kamran Karimi et. al. \citep{Karimi2010} y Jianbin Fang et. al. \citep{Fang2011} respectivamente en sus artículos científicos, las cuales utilizaremos en este proyecto.
+Como bien hemos indicado en la sección anterior, partiremos de los libros presentados por Peter Shirley y el artículo sobre \textit{Bounding Volume Hierarchy} de Tero Karras para construir nuestras aplicaciones. En este trabajo lo que pretendemos es estudiar como podemos explotar al máximo las diferentes arquitecturas que tenemos en nuestra computador (CPU y GPU) y ver en cual de ellas un método de renderizado de imágenes realistas se comporta de manera más eficiente. No podremos comparar nuestra solución aportada frente otras aplicaciones existentes que implementan también el método de \textit{Path Tracing} en GPU o CPU debido a que éstas contienen una serie de características que en éste trabajo no son posibles de asumir, como por ejemplo \textit{subsurface scatering}. Un ejemplo de aplicación profesional es RenderMan de Pixar Animation Studios \citep{Christensen2018}.
+
+Por esto mismo, realizaremos tres versiones del mismo algoritmo: \begin{enumerate*}[label=\roman*)] \item versión secuencial, \item versión paralela en CPU y \item versión paralela en GPU \end{enumerate*}. De esta forma podremos hacer una comparativa de que arquitectura nos brinda una mayor ventaja para nuestra implementación.
+
+En la actualidad son muchas las librerías orientadas a la programación en GPU. Tenemos librerías como \texttt{OpenCL} y \texttt{OpenACC}, que nos permiten una mayor portabilidad entre tarjetas gráficas de distintos fabricantes como por ejemplo \texttt{AMD} y \texttt{NVIDIA}. Pero para este proyecto hemos decidido escoger el entorno de \texttt{CUDA} desarrollado por \texttt{NVIDIA} específicamente para sus tarjetas gráficas y aceleradores. Decidimos usar esta API debido a que se trata de software propietario, mejor optimizado para las tarjetas de dicha empresa como bien nos indican \citep{Karimi2010} y \citep{Fang2011} respectivamente en sus artículos científicos, las cuales utilizaremos en este proyecto.
 
 Es posible que, citadas tarjetas/aceleradores \texttt{NVIDIA} y, teniendo presente que el proyecto está enfocado al tema de renderizado de gráficos realistas, al lector del presente Trabajo de Fin de Grado le venga a la mente la nueva gama de tarjetas RTX diseñada por \texttt{NVIDIA}. En un inicio se planteó guiar el proyecto hacia el uso de tarjetas con tecnología RTX debido a que éstas han sido diseñadas específicamente para el uso de \textit{Ray Tracing} en tiempo real. Esta idea fue descartada en seguida debido al elevado precio de éstas. El rango de precios de las tarjetas de esta gama oscila entre los 350€ en los modelos más económicos, hasta los varios miles de euros en modelos destinados a entornos profesionales. Finalmente, aunque el autor de dicho trabajo adquirió una tarjeta gráfica NVIDIA RTX 280 Super con 8Gb de memoria, se decidió no guiar el proyecto a utilizarla de forma exclusiva, estudiando y poniendo en práctica las nuevas mejoras que ésta ofrece (RT Cores, Tensor Cores, Mesh Shaders, etc.), frente a otras tarjetas de gamas inferiores que no incluyen, debido al corto plazo de tiempo para el desarrollo. Es por eso que esta tarjeta gráfica será usada para testar nuestra aplicación, pero no en un sentido exclusivo.
 
@@ -197,6 +201,356 @@ El desarrollo de nuestra aplicación se llevará a cabo en C++ haciendo uso de l
 \subsection{Herramientas de seguimiento}
 
 Por tal de llevar a cabo un buen seguimiento del desarrollo del presente proyecto se hará uso de \texttt{git}. Esta herramienta nos permite llevar un control de versiones que nos permitirá consultar versiones anteriores de nuestro código en caso de ser necesario.
+
+\chapter{Planificación temporal}
+
+\section{Planificación y programación}
+
+Este capítulo trata la planificación del proyecto y describe las tareas realizadas, a través de un plan de acción, para cumplir los plazos relativos a la entrega del proyecto. Veremos también los recursos utilizados y se tendrán en cuenta los posibles obstáculos que puedan modificar la planificación.
+
+El proyecto se inició a principios de julio de 2019 con vista a entregarlo el 13 de enero de 2020.
+
+\section{Descripción de tareas y recursos utilizados}
+
+\subsection{Descripción de tareas}
+
+\subsubsection{Estudio de conceptos}
+
+Antes de comenzar el proyecto, fue necesario familiarizarse con los conceptos básicos que rigen nuestro proyecto. Durante el semestre previo hubo un par de reuniones con el director del proyecto para definir el tema en el cual se centraría y poder así encaminarlo. También, el autor del presente proyecto se matriculó de la asignatura de Tarjetas Gráficas y Aceleradores (TGA por sus siglas) para introducirse en la programación en el entorno de \texttt{CUDA} y así agilizar el proceso de desarrollo del proyecto su etapa inicial. Dado que esta tarea se realiza fuera del proyecto sumado a la dificultad de determinar una estimación en horas, no se tendrá en cuenta en la planificación.
+
+\subsubsection{Configuración del sistema}
+
+Antes de entrar propiamente en el desarrollo en si del proyecto, debemos configurar las herramientas necesarias y garantizar su correcto funcionamiento.
+
+Para poder desarrollar el proyecto será necesario tener instalado en nuestros sistemas la API de \texttt{CUDA} con tal de poder crear el programa principal de nuestra aplicación paralela en GPU. Las librerías de \texttt{OpenMP} vienen instaladas por defecto en los sistemas Linux, por lo que no será necesaria una instalación, pero sí comprobar que funcionan correctamente. Por último, haremos uso de una plataforma, \textit{TexMaker}, que nos permita compilar código \LaTeX con tal de generar la documentación requerida.
+
+Esta configuración debe hacerse tanto en el computador de sobremesa como en el portátil. La parte de \textit{CUDA} en el cluster de docencia no será necesario de configurar debido a que ya está previamente configurado por el DAC (Departament d'Arquitectura de Computadors). 
+
+\subsubsection{Planificación del proyecto}
+
+Esta es la tarea que se está desarrollando actualmente. Esencialmente trata sobre todo el contenido cubierto por el curso de GEP. La podemos dividir en tres subtareas:
+
+\begin{enumerate}
+		\item Contextualización y alcance.
+		\item Planificación temporal.
+		\item Presupuesto y sostenibilidad.
+\end{enumerate}
+
+\subsubsection{Desarrollo}
+
+Esta tarea es la más importante de todo el proyecto. Cubre el desarrollo de las aplicaciones, experimentación y documentación de los resultados de cada una de las partes. Dividiremos el desarrollo en cuatro ciclos de 14 días cada uno, coincidiendo con las reuniones programadas con el director del presente proyecto. Cada uno de los ciclos los dividiremos en cuatro tareas:
+
+\begin{itemize}
+
+	\item \textbf{Desarrollo versión secuencial:} Se trata de la versión más básica de todas. Sirve como base para desarrollar tanto la versión paralela en CPU (\texttt{OpenMP}), como la versión paralela en GPU (\texttt{CUDA}).
+	
+	\item \textbf{Desarrollo versión paralela CPU:} Una vez implementada la versión secuencial pasaremos a implementar una versión paralela de ésta haciendo uso de la librería de \texttt{OpenMP}. 
+	
+	\item \textbf{Desarrollo versión paralela GPU:} Una vez implementada la versión secuencia pasaremos a implementar una versión paralela de ésta haciendo uso de \texttt{CUDA}.
+
+	\item \textbf{Experimentación:} Crearemos la misma escena en cada una de las versiones comentadas en los puntos anteriores y analizaremos el rendimiento de ambas, teniendo en cuenta el tiempo de creación requerido para generar la imagen final.
+
+\end{itemize}
+
+Las dependencias entre las diferentes tareas son fáciles de describir. Hasta que no tengamos la versión secuencial no podremos empezar a programar las versiones paralelas de ésta. Tampoco podremos empezar un ciclo nuevo sin haber terminado el anterior.
+
+\subsubsection{Etapa final}
+
+En esta etapa estructuraremos toda la documentación de las etapas anteriores y preparemos la presentación final para la defensa del proyecto.
+
+\subsection{Tabla resumen y Estimación}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|m{5cm}||m{5cm}|}
+		\hline
+		Tarea & Tiempo empleado (horas) \\ \hline \hline
+		Configuración del sistema & 10 \\ \hline
+		Planificación del proyecto & 130 \\ \hline
+		Desarrollo & 330 \\ \hline
+		Etapa final & 120 \\ \hline \hline
+		Total & 590 \\ \hline
+	\end{tabular}
+	\caption{Resumen de horas}
+\end{table}
+
+Con una estimación de 35 horas a la semana (3 horas de lunes a jueves, 10 horas sábados y domingos), y teniendo presentes un total de 18 semanas de trabajo, tenemos: $35h \cdot 18 = 630$ horas en total. Esto nos deja un margen de tiempo para posibles inconvenientes.
+
+\subsection{Recursos utilizados}
+
+\subsubsection{Software}
+
+\begin{itemize}
+	\item Linux, usado en todas las tareas.
+	\item \LaTeX , para realizar la documentación.
+	\item \texttt{C++},\texttt{OpenMP} y \texttt{CUDA}, para el desarrollo de las aplicaciones.
+	\item \texttt{git}, utilizado para el control de versiones y compartir el código entre diferentes entornos (computador de sobremesa y el portátil).
+\end{itemize}
+
+\subsubsection{Hardware}
+
+\begin{itemize}
+	\item PC Sobremesa con las siguientes características: i7 7700 3.6 GHz, NVIDIA GeForce RTX 2080 SUPER, 24GB RAM, 250 SSD, 1TB SSD, 1TB HDD
+	\item PC Portátil con las siguientes características: i7 7700HQ 2.8GHz, NVIDIA GeForce 1050 Mobile, 8GB RAM, 500GB SSD
+	\item Cluster de docencia con las siguientes características: Intel Xeon E5-2620 v2 2.10GHz x2, NVIDIA Tesla K40c x4, 64GB RAM, 1TB x2
+\end{itemize}
+
+\section{Diagrama de Gannt}
+\begin{landscape}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=2]{media/gantt.png}
+		\captionof{figure}{Diagrama de Gannt completo. Fuente: Propia}
+		\label{gantt}
+	\end{figure}
+\end{landscape}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[scale=0.55]{media/gantt_1.png} %%width=.4\linewidth
+  \captionof{figure}{Etapa de gestión. \\ Fuente: Propia}
+  \label{gantt_1}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[scale=0.75]{media/gantt_2.png}
+  \captionof{figure}{Primer ciclo. \\ Fuente: Propia}
+  \label{gantt_2}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[scale=0.75]{media/gantt_3.png} %%width=.4\linewidth
+  \captionof{figure}{Segundo Ciclo. Fuente: Propia}
+  \label{gantt_3}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[scale=0.75]{media/gantt_4.png}
+  \captionof{figure}{Tercer ciclo. \\ Fuente: Propia}
+  \label{gantt_4}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{media/gantt_5.png}
+\captionof{figure}{Cuarto ciclo y etapa final. \\ Fuente: Propia}
+\label{gantt_5}
+\end{figure}
+
+\section{Gestión de riesgos: Planes alternativos y obstáculos}
+
+Como podemos observar en la Figura \ref{gantt_5}, en el cuarto ciclo de desarrollo la tarea de experimentos ocupa más tiempo en comparación a ciclos anteriores. En este caso, hemos sobrestimado la duración de ésta para tener tiempo suficiente de resolver problemas que puedan aparecer, como los definidos en el capítulo anterior (Contextualización y alcance), en el curso del desarrollo del proyecto o experimentos que puedan surgir a última hora.
+
+\chapter{Presupuesto y sostenibilidad}
+
+En este capítulo trataremos los temas de presupuesto y sostenibilidad. Veremos una descripción detallada de los costes del proyecto, de los recursos tanto materiales como humanos, y un análisis de cómo podrían afectar a nuestro presupuesto los diferentes obstáculos que pueden acaecer en el trascurso del desarrollo. Haremos también una evaluación de la sostenibilidad del proyecto.
+
+El presupuesto puede estar sujeto a modificaciones a lo largo del desarrollo del proyecto.
+
+\section{Presupuesto}
+
+En esta sección veremos como hacer una estimación del presupuesto por tal de poder desarrollar el proyecto. Podemos dividir el presupuesto en dos grandes secciones: \begin{enumerate*}[label=\roman*)] \item Costes directos y \item Costes indirectos
+\end{enumerate*}.
+
+\subsection{Costes directos}
+
+Los costes directos los dividiremos en función de los diferentes tipos de recursos que tenemos en este proyecto: \begin{enumerate*}[label=\roman*)] \item software, \item hardware y \item humanos \end{enumerate*}.
+
+Para el cálculo de la amortización tendremos en consideración que el proyecto tiene una duración aproximada de cinco meses.
+
+\subsubsection{Recursos de Software}
+
+El software que vamos a utilizar en nuestro proyecto es de código libre. Y en caso de necesitar software adicional intentaremos que este sea también de código libre. La Tabla \ref{soft} muestra el coste del software utilizado en el desarrollo.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\textbf{Producto} & \textbf{Precio} & \textbf{Vida útil} & \textbf{Amortización} \\ \hline \hline
+		Ubuntu 18.04 	& 0,00€ & - & 0,00€ \\ \hline
+		\LaTeX\ 		& 0,00€ & - & 0,00€ \\ \hline
+		CUDA 			& 0,00€ & - & 0,00€ \\ \hline
+		OpenMP 			& 0,00€ & - & 0,00€ \\ \hline
+		C++ 			& 0,00€ & - & 0,00€ \\ \hline	\hline
+		Total 			& 0,00€ & - & 0,00€ \\ \hline
+	\end{tabular}
+	\caption{Coste recursos de software}
+	\label{soft}
+\end{table}
+
+\subsubsection{Recursos de Hardware}
+
+La Tabla \ref{hard} muestra el coste del hardware utilizado en el desarrollo.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\textbf{Producto} 	& \textbf{Precio} & \textbf{Vida útil (en años)} & \textbf{Amortización} \\ \hline \hline
+		PC Sobremesa 		& 2210,09€ & 5 &  92,09€\\ \hline
+		Lenovo Legion Y520 	&  900,00€ & 5 &  37,50€ \\ \hline
+		BOADA 				& 3500.00€ & 5 & 145,83€ \\ \hline \hline	
+		Total 				& 6610.09€ & - & 275,42€ \\ \hline
+	\end{tabular}
+	\caption{Coste recursos de hardware}
+	\label{hard}
+\end{table}
+
+En el coste del cluster de docencia, BOADA, no se tienen presente las cuatro tarjetas gráficas NVIDIA Tesla K40c puesto que fueron una donación de \textit{NVIDIA}, por lo tanto su coste es nulo.
+
+\subsubsection{Recursos Humanos}
+
+
+Para cada tarea especificada le identificaremos el rol más adecuado. 
+\begin{itemize}
+	\item \textbf{Responsable del proyecto:} Planificación del proyecto y Fase final.
+	\item \textbf{Desarrollador de software:} Desarrollo de las tres aplicaciones y experimentos.
+	\item \textbf{Técnico informático:} Configuración del sistema.
+\end{itemize}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		\textbf{Categoría} & \textbf{Salario neto €/h} & \textbf{Salario bruto €/h} & \textbf{Horas Totales} & \textbf{Coste estimado} \\ \hline \hline
+		Director de proyecto 	  & 18€/h & 24,30€/h & 80h  & 1944,00€ \\ \hline
+		Responsable de proyecto   & 15€/h & 20,25€/h & 250h & 5062,50€ \\ \hline
+		Desarrollador de software & 13€/h & 17,55€/h & 330h & 5791,50€ \\ \hline
+		Técnico informático 	  & 11€/h & 14,85€/h & 10h  &  148,50€ \\ \hline \hline			
+		Total 					  & - 	  & - 		 & 670h  & 9590,50€ \\ \hline
+	\end{tabular}
+	\caption{Coste recursos de RRHH}
+	\label{rrhh_1}
+\end{table}
+
+En la Tabla \ref{rrhh_1} podemos observar la relación del sueldo percibido por hora y el número de horas por cada uno de los roles. Para determinar el sueldo se ha consultado el portal web \footnote{\texttt{https://tusalario.es}}.
+
+\subsection{Costes indirectos}
+
+En esta sección tendremos en cuenta los costes que se relacionan con el proyecto de forma indirecta como el derivado del consumo energética y el coste de la red de Internet.
+
+Teniendo presente las diferentes máquinas que se utilizan en el proyecto el consumo de cada una de ellas es el siguiente:
+
+\begin{enumerate}
+	\item \textbf{PC Sobremesa:} 320W.
+	\item \textbf{Lenovo Legion Y520:} 160W.
+	\item \textbf{Cluster docencia BOADA:} 1500W.
+\end{enumerate}
+
+A continuación, en la Tabla \ref{ci_1} podemos observar la relación entre las tareas realizadas y, la máquina utilizada en cada una de ellas.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|}
+	\hline
+	\multirow{2}{*}{\textbf{Máquina}} & \multicolumn{5}{c|}{\textbf{Tareas}} & \textbf{Coste} \\ \cline{2-6} 
+			& Configuración & Planificación & Desarrollo & Experimentos & Fase final & \textbf{Estimado} \\ \hline \hline
+		PC Sobremesa 			& 5h  & 130h & 240h & 30h &	120h & 525h \\ \hline
+		Lenovo Legion Y520 		& 5h  & -	 & -    & 30h &	-	 & 35h\\ \hline
+		BOADA 					& -	  & -	 & -    & 30h &	-	 & 30h\\ \hline
+	\end{tabular}
+	\caption{Horas por tarea y recurso}
+	\label{ci_1}
+\end{table}
+
+Teniendo presentes las horas totales por cada máquina a un precio de 0,1198€/kWh y los demás costes mencionados al inicio de esta sección, el coste indirecto total es:
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\textbf{Máquina} & \textbf{Precio} & \textbf{Unidades} & \textbf{Coste estimado} \\ \hline \hline
+		PC Sobremesa 			& 0,1198€/kWh & 168kWh 	& 20,13€ 	\\ \hline
+		Lenovo Legion Y520 		& 0,1198€/kWh & 5,6kWh 	& 0,67€ 	\\ \hline
+		BOADA 					& 0,1198€/kWh & 45kWh 	& 5,40€ 	\\ \hline 
+		Internet				& 50€		  & 6 meses	& 300,00€ 	\\ \hline \hline
+		Total 					& - 		  & -		& 326,2€	\\ \hline
+	\end{tabular}
+	\caption{Coste de consumo por máquina}
+	\label{ci2}
+\end{table}
+
+\subsection{Costes inesperados}
+
+En caso de alguna desviación en la planificación del proyecto, destinaremos una parte del presupuesto a los contratiempos que puedan surgir.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		\textbf{Categoría} & \textbf{Salario neto €/h} & \textbf{Salario bruto €/h} & \textbf{Horas Totales} & \textbf{Coste estimado} \\ \hline \hline
+		Director de proyecto 	  & 18€/h & 24,30€/h & 20h  &  486,00€  \\ \hline
+		Responsable de proyecto   & 15€/h & 20,25€/h & 10h  &  202,50€  \\ \hline
+		Desarrollador de software & 13€/h & 17,55€/h & 20h  &  351,00€  \\ \hline
+		Técnico informático 	  & 11€/h & 14,85€/h &  2h  &   29,70€  \\ \hline \hline			
+		Total 					  & - 	  & - 		 & -    & 1069,20€  \\ \hline
+	\end{tabular}
+	\caption{Coste inesperados}
+	\label{rrhh_2}
+\end{table}
+
+\subsection{Presupuesto total}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|}
+		\hline
+		\textbf{Concepto} 		& \textbf{Coste estimado} \\ \hline \hline
+		\multicolumn{2}{|c|}{Coste directo}  \\ \hline
+		Software 				&    00,00€  \\
+		Hardware				&  6610,50€  \\ 
+		RRHH 					&  9590,50€  \\ \hline 
+		Coste indirecto			&   326,20€  \\ \hline
+		Coste inesperado		&  1069,20€	 \\ \hline		
+		\textbf{Subtotal}		& 17596,40€  \\ \hline
+		Contingencia (10$\%$) 	&  1759,64€  \\ \hline \hline
+		\textbf{Total}			& 19356,04€  \\ \hline
+	\end{tabular}
+	\caption{Presupuesto total}
+	\label{total}
+\end{table}
+
+\section{Control de gestión}
+
+Con tal de hacer un control presupuestario, al final de cada una de las tareas haremos un recuento de las horas empleadas y el coste del material extra utilizado, si se diera el caso. Con esta información podremos hacer una comparativa con los datos estimados previamente y calcular la desviación.
+
+$$
+	\text{desviación en el coste} = (CE - CR) \cdot HR \footnote{CE = Coste estimado; CR = Coste real;}
+$$
+$$	
+	\text{desviación en el consumo} = (HE - HR) \cdot CE \footnote{HE = Horas estimadas; HR = Horas reales;}
+$$
+
+\section{Sostenibilidad}
+
+\subsection{Impacto ambiental}
+
+El impacto ambiental producido por el presente proyecto no es más que el resultado del consumo de electricidad por parte de las máquinas que utilizamos. Al tratarse de un proyecto experimental sobre un algoritmo en concreto, no estamos creando ningún tipo de producto físico por lo que no se ha planteado el uso de material reciclado o material de proyectos similares anteriores.
+
+En la Tabla \ref{rrhh_1} podemos observar que el total de horas que concierne a los recursos humanos son de 670h. Considerando que una persona en su rutina habitual tiene un consumo de 0,1kWh, el consumo total es de $0,1kWh \cdot 670h = 67kWh$.
+
+Como hemos comentado en la sección anterior, utilizamos tres máquinas diferentes para realizar los experimentos, pero para el desarrollo íntegro del proyecto solamente estamos utilizando una de ellas. El proyecto se realiza en la máquina que tiene un consumo de 250W, teniendo en cuenta las horas utilizadas por esta máquina, según vemos en la Tabla \ref{ci_1}, el consumo total es de $0,25kWh \cdot 525h = 131,25kWh$. Si bien es cierto que no se analizó el impacto ambiental que el presente proyecto pudiera tener para así poder minimizarlo, ahora, teniendo una mayor perspectiva podríamos haber optado por realizar el proyecto en la máquina de menor consumo energético y remitir las otras solamente a los experimentos (que requieren menos horas de trabajo y por ende un menor consumo energético).
+
+Por último, cabe mencionar que el presente proyecto no ofrece ningún tipo de mejora ambiental respecto a proyecto/productos similares. El impacto ambiental que pueda suponer el consumo de electricidad depende exclusivamente del suministrador y no tiene el mismo impacto el uso de energías renovables que el uso de energías fósiles.
+
+\subsection{Impacto económico}
+
+Todos los costes relativos al presente proyecto han sido detallados en la sección anterior de los recursos utilizados, tanto humanos como de software y hardware. A pesar de haber varios roles definidos, estos serán llevados por una sola persona (a excepción del rol de "Director del proyecto"). Esto supone que el coste humano se reduce a solamente dos personas. 
+
+El principal coste económico que observamos en el proyecto es el de hardware. Éste podría reducirse haciendo, quizás, un menor uso de máquinas, pero limitando así los objetivos del proyecto. Es por eso que creemos que el gasto económico es el adecuado.
+
+\subsection{Impacto social}
+
+A título personal, este proyecto me permite adquirir nuevos conocimientos no vistos a lo largo del grado y definir también los pasos a seguir en el futuro, ayudándome a guiar mi futuro profesional y/o académico.
+
+Una vez finalizado el proyecto no tendrá gran trascendencia en la sociedad en general. Como comentamos en capítulos anteriores, este proyecto no propone ninguna alternativa respecto a soluciones existentes sino más bien dar una serie de herramientas al autor de éste para adentrarse en el mundo de la computación gráfica realista. Por lo tanto, es difícil de determinar el impacto social que pueda tener más allá del divulgativo o académico.
 
 \newpage
 \nocite{*}
