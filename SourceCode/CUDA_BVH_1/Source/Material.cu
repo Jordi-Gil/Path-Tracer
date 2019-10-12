@@ -37,6 +37,8 @@ __device__ Vector3 random_in_unit_sphere(curandState *random){
 
 __device__ bool Lambertian::scatter(const Ray& r_in, const hit_record &rec, Vector3 &attenuation, Ray& scattered, curandState *random) const {
     
+	printf("Lambertian");
+	
     Vector3 target = rec.point + rec.normal + random_in_unit_sphere(random);
     
     scattered = Ray(rec.point, target-rec.point);
@@ -48,6 +50,8 @@ __device__ bool Lambertian::scatter(const Ray& r_in, const hit_record &rec, Vect
 
 __device__ bool Metal::scatter(const Ray& r_in, const hit_record& rec, Vector3& attenuation, Ray& scattered, curandState *random) const {
     
+	printf("Metal");
+	
     Vector3 reflected = reflect( unit_vector( r_in.direction()), rec.normal);
     
     scattered = Ray(rec.point, reflected + fuzz*random_in_unit_sphere(random));
@@ -59,6 +63,8 @@ __device__ bool Metal::scatter(const Ray& r_in, const hit_record& rec, Vector3& 
 
 __device__ bool Dielectric::scatter(const Ray& r_in, const hit_record& rec, Vector3& attenuation, Ray& scattered, curandState *random) const{
     
+	printf("Dielectric");
+	
     Vector3 outward_normal;
     Vector3 reflected = reflect(r_in.direction(), rec.normal);
     

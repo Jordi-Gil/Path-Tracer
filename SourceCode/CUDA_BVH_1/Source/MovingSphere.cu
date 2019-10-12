@@ -13,6 +13,8 @@ __host__ __device__ MovingSphere::MovingSphere(Vector3 cen0, Vector3 cen1, float
 
 __host__ __device__ bool MovingSphere::hit(const Ray& r, float t_min, float t_max, hit_record& rec) const{
   
+	printf("Hit sphere");
+  
   Vector3 oc = r.origin() - get_center(r.time());
   float a = dot(r.direction(), r.direction());
   float b = dot(oc, r.direction());
@@ -25,7 +27,8 @@ __host__ __device__ bool MovingSphere::hit(const Ray& r, float t_min, float t_ma
       rec.t = temp;
       rec.point = r.point_at_parameter(rec.t);
       rec.normal = (rec.point - get_center(r.time())) / radius;
-      rec.mat_ptr = this->mat_ptr;
+      rec.mat_ptr = mat_ptr;
+	  printf("Material hit %s", mat_ptr->name);
       return true;
     }
     
@@ -34,7 +37,8 @@ __host__ __device__ bool MovingSphere::hit(const Ray& r, float t_min, float t_ma
       rec.t = temp;
       rec.point = r.point_at_parameter(rec.t);
       rec.normal = (rec.point - get_center(r.time())) / radius;
-      rec.mat_ptr = this->mat_ptr;
+      rec.mat_ptr = mat_ptr;
+	  printf("Material hit %s", mat_ptr->name);
       return true;
     }
   }

@@ -71,10 +71,17 @@ Otros métodos que nos permiten generar imágenes realistas a partir de calcular
 
 Durante los estudios del grado, son varias las asignaturas dedicadas a la computación gráfica. En estas asignaturas se nos presentan los métodos de renderización realistas. Pero más allá de la introducción teórica a éstos, nunca se llegan a poner en práctica. De aquí nace la idea de realizar el presente proyecto, poder profundizar más en el tema de renderización realistas y así crear un aplicación en función a lo aprendido. Se pondrán también en práctica otros aspectos de la informática vistas en otras asignaturas como, por ejemplo, la creación de aplicaciones paralelas tanto en CPU como en GPU.
 
-Como hemos indicado en la sección anterior, la renderización de imágenes realistas es un área de gran interés en el campo de la computación gráfica. Uno de los principales objetivos de ésta es ser capaces de renderizar imágenes indistinguibles de las del mundo real como, por ejemplo, fotografías. Siguiendo estas coordenadas, poder reproducir el comportamiento de la luz en un entorno virtual supone una tarea una importancia capital. Es primordial tener presente la iluminación global de una escena para poder obtener un alto grado de realismo. La iluminación global de una escena se compone de: \begin{enumerate*}[label=\roman*)] \item luz directa \label{item:dl}, \item luz indirecta \label{item:il} \end{enumerate*}.
+Como hemos indicado en la sección anterior, la renderización de imágenes realistas es un área de gran interés en el campo de la computación gráfica. Uno de los principales objetivos de ésta es ser capaces de renderizar imágenes indistinguibles de las del mundo real como, por ejemplo, fotografías. Siguiendo estas coordenadas, poder reproducir el comportamiento de la luz en un entorno virtual supone una tarea una importancia capital. Es primordial tener presente la iluminación global de una escena para poder obtener un alto grado de realismo. La iluminación global de una escena se compone de: \begin{enumerate*}[label=\roman*)] \item iluminación directa \label{item:dl}, \item iluminación indirecta \label{item:il} \end{enumerate*}. En la Figura \ref{globalil} podemos apreciar una representación gráfica de ambos tipos de iluminación.
 
-\ref{item:dl} La luz directa es aquella que incide en un punto desde el foco de luz. \\
-\ref{item:il} La luz indirecta es aquella que incide en un punto proveniente de la luz que rebota en otros puntos de la escena.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=0.45]{media/shad2-globalillum3.png}
+	\caption{Ejemplo de \textit{Iluminación directa e Iluminación indirecta}. Fuente: ScratchPixel}
+	\label{globalil}
+\end{figure}
+
+\ref{item:dl} La iluminación directa es aquella que incide en un punto desde el foco de luz. \\
+\ref{item:il} La iluminación indirecta es aquella que incide en un punto proveniente de la luz que rebota en otros puntos de la escena.
 
 Recuperando lo expuesto en la introducción, el primer método capaz de renderizar imágenes realistas fue el \textit{Ray Tracing}, basado en la técnica de \textit{Ray Casting} de trazar rayos desde el observador a todos los pixeles de la imagen. La gran novedad respecto al algoritmo presentado por \citep{Appel1968} es la incorporación de la recursividad. Cuando un rayo impacta contra un superficie puede generar tres tipos de rayos nuevos: \begin{enumerate*}[label=\roman*)] \item rayo de reflexión \label{ray:reflected}, \item rayo de refracción y \item rayo de sombra \end{enumerate*}. Al trazar los rayos nuevos somos capaces de conseguir efectos como reflejos, sombras, etc. debido a que para calcular el color estamos teniendo en cuenta como los demás objetos de la escena se afectan entre si. Una gran desventaja de este método es la dependencia que éste tiene respecto a los polígonos de la escena; a más compleja es, más ineficiente será. A pesar de ofrecernos un alto grado de realismo al ser capaz de tratar con precisión efectos ópticos como la refracción, reflexión, los resultados obtenidos en una imagen renderizada mediante \textit{Ray Tracing} no son necesariamente foto-realistas. Para conseguir renderizar imágenes foto-realistas debemos aproximar la RE, un buen ejemplo de ello es el método de \textit{Path Tracing} presentado por \citep{Kajiya1986}.
 
@@ -84,7 +91,7 @@ En el presente proyecto trataremos de crear un aplicación que implemente el mé
 
 Como base, partiremos de la implementación propuesta por Peter Shirley en su ''saga'' de libros sobre \textit{Ray Tracing} \citep{ShirleyRTA, ShirleyRTB, ShirleyRTC} para implementar nuestro \textit{Path Tracing}. La idea principal es desarrollar tres aplicaciones (una secuencia, una paralela en CPU y otra paralela en GPU) partiendo de la base que nos presenta Shirley, para poder hacer un análisis que como es el rendimiento de un \textit{Path Traing} explotando la capacidad de concurrencia de una CPU contra la de una GPU.
 
-No solo nos centraremos en el apartado de renderizado, aunque se trata de la trama central de este proyecto, sino que estudiaremos también que técnicas de aceleración son comúnmente utilizadas para tratar de mejorar al máximo nuestro algoritmo. Es por ellos que veremos también cual es la mejor manera de representar de forma interna la escena que queremos renderizar siguiendo la idea que nos presenta \citep{Karras2012} en su artículo.
+No solo nos centraremos en el apartado de renderizado, aunque se trata de la trama central de este proyecto, sino que estudiaremos también que técnicas de aceleración son comúnmente utilizadas para tratar de mejorar al máximo nuestro algoritmo. Es por ello que veremos también cual es la mejor manera de representar de forma interna la escena que queremos renderizar siguiendo la idea que nos presenta \citep{Karras2012} en su artículo.
 
 La forma en que representemos nuestra escena tendrá un gran impacto a la hora de calcular el color de la imagen final. Como hemos comentado, la base del método es trazar rayos por la escena para calcular el color de cada pixel. Si nuestra representación de la escena consiste en almacenar todos los objetos en una estructura de datos de tipo lista o vector ordenados por orden de creación, a la hora de calcular un punto de la imagen en el peor caso estaremos recorriendo todo el conjunto de polígonos de la escena para determinar el color final. Tratar de renderizar una escena que, muy posiblemente, esté compuesta de millones de polígonos puede traducirse en horas y horas de procesado. Es por eso que haremos uso de una estructura de datos aceleradora que nos permita representar la escena de una forma más inteligente, para que a la hora de determinar si un rayo impacta o no un polígono se determine de la forma más rápida posible.
 
@@ -106,13 +113,13 @@ Aunque este proyecto no tiene la intención de crear un producto, no quiere deci
 
 \section{Justificación}
 
-Como bien hemos indicado en la sección anterior, partiremos de los libros presentados por Peter Shirley y el artículo sobre \textit{Bounding Volume Hierarchy} de Tero Karras para construir nuestras aplicaciones. En este trabajo lo que pretendemos es estudiar como podemos explotar al máximo las diferentes arquitecturas que tenemos en nuestra computador (CPU y GPU) y ver en cual de ellas un método de renderizado de imágenes realistas se comporta de manera más eficiente. No podremos comparar nuestra solución aportada frente otras aplicaciones existentes que implementan también el método de \textit{Path Tracing} en GPU o CPU debido a que éstas contienen una serie de características que en éste trabajo no son posibles de asumir, como por ejemplo \textit{subsurface scatering}. Un ejemplo de aplicación profesional es RenderMan de Pixar Animation Studios \citep{Christensen2018}.
+Como bien hemos indicado en la sección anterior, partiremos de los libros presentados por Peter Shirley y el artículo sobre \textit{Bounding Volume Hierarchy} de Tero Karras para construir nuestras aplicaciones. En este trabajo lo que pretendemos es estudiar como podemos explotar al máximo las diferentes arquitecturas que tenemos en nuestra computadora (CPU y GPU) y ver en cual de ellas un método de renderizado de imágenes realistas se comporta de manera más eficiente. No podremos comparar nuestra solución aportada frente otras aplicaciones existentes que implementan también el método de \textit{Path Tracing} en GPU o CPU. En el ámbito de comparación de eficiencia en ciertas partes de la aplicación, como por ejemplo comprar el rendimiento del cálculo de la imagen final dada la representación de una escena, es difícil de comparar con aplicaciones que podrían ser similares debido que éstas están desarrolladas por expertos en la materia con una amplía experiencia y una serie de conocimientos que el autor del presente proyecto no tiene. Este conocimiento y experiencia les permite aplicar una serie de técnicas de optimización que pueden aumentar el rendimiento de forma notable. En el ámbito del realismo que podemos conseguir respecto el que consiguen otras aplicaciones también es complicado de comparar. La mayoría de aplicaciones que implementan un \textit{Path Tracing} no sólo implementan dicho método, sino que también implementan mucho más efectos, como por ejemplo \textit{subsurface scatering}. En el presente proyecto es imposible lograr una aplicación de características similares, primero por la falta de conocimiento o experiencia en el campo de renderización realista y segundo por el tiempo. Normalmente, un proyecto de estas dimensiones involucran a varios expertos en la materia y se disponen de más tiempo de realización. Un ejemplo de aplicación profesional es RenderMan de Pixar Animation Studios \citep{Christensen2018}.
 
-Por esto mismo, realizaremos tres versiones del mismo algoritmo: \begin{enumerate*}[label=\roman*)] \item versión secuencial, \item versión paralela en CPU y \item versión paralela en GPU \end{enumerate*}. De esta forma podremos hacer una comparativa de que arquitectura nos brinda una mayor ventaja para nuestra implementación.
+Por esto mismo, en el presente proyecto realizaremos tres versiones del mismo algoritmo: \begin{enumerate*}[label=\roman*)] \item versión secuencial, \item versión paralela en CPU y \item versión paralela en GPU \end{enumerate*}. De esta forma podremos hacer una comparativa de que arquitectura nos brinda una mayor ventaja para nuestra implementación.
 
 En la actualidad son muchas las librerías orientadas a la programación en GPU. Tenemos librerías como \texttt{OpenCL} y \texttt{OpenACC}, que nos permiten una mayor portabilidad entre tarjetas gráficas de distintos fabricantes como por ejemplo \texttt{AMD} y \texttt{NVIDIA}. Pero para este proyecto hemos decidido escoger el entorno de \texttt{CUDA} desarrollado por \texttt{NVIDIA} específicamente para sus tarjetas gráficas y aceleradores. Decidimos usar esta API debido a que se trata de software propietario, mejor optimizado para las tarjetas de dicha empresa como bien nos indican \citep{Karimi2010} y \citep{Fang2011} respectivamente en sus artículos científicos, las cuales utilizaremos en este proyecto.
 
-Es posible que, citadas tarjetas/aceleradores \texttt{NVIDIA} y, teniendo presente que el proyecto está enfocado al tema de renderizado de gráficos realistas, al lector del presente Trabajo de Fin de Grado le venga a la mente la nueva gama de tarjetas RTX diseñada por \texttt{NVIDIA}. En un inicio se planteó guiar el proyecto hacia el uso de tarjetas con tecnología RTX debido a que éstas han sido diseñadas específicamente para el uso de \textit{Ray Tracing} en tiempo real. Esta idea fue descartada en seguida debido al elevado precio de éstas. El rango de precios de las tarjetas de esta gama oscila entre los 350€ en los modelos más económicos, hasta los varios miles de euros en modelos destinados a entornos profesionales. Finalmente, aunque el autor de dicho trabajo adquirió una tarjeta gráfica NVIDIA RTX 280 Super con 8Gb de memoria, se decidió no guiar el proyecto a utilizarla de forma exclusiva, estudiando y poniendo en práctica las nuevas mejoras que ésta ofrece (RT Cores, Tensor Cores, Mesh Shaders, etc.), frente a otras tarjetas de gamas inferiores que no incluyen, debido al corto plazo de tiempo para el desarrollo. Es por eso que esta tarjeta gráfica será usada para testar nuestra aplicación, pero no en un sentido exclusivo.
+Es posible que, citadas tarjetas/aceleradores \texttt{NVIDIA} y, teniendo presente que el proyecto está enfocado al tema de renderizado de gráficos realistas, al lector del presente Trabajo de Fin de Grado le venga a la mente la nueva gama de tarjetas RTX diseñadas por \texttt{NVIDIA}. En un inicio se planteó guiar el proyecto hacia el uso de tarjetas con tecnología RTX debido a que éstas han sido diseñadas específicamente para el uso de \textit{Ray Tracing} en tiempo real. Pero esta idea fue descartada en seguida debido al elevado precio de éstas. El rango de precios de las tarjetas de esta gama oscila entre los 350€ en los modelos más económicos, hasta los varios miles de euros en modelos destinados a entornos profesionales. Finalmente, aunque el autor de dicho trabajo adquirió una tarjeta gráfica NVIDIA RTX 280 Super con 8Gb de memoria, se decidió no guiar el proyecto a utilizarla de forma exclusiva, estudiando y poniendo en práctica las nuevas mejoras que ésta ofrece (RT Cores, Tensor Cores, Mesh Shaders, etc.), frente a otras tarjetas de gamas inferiores que no incluyen, debido al corto plazo de tiempo para el desarrollo. Es por eso que esta tarjeta gráfica será usada para testar nuestra aplicación, pero no en un sentido exclusivo. Enfocar el trabajo a explorar en profundidad las nuevas características introducidas no fue posible, hubiera significado reestructurar todo el proyecto desde cero. Esto hubiera supuesto una gran perdida del tiempo invertido en adquirir los conocimientos necesarios para realizar el presente proyecto, es por eso que no se decidió enfocar el trabajo en el gran potencial que nos brinda la tecnología RTX. Eso no quiere decir que no podamos utilizarla. Al ser una tarjeta gráfica de gama alta, el número de cores que tiene respecto a la GTX1050 (gama media) nos permitirá analizar cuan mejor es y si merece o no la pena, en relación coste-potencia, su uso en aplicaciones de este tipo.
 
 Como hemos comentado al inicio de esta sección, \texttt{CUDA} es un API que está muy bien optimizada para hardware de \texttt{NVIDIA}. Esto nos da un punto a favor debido a que la aplicación que vamos a desarrollar será probada en diferentes entornos que utilizan la tecnología de NVIDIA:
 
@@ -145,7 +152,7 @@ En la Figura \ref{Esquema} podemos observar un esquema, a grandes trazos, de cua
 
 \subsubsection{Objetivos principales}
 
-Son varios los objetivos principales que nos proponemos en este proyecto. El primero se trata de desarrollar tres aplicaciones (secuencia, paralela en CPU y paralela en GPU) que dada una escena la renderice mediante el método de \textit{Path Tracing} y analizar el rendimiento que éste nos ofrece entre las diferentes versiones con la intención de analizar que arquitectura nos brinda una mayor rendimiento en este tipo de aplicaciones.
+Son varios los objetivos principales que nos proponemos en este proyecto. El primero se trata de desarrollar tres aplicaciones (secuencial, paralela en CPU y paralela en GPU) que dada una escena la renderice mediante el método de \textit{Path Tracing} y analizar el rendimiento que éste nos ofrece entre las diferentes versiones con la intención de analizar que arquitectura nos brinda una mayor rendimiento en este tipo de aplicaciones.
 
 Un segundo objetivo principal que nos proponemos en nuestro proyecto es estudiar y poner en práctica cuales son las mejores prácticas en la gestión de memoria en una aplicación paralela se refiere. Lo identificamos como un objetivo principal por que una mala gestión de ésta puede suponer un gran obstáculo en el desarrollo del proyecto.
 
@@ -181,7 +188,7 @@ En esta sección veremos el conjunto de herramientas que se usarán a lo largo d
 
 \subsection{Metodología}
 
-La metodología de trabajo que se seguirá en el presente proyecto es la conocida como \textit{agile}. Esta metodología se caracteriza por se iterativa. Es decir, en cada iteración hay una serie de tareas y cuando se finalizan estas se inicia una nueva iteración, conocidas como \textit{sprint}. En nuestro proyecto cada iteración del ciclo de vida corresponderá con el inicio de una reunión con el director del proyecto hasta el inicio de la siguiente. En cada reunión se especificará una serie de objetivos, que deberán cumplirse de cara a la siguiente vista y en la que se evaluarán cuales han sido cumplidos y cuales no. En la Figura \ref{agile} podemos observar un esquema representativo del funcionamiento de esta metodología.
+La metodología de trabajo que se seguirá en el presente proyecto es la conocida como \textit{agile}. Esta metodología se caracteriza por se iterativa. Es decir, en cada iteración hay una serie de tareas y cuando se finalizan estas se inicia una nueva iteración, conocidas como \textit{sprint}. En nuestro proyecto cada iteración del ciclo de vida corresponderá con el inicio de una reunión con el director del proyecto hasta el inicio de la siguiente vista. En cada reunión se especificará una serie de objetivos, que deberán cumplirse de cara a la siguiente vista y en la que se evaluarán cuales han sido cumplidos y cuales no. En la Figura \ref{agile} podemos observar un esquema representativo del funcionamiento de esta metodología.
 
 \begin{figure}[ht]
 	\centering
@@ -295,58 +302,47 @@ Con una estimación de 35 horas a la semana (3 horas de lunes a jueves, 10 horas
 	\item Cluster de docencia con las siguientes características: Intel Xeon E5-2620 v2 2.10GHz x2, NVIDIA Tesla K40c x4, 64GB RAM, 1TB x2
 \end{itemize}
 
-\section{Diagrama de Gannt}
-\begin{landscape}
-	\begin{figure}[H]
-		\centering
-		\includegraphics[scale=2]{media/gantt.png}
-		\captionof{figure}{Diagrama de Gannt completo. Fuente: Propia}
-		\label{gantt}
-	\end{figure}
-\end{landscape}
-
-\begin{figure}[H]
-\centering
-\begin{minipage}{.5\textwidth}
-  \centering
-  \includegraphics[scale=0.55]{media/gantt_1.png} %%width=.4\linewidth
-  \captionof{figure}{Etapa de gestión. \\ Fuente: Propia}
-  \label{gantt_1}
-\end{minipage}%
-\begin{minipage}{.5\textwidth}
-  \centering
-  \includegraphics[scale=0.75]{media/gantt_2.png}
-  \captionof{figure}{Primer ciclo. \\ Fuente: Propia}
-  \label{gantt_2}
-\end{minipage}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\begin{minipage}{.5\textwidth}
-  \centering
-  \includegraphics[scale=0.75]{media/gantt_3.png} %%width=.4\linewidth
-  \captionof{figure}{Segundo Ciclo. Fuente: Propia}
-  \label{gantt_3}
-\end{minipage}%
-\begin{minipage}{.5\textwidth}
-  \centering
-  \includegraphics[scale=0.75]{media/gantt_4.png}
-  \captionof{figure}{Tercer ciclo. \\ Fuente: Propia}
-  \label{gantt_4}
-\end{minipage}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[scale=0.5]{media/gantt_5.png}
-\captionof{figure}{Cuarto ciclo y etapa final. \\ Fuente: Propia}
-\label{gantt_5}
-\end{figure}
-
 \section{Gestión de riesgos: Planes alternativos y obstáculos}
 
-Como podemos observar en la Figura \ref{gantt_5}, en el cuarto ciclo de desarrollo la tarea de experimentos ocupa más tiempo en comparación a ciclos anteriores. En este caso, hemos sobrestimado la duración de ésta para tener tiempo suficiente de resolver problemas que puedan aparecer, como los definidos en el capítulo anterior (Contextualización y alcance), en el curso del desarrollo del proyecto o experimentos que puedan surgir a última hora.
+Durante el desarrollo del proyecto pueden surgir una serie de obstáculos o desviaciones que puedan alterar la planificación inicial del proyecto. Gracias a la metodología escogida, \textit{agile}, con objetivos definidos cada 14 días aproximadamente, nos será más fácil de gestionar estos contratiempos surgidos para que el impacto sobre la planificación sea el menor posible.
+
+En cuanto a las tareas, las horas definidas para cada una de ellas no son estáticas. Es posible que necesitemos más horas de las establecidas o incluso, en el mejor caso, sobren algunas horas que podremos dedicar a otras tareas o resolver contratiempos.
+
+Como podemos observar en la Figura \ref{gantt_2}, en el cuarto ciclo de desarrollo la tarea de experimentos ocupa más tiempo en comparación a ciclos anteriores. En este caso, hemos sobrestimado la duración de ésta para tener tiempo suficiente de resolver problemas que puedan aparecer, como los definidos en el capítulo anterior (Contextualización y alcance), en el curso del desarrollo del proyecto o experimentos que puedan surgir a última hora.
+
+\section{Diagrama de Gantt}
+
+En la Figura \ref{gantt} podemos observar un diagrama de la planificación del proyecto completo. Para determinar la fecha del ''Hito final'' hemos tenido en cuenta, siguiendo la normativa académica del Trabajo de Fin de Grado aprobada el 21 de octubre de 2015, que el agente evaluador del dicho hito, un tribunal compuesto por profesores sénior de la facultad, debe tener la memoria final del trabajo con, mínimo, una semana de antelación a la defensa final de éste. Es por esto que, siguiendo el calendario académico para el curso 2019/2020, se ha determinado el 16 de enero de 2020 como fecha límite de entrega de la memoria teniendo presente que el 23 de enero es la primera fecha planificada por la facultad para la defensa de los diferentes proyectos.
+
+En un color morado podemos observar las reuniones de seguimiento planificadas con el director. Es posible que la fecha y cantidad de éstas varíen en función del estado de desarrollo del proyecto. 
+
+En la Figura \ref{gantt} se muestra: \begin{enumerate*}[label=\roman*)]
+\item el nombre de la tarea, \item el rol asignado a dicha tarea, \item la duración en horas, \item la fecha de inicio, \item la duración en días, \item la fecha de finalización, \item el riesgo y \item el progreso (en $\%$), en este orden. \end{enumerate*}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.45]{media/final_gantt.png}
+	\captionof{figure}{Diagrama de Gantt completo. Fuente: Propia}
+	\label{gantt}
+\end{figure}
+
+\uselandscape
+
+\begin{figure}[H]
+	\centering
+  	\includegraphics[scale=1.5]{media/final_gantt_1.png}
+  	\captionof{figure}{Etapa de gestión. Fuente: Propia}
+  	\label{gantt_1}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+  	\includegraphics[scale=1.25]{media/final_gantt_2.png}
+  	\captionof{figure}{Etapa de desarrollo. Fuente: Propia}
+  	\label{gantt_2}
+\end{figure}
+
+\useportrait
 
 \chapter{Presupuesto y sostenibilidad}
 
@@ -417,7 +413,7 @@ Para cada tarea especificada le identificaremos el rol más adecuado.
 
 \begin{table}[H]
 	\centering
-	\begin{tabular}{|c|c|c|c|c|}
+	\resizebox{\textwidth}{!}{\begin{tabular}{|c|c|c|c|c|}
 		\hline
 		\textbf{Categoría} & \textbf{Salario neto €/h} & \textbf{Salario bruto €/h} & \textbf{Horas Totales} & \textbf{Coste estimado} \\ \hline \hline
 		Director de proyecto 	  & 18€/h & 24,30€/h & 80h  & 1944,00€ \\ \hline
@@ -425,7 +421,7 @@ Para cada tarea especificada le identificaremos el rol más adecuado.
 		Desarrollador de software & 13€/h & 17,55€/h & 330h & 5791,50€ \\ \hline
 		Técnico informático 	  & 11€/h & 14,85€/h & 10h  &  148,50€ \\ \hline \hline			
 		Total 					  & - 	  & - 		 & 670h  & 9590,50€ \\ \hline
-	\end{tabular}
+	\end{tabular}}
 	\caption{Coste recursos de RRHH}
 	\label{rrhh_1}
 \end{table}
@@ -448,14 +444,14 @@ A continuación, en la Tabla \ref{ci_1} podemos observar la relación entre las 
 
 \begin{table}[H]
 	\centering
-	\begin{tabular}{|c|c|c|c|c|c|c|}
+	\resizebox{\textwidth}{!}{\begin{tabular}{|c|c|c|c|c|c|c|}
 	\hline
 	\multirow{2}{*}{\textbf{Máquina}} & \multicolumn{5}{c|}{\textbf{Tareas}} & \textbf{Coste} \\ \cline{2-6} 
 			& Configuración & Planificación & Desarrollo & Experimentos & Fase final & \textbf{Estimado} \\ \hline \hline
 		PC Sobremesa 			& 5h  & 130h & 240h & 30h &	120h & 525h \\ \hline
 		Lenovo Legion Y520 		& 5h  & -	 & -    & 30h &	-	 & 35h\\ \hline
 		BOADA 					& -	  & -	 & -    & 30h &	-	 & 30h\\ \hline
-	\end{tabular}
+	\end{tabular}}
 	\caption{Horas por tarea y recurso}
 	\label{ci_1}
 \end{table}
@@ -483,7 +479,7 @@ En caso de alguna desviación en la planificación del proyecto, destinaremos un
 
 \begin{table}[H]
 	\centering
-	\begin{tabular}{|c|c|c|c|c|}
+	\resizebox{\textwidth}{!}{\begin{tabular}{|c|c|c|c|c|}
 		\hline
 		\textbf{Categoría} & \textbf{Salario neto €/h} & \textbf{Salario bruto €/h} & \textbf{Horas Totales} & \textbf{Coste estimado} \\ \hline \hline
 		Director de proyecto 	  & 18€/h & 24,30€/h & 20h  &  486,00€  \\ \hline
@@ -491,8 +487,8 @@ En caso de alguna desviación en la planificación del proyecto, destinaremos un
 		Desarrollador de software & 13€/h & 17,55€/h & 20h  &  351,00€  \\ \hline
 		Técnico informático 	  & 11€/h & 14,85€/h &  2h  &   29,70€  \\ \hline \hline			
 		Total 					  & - 	  & - 		 & -    & 1069,20€  \\ \hline
-	\end{tabular}
-	\caption{Coste inesperados}
+	\end{tabular}}
+	\caption{Costes inesperados}
 	\label{rrhh_2}
 \end{table}
 
@@ -519,7 +515,7 @@ En caso de alguna desviación en la planificación del proyecto, destinaremos un
 
 \section{Control de gestión}
 
-Con tal de hacer un control presupuestario, al final de cada una de las tareas haremos un recuento de las horas empleadas y el coste del material extra utilizado, si se diera el caso. Con esta información podremos hacer una comparativa con los datos estimados previamente y calcular la desviación.
+Con tal de realizar un control presupuestario, al final de cada una de las tareas haremos un recuento de las horas empleadas y el coste del material extra utilizado, si se diera el caso. Con esta información podremos hacer una comparativa con los datos estimados previamente y calcular la desviación.
 
 $$
 	\text{desviación en el coste} = (CE - CR) \cdot HR \footnote{CE = Coste estimado; CR = Coste real;}
@@ -529,6 +525,23 @@ $$
 $$
 
 \section{Sostenibilidad}
+
+\subsection{Autoevaluación}
+
+En la encuesta diseñada por los miembros del proyecto EDINSOST se nos realizan una serie de preguntas con el fin de auto evaluar nuestro conocimiento en materia de sostenibilidad.
+
+Realizando la encuesta, he podido observar que carezco de análisis en materia de sostenibilidad a la hora de realizar cualquier tipo de proyecto. Soy capaz de reconocer las causas y consecuencias que pueden presentarse pero no de las posibles soluciones que existen al respecto. Pocas son las veces que he analizado un proyecto o problema desde el punto de vista de la sostenibilidad.
+
+Si bien como he comentado soy capaz de reconocer las consecuencias ambientales y sociales que un proyecto pueda tener, al no tener en cuentas estos efectos no sé bien como medir el impacto real que puedan tener. Al no conocer que herramientas o métricas se utilizan comúnmente para analizar el impacto de un proyecto en estos tres ámbitos, podría ser que estuviera repercutiendo de forma negativa en ellos.
+
+En general, al no ponerme a analizar un problema desde este punto de vista, el de la sostenibilidad, soy incapaz de comprender que efectos sociales, ambientales y económicos pueden haber.
+
+A pesar de comprender la necesidad de introducir justicia social, equidad, transparencia, etc. en un proyecto, a día de hoy no estoy poniendo en práctica estas necesidades por lo que tengo poca idea o soy incapaz de estimar el impacto real que un proyecto pueda acontecer a la sociedad. Y si este contribuye o no al bien común.
+Sé valorar la viabilidad económica de un proyecto, pero no de compatibilizarla con los ámbitos: ambiental y social.
+
+En proyectos colaborativos, conozco y utilizo herramientas que facilitan el trabajo entre los diferentes integrantes y valoro positivamente el trabajo realizado por los demás.
+
+En conclusión, a pesar de conocer las causas y consecuencias que un proyecto podría tener en los ámbitos: ambiental, económico y social, esta encuesta me ha permitido ver que existe una dejadez en mí en cuanto al análisis de estas consecuencias. Necesito informarme y concienciarme más respecto a estos temas para poder aplicarlos en futuros proyectos.
 
 \subsection{Impacto ambiental}
 
@@ -556,5 +569,7 @@ Una vez finalizado el proyecto no tendrá gran trascendencia en la sociedad en g
 \nocite{*}
 
 \printbibliography
+\listoffigures
+\listoftables
 
 \end{document}

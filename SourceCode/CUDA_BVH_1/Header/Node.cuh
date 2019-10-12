@@ -22,7 +22,6 @@ public:
     aabb box;
     
     int id;
-    char *name;
   
 };
 

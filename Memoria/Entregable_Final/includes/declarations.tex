@@ -1,4 +1,5 @@
 \usepackage[utf8]{inputenc}
+\usepackage[usegeometry]{typearea}
 \usepackage[a4paper,headheight=15pt]{geometry}
 \usepackage{newtxtext,newtxmath}
 \usepackage[scaled=1]{couriers}
@@ -31,8 +32,10 @@
 \usepackage{array}
 \usepackage{float}
 \usepackage{pdflscape}
-\restylefloat{table}
 \usepackage{multirow}
+\usepackage{afterpage}
+
+\restylefloat{table}
 
 \DefineBibliographyStrings{spanish}{%
   andothers = {et\addabbrvspace al\adddot}
@@ -75,3 +78,23 @@
 \patchcmd{\@makechapterhead}{\Huge}{\large}{}{}% for \chapter
 \patchcmd{\@makeschapterhead}{\Huge}{\large}{}{}% for \chapter*
 \makeatother
+
+\geometry{
+  left=1.1811in, right=1.1811in, top=1.0in, bottom=2.0in,headheight=15pt,includehead
+}
+\newcommand*{\useportrait}{%
+  \clearpage
+  \KOMAoptions{paper=portrait,DIV=current}%switch to portrait
+  \newgeometry{% geometry settings for portrait
+  left=1.1811in, right=1.1811in, top=1.0in, bottom=2.0in,headheight=15pt,includehead
+  }%
+  \fancyhfoffset{0pt}% <- recalculate head and foot width for fancyhdr
+}
+\newcommand*{\uselandscape}{%
+  \clearpage
+  \KOMAoptions{paper=landscape,DIV=current}%switch to landscape
+  \newgeometry{% geometry settings for landscap
+  left=1.1811in, right=1.1811in, top=1.0in, bottom=2.0in,headheight=15pt,includehead
+  }%
+  \fancyhfoffset{0pt}% recalculate head and foot width for fancyhdr
+}
