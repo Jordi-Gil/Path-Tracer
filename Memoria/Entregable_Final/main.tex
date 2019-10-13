@@ -20,7 +20,14 @@ En la actualidad, las imágenes generadas por ordenador están muy presentes tan
 
 El estudio de métodos que permiten renderizar imágenes realistas no es nuevo. Entre principios y mediados de los años 70 comenzaron a publicarse los primeros artículos científicos en referencia a la simulación de la luz y el color sobre superficies modelos tridimensionales. Para poder entender como funcionan estos métodos debemos tener presente la representación de modelos 3D. 
 
-Para representar un modelo 3D se utiliza una ''malla de polígonos'', popularmente conocida como \textit{Mesh} y generalmente estos polígonos suelen ser triángulos. Ésta consiste en un conjunto de vértices conectados por aristas formando caras. Para cada una de estas caras podemos definir un vector normal ortogonal a ésta.
+Para representar un modelo 3D se utiliza una ''malla de polígonos'', popularmente conocida como \textit{Mesh} y generalmente estos polígonos suelen ser triángulos. Ésta consiste en un conjunto de vértices conectados por aristas formando caras. Para cada una de estas caras podemos definir un vector normal ortogonal a ésta. En la Figura \ref{dolphin} podemos apreciar un ejemplo de modelo 3D representado por una malla de triángulos.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.15]{media/Dolphin_triangle_mesh.png}
+	\caption{Ejemplo de malla de triángulos. Fuente: Wikipedia}
+	\label{dolphin}
+\end{figure}
 
 Volviendo a los métodos de cálculo de iluminación, el más simple de todos es el conocido como \textit{Flat Shading}. Para calcular el color de cada una de las caras de nuestra malla solamente tiene en cuenta un vértice de los que la conforman y la normal de ésta, aunque una malla compuesta por triángulos es común utilizar el centroide. El color se interpola para todos los vértices de la cara utilizando el color calculado al inicio dando así un resultado uniforme para toda la cara. Debido a no tener en cuenta las caras adyacentes esto produce resultados diferentes entre ellas. En la Figura \ref{flat:shading} podemos observar el efecto generado por este método. Podríamos pensar que añadir más vértices a nuestra malla los resultados mejorarían, pero no es una propuesta adecuada debido al mayor uso de memoria requerido y el problema no quedaría resuelto. Si hiciéramos \textit{zoom in} en el modelo, volveríamos a apreciar el efecto conocido como ''bandas de Mach'' \citep{Lotto1999}.
 
@@ -83,9 +90,37 @@ Como hemos indicado en la sección anterior, la renderización de imágenes real
 \ref{item:dl} La iluminación directa es aquella que incide en un punto desde el foco de luz. \\
 \ref{item:il} La iluminación indirecta es aquella que incide en un punto proveniente de la luz que rebota en otros puntos de la escena.
 
-Recuperando lo expuesto en la introducción, el primer método capaz de renderizar imágenes realistas fue el \textit{Ray Tracing}, basado en la técnica de \textit{Ray Casting} de trazar rayos desde el observador a todos los pixeles de la imagen. La gran novedad respecto al algoritmo presentado por \citep{Appel1968} es la incorporación de la recursividad. Cuando un rayo impacta contra un superficie puede generar tres tipos de rayos nuevos: \begin{enumerate*}[label=\roman*)] \item rayo de reflexión \label{ray:reflected}, \item rayo de refracción y \item rayo de sombra \end{enumerate*}. Al trazar los rayos nuevos somos capaces de conseguir efectos como reflejos, sombras, etc. debido a que para calcular el color estamos teniendo en cuenta como los demás objetos de la escena se afectan entre si. Una gran desventaja de este método es la dependencia que éste tiene respecto a los polígonos de la escena; a más compleja es, más ineficiente será. A pesar de ofrecernos un alto grado de realismo al ser capaz de tratar con precisión efectos ópticos como la refracción, reflexión, los resultados obtenidos en una imagen renderizada mediante \textit{Ray Tracing} no son necesariamente foto-realistas. Para conseguir renderizar imágenes foto-realistas debemos aproximar la RE, un buen ejemplo de ello es el método de \textit{Path Tracing} presentado por \citep{Kajiya1986}.
+Recuperando lo expuesto en la introducción, el primer método capaz de renderizar imágenes realistas fue el \textit{Ray Tracing}, basado en la técnica de \textit{Ray Casting} de trazar rayos desde el observador a todos los pixeles de la imagen. La gran novedad respecto al algoritmo presentado por \citep{Appel1968} es la incorporación de la recursividad. En el \textit{Ray Tracing} se emite un rayo desde una cámara virtual hacia la escena para trazar el camino hasta los diferentes focos de luz de la escena. Cuando un rayo impacta contra un superficie puede generar tres tipos de rayos nuevos: \begin{enumerate*}[label=\roman*)] \item rayo de reflexión \label{ray:reflected}, \item rayo de refracción y \item rayo de sombra \end{enumerate*}. A partir de este punto, un nuevo rayo se proyecta hasta dar con las diferentes fuentes de luz de la escena. Al trazar los rayos nuevos somos capaces de conseguir efectos como reflejos, sombras, etc. debido a que para calcular el color estamos teniendo en cuenta como los demás objetos de la escena se afectan entre si. En caso de impactar con una superficie transparente, el rayo se proyecta a través de ésta para simular el efecto de refracción. Una gran desventaja de este método es la dependencia que éste tiene respecto a los polígonos de la escena; a más compleja es, más ineficiente será. 
 
-El algoritmo de \textit{Path Tracing} surge como mejora del \textit{Ray Tracing} con el objetivo de dar una solución a la RE mediante la integración de Monte Carlo. Es gracias a ésto que el algoritmo es capaz, de forma natural, representar efectos como \textit{Motion Blur}, \textit{Ambient Oclussion} e iluminación indirecta sin necesidad de posprocesado. A diferencia del \textit{Ray Tracing}, el \textit{Path Tracing} es indiferente al número de polígonos presentes en la escena. Como hemos mencionado anteriormente, en el primer método se traza un rayo por cada polígono de la escena, en cambio en el método de Kajiya el rayo se traza por pixel. Debido a que cada uno es independiente de los demás, tenemos un algoritmo con una alta capacidad de paralelismo. En consecuencia, podemos explotar la capacidad de concurrencia que nos proporcionan las CPUs y GPUs; y poder así calcular más de un pixel de la imagen al mismo tiempo.
+A pesar de ofrecernos un alto grado de realismo al ser capaz de tratar con precisión efectos ópticos como la refracción, reflexión, los resultados obtenidos en una imagen renderizada mediante \textit{Ray Tracing} no son necesariamente foto-realistas. Se necesita hacer un postprocesado para simular efectos como sombras suaves (\textit{soft shwadows}, cáustica (\textit{caustics}), etc. Para conseguir renderizar imágenes foto-realistas, y por tanto efectos como cáusticas, debemos aproximar la RE, un buen ejemplo de ello es el método de \textit{Path Tracing} presentado por \citep{Kajiya1986}.
+
+El algoritmo de \textit{Path Tracing} surge como mejora del \textit{Ray Tracing} con el objetivo de dar una solución a la RE mediante la integración de Monte Carlo. Es gracias a ésto que el algoritmo es capaz, de forma natural, representar efectos como \textit{Motion Blur}, \textit{Ambient Oclussion} e iluminación indirecta sin necesidad de posprocesado. A diferencia del \textit{Ray Tracing}, en el \textit{Path Tracing} cuando se emite un rayo desde la cámara virtual en vez de trazar el camino hasta los focos de luz de la escena, lo que hacemos es dejar que siga rebotando hasta golpear una fuente de luz o agotar un límite de profundidad en el número de rebotes que el rayo puede realizar. Pero la mayor diferencia respecto al método de Whitted es que en vez de tener en cuenta solamente el camino del rayo primigenio que emitimos, lanzamos decenas, cientos e incluso miles de rayos por pixel. Una característica importante del método de Kajiya es el muestreo aleatorio, esto significa que cuando un rayo impacta con una superficie éste genera uno nuevo en una dirección totalmente aleatoria. Una vez el rayo alcanza el límite de rebotes o es absorbido (por una fuente de luz) se calcula un valor en función de los objetos con los que rebotó y se añaden al promedio del pixel origen. Esta aleatoriedad provoca un resultado ruidoso que disminuye a medida que utilizamos más y más muestras por cada pixel.
+
+El \textit{Path Tracing} es indiferente al número de polígonos presentes en la escena, la complejidad de la escena no afecta proporcionalmente al rendimiento del algoritmo. Como hemos mencionado anteriormente, en el primer método se traza un rayo por cada polígono de la escena, en cambio en el método de Kajiya el rayo se traza por pixel. Debido a que cada uno es independiente de los demás, tenemos un algoritmo con una alta capacidad de paralelismo. En consecuencia, podemos explotar la capacidad de concurrencia que nos proporcionan las CPUs y GPUs; y poder así calcular más de un pixel de la imagen al mismo tiempo.
+
+\begin{figure}[!ht]
+	
+	\begin{subfigure}{.3\textwidth}
+		\centering
+		\includegraphics[width=.8\textwidth]{media/RayTracing.png}
+		\caption{\textit{Ray Tracing}. Fuente: \citep{Cassagnabere2004}}
+		\label{RT}
+	\end{subfigure}
+	
+	\begin{subfigure}{.3\textwidth}
+		\centering
+		\includegraphics[width=.3\textwidth]{media/PathTracing.png}
+		\caption{\textit{Path Tracing} con ruido. Fuente: \citep{Cassagnabere2004}}
+		\label{PTN}
+	\end{subfigure}
+	\begin{subfigure}{.3\textwidth}
+		\includegraphics[width=.3\textwidth]{media/PathTracingMD.png}	
+		\caption{\textit{Path Tracing} sin ruido. Fuente: \citep{Cassagnabere2004}}
+		\label{PT}
+	\end{subfigure}
+\end{figure}
+
+Podemos apreciar como el \textit{Path Tracing}, Figura \ref{RT}, produce una sombras más suaves respecto al \textit{Ray Tracing}, Figura \ref{PT}. También se puede observar el efecto de ruido que provoca \textit{Path Tracing}, Figura \ref{PTN}, si pocas muestras por pixeles son utilizadas.
 
 En el presente proyecto trataremos de crear un aplicación que implemente el método de \textit{Path Tracing} para generar imágenes de carácter realista. Dicha aplicación calculará cada pixel de la imagen final de forma secuencia, es decir, uno tras otro y nos servirá de base para crear una solución paralela haciendo uso de la GPU y otra haciendo uso de la CPU. El porque de realizar estas tres aplicaciones es para ser capaces de realizar un análisis del rendimiento que nuestro algoritmo obtiene explorando en profundidad la capacidad de concurrencia que nos ofrecen a día de hoy las CPUs y GPUs; y ver así que arquitectura nos ofrece mayor rendimiento.
 
@@ -387,14 +422,14 @@ La Tabla \ref{hard} muestra el coste del hardware utilizado en el desarrollo. En
 
 \begin{table}[H]
 	\centering
-	\begin{tabular}{|c|c|c|c|}
+	\resizebox{\textwidth}{!}{\begin{tabular}{|c|c|c|c|c|}
 		\hline
 		\textbf{Producto} 	& \textbf{Precio} & \textbf{Vida útil (en años)} & \textbf{Amortización/día} & \textbf{Amortización} \\ \hline \hline
 		PC Sobremesa 		& 2210,09€ & 5 & 1,21€/día & 185,13€\\ \hline
 		Lenovo Legion Y520 	&  900,00€ & 5 & 0,49€/día &  74,97€ \\ \hline
 		BOADA 				& 3500.00€ & 5 & 1,92€/día & 293,76€ \\ \hline \hline	
 		Total 				& 6610.09€ & - & -         & 553,86€ \\ \hline
-	\end{tabular}
+	\end{tabular}}
 	\caption{Coste recursos de hardware}
 	\label{hard}
 \end{table}
@@ -403,7 +438,7 @@ En el coste del cluster de docencia, BOADA, no se tienen presente las cuatro tar
 
 \subsubsection{Recursos Humanos}
 
-Para cada tarea especificada en el GANTT \ref{gantt} le identificaremos el rol más adecuado, como podemos ver listados a continuación:
+Para cada tarea especificada en el GANTT, Figure \ref{gantt}, le identificaremos el rol más adecuado, como podemos ver listados a continuación:
 
 \begin{itemize}
 	\item \textbf{Responsable del proyecto:} Planificación del proyecto, fase final y reuniones con el director del proyecto.
@@ -411,7 +446,7 @@ Para cada tarea especificada en el GANTT \ref{gantt} le identificaremos el rol m
 	\item \textbf{Técnico informático:} Configuración del sistema.
 \end{itemize}
 
-En la Tabla \ref{rrhh_1} podemos observar la relación del salario en $€/hora$ y el número de horas trabajadas por cada uno de los roles. 
+En la Tabla \ref{rrhh_1} podemos observar la relación del salario en €/hora y el número de horas trabajadas por cada uno de los roles. 
 
 Para determinar el sueldo de cada rol se ha consultado el portal web \citep{tuSalario} teniendo en cuenta el propio rol y realizando una aproximación de la experiencia de la persona que lo desempeña en el proyecto (por ejemplo la experiencia que pueda tener el director del proyecto, desempeñado por un profesor senior o la experiencia como desarrollador de un estudiante que finaliza los estudios de un grado universitario) y aplicando el coste a la seguridad social (aproximadamente el sueldo neto multiplicado por 1,35).
 
@@ -458,9 +493,9 @@ A continuación, en la Tabla \ref{ci_1} podemos observar la relación entre las 
 	\label{ci_1}
 \end{table}
 
-Para determinar el coste del kW por hora hemos consultado el portal \ref{tarifaluz}, calculando la media del precio entre las diferentes compañías eléctricas mostradas. 
+Para determinar el coste del kW por hora hemos consultado el portal \citep{tuLuz}, calculando la media del precio entre las diferentes compañías eléctricas mostradas. 
 
-En la tabla \ref{ci2} podemos observar el coste de la energía consumida por cada una de las máquinas en función del número de horas en que utilizamos dichas máquinas en las diferentes tareas del proyecto. En \textit{generales} se contemplan costes como: \begin{itemize*}[label=\roman*)] \item compra de material (papel, bolígrafos, etc) y \item transporte (desplazamiento para reuniones, etc). \end{itemize*}. 
+En la Tabla \ref{ci2} podemos observar el coste de la energía consumida por cada una de las máquinas en función del número de horas en que utilizamos dichas máquinas en las diferentes tareas del proyecto. En \textit{generales} se contemplan costes como: \begin{enumerate*}[label=\roman*)] \item compra de material (papel, bolígrafos, etc) y \item transporte (desplazamiento para reuniones, etc). \end{enumerate*}. 
 
 \begin{table}[H]
 	\centering
@@ -588,6 +623,7 @@ Una vez finalizado el proyecto no tendrá gran trascendencia en la sociedad en g
 \printbibliography
 
 \listoffigures
+
 \listoftables
 
 \end{document}
