@@ -363,7 +363,7 @@ Para el cálculo de la amortización tendremos en consideración que el proyecto
 
 \subsubsection{Recursos de Software}
 
-El software que vamos a utilizar en nuestro proyecto es de código libre. Y en caso de necesitar software adicional intentaremos que este sea también de código libre. La Tabla \ref{soft} muestra el coste del software utilizado en el desarrollo.
+El software que vamos a utilizar en nuestro proyecto es de código libre, por lo tanto se trata de software gratuito. En caso de necesitar software adicional intentaremos que este sea también de código libre. La Tabla \ref{soft} muestra el coste del software utilizado en el desarrollo.
 
 \begin{table}[H]
 	\centering
@@ -383,54 +383,56 @@ El software que vamos a utilizar en nuestro proyecto es de código libre. Y en c
 
 \subsubsection{Recursos de Hardware}
 
-La Tabla \ref{hard} muestra el coste del hardware utilizado en el desarrollo.
+La Tabla \ref{hard} muestra el coste del hardware utilizado en el desarrollo. En la amortización se tiene en cuenta una duración aproximada de cinco meses de proyecto como bien hemos especificado al inicio de esta sección. Si aproximadamente un año tiene 365 días y la vida útil de las máquinas utilizada son de 5 años, esto nos da un total de 1825 días de vida útil. El proyecto dura de septiembre a enero, ambos incluidos, por lo tanto la duración es de 153 días.
 
 \begin{table}[H]
 	\centering
 	\begin{tabular}{|c|c|c|c|}
 		\hline
-		\textbf{Producto} 	& \textbf{Precio} & \textbf{Vida útil (en años)} & \textbf{Amortización} \\ \hline \hline
-		PC Sobremesa 		& 2210,09€ & 5 &  92,09€\\ \hline
-		Lenovo Legion Y520 	&  900,00€ & 5 &  37,50€ \\ \hline
-		BOADA 				& 3500.00€ & 5 & 145,83€ \\ \hline \hline	
-		Total 				& 6610.09€ & - & 275,42€ \\ \hline
+		\textbf{Producto} 	& \textbf{Precio} & \textbf{Vida útil (en años)} & \textbf{Amortización/día} & \textbf{Amortización} \\ \hline \hline
+		PC Sobremesa 		& 2210,09€ & 5 & 1,21€/día & 185,13€\\ \hline
+		Lenovo Legion Y520 	&  900,00€ & 5 & 0,49€/día &  74,97€ \\ \hline
+		BOADA 				& 3500.00€ & 5 & 1,92€/día & 293,76€ \\ \hline \hline	
+		Total 				& 6610.09€ & - & -         & 553,86€ \\ \hline
 	\end{tabular}
 	\caption{Coste recursos de hardware}
 	\label{hard}
 \end{table}
 
-En el coste del cluster de docencia, BOADA, no se tienen presente las cuatro tarjetas gráficas NVIDIA Tesla K40c puesto que fueron una donación de \textit{NVIDIA}, por lo tanto su coste es nulo.
+En el coste del cluster de docencia, BOADA, no se tienen presente las cuatro tarjetas gráficas NVIDIA Tesla K40c puesto que fueron una donación de \textit{NVIDIA}, por lo que su coste es nulo.
 
 \subsubsection{Recursos Humanos}
 
+Para cada tarea especificada en el GANTT \ref{gantt} le identificaremos el rol más adecuado, como podemos ver listados a continuación:
 
-Para cada tarea especificada le identificaremos el rol más adecuado. 
 \begin{itemize}
-	\item \textbf{Responsable del proyecto:} Planificación del proyecto y Fase final.
+	\item \textbf{Responsable del proyecto:} Planificación del proyecto, fase final y reuniones con el director del proyecto.
 	\item \textbf{Desarrollador de software:} Desarrollo de las tres aplicaciones y experimentos.
 	\item \textbf{Técnico informático:} Configuración del sistema.
 \end{itemize}
+
+En la Tabla \ref{rrhh_1} podemos observar la relación del salario en $€/hora$ y el número de horas trabajadas por cada uno de los roles. 
+
+Para determinar el sueldo de cada rol se ha consultado el portal web \citep{tuSalario} teniendo en cuenta el propio rol y realizando una aproximación de la experiencia de la persona que lo desempeña en el proyecto (por ejemplo la experiencia que pueda tener el director del proyecto, desempeñado por un profesor senior o la experiencia como desarrollador de un estudiante que finaliza los estudios de un grado universitario) y aplicando el coste a la seguridad social (aproximadamente el sueldo neto multiplicado por 1,35).
 
 \begin{table}[H]
 	\centering
 	\resizebox{\textwidth}{!}{\begin{tabular}{|c|c|c|c|c|}
 		\hline
 		\textbf{Categoría} & \textbf{Salario neto €/h} & \textbf{Salario bruto €/h} & \textbf{Horas Totales} & \textbf{Coste estimado} \\ \hline \hline
-		Director de proyecto 	  & 18€/h & 24,30€/h & 80h  & 1944,00€ \\ \hline
-		Responsable de proyecto   & 15€/h & 20,25€/h & 250h & 5062,50€ \\ \hline
+		Director de proyecto 	  & 18€/h & 24,30€/h &  92h & 2235,60€ \\ \hline
+		Responsable de proyecto   & 15€/h & 20,25€/h & 262h & 5305,50€ \\ \hline
 		Desarrollador de software & 13€/h & 17,55€/h & 330h & 5791,50€ \\ \hline
-		Técnico informático 	  & 11€/h & 14,85€/h & 10h  &  148,50€ \\ \hline \hline			
-		Total 					  & - 	  & - 		 & 670h  & 9590,50€ \\ \hline
+		Técnico informático 	  & 11€/h & 14,85€/h &  10h &  148,50€ \\ \hline \hline			
+		Total 					  & - 	  & - 		 & 694h & 13481,10€ \\ \hline
 	\end{tabular}}
 	\caption{Coste recursos de RRHH}
 	\label{rrhh_1}
 \end{table}
 
-En la Tabla \ref{rrhh_1} podemos observar la relación del sueldo percibido por hora y el número de horas por cada uno de los roles. Para determinar el sueldo se ha consultado el portal web \footnote{\texttt{https://tusalario.es}}.
-
 \subsection{Costes indirectos}
 
-En esta sección tendremos en cuenta los costes que se relacionan con el proyecto de forma indirecta como el derivado del consumo energética y el coste de la red de Internet.
+En esta sección tendremos en cuenta los costes que se relacionan con el proyecto de forma indirecta, como el derivado del consumo energético y el coste de la red de Internet.
 
 Teniendo presente las diferentes máquinas que se utilizan en el proyecto el consumo de cada una de ellas es el siguiente:
 
@@ -440,7 +442,7 @@ Teniendo presente las diferentes máquinas que se utilizan en el proyecto el con
 	\item \textbf{Cluster docencia BOADA:} 1500W.
 \end{enumerate}
 
-A continuación, en la Tabla \ref{ci_1} podemos observar la relación entre las tareas realizadas y, la máquina utilizada en cada una de ellas.
+A continuación, en la Tabla \ref{ci_1} podemos observar la relación entre las tareas realizadas y la máquina utilizada en cada una de ellas.
 
 \begin{table}[H]
 	\centering
@@ -456,18 +458,21 @@ A continuación, en la Tabla \ref{ci_1} podemos observar la relación entre las 
 	\label{ci_1}
 \end{table}
 
-Teniendo presentes las horas totales por cada máquina a un precio de 0,1198€/kWh y los demás costes mencionados al inicio de esta sección, el coste indirecto total es:
+Para determinar el coste del kW por hora hemos consultado el portal \ref{tarifaluz}, calculando la media del precio entre las diferentes compañías eléctricas mostradas. 
+
+En la tabla \ref{ci2} podemos observar el coste de la energía consumida por cada una de las máquinas en función del número de horas en que utilizamos dichas máquinas en las diferentes tareas del proyecto. En \textit{generales} se contemplan costes como: \begin{itemize*}[label=\roman*)] \item compra de material (papel, bolígrafos, etc) y \item transporte (desplazamiento para reuniones, etc). \end{itemize*}. 
 
 \begin{table}[H]
 	\centering
 	\begin{tabular}{|c|c|c|c|}
 		\hline
 		\textbf{Máquina} & \textbf{Precio} & \textbf{Unidades} & \textbf{Coste estimado} \\ \hline \hline
-		PC Sobremesa 			& 0,1198€/kWh & 168kWh 	& 20,13€ 	\\ \hline
-		Lenovo Legion Y520 		& 0,1198€/kWh & 5,6kWh 	& 0,67€ 	\\ \hline
-		BOADA 					& 0,1198€/kWh & 45kWh 	& 5,40€ 	\\ \hline 
-		Internet				& 50€		  & 6 meses	& 300,00€ 	\\ \hline \hline
-		Total 					& - 		  & -		& 326,2€	\\ \hline
+		PC Sobremesa 			& 0,13508€/kWh & 168kWh 	&  22,39€ 	\\ \hline
+		Lenovo Legion Y520 		& 0,13508€/kWh & 5,6kWh 	&   0,76€ 	\\ \hline
+		BOADA 					& 0,13508€/kWh & 45kWh 		&   6,08€ 	\\ \hline 
+		Internet				& 50€		   & 6 meses	& 300,00€ 	\\ \hline
+		Generales 				& 120€ 		   & -          & 120,00€	\\ \hline \hline
+		Total 					& - 		   & -			& 449,23€	\\ \hline
 	\end{tabular}
 	\caption{Coste de consumo por máquina}
 	\label{ci2}
@@ -494,20 +499,22 @@ En caso de alguna desviación en la planificación del proyecto, destinaremos un
 
 \subsection{Presupuesto total}
 
+En la Tabla \ref{total} podemos observar el presupuesto total del proyecto completo y con una contingencia de un 10\% por posibles improvistos.
+
 \begin{table}[H]
 	\centering
 	\begin{tabular}{|c|c|}
 		\hline
 		\textbf{Concepto} 		& \textbf{Coste estimado} \\ \hline \hline
-		\multicolumn{2}{|c|}{Coste directo}  \\ \hline
-		Software 				&    00,00€  \\
-		Hardware				&  6610,50€  \\ 
-		RRHH 					&  9590,50€  \\ \hline 
-		Coste indirecto			&   326,20€  \\ \hline
-		Coste inesperado		&  1069,20€	 \\ \hline		
-		\textbf{Subtotal}		& 17596,40€  \\ \hline
-		Contingencia (10$\%$) 	&  1759,64€  \\ \hline \hline
-		\textbf{Total}			& 19356,04€  \\ \hline
+		\multicolumn{2}{|c|}{Coste directo}  	\\ \hline
+		Software 				&     00,00€  	\\
+		Hardware				&    553,86€  	\\ 
+		RRHH 					&  13481,10€  	\\ \hline 
+		Coste indirecto			&    449,23€  	\\ \hline
+		Coste inesperado		&   1069,20€	\\ \hline		
+		\textbf{Subtotal}		&  15553,39€  	\\ \hline
+		Contingencia (10$\%$) 	&   1555,34€  	\\ \hline \hline
+		\textbf{Total}			&  17108,73€  	\\ \hline
 	\end{tabular}
 	\caption{Presupuesto total}
 	\label{total}
@@ -515,14 +522,24 @@ En caso de alguna desviación en la planificación del proyecto, destinaremos un
 
 \section{Control de gestión}
 
-Con tal de realizar un control presupuestario, al final de cada una de las tareas haremos un recuento de las horas empleadas y el coste del material extra utilizado, si se diera el caso. Con esta información podremos hacer una comparativa con los datos estimados previamente y calcular la desviación.
+En lo referente a los recursos humanos, al no tratarse de una inversión inicial no puede realizarse un control constante. Solamente podremos comparar el coste final con el presupuestado una vez el proyecto haya finalizado.
 
-$$
-	\text{desviación en el coste} = (CE - CR) \cdot HR \footnote{CE = Coste estimado; CR = Coste real;}
-$$
-$$	
-	\text{desviación en el consumo} = (HE - HR) \cdot CE \footnote{HE = Horas estimadas; HR = Horas reales;}
-$$
+En cuanto a los recursos materiales y digitales (software) sí podemos y debemos realizar un control constante. Con tal de realizar un control presupuestario, al final de cada una de las tareas haremos un recuento de las horas empleadas y el coste del material extra utilizado, si se diera el caso. Con esta información podremos hacer una comparativa con los datos estimados previamente y calcular la desviación. En caso de realizarse un desvío importante se deberá realizar un estudio con tal de esclarecer el porqué del desvío y corregir las estimaciones del presupuesto en las siguientes tareas o fases del proyecto a realizar.
+
+Si una vez finalizado el proyecto, la suma de las diferencias en todas las fases nos indica una incorrecta previsión presupuestaria, es decir, nos hemos quedado cortos en el presupuesto inicial propuesto, entonces deberemos asignar el fondo de contingencia en cubrir los gastos extras ocasionados.
+
+Por tal de calcular las desviaciones, utilizaremos las fórmulas siguientes:
+
+\begin{itemize}
+
+	\item Desvío de mano de obra en precio = (coste std - coste real) * consumo de horas real.
+	\item Desvío de un recurso en precio = (coste std - coste real) * consumo real.
+	\item Desvío de mano de obra en consumo = (consumo horas std - consumo horas reales) * coste std.
+	\item Desvío de un recurso en consumo = (consumo estimado - consumo real) * coste real.
+	\item Desvío total en mano de obra = total coste std mano de obra - total coste real mano de obra.
+	\item Desvío total en recursos = total coste std recursos - total coste real recursos.
+
+\end{itemize}
 
 \section{Sostenibilidad}
 
@@ -569,6 +586,7 @@ Una vez finalizado el proyecto no tendrá gran trascendencia en la sociedad en g
 \nocite{*}
 
 \printbibliography
+
 \listoffigures
 \listoftables
 
