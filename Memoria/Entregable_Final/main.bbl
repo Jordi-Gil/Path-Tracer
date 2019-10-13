@@ -1,5 +1,5 @@
 % $ biblatex auxiliary file $
-% $ biblatex bbl format version 2.9 $
+% $ biblatex bbl format version 3.0 $
 % Do not modify the above lines!
 %
 % This is an auxiliary file used by the 'biblatex' package.
@@ -481,6 +481,43 @@
     \field{isbn}{0897918967}
     \field{title}{{Metropolis light transport}}
     \field{year}{1997}
+  \endentry
+
+  \entry{Cassagnabere2004}{inproceedings}{}
+    \name{author}{3}{}{%
+      {{hash=CC}{%
+         family={Cassagnab{\`{e}}re},
+         familyi={C\bibinitperiod},
+         given={Christophe},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=RF}{%
+         family={Rousselle},
+         familyi={R\bibinitperiod},
+         given={Fran{\c{c}}ois},
+         giveni={F\bibinitperiod},
+      }}%
+      {{hash=RC}{%
+         family={Renaud},
+         familyi={R\bibinitperiod},
+         given={Christophe},
+         giveni={C\bibinitperiod},
+      }}%
+    }
+    \keyw{AR350,Global illumination,Hardware implementation,Path
+  tracing,RenderMan}
+    \strng{namehash}{CC+1}
+    \strng{fullhash}{CCRFRC1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2004}
+    \field{labeldatesource}{year}
+    \field{booktitle}{Proceedings GRAPHITE 2004 - 2nd International Conference
+  on Computer Graphics and Interactive Techniques in Australasia and Southeast
+  Asia}
+    \field{isbn}{1581138849}
+    \field{title}{{Path tracing using the AR350 processor}}
+    \field{year}{2004}
   \endentry
 
   \entry{ShirleyRTA}{book}{}
@@ -999,41 +1036,56 @@
     \field{urlyear}{2019}
   \endentry
 
-  \entry{Cassagnabere2004}{inproceedings}{}
-    \name{author}{3}{}{%
-      {{hash=CC}{%
-         family={Cassagnab{\`{e}}re},
+  \entry{gene}{online}{}
+    \name{author}{1}{}{%
+      {{hash=dCG}{%
+         prefix={de},
+         prefixi={d\bibinitperiod},
+         family={Catalunya},
          familyi={C\bibinitperiod},
-         given={Christophe},
-         giveni={C\bibinitperiod},
-      }}%
-      {{hash=RF}{%
-         family={Rousselle},
-         familyi={R\bibinitperiod},
-         given={Fran{\c{c}}ois},
-         giveni={F\bibinitperiod},
-      }}%
-      {{hash=RC}{%
-         family={Renaud},
-         familyi={R\bibinitperiod},
-         given={Christophe},
-         giveni={C\bibinitperiod},
+         given={Generalitat},
+         giveni={G\bibinitperiod},
       }}%
     }
-    \keyw{AR350,Global illumination,Hardware implementation,Path
-  tracing,RenderMan}
-    \strng{namehash}{CC+1}
-    \strng{fullhash}{CCRFRC1}
+    \strng{namehash}{CGd1}
+    \strng{fullhash}{CGd1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
-    \field{labelyear}{2004}
+    \field{labelyear}{2019}
     \field{labeldatesource}{year}
-    \field{booktitle}{Proceedings GRAPHITE 2004 - 2nd International Conference
-  on Computer Graphics and Interactive Techniques in Australasia and Southeast
-  Asia}
-    \field{isbn}{1581138849}
-    \field{title}{{Path tracing using the AR350 processor}}
-    \field{year}{2004}
+    \field{title}{Factor d'emissi{\'o} de l'energia el{\'`e}ctrica: el mix}
+    \verb{url}
+    \verb https://canviclimatic.gencat.cat/ca/actua/factors_demissio_associats_
+    \verb a_lenergia/
+    \endverb
+    \field{year}{2019}
+    \field{urlday}{12}
+    \field{urlmonth}{10}
+    \field{urlyear}{2019}
+  \endentry
+
+  \entry{hostel}{online}{}
+    \name{author}{1}{}{%
+      {{hash=H}{%
+         family={HostelTur},
+         familyi={H\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{H1}
+    \strng{fullhash}{H1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2019}
+    \field{labeldatesource}{year}
+    \field{title}{Air France lanza un calculador de emisiones de CO2}
+    \verb{url}
+    \verb https://www.hosteltur.com/44347_air-france-lanza-calculador-emisiones
+    \verb -co2.html
+    \endverb
+    \field{year}{2019}
+    \field{urlday}{12}
+    \field{urlmonth}{10}
+    \field{urlyear}{2019}
   \endentry
 
   \entry{Hunt2008}{inproceedings}{}

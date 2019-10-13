@@ -96,28 +96,45 @@ A pesar de ofrecernos un alto grado de realismo al ser capaz de tratar con preci
 
 El algoritmo de \textit{Path Tracing} surge como mejora del \textit{Ray Tracing} con el objetivo de dar una solución a la RE mediante la integración de Monte Carlo. Es gracias a ésto que el algoritmo es capaz, de forma natural, representar efectos como \textit{Motion Blur}, \textit{Ambient Oclussion} e iluminación indirecta sin necesidad de posprocesado. A diferencia del \textit{Ray Tracing}, en el \textit{Path Tracing} cuando se emite un rayo desde la cámara virtual en vez de trazar el camino hasta los focos de luz de la escena, lo que hacemos es dejar que siga rebotando hasta golpear una fuente de luz o agotar un límite de profundidad en el número de rebotes que el rayo puede realizar. Pero la mayor diferencia respecto al método de Whitted es que en vez de tener en cuenta solamente el camino del rayo primigenio que emitimos, lanzamos decenas, cientos e incluso miles de rayos por pixel. Una característica importante del método de Kajiya es el muestreo aleatorio, esto significa que cuando un rayo impacta con una superficie éste genera uno nuevo en una dirección totalmente aleatoria. Una vez el rayo alcanza el límite de rebotes o es absorbido (por una fuente de luz) se calcula un valor en función de los objetos con los que rebotó y se añaden al promedio del pixel origen. Esta aleatoriedad provoca un resultado ruidoso que disminuye a medida que utilizamos más y más muestras por cada pixel.
 
-El \textit{Path Tracing} es indiferente al número de polígonos presentes en la escena, la complejidad de la escena no afecta proporcionalmente al rendimiento del algoritmo. Como hemos mencionado anteriormente, en el primer método se traza un rayo por cada polígono de la escena, en cambio en el método de Kajiya el rayo se traza por pixel. Debido a que cada uno es independiente de los demás, tenemos un algoritmo con una alta capacidad de paralelismo. En consecuencia, podemos explotar la capacidad de concurrencia que nos proporcionan las CPUs y GPUs; y poder así calcular más de un pixel de la imagen al mismo tiempo.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=0.45]{media/lightPathRT.png}
+	\caption{Trazado de rayo en \textit{Ray Tracing}. Fuente: Propia}
+	\label{RT_traced}
+\end{figure}
 
 \begin{figure}[!ht]
-	
+	\centering
+	\includegraphics[scale=0.45]{media/lightPathPT.png}
+	\caption{Trazado de rayo en \textit{Path Tracing}. Fuente: Propia}
+	\label{PT_traced}
+\end{figure}
+
+En la Figura \ref{RT_traced} podemos observar aquello que comentamos en el párrafo anterior. En el \textit{Ray Tracing} el cálculo del color en un pixel solamente depende del trazado del rayo primario y como éste rebota por la escena hasta toparse con una fuente de luz. En cambio en la Figura \ref{PT_traced} se observa que a cada rebote, se generan múltiples rayos (en la imagen se ilustran un pequeña muestra). Esto ocurre porque cuando un rayo impacta contra una superficie difusa los fotones se dispersan en todas direcciones. Estos nuevos rayos nos permiten calcular la iluminación global para ofrecernos así un mayor realismo. 
+
+El \textit{Path Tracing} es indiferente al número de polígonos presentes en la escena, la complejidad de la escena no afecta proporcionalmente al rendimiento del algoritmo. Como hemos mencionado anteriormente, en el primer método se traza un rayo por cada polígono de la escena, en cambio en el método de Kajiya el rayo se traza por pixel. Debido a que cada uno es independiente de los demás, tenemos un algoritmo con una alta capacidad de paralelismo. En consecuencia, podemos explotar la capacidad de concurrencia que nos proporcionan las CPUs y GPUs; y poder así calcular más de un pixel de la imagen al mismo tiempo.
+
+\begin{figure}[H]
+	\centering
 	\begin{subfigure}{.3\textwidth}
 		\centering
 		\includegraphics[width=.8\textwidth]{media/RayTracing.png}
-		\caption{\textit{Ray Tracing}. Fuente: \citep{Cassagnabere2004}}
+		\caption{\textit{Ray Tracing}.}
 		\label{RT}
 	\end{subfigure}
-	
 	\begin{subfigure}{.3\textwidth}
 		\centering
-		\includegraphics[width=.3\textwidth]{media/PathTracing.png}
-		\caption{\textit{Path Tracing} con ruido. Fuente: \citep{Cassagnabere2004}}
+		\includegraphics[width=.8\textwidth]{media/PathTracing.png}
+		\caption{\textit{Path Tracing} con ruido.}
 		\label{PTN}
 	\end{subfigure}
 	\begin{subfigure}{.3\textwidth}
-		\includegraphics[width=.3\textwidth]{media/PathTracingMD.png}	
-		\caption{\textit{Path Tracing} sin ruido. Fuente: \citep{Cassagnabere2004}}
+		\centering
+		\includegraphics[width=.8\textwidth]{media/PathTracingMD.png}	
+		\caption{\textit{Path Tracing} sin ruido.}
 		\label{PT}
 	\end{subfigure}
+	\caption{Comparación \textit{Ray Tracing vs. Path Tracing}. Fuente: \citep{Cassagnabere2004}}
 \end{figure}
 
 Podemos apreciar como el \textit{Path Tracing}, Figura \ref{RT}, produce una sombras más suaves respecto al \textit{Ray Tracing}, Figura \ref{PT}. También se puede observar el efecto de ruido que provoca \textit{Path Tracing}, Figura \ref{PTN}, si pocas muestras por pixeles son utilizadas.
@@ -354,14 +371,14 @@ En un color morado podemos observar las reuniones de seguimiento planificadas co
 En la Figura \ref{gantt} se muestra: \begin{enumerate*}[label=\roman*)]
 \item el nombre de la tarea, \item el rol asignado a dicha tarea, \item la duración en horas, \item la fecha de inicio, \item la duración en días, \item la fecha de finalización, \item el riesgo y \item el progreso (en $\%$), en este orden. \end{enumerate*}
 
+\uselandscape
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.45]{media/final_gantt.png}
 	\captionof{figure}{Diagrama de Gantt completo. Fuente: Propia}
 	\label{gantt}
 \end{figure}
-
-\uselandscape
 
 \begin{figure}[H]
 	\centering
@@ -602,6 +619,8 @@ El impacto ambiental producido por el presente proyecto no es más que el result
 En la Tabla \ref{rrhh_1} podemos observar que el total de horas que concierne a los recursos humanos son de 670h. Considerando que una persona en su rutina habitual tiene un consumo de 0,1kWh, el consumo total es de $0,1kWh \cdot 670h = 67kWh$.
 
 Como hemos comentado en la sección anterior, utilizamos tres máquinas diferentes para realizar los experimentos, pero para el desarrollo íntegro del proyecto solamente estamos utilizando una de ellas. El proyecto se realiza en la máquina que tiene un consumo de 250W, teniendo en cuenta las horas utilizadas por esta máquina, según vemos en la Tabla \ref{ci_1}, el consumo total es de $0,25kWh \cdot 525h = 131,25kWh$. Si bien es cierto que no se analizó el impacto ambiental que el presente proyecto pudiera tener para así poder minimizarlo, ahora, teniendo una mayor perspectiva podríamos haber optado por realizar el proyecto en la máquina de menor consumo energético y remitir las otras solamente a los experimentos (que requieren menos horas de trabajo y por ende un menor consumo energético).
+
+Según la \citep{gene}, el año 2018 se estima que la emisión de $CO_{2}$ por parte de la red eléctrica peninsular era de 321g $CO_{2}/kWh$. En nuestro proyecto estamos consumiendo un total de 218kWh, esto supone una emisión de 69,978kg de $CO_{2}$ a la atmósfera. Un vuelo Barcelona -  Nuevo York son 1.177 kilogramos según \citep{hostel}. Nuestro proyecto emite casi un 6\% de las emisiones de $CO_{2}$ de un vuelo comercial Barcelona - Nueva York.
 
 Por último, cabe mencionar que el presente proyecto no ofrece ningún tipo de mejora ambiental respecto a proyecto/productos similares. El impacto ambiental que pueda suponer el consumo de electricidad depende exclusivamente del suministrador y no tiene el mismo impacto el uso de energías renovables que el uso de energías fósiles.
 
