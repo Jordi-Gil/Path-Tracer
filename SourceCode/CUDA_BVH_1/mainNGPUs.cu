@@ -8,7 +8,6 @@
 
 #include "Sphere.cuh"
 #include "MovingSphere.cuh"
-#include "HitableList.cuh"
 #include "Camera.cuh"
 #include "Material.cuh"
 #include "BVH_node.cuh"

@@ -1,9 +1,8 @@
 #ifndef Node_HH_INCLUDE
 #define Node_HH_INCLUDE
 
-#include "MovingSphere.cuh"
+#include "Sphere.cuh"
 #include "Helper.cuh"
-#include <cstring>
 
 class Node{
 
@@ -17,7 +16,7 @@ public:
     Node *right;  // Right child
     Node *parent; // Parent
   
-    MovingSphere *obj; //Null if is an internal node, Object if is a Leaf
+    Sphere *obj; //Null if is an internal node, Object if is a Leaf
   
     aabb box;
     

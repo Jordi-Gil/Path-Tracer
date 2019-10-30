@@ -99,14 +99,14 @@ El algoritmo de \textit{Path Tracing} surge como mejora del \textit{Ray Tracing}
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[scale=0.45]{media/lightPathRT.png}
-	\caption{Trazado de rayo en \textit{Ray Tracing}. Fuente: Propia}
+	\caption{Trazado de rayo en \textit{Ray Tracing}.}
 	\label{RT_traced}
 \end{figure}
 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[scale=0.45]{media/lightPathPT.png}
-	\caption{Trazado de rayo en \textit{Path Tracing}. Fuente: Propia}
+	\caption{Trazado de rayo en \textit{Path Tracing}.}
 	\label{PT_traced}
 \end{figure}
 
@@ -194,7 +194,7 @@ Existen muchas formas de construir un BVH, en nuestro caso nos hemos decantado p
 \begin{figure}[ht]
 	\centering
 	\includegraphics[scale=0.35]{media/Esquema.png}
-	\caption{Esquema aplicación. Fuente: Propia}
+	\caption{Esquema aplicación.}
 	\label{Esquema}
 \end{figure}
 
@@ -281,7 +281,7 @@ Antes de comenzar el proyecto, fue necesario familiarizarse con los conceptos b�
 
 Antes de entrar propiamente en el desarrollo en si del proyecto, debemos configurar las herramientas necesarias y garantizar su correcto funcionamiento.
 
-Para poder desarrollar el proyecto será necesario tener instalado en nuestros sistemas la API de \texttt{CUDA} con tal de poder crear el programa principal de nuestra aplicación paralela en GPU. Las librerías de \texttt{OpenMP} vienen instaladas por defecto en los sistemas Linux, por lo que no será necesaria una instalación, pero sí comprobar que funcionan correctamente. Por último, haremos uso de una plataforma, \textit{TexMaker}, que nos permita compilar código \LaTeX con tal de generar la documentación requerida.
+Para poder desarrollar el proyecto será necesario tener instalado en nuestros sistemas la API de \texttt{CUDA} con tal de poder crear el programa principal de nuestra aplicación paralela en GPU. Las librerías de \texttt{OpenMP} vienen instaladas por defecto en los sistemas Linux, por lo que no será necesaria una instalación, pero sí comprobar que funcionan correctamente. Por último, haremos uso de una plataforma, \textit{TexMaker}, que nos permita compilar código \LaTeX  con tal de generar la documentación requerida.
 
 Esta configuración debe hacerse tanto en el computador de sobremesa como en el portátil. La parte de \textit{CUDA} en el cluster de docencia no será necesario de configurar debido a que ya está previamente configurado por el DAC (Departament d'Arquitectura de Computadors). 
 
@@ -376,21 +376,21 @@ En la Figura \ref{gantt} se muestra: \begin{enumerate*}[label=\roman*)]
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.45]{media/final_gantt.png}
-	\captionof{figure}{Diagrama de Gantt completo. Fuente: Propia}
+	\captionof{figure}{Diagrama de Gantt completo.}
 	\label{gantt}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
   	\includegraphics[scale=1.5]{media/final_gantt_1.png}
-  	\captionof{figure}{Etapa de gestión. Fuente: Propia}
+  	\captionof{figure}{Etapa de gestión.}
   	\label{gantt_1}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
   	\includegraphics[scale=1.25]{media/final_gantt_2.png}
-  	\captionof{figure}{Etapa de desarrollo. Fuente: Propia}
+  	\captionof{figure}{Etapa de desarrollo.}
   	\label{gantt_2}
 \end{figure}
 
@@ -463,15 +463,34 @@ Para cada tarea especificada en el GANTT, Figure \ref{gantt}, le identificaremos
 	\item \textbf{Técnico informático:} Configuración del sistema.
 \end{itemize}
 
+En la Tabla \ref{rrhh_0} podemos visualizar las tareas asignadas a cada rol y el número de horas estimadas.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		\textbf{Categoría} & \textbf{Tarea} & \textbf{Horas} \\ \hline \hline
+		Director de proyecto 	  & Reuniones/correos 			&  92h \\ \hline
+		Responsable de proyecto   & Planificación del proyecto	& 130h \\ \hline
+		Responsable de proyecto   & Etapa final					& 120h \\ \hline
+		Responsable de proyecto   & Reuniones					&  12h \\ \hline
+		Desarrollador de software & Desarrollo   		 		& 240h \\ \hline
+		Desarrollador de software & Experimentos				&  90h \\ \hline
+		Técnico informático 	  & Configuración del sistema	&  10h \\ \hline
+	\end{tabular}
+	\caption{Relación rol - tareas.}
+	\label{rrhh_0}
+\end{table}
+
 En la Tabla \ref{rrhh_1} podemos observar la relación del salario en €/hora y el número de horas trabajadas por cada uno de los roles. 
 
-Para determinar el sueldo de cada rol se ha consultado el portal web \citep{tuSalario} teniendo en cuenta el propio rol y realizando una aproximación de la experiencia de la persona que lo desempeña en el proyecto (por ejemplo la experiencia que pueda tener el director del proyecto, desempeñado por un profesor senior o la experiencia como desarrollador de un estudiante que finaliza los estudios de un grado universitario) y aplicando el coste a la seguridad social (aproximadamente el sueldo neto multiplicado por 1,35).
+Para determinar el sueldo de cada rol se ha consultado el portal web \citep{tuSalario} teniendo en cuenta el propio rol y realizando una aproximación de la experiencia de la persona que lo desempeña en el proyecto (por ejemplo la experiencia que pueda tener el director del proyecto, desempeñado por un profesor senior o la experiencia como desarrollador de un estudiante que finaliza los estudios de un grado universitario) y aplicando el coste a la Seguridad Social (aproximadamente el salario bruto multiplicado por 1,35).
 
 \begin{table}[H]
 	\centering
 	\resizebox{\textwidth}{!}{\begin{tabular}{|c|c|c|c|c|}
 		\hline
-		\textbf{Categoría} & \textbf{Salario neto €/h} & \textbf{Salario bruto €/h} & \textbf{Horas Totales} & \textbf{Coste estimado} \\ \hline \hline
+		\textbf{Categoría} & \textbf{Salario bruto €/h} & \textbf{Salario bruto €/h + SS} & \textbf{Horas Totales} & \textbf{Coste estimado} \\ \hline \hline
 		Director de proyecto 	  & 18€/h & 24,30€/h &  92h & 2235,60€ \\ \hline
 		Responsable de proyecto   & 15€/h & 20,25€/h & 262h & 5305,50€ \\ \hline
 		Desarrollador de software & 13€/h & 17,55€/h & 330h & 5791,50€ \\ \hline
@@ -620,7 +639,7 @@ En la Tabla \ref{rrhh_1} podemos observar que el total de horas que concierne a 
 
 Como hemos comentado en la sección anterior, utilizamos tres máquinas diferentes para realizar los experimentos, pero para el desarrollo íntegro del proyecto solamente estamos utilizando una de ellas. El proyecto se realiza en la máquina que tiene un consumo de 250W, teniendo en cuenta las horas utilizadas por esta máquina, según vemos en la Tabla \ref{ci_1}, el consumo total es de $0,25kWh \cdot 525h = 131,25kWh$. Si bien es cierto que no se analizó el impacto ambiental que el presente proyecto pudiera tener para así poder minimizarlo, ahora, teniendo una mayor perspectiva podríamos haber optado por realizar el proyecto en la máquina de menor consumo energético y remitir las otras solamente a los experimentos (que requieren menos horas de trabajo y por ende un menor consumo energético).
 
-Según la \citep{gene}, el año 2018 se estima que la emisión de $CO_{2}$ por parte de la red eléctrica peninsular era de 321g $CO_{2}/kWh$. En nuestro proyecto estamos consumiendo un total de 218kWh, esto supone una emisión de 69,978kg de $CO_{2}$ a la atmósfera. Un vuelo Barcelona -  Nuevo York son 1.177 kilogramos según \citep{hostel}. Nuestro proyecto emite casi un 6\% de las emisiones de $CO_{2}$ de un vuelo comercial Barcelona - Nueva York.
+Según la Generalitat de Catalunya \citep{gene}, el año 2018 se estima que la emisión de $CO_{2}$ por parte de la red eléctrica peninsular era de 321g $CO_{2}/kWh$. En nuestro proyecto estamos consumiendo un total de 218kWh, esto supone una emisión de 69,978kg de $CO_{2}$ a la atmósfera. Un vuelo Barcelona -  Nueva York son 1.177 kilogramos según \citep{hostel}. Nuestro proyecto emite casi un 6\% de las emisiones de $CO_{2}$ de un vuelo comercial Barcelona - Nueva York.
 
 Por último, cabe mencionar que el presente proyecto no ofrece ningún tipo de mejora ambiental respecto a proyecto/productos similares. El impacto ambiental que pueda suponer el consumo de electricidad depende exclusivamente del suministrador y no tiene el mismo impacto el uso de energías renovables que el uso de energías fósiles.
 
@@ -637,7 +656,6 @@ A título personal, este proyecto me permite adquirir nuevos conocimientos no vi
 Una vez finalizado el proyecto no tendrá gran trascendencia en la sociedad en general. Como comentamos en capítulos anteriores, este proyecto no propone ninguna alternativa respecto a soluciones existentes sino más bien dar una serie de herramientas al autor de éste para adentrarse en el mundo de la computación gráfica realista. Por lo tanto, es difícil de determinar el impacto social que pueda tener más allá del divulgativo o académico.
 
 \newpage
-\nocite{*}
 
 \printbibliography
 
