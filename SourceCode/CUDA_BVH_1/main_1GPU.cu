@@ -119,7 +119,7 @@ void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, in
 		}
     else if(std::string(argv[i]) == "-light") {
       if((i+1) >= argc) error("-light value expected");
-      if(argv[i+1] == "ON") light = true;
+      if(std::string(argv[i+1]) == "ON") light = true;
       else if(std::string(argv[i+1]) == "OFF"){ 
         light = false; filename = "pic_off.ppm";
       }
@@ -293,7 +293,7 @@ void create_world(Sphere *h_objects, int &size, int nx, int ny, int dist){
 __device__ Vector3 color(const Ray& ray, Node *world, int depth, bool light, curandState *random){
   
   Ray cur_ray = ray;
-  Vector3 cur_attenuation = Vector3(1.0,1.0,1.0);
+  Vector3 cur_attenuation = Vector3::One();
   for(int i = 0; i < depth; i++){ 
     hit_record rec;
     if( world->checkCollision(cur_ray, 0.001, FLT_MAX, rec) ) {
@@ -301,7 +301,8 @@ __device__ Vector3 color(const Ray& ray, Node *world, int depth, bool light, cur
       Vector3 attenuation;
       Vector3 emitted = rec.mat_ptr.emitted();
       if(rec.mat_ptr.scatter(cur_ray, rec, attenuation, scattered, random)){
-        cur_attenuation *= attenuation;
+				cur_attenuation *= attenuation;
+				cur_attenuation += emitted;
         cur_ray = scattered;
       }
       else return emitted;
@@ -310,13 +311,13 @@ __device__ Vector3 color(const Ray& ray, Node *world, int depth, bool light, cur
       if(light) {
         Vector3 unit_direction = unit_vector(cur_ray.direction());
         float t = 0.5*(unit_direction.y() + 1.0);
-        Vector3 c = (1.0 - t)*Vector3(1.0,1.0,1.0) + t*Vector3(0.5, 0.7, 1.0);
+        Vector3 c = (1.0 - t)*Vector3::One() + t*Vector3(0.5, 0.7, 1.0);
         return cur_attenuation * c;
       }
       else return Vector3::Zero();
     }
   }
-  return Vector3(0.0,0.0,0.0);
+  return Vector3::Zero();
 }
 
 __device__ unsigned int findSplit(Sphere *d_list, int first, int last) {

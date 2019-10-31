@@ -42,6 +42,7 @@ void help(){
     std::cout << "\t[-AAit]         Number of iterations to calculate color in one pixel. Number greater than 0."  << std::endl;
     std::cout << "\t[-depth]        The attenuation of scattered ray. Number greater than 0."  << std::endl;
     std::cout << "\t[-spheres]      Factor number to calculate the number of spheres in the scene. Number greater than 0." << std::endl;
+	std::cout << "\t[-light]        Turn on/off the ambient light. Values can be ON/OFF" << std::endl;
     std::cout << "\t[-f][--file]    File name of pic generated." << std::endl;
     std::cout << "\t[-h][--help]    Show help." << std::endl;
     std::cout << "\t                #spheres = (2*spheres)*(2*spheres) + 4" << std::endl;
@@ -53,11 +54,11 @@ void help(){
   
 }
 
-void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, int &dist, std::string &filename){
+void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, int &dist, std::string &filename, bool &light){
   
     if(argc <= 1) error("Error usage. Use [-h] [--help] to see the usage.");
   
-    nx = 1280; ny = 720; ns = 50; depth = 50; dist = 11; filename = "pic.ppm";
+    nx = 1280; ny = 720; ns = 50; depth = 50; dist = 11; filename = "pic.ppm"; light = true;
   
     bool v_default = false;
   
@@ -93,7 +94,13 @@ void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, in
             if ((i+1) >= argc) error("--file / -f value expected");
             filename = std::string(argv[i+1]);
             filename = filename+".ppm";
-        } else if (std::string(argv[i]) == "-h" || std::string(argv[i]) == "--help" ){
+        } else if(std::string(argv[i]) == "-light") {
+					if((i+1) >= argc) error("-light value expected");
+					if(std::string(argv[i+1]) == "ON") light = true;
+					else if(std::string(argv[i+1]) == "OFF"){ 
+						light = false; filename = "pic_off.ppm";
+				}
+		} else if (std::string(argv[i]) == "-h" || std::string(argv[i]) == "--help" ){
             help();
         } else {
             error("Error usage. Use [-h] [--help] to see the usage.");
@@ -328,23 +335,55 @@ void compare(Vector3 &max, Vector3 &min, Vector3 point) {
     if(point[2] < min[2]) min[2] = point[2]; //z
 }
 
-Vector3 color(const Ray& ray, Node *world, int depth, int const _depth) {
+Vector3 color(const Ray& ray, Node *world, int depth, bool light, int const _depth) {
     hit_record rec;
     if(world->checkCollision(ray, 0.001, MAXFLOAT, rec)){
         Ray scattered;
         Vector3 attenuation;
         Vector3 emitted = rec.mat_ptr.emitted();
         if(depth < _depth and rec.mat_ptr.scatter(ray, rec, attenuation, scattered)){
-            return emitted + attenuation*color(scattered, world, depth+1, _depth);
+            return emitted + attenuation*color(scattered, world, depth+1,light, _depth);
         }
         else return emitted;
     }
     else{
-        //Vector3 unit_direction = unit_vector(ray.direction());
-        //float t = 0.5 * (unit_direction.y() + 1.0);
-        //return (1.0-t) * Vector3::One() + t*Vector3(0.5, 0.7, 1.0);
-      return Vector3::Zero();
+		if(light) {
+			Vector3 unit_direction = unit_vector(ray.direction());
+			float t = 0.5 * (unit_direction.y() + 1.0);
+			return (1.0-t) * Vector3::One() + t*Vector3(0.5, 0.7, 1.0);
+		}
+		else return Vector3::Zero();
     }
+}
+
+Vector3 color_it(const Ray &ray, Node *world, int depth, bool light, int const _depth) {
+	Ray cur_ray = ray;
+	depth = 0*depth;
+	Vector3 cur_attenuation = Vector3::One();
+	for(int i = 0; i < _depth; i++) {
+		hit_record rec;
+		if(world->checkCollision(cur_ray, 0.001,FLT_MAX,rec)) {
+			Ray scattered;
+			Vector3 attenuation;
+			Vector3 emitted = rec.mat_ptr.emitted();
+			if(rec.mat_ptr.scatter(ray,rec,attenuation,scattered)) {
+				cur_attenuation += emitted;
+				cur_attenuation *= attenuation;
+				cur_ray = scattered;
+			}
+			else return emitted;
+		}
+		else {
+			if(light){
+				Vector3 unit_direction = unit_vector(cur_ray.direction());
+				float t = 0.5*(unit_direction.y()+1.0);
+				Vector3 c = (1.0-t)*Vector3::One()+t*Vector3(0.5,0.7,1.0);
+				return cur_attenuation * c;
+			}
+			else return Vector3::Zero();
+		}
+	}
+	return Vector3::Zero();
 }
 
 Node *random_scene(int dist) {
@@ -451,16 +490,19 @@ int depthTree(Node *root){
 
 int main(int argc, char **argv) {
     
-    int nx, ny, ns, depth, dist;
-    std::string filename;
+	int nx, ny, ns, depth, dist;
+	bool light;
+	std::string filename;
+
+	parse_argv(argc, argv, nx, ny, ns, depth, dist, filename,light);
+
+	int n = (2*dist)*(2*dist)+5;
   
-    parse_argv(argc, argv, nx, ny, ns, depth, dist, filename);
-  
-    int n = (2*dist)*(2*dist)+5;
-  
-    std::cout << "Creating " << filename << " with (" << nx << "," << ny << ") pixels" << std::endl;
-    std::cout << "With " << ns << " iterations for AntiAliasing and depth of " << depth << "." << std::endl;
-    std::cout << "The world have " << n << " spheres." << std::endl;
+	std::cout << "Creating " << filename << " with (" << nx << "," << ny << ") pixels" << std::endl;
+	std::cout << "With " << ns << " iterations for AntiAliasing and depth of " << depth << "." << std::endl;
+	std::cout << "The world have " << n << " spheres." << std::endl;
+	if(light) std::cout << "Ambient light ON" << std::endl;
+	else std::cout << "Ambient light OFF" << std::endl;
     
     Node *world = random_scene(dist);
     
@@ -491,7 +533,7 @@ int main(int argc, char **argv) {
         
                 Ray r = cam.get_ray(u, v);
         
-                col += color(r, world, 0, depth);
+                col += color(r, world, 0, light, depth);
             }
       
             col /= float(ns);
