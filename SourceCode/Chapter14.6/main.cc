@@ -258,68 +258,46 @@ int2 determineRange(const vh &sortedMortonCodes, int idx) {
 
 Node* generateHierarchy(const vh &sortedMortonCodes, int numberObj) {
     
-    std::ofstream graph;
-    graph.open("graph.dot");
-    
-    graph << "digraph BST { \n";
-    graph << "\tnode [fontname=\"Arial\"];\n";
-    
     Node* leafNodes = new Node[numberObj];
     Node* internalNodes = new Node[numberObj - 1];
-    
-    internalNodes[0].name = "i_0";
     
     for(int idx = 0; idx < numberObj; idx++) {
         
         sortedMortonCodes[idx]->setMorton(sortedMortonCodes[idx]->getMorton()+idx);
         
         leafNodes[idx].obj = sortedMortonCodes[idx];
-        leafNodes[idx].name = "l_"+std::to_string(sortedMortonCodes[idx]->getMorton());
-        graph << "\t" << leafNodes[idx].name << " [ label = \"" <<  leafNodes[idx].name.substr(2) << "\"];\n";
     }
 
     for(int idx = 0; idx < numberObj - 1; idx++) {
         
         //determine range
-        
-        graph << "\t" << "i_" << idx << " [ label = \"" << idx << "\"];\n";
-        
         int2 range = determineRange(sortedMortonCodes, idx);
         
         int first = range.x;
         int last = range.y;
         
         //find partition point
-        
         int split = findSplit(sortedMortonCodes, first, last);
         
         Node *childA;
         Node *childB;
         
         if(split == first) childA = &leafNodes[split];
-        else{ 
-            internalNodes[split].name = "i_"+std::to_string(split);
+        else{
             childA = &internalNodes[split];
         }
         
         if (split + 1 == last) childB = &leafNodes[split + 1];
         else{
-            internalNodes[split+1].name = "i_"+std::to_string(split+1);
             childB = &internalNodes[split + 1];
         }
-        
-        internalNodes[idx].name = "i_"+std::to_string(idx);
         
         internalNodes[idx].left = childA;
         internalNodes[idx].right = childB;
         childA->parent = &internalNodes[idx];
         childB->parent = &internalNodes[idx];
         
-        graph << "\t" << internalNodes[idx].name << " -> {" << childA->name << " " << childB->name << "};\n";
-        
     }
-    graph << "}";
-    graph.close();
     
     return &internalNodes[0];
 }

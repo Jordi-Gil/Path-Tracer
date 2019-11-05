@@ -7,29 +7,26 @@
 
 struct int2 {
     
-    int x; int y;
-    
-    int2(int tx, int ty):x(tx), y(ty) {}
+  int x; int y;
+  
+  int2(int tx, int ty):x(tx), y(ty) {}
     
 };
 
 class Node {
 
 public:
-    Node();
+  Node();
+
+  bool checkCollision(const Ray& r, float tmin, float tmax, hit_record& rec);
   
-    bool checkCollision(const Ray& r, float tmin, float tmax, hit_record& rec);
-    
-    Node *left;   // Left child
-    Node *right;  // Right child
-    Node *parent; // Parent
-  
-    Sphere *obj; //Null if is an internal node, Object if is a Leaf
-  
-    aabb box;
-    
-    std::string name;
-  
+  Node *left;   // Left child
+  Node *right;  // Right child
+  Node *parent; // Parent
+
+  Sphere *obj; //Null if is an internal node, Object if is a Leaf
+
+  aabb box;
 };
 
 

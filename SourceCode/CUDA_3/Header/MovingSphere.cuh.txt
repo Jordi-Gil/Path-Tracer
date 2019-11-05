@@ -1,0 +1,36 @@
+#ifndef _MOVING_SPHERE_HH_INCLUDE
+#define _MOVING_SPHERE_HH_INCLUDE
+
+#include "Material.cuh"
+#include "aabb.cuh"
+
+class MovingSphere {
+  
+public:
+  __host__ __device__ MovingSphere() {}
+  __host__ __device__ MovingSphere(Vector3 cen0, Vector3 cen1, float t0, float t1, float r, Material mat);
+  __host__ __device__ bool hit(const Ray& r, float t_min, float t_max, hit_record& rec, int blockIdx, int threadIdx);
+  __host__ __device__ void bounding_box(float t0, float t1, aabb& box);
+  __host__ __device__ unsigned int getMorton();
+  __host__ __device__ void setMorton(unsigned int code);
+  __host__ __device__ aabb getBox();
+  __host__ __device__ Vector3 getCenter();
+  __host__ __device__ Vector3 get_center(float time);
+    
+  Vector3 center, center1;
+  float time0, time1;
+  float radius;
+  Material mat_ptr;
+  long long morton_code;
+  aabb box;
+};
+
+struct ObjEval{
+    
+  __host__ __device__ inline bool operator()(MovingSphere a, MovingSphere b){
+    return (a.getMorton() < b.getMorton());
+  }
+
+};
+
+#endif /* _MOVING_SPHERE_HH_INCLUDE */
