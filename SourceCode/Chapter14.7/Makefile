@@ -15,22 +15,19 @@ $(MAINDIR):
 	mkdir $(OBJDIR)/$(MAINDIR)
 
 path_tracing_sec: $(OBJ)
-	@echo $(OBJ)
 	$(GCC) $(GCC_FLAGS) -o $@ $(OBJ)
 
 $(OBJDIR)/$(MAINDIR)/%.o: %.cc
-	@echo $<
 	$(GCC) $(GCC_FLAGS) -o $@ -c $<
 
 $(OBJDIR)/%.o: Source/%.cc Header/%.hh
-	@echo $<
 	$(GCC) $(GCC_FLAGS) -o $@ -c $<
 
 projecte.tar:
-	tar -cvf $@  Source/*.cc Header/*.hh main.cc Makefile
+	tar -cvf $@  Source/*.cc Header/*.hh Makefile
 	
 clean:
-	rm -rf $(OBJDIR)/*.o path_tracing_sec *.ppm
+	rm -rf $(OBJDIR)/*.o $(OBJDIR)/$(MAINDIR)/*.o path_tracing_sec *.ppm
 	
 
 

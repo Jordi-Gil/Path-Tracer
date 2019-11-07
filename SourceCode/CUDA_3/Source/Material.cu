@@ -6,7 +6,8 @@ __host__ __device__ float schlick(float cosine, float ref_idx){
     return r0 + (1-r0) * pow((1-cosine), 5);
 }
 
-__host__ __device__ bool refract(const Vector3 &v, const Vector3 &n, float ni_over_nt, Vector3 &refracted){
+__host__ __device__ bool refract(const Vector3 &v, const Vector3 &n, float ni_over_nt, Vector3 &refracted) {
+  
   Vector3 uv = unit_vector(v);
   float dt = dot(uv, n);
   float discriminant = 1.0 - ni_over_nt*ni_over_nt*(1-dt*dt);
@@ -49,11 +50,12 @@ __device__ bool Material::scatter(const Ray& r_in, const hit_record &rec, Vector
   if(type == LAMBERTIAN) return Lambertian(rec, attenuation, scattered, random);
   else if (type == METAL) return Metal(r_in, rec, attenuation, scattered, random);
   else if (type == DIELECTRIC) return Dielectric(r_in, rec, attenuation, scattered, random);
+  else if(type == DIFFUSE_LIGHT) return false;
   else return false;
   
 }
 
-__device__ Vector3 Material::emitted(){
+__device__ Vector3 Material::emitted() {
   if(type == DIFFUSE_LIGHT) return albedo;
   else return Vector3::Zero();
 }

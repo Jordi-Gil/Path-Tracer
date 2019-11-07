@@ -26,10 +26,10 @@ public:
 
 struct ObjEval{
     
-  inline bool operator()(Sphere *a, Sphere *b){
-    return (a->getMorton() < b->getMorton());
+  inline bool operator()(Sphere a, Sphere b){
+    return (a.getMorton() < b.getMorton());
   }
 
 };
 
-#endif /* _MOVING_SPHERE_HH_INCLUDE */
+#endif /* _SPHERE_HH_INCLUDE */

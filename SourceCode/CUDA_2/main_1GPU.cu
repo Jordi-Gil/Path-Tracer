@@ -305,7 +305,7 @@ __device__ Vector3 color(const Ray& ray, Node *world, int depth, bool light, cur
         cur_attenuation += emitted;
         cur_ray = scattered;
       }
-      else return emitted;
+      else return cur_attenuation * emitted;
     }
     else {
       if(light) {

@@ -7,7 +7,9 @@ __host__  __device__ inline float ffmin(float a, float b) {return a < b ? a : b;
 __host__  __device__ inline float ffmax(float a, float b) {return a > b ? a : b;}
 
 class aabb {
+
 public:
+  
   __host__ __device__ aabb() {}
   __host__ __device__ aabb(const Vector3& a, const Vector3& b);
 
@@ -15,7 +17,7 @@ public:
   __host__ __device__ Vector3 max() const;
 
   
-  __host__ __device__ inline bool hit(const Ray& r, float tmin, float tmax) const {
+  __device__ inline bool hit(const Ray& r, float tmin, float tmax) const {
     for (int i = 0; i < 3; i++) {
     
       float invD = 1.0f / r.direction()[i];

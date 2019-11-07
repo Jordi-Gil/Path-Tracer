@@ -12,8 +12,6 @@
 #include "Material.hh"
 #include "Node.hh"
 
-typedef std::vector< Sphere* > vh;
-
 double getusec_() {
   struct timeval time;
   gettimeofday(&time, NULL);
@@ -27,6 +25,7 @@ double getusec_() {
 #define STOP_COUNT_TIME stamp = getusec_() - stamp;\
                         stamp = stamp/1e6;               
 
+#define Random (rand()/(RAND_MAX + 1.0))
                         
 void error(const char *message){
   std::cout << message << std::endl;
@@ -146,10 +145,10 @@ void iterativeTraversal(Node* root) {
     
 }
 
-unsigned int findSplit(const vh &sortedMortonCodes, int first, int last) {
+unsigned int findSplit(Sphere *sortedMortonCodes, int first, int last) {
     
-    long long firstCode = sortedMortonCodes[first]->getMorton();
-    long long lastCode = sortedMortonCodes[last]->getMorton();
+    long long firstCode = sortedMortonCodes[first].getMorton();
+    long long lastCode = sortedMortonCodes[last].getMorton();
     
     if(firstCode == lastCode)
         return (first + last) >> 1;
@@ -165,7 +164,7 @@ unsigned int findSplit(const vh &sortedMortonCodes, int first, int last) {
         
         if(newSplit < last){
       
-            long long splitCode = sortedMortonCodes[newSplit]->getMorton();
+            long long splitCode = sortedMortonCodes[newSplit].getMorton();
             
             int splitPrefix = Helper::clz32d(firstCode ^ splitCode);
       
@@ -181,15 +180,13 @@ unsigned int findSplit(const vh &sortedMortonCodes, int first, int last) {
         
 }
 
-int2 determineRange(const vh &sortedMortonCodes, int idx) {
-    
-    int numberObj = sortedMortonCodes.size()-1;
+int2 determineRange(Sphere *sortedMortonCodes, int idx, int numberObj) {
     
     if(idx == 0) return int2(0,numberObj);
     
-    long long idxCode = sortedMortonCodes[idx]->getMorton();
-    long long idxCodeUp = sortedMortonCodes[idx+1]->getMorton();
-    long long idxCodeDown = sortedMortonCodes[idx-1]->getMorton();
+    long long idxCode = sortedMortonCodes[idx].getMorton();
+    long long idxCodeUp = sortedMortonCodes[idx+1].getMorton();
+    long long idxCodeDown = sortedMortonCodes[idx-1].getMorton();
     
     if((idxCode == idxCodeDown) and (idxCode == idxCodeUp)) {
     
@@ -199,7 +196,7 @@ int2 determineRange(const vh &sortedMortonCodes, int idx) {
             ++idx;
             if(idx >= numberObj) dif = true;
                 
-            if(sortedMortonCodes[idx]->getMorton() != sortedMortonCodes[idx+1]->getMorton()) dif = true;
+            if(sortedMortonCodes[idx].getMorton() != sortedMortonCodes[idx+1].getMorton()) dif = true;
         }
         
         return int2(idxInit, idx);
@@ -225,7 +222,7 @@ int2 determineRange(const vh &sortedMortonCodes, int idx) {
             bitPrefix = -1;
             
             if(newBoundary >= 0 and newBoundary <= numberObj){
-                long long newCode = sortedMortonCodes[idx + lmax * d]->getMorton();
+                long long newCode = sortedMortonCodes[idx + lmax * d].getMorton();
                 
                 bitPrefix = Helper::clz32d(idxCode ^ newCode);
                 if(bitPrefix > dmin) lmax *= 2;
@@ -241,7 +238,7 @@ int2 determineRange(const vh &sortedMortonCodes, int idx) {
             int newUpperBound = idx + (l + t) * d;
             
             if(newUpperBound <= numberObj and newUpperBound >= 0){
-                long long splitCode = sortedMortonCodes[newUpperBound]->getMorton();
+                long long splitCode = sortedMortonCodes[newUpperBound].getMorton();
                 int splitPrefix = Helper::clz32d(idxCode ^ splitCode);
                 
                 if(splitPrefix > dmin) l += t;
@@ -256,22 +253,22 @@ int2 determineRange(const vh &sortedMortonCodes, int idx) {
     }
 }
 
-Node* generateHierarchy(const vh &sortedMortonCodes, int numberObj) {
+Node* generateHierarchy(Sphere *sortedMortonCodes, int numberObj) {
     
     Node* leafNodes = new Node[numberObj];
     Node* internalNodes = new Node[numberObj - 1];
     
     for(int idx = 0; idx < numberObj; idx++) {
         
-        sortedMortonCodes[idx]->setMorton(sortedMortonCodes[idx]->getMorton()+idx);
+        sortedMortonCodes[idx].setMorton(sortedMortonCodes[idx].getMorton()+idx);
         
-        leafNodes[idx].obj = sortedMortonCodes[idx];
+        leafNodes[idx].obj = &sortedMortonCodes[idx];
     }
 
     for(int idx = 0; idx < numberObj - 1; idx++) {
         
         //determine range
-        int2 range = determineRange(sortedMortonCodes, idx);
+        int2 range = determineRange(sortedMortonCodes, idx, numberObj-1);
         
         int first = range.x;
         int last = range.y;
@@ -334,115 +331,87 @@ Vector3 color(const Ray& ray, Node *world, int depth, bool light, int const _dep
     }
 }
 
-Vector3 color_it(const Ray &ray, Node *world, int depth, bool light, int const _depth) {
-	Ray cur_ray = ray;
-	depth = 0*depth;
-	Vector3 cur_attenuation = Vector3::One();
-	for(int i = 0; i < _depth; i++) {
-		hit_record rec;
-		if(world->checkCollision(cur_ray, 0.001,FLT_MAX,rec)) {
-			Ray scattered;
-			Vector3 attenuation;
-			Vector3 emitted = rec.mat_ptr.emitted();
-			if(rec.mat_ptr.scatter(ray,rec,attenuation,scattered)) {
-				cur_attenuation += emitted;
-				cur_attenuation *= attenuation;
-				cur_ray = scattered;
-			}
-			else return emitted;
-		}
-		else {
-			if(light){
-				Vector3 unit_direction = unit_vector(cur_ray.direction());
-				float t = 0.5*(unit_direction.y()+1.0);
-				Vector3 c = (1.0-t)*Vector3::One()+t*Vector3(0.5,0.7,1.0);
-				return cur_attenuation * c;
-			}
-			else return Vector3::Zero();
-		}
-	}
-	return Vector3::Zero();
-}
-
 Node *random_scene(int dist) {
   
-    vh list;
+    int n = (2*dist)*(2*dist)+5;
+    
+    Sphere *list = new Sphere[n];
     
     Vector3 max(MIN);
     Vector3 min(INF);
+    int objs = 0;
+    list[objs] = Sphere(Vector3(0,-1000,0),1000, Material(LAMBERTIAN, Vector3(0.5,0.5,0.5)));
+    objs++;
     
-    list.push_back(new Sphere(Vector3(0,-1000,0),1000, Material(LAMBERTIAN, Vector3(0.5,0.5,0.5))));
-    
-    compare(max, min, list.back()->getCenter());
+    compare(max, min, list[objs].getCenter());
     
     for(int a = -dist; a < dist; a++){
         for(int b = -dist; b < dist; b++){
-            float choose_mat = (rand()/(RAND_MAX + 1.0));
-            Vector3 center(a+0.9*(rand()/(RAND_MAX + 1.0)), 0.2, b+0.9*(rand()/(RAND_MAX + 1.0)));
+            float choose_mat = Random;
+            Vector3 center(a+0.9*Random, 0.2, b+0.9*Random);
             if((center-Vector3(0,0,0)).length() > 0.995){
                 if(choose_mat < 0.8){ //diffuse
                     
-                    list.push_back(new Sphere(center, 0.2, Material(LAMBERTIAN, Vector3(
-                                                                      (rand()/(RAND_MAX + 1.0))*(rand()/(RAND_MAX + 1.0)), 
-                                                                      (rand()/(RAND_MAX + 1.0))*(rand()/(RAND_MAX + 1.0)), 
-                                                                      (rand()/(RAND_MAX + 1.0))))));
+                    list[objs] = Sphere(center, 0.2, Material(LAMBERTIAN, Vector3(
+                      Random*Random,
+                      Random*Random, 
+                      Random)));
                 }
                 else if(choose_mat < 0.90){ //metal
                     
-                    list.push_back(new Sphere(center, 0.2, Material(METAL, Vector3(
-                                                                          0.5*(1+(rand()/(RAND_MAX + 1.0))),
-                                                                          0.5*(1+(rand()/(RAND_MAX + 1.0))),
-                                                                          0.5*(1+(rand()/(RAND_MAX + 1.0)))),
-                                                                      0.5*(rand()/(RAND_MAX + 1.0))
-                                                                    )));
+                    list[objs] = Sphere(center, 0.2, Material(METAL, Vector3(
+                      0.5*(1+Random), 0.5*(1+Random), 0.5*(1+Random)),0.5*Random
+                                                                    ));
                 }
                 else if(choose_mat < 0.95){
                     
-                    list.push_back(new Sphere(center, 0.2, Material(DIELECTRIC,Vector3::One(),-1.0,1.5)));
+                    list[objs] = Sphere(center, 0.2, Material(DIELECTRIC,Vector3::One(),-1.0,1.5));
                 }
                 else {
-                  list.push_back(new Sphere(center, 0.2, Material(DIFFUSE_LIGHT, Vector3::One())));
+                  list[objs] = Sphere(center, 0.2, Material(DIFFUSE_LIGHT, Vector3::One()));
                 }
             }
-            compare(max, min, list.back()->getCenter());
+            compare(max, min, list[objs].getCenter());
+            objs++;
         }
     }
     
-    list.push_back(new Sphere(Vector3(0,1,0), 1.0, Material(DIELECTRIC,Vector3::One(),-1,1.5)));
-    compare(max, min, list.back()->getCenter());
+    list[objs] = Sphere(Vector3(0,1,0), 1.0, Material(DIELECTRIC,Vector3::One(),-1,1.5));
+    compare(max, min, list[objs].getCenter()); objs++;
     
-    list.push_back(new Sphere(Vector3(-4,1,0),1.0, Material(LAMBERTIAN,Vector3(0.4,0.2,0.1))));
-    compare(max, min, list.back()->getCenter());
+    list[objs] = Sphere(Vector3(-4,1,0),1.0, Material(LAMBERTIAN,Vector3(0.4,0.2,0.1)));
+    compare(max, min, list[objs].getCenter()); objs++;
     
-    list.push_back(new Sphere(Vector3(4,1,0),1.0, Material(METAL,Vector3(0.7,0.6,0.5),0.0)));
-    compare(max, min, list.back()->getCenter());
+    list[objs] = Sphere(Vector3(4,1,0),1.0, Material(METAL,Vector3(0.7,0.6,0.5),0.0));
+    compare(max, min, list[objs].getCenter()); objs++;
     
-    list.push_back(new Sphere(Vector3(4,1,5), 1.0, Material(METAL,Vector3(0.9, 0.2, 0.2),0.0)));
-    compare(max, min, list.back()->getCenter());
+    list[objs] = Sphere(Vector3(4,1,5), 1.0, Material(METAL,Vector3(0.9, 0.2, 0.2),0.0));
+    compare(max, min, list[objs].getCenter()); objs++;
     
     std::cout << max << " " << min << std::endl;
     
     float max_x = max[0]; float max_y = max[1]; float max_z = max[2];
     float min_x = min[0]; float min_y = min[1]; float min_z = min[2];
     
-    for(int i = 0; i < list.size(); i++) {
+    for(int idx = 0; idx < objs; idx++) {
         
-        Vector3 point = list[i]->getCenter();
+        Vector3 point = list[idx].getCenter();
         
         point[0] = ((point[0] - min_x)/(max_x - min_x));
         point[1] = ((point[1] - min_y)/(max_y - min_y));
         point[2] = ((point[2] - min_z)/(max_z - min_z));
         
-        list[i]->setMorton(Helper::morton3D(point[0],point[1],point[2]));
+        list[idx].setMorton(Helper::morton3D(point[0],point[1],point[2]));
     }
-    vh list_aux = list;
     
-    std::sort(list.begin(), list.end(), ObjEval());
+    Sphere *spheres_aux = new Sphere[objs];
+    std::copy(list, list+objs, spheres_aux);
+    std::sort(spheres_aux, spheres_aux+objs, ObjEval());
     
     double stamp;
     START_COUNT_TIME;
     
-    Node *root = generateHierarchy(list, list.size());
+    Node *root = generateHierarchy(spheres_aux, objs);
     
     STOP_COUNT_TIME;
     std::cout << "BVH created in " << stamp << " seconds" << std::endl;
@@ -506,8 +475,8 @@ int main(int argc, char **argv) {
             Vector3 col = Vector3::Zero();
       
             for(int s = 0; s < ns; s++){
-                float u = float(i + (rand()/(RAND_MAX + 1.0))) / float(nx);
-                float v = float(j + (rand()/(RAND_MAX + 1.0))) / float(ny);
+                float u = float(i + Random) / float(nx);
+                float v = float(j + Random) / float(ny);
         
                 Ray r = cam.get_ray(u, v);
         

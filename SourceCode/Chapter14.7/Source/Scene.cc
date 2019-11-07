@@ -1,5 +1,7 @@
 #include "Scene.hh"
 
+#define Random (rand()/(RAND_MAX + 1.0))
+
 void compare(Vector3 &max, Vector3 &min, Vector3 point) {
     
   if(point[0] > max[0]) max[0] = point[0]; //x
@@ -131,9 +133,9 @@ void Scene::sceneFromFile(const std::string &filename) {
     list[idx].setMorton(Helper::morton3D(point[0],point[1],point[2]));
   }
   
-  std::sort(list, list + objs, ObjEval());
   spheres = new Sphere[objs];
   std::copy(list, list + objs, spheres);
+  std::sort(spheres, spheres + objs, ObjEval());
   
   size = objs;
   
@@ -160,24 +162,17 @@ void Scene::sceneRandom() {
   
   for(int a = -dist; a < dist; a++){
     for(int b = -dist; b < dist; b++){
-      float choose_mat = (rand()/(RAND_MAX + 1.0));
-      Vector3 center(a+0.9*(rand()/(RAND_MAX + 1.0)), 0.2, b+0.9*(rand()/(RAND_MAX + 1.0)));
+      float choose_mat = Random;
+      Vector3 center(a+0.9*Random, 0.2, b+0.9*Random);
       if((center-Vector3(0,0,0)).length() > 0.995){
         if(choose_mat < 0.8){ //diffuse
             
           list[objs] = Sphere(center, 0.2, Material(LAMBERTIAN, Vector3(
-                                                            (rand()/(RAND_MAX + 1.0))*(rand()/(RAND_MAX + 1.0)), 
-                                                            (rand()/(RAND_MAX + 1.0))*(rand()/(RAND_MAX + 1.0)), 
-                                                            (rand()/(RAND_MAX + 1.0)))));
+            Random*Random, Random*Random, Random)));
         }
         else if(choose_mat < 0.90){ //metal
             
-          list[objs] = Sphere(center, 0.2, Material(METAL, Vector3(
-                                                                0.5*(1+(rand()/(RAND_MAX + 1.0))),
-                                                                0.5*(1+(rand()/(RAND_MAX + 1.0))),
-                                                                0.5*(1+(rand()/(RAND_MAX + 1.0)))),
-                                                            0.5*(rand()/(RAND_MAX + 1.0))
-                                                          ));
+          list[objs] = Sphere(center, 0.2, Material(METAL, Vector3( 0.5*(1+Random), 0.5*(1+Random), 0.5*(1+Random)), 0.5*Random ));
         }
         else if(choose_mat < 0.95){
           list[objs] = Sphere(center, 0.2, Material(DIELECTRIC,Vector3::One(),-1.0,1.5));
@@ -190,7 +185,7 @@ void Scene::sceneRandom() {
       }
     }
   }
-    
+  
   list[objs] = Sphere(Vector3(0,1,0), 1.0, Material(DIELECTRIC,Vector3::One(),-1,1.5));
   compare(max, min, list[objs].getCenter()); objs++;
   
@@ -220,9 +215,9 @@ void Scene::sceneRandom() {
     list[idx].setMorton(Helper::morton3D(point[0],point[1],point[2]));
   }
   
-  std::sort(list, list + objs, ObjEval());
   spheres = new Sphere[objs];
   std::copy(list, list + objs, spheres);
+  std::sort(spheres, spheres + objs, ObjEval());
   
   size = objs;
   

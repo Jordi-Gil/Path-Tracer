@@ -1,17 +1,21 @@
 #ifndef _HITABLELIST_HH_INCLUDE
 #define _HITABLELIST_HH_INCLUDE
 
-#include "Hitable.cuh"
+#include "Sphere.cuh"
 
-class HitableList: public Hitable {
+class HitableList {
   
 public:
+  
     __device__ HitableList();
-    __device__ HitableList(Hitable **l, int n);
-    __device__ virtual bool hit(const Ray& r, float t_min, float t_max, hit_record& rec) const;
-    __host__ __device__ virtual int length() const;
+    __device__ HitableList(Sphere *l, int n);
+    __device__ bool checkCollision(const Ray& r, float t_min, float t_max, hit_record& rec);
+    __device__ int length();
+    __device__ Sphere *getObjects();
+
+private:    
     
-    Hitable **list;
+    Sphere *list;
     int list_size;
     
 };

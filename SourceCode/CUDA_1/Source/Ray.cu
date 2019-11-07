@@ -16,10 +16,11 @@ __device__ Vector3 Ray::direction() const {
     return B;
 }
 
+__device__ float Ray::time() const {
+  return _time;
+}
+
 __device__ Vector3 Ray::point_at_parameter(float t) const {
     return A + t*B;
 }
 
-__device__ float Ray::time() const {
-	return _time;
-}

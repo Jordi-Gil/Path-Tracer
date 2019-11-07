@@ -6,7 +6,6 @@
 #include <string>
 #include <fstream>
 #include <stdexcept>
-#include <vector>
 
 #include "Sphere.hh"
 #include "Helper.hh"

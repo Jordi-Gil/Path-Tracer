@@ -1,5 +1,4 @@
 #include "Node.hh"
-#include <iostream>
 
 Node::Node() {
   obj = NULL;

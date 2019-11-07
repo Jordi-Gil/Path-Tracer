@@ -1,20 +1,26 @@
 #ifndef _SPHERE_HH_INCLUDE
 #define _SPHERE_HH_INCLUDE
 
-#include "Hitable.hh"
 #include "Material.hh"
 
-class Sphere: public Hitable {
+class Sphere {
   
 public:
-    Sphere() {}
-    Sphere(Vector3 cen, float r, Material *mat): center(cen), radius(r), mat_ptr(mat){};
     
-    virtual bool hit(const Ray& r, float t_min, float t_max, hit_record& rec) const;
-    
-    Vector3 center;
-    float radius;
-    Material *mat_ptr;
+  Sphere() {}
+  Sphere(Vector3 cen, float r, Material mat);
+  bool hit(const Ray& r, float t_min, float t_max, hit_record& rec);
+  
+  Vector3 getCenter();
+  float getRadius();
+  Material getMaterial();
+  
+private:  
+  
+  Vector3 center;
+  float radius;
+  Material mat_ptr;
+  
 };
 
-#endif /* _SPHERE_HH_INCLUDE */
+#endif /* _MOVING_SPHERE_HH_INCLUDE */

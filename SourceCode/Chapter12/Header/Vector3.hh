@@ -96,4 +96,8 @@ inline Vector3 cross(const Vector3 &v1, const Vector3 &v2){
     );
 }
 
+inline Vector3 normalize(const Vector3 &v1) {
+  return v1/v1.length();
+}
+
 #endif /* _VECTOR3_HH_INCLUDE */

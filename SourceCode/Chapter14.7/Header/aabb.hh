@@ -9,6 +9,7 @@ inline float ffmax(float a, float b) {return a > b ? a : b;}
 class aabb {
   
 public:
+  
   aabb() {}
   aabb(const Vector3& a, const Vector3& b);
   

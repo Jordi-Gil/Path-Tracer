@@ -1,6 +1,12 @@
 #include "Sphere.cuh"
 
-__device__ bool Sphere::hit(const Ray& r, float t_min, float t_max, hit_record &rec) const{
+__host__ __device__ Sphere::Sphere(Vector3 cen, float r, Material mat) { 
+  center = cen;
+  radius = r;
+  mat_ptr = mat;
+}
+
+__device__ bool Sphere::hit(const Ray& r, float t_min, float t_max, hit_record &rec) {
   
   Vector3 oc = r.origin() - center;
   float a = dot(r.direction(), r.direction());
@@ -28,4 +34,16 @@ __device__ bool Sphere::hit(const Ray& r, float t_min, float t_max, hit_record &
     }
   }
   return false;
+}
+
+__host__ __device__ Vector3 Sphere::getCenter() {
+    return center;
+}
+
+__host__ __device__ float Sphere::getRadius() {
+    return radius;
+}
+
+__host__ __device__ Material Sphere::getMaterial() {
+    return mat_ptr;
 }

@@ -3,7 +3,6 @@
 
 #include "Sphere.hh"
 #include "Helper.hh"
-#include <algorithm>
 
 struct int2 {
     
@@ -16,6 +15,7 @@ struct int2 {
 class Node {
 
 public:
+  
   Node();
 
   bool checkCollision(const Ray& r, float tmin, float tmax, hit_record& rec);
@@ -27,6 +27,7 @@ public:
   Sphere *obj; //Null if is an internal node, Object if is a Leaf
 
   aabb box;
+  
 };
 
 

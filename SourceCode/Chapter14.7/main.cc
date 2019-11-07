@@ -19,6 +19,8 @@ double getusec_() {
 #define START_COUNT_TIME stamp = getusec_();
 #define STOP_COUNT_TIME stamp = getusec_() - stamp;\
                         stamp = stamp/1e6;               
+
+#define Random (rand()/(RAND_MAX + 1.0))
                         
 void error(const char *message){
   std::cout << message << std::endl;
@@ -353,47 +355,19 @@ Vector3 color(const Ray& ray, Node *world, int depth, bool light, int const _dep
   }
 }
 
-Vector3 color_it(const Ray &ray, Node *world, int depth, bool light, int const _depth) {
-  Ray cur_ray = ray;
-  depth = 0*depth;
-  Vector3 cur_attenuation = Vector3::One();
-  for(int i = 0; i < _depth; i++) {
-    hit_record rec;
-    if(world->checkCollision(cur_ray, 0.001,FLT_MAX,rec)) {
-      Ray scattered;
-      Vector3 attenuation;
-      Vector3 emitted = rec.mat_ptr.emitted();
-      if(rec.mat_ptr.scatter(ray,rec,attenuation,scattered)) {
-        cur_attenuation += emitted;
-        cur_attenuation *= attenuation;
-        cur_ray = scattered;
-      }
-      else return emitted;
-    }
-    else {
-      if(light){
-        Vector3 unit_direction = unit_vector(cur_ray.direction());
-        float t = 0.5*(unit_direction.y()+1.0);
-        Vector3 c = (1.0-t)*Vector3::One()+t*Vector3(0.5,0.7,1.0);
-        return cur_attenuation * c;
-      }
-      else return Vector3::Zero();
-    }
-  }
-  return Vector3::Zero();
-}
-
-Node *random_scene(int dist, bool random, const std::string filename) {
+Node *random_scene(int dist, bool random, const std::string filename, int &size) {
   
   Scene scene = Scene(dist);
   
   if(random) scene.loadScene(RANDOM);
   else scene.loadScene(FFILE,filename);
   
+  size = scene.getSize();
+  
   double stamp;
   START_COUNT_TIME;
   
-  Node *root = generateHierarchy(scene.getObjects(), scene.getSize());
+  Node *root = generateHierarchy(scene.getObjects(), size);
   
   STOP_COUNT_TIME;
   std::cout << "BVH created in " << stamp << " seconds" << std::endl;
@@ -405,22 +379,13 @@ Node *random_scene(int dist, bool random, const std::string filename) {
 
 int main(int argc, char **argv) {
     
-  int nx, ny, ns, depth, dist;
+  int nx, ny, ns, depth, dist, size;
   bool light, random;
   std::string filename, image;
 
   parse_argv(argc, argv, nx, ny, ns, depth, dist, image, filename, light, random);
 
-  int n = (2*dist)*(2*dist)+5;
-  
-  std::cout << "Creating " << image << " with (" << nx << "," << ny << ") pixels" << std::endl;
-  std::cout << "With " << ns << " iterations for AntiAliasing and depth of " << depth << "." << std::endl;
-  if(random) std::cout << "The world have " << n << " spheres max." << std::endl;
-  else std::cout << "The world loaded via " << filename << std::endl;
-  if(light) std::cout << "Ambient light ON" << std::endl;
-  else std::cout << "Ambient light OFF" << std::endl;
-    
-  Node *world = random_scene(dist, random, filename);
+  Node *world = random_scene(dist, random, filename, size);
   
   Vector3 lookfrom(13,2,3);
   Vector3 lookat(0,0,0);
@@ -429,12 +394,20 @@ int main(int argc, char **argv) {
 
   Camera cam(lookfrom, lookat, Vector3(0,1,0), 20, float(nx)/float(ny), aperture, dist_to_focus, 0.0, 1.0);
   
+  std::cout << "Creating " << image << " with (" << nx << "," << ny << ") pixels" << std::endl;
+  std::cout << "With " << ns << " iterations for AntiAliasing and depth of " << depth << "." << std::endl;
+  if(random) std::cout << "The random scene have " << size << " spheres max." << std::endl;
+  else std::cout << "Scene loaded via " << filename << std::endl;
+  if(light) std::cout << "Ambient light ON" << std::endl;
+  else std::cout << "Ambient light OFF" << std::endl;
+  
   std::ofstream pic;
   pic.open(image.c_str());
   
   pic << "P3\n" << nx << " " <<  ny << "\n255" << "\n";
   
-  std::cout << "Creating image..." << std::endl;
+  std::cout << "\n\nCreating image..." << std::endl;
+  
   double stamp;
   START_COUNT_TIME;
 

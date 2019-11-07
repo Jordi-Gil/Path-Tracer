@@ -12,21 +12,12 @@
 #include <curand_kernel.h>
 #include <device_launch_parameters.h>
 
-
 #include "Camera.cuh"
 #include "Scene.cuh"
 #include "Node.cuh"
 
-//#define MAX 3.402823466e+38
-//#define MIN 1.175494351e-38
 #define checkCudaErrors(val) check_cuda( (val), #val, __FILE__, __LINE__ )
 #define cuRandom (curand_uniform(&local_random))
-
-void print(Sphere *h_objects,int size){
-  for(int i = 0; i < size; i++){
-    std::cout << "Center(" << h_objects[i].center << "), Albedo(" << h_objects[i].mat_ptr.getAlbedo() << "), Material: " << h_objects[i].mat_ptr.getName() << std::endl;
-  }
-}
 
 void error(const char *message) {
 
@@ -79,7 +70,7 @@ void help(){
   std::cout << "./path_tracing_NGPUs -d"  << std::endl;
   std::cout << "./path_tracing_NGPUs -nthreads 16 -sizeX 2000"<< std::endl;
   format();
-  exit(0);
+  exit(1);
   
 }
 
@@ -166,12 +157,12 @@ void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, in
 }
 
 void check_cuda(cudaError_t result, char const *const func, const char *const file, int const line){
-	if(result){
-		std::cout << "CUDA error = " << static_cast<unsigned int>(result) << " at " << file << ":" << line << " '" << func << std::endl;
-		std::cout << cudaGetErrorString(result) << std::endl;
-		cudaDeviceReset();
-		exit(99);
-	}
+  if(result){
+    std::cout << "CUDA error = " << static_cast<unsigned int>(result) << " at " << file << ":" << line << " '" << func << std::endl;
+    std::cout << cudaGetErrorString(result) << std::endl;
+    cudaDeviceReset();
+    exit(99);
+  }
 }
 
 void properties(){
@@ -219,7 +210,7 @@ __device__ Vector3 color(const Ray& ray, Node *world, int depth, bool light, cur
         cur_attenuation += emitted;
         cur_ray = scattered;
       }
-      else return emitted;
+      else return cur_attenuation * emitted;
     }
     else {
       if(light) {
@@ -356,13 +347,6 @@ __global__ void setupCamera(Camera **d_cam, int nx, int ny) {
   }
 }
 
-__global__ void free_world(Sphere *d_objects, int size, Node *d_world, Camera **d_cam) {
-  
-  delete d_objects;
-  delete d_world;
-  delete *d_cam;
-}
-
 __global__ void render_init(int max_x, int max_y, curandState *rand_state,unsigned long long seed) {
   
   int num = blockIdx.x*blockDim.x + threadIdx.x;
@@ -384,8 +368,7 @@ __global__ void initLeafNodes(Node *leafNodes, int objs, Sphere *d_list) {
   if(idx >= objs) return;
   
   leafNodes[idx].obj = &d_list[idx];
-  leafNodes[idx].box = d_list[idx].box;
-  leafNodes[idx].id = idx;
+  leafNodes[idx].box = d_list[idx].getBox();
 }
 
 __global__ void constructBVH(Node *d_internalNodes, Node *leafNodes, int objs, Sphere *d_list) {
@@ -410,7 +393,6 @@ __global__ void constructBVH(Node *d_internalNodes, Node *leafNodes, int objs, S
   else{
     current->left = d_internalNodes + split;
     (d_internalNodes + split)->parent = current;
-    (d_internalNodes + split)->id = split;
   }
   
   if (split + 1 == last) {
@@ -420,7 +402,6 @@ __global__ void constructBVH(Node *d_internalNodes, Node *leafNodes, int objs, S
   else{
     current->right = d_internalNodes + split + 1;
     (d_internalNodes + split + 1)->parent = current;
-    (d_internalNodes + split + 1)->id = split+1;
   }
     
 }
@@ -506,7 +487,6 @@ int main(int argc, char **argv) {
   cudaEvent_t E0, E1;
   cudaEventCreate(&E0); 
   cudaEventCreate(&E1);
-  checkCudaErrors(cudaGetLastError());
 
   float totalTime;
 
@@ -515,14 +495,6 @@ int main(int argc, char **argv) {
   std::string filename, image;
 
   parse_argv(argc, argv, nx, ny, ns, depth, dist, nthreads, image, filename, numGPUs, light, random, 1);
-
-  int n = (2*dist)*(2*dist)+5;
-
-  std::cout << "Creating " << image << " with (" << nx << "," << ny << ") pixels with " << nthreads << " threads, using " << numGPUs << " GPUs." << std::endl;
-  std::cout << "With " << ns << " iterations for AntiAliasing and depth of " << depth << "." << std::endl;
-  std::cout << "The world have " << n << " spheres." << std::endl;
-  if(light) std::cout << "Ambient light ON" << std::endl;
-  else std::cout << "Ambient light OFF" << std::endl;
 
   /* Seed for CUDA cuRandom */
   unsigned long long int seed = 1000;
@@ -547,14 +519,17 @@ int main(int argc, char **argv) {
   else scene.loadScene(FFILE,filename);
   
   size = scene.getSize();
-  std::cout << size << " esferas" << std::endl;
   float ob_size = size*sizeof(Sphere);
 
   int threads = nthreads;
   while(size < threads) threads /= 2;
   int blocks2 = (size+threads-1)/(numGPUs * threads);
-  std::cout << "Threads: " << threads << std::endl;
-  std::cout << "Block size: " << blocks2 << std::endl;
+  
+  std::cout << "Creating " << image << " with (" << nx << "," << ny << ") pixels with " << nthreads << " threads, using " << numGPUs << " GPUs." << std::endl;
+  std::cout << "With " << ns << " iterations for AntiAliasing and depth of " << depth << "." << std::endl;
+  std::cout << "The world have " << size << " spheres." << std::endl;
+  if(light) std::cout << "Ambient light ON" << std::endl;
+  else std::cout << "Ambient light OFF" << std::endl;
 
   /* Device variables */
   Vector3 *d_frameBuffer;
@@ -572,7 +547,6 @@ int main(int argc, char **argv) {
   cudaMallocHost((Vector3**)&h_frameBuffer, fb_size);
   cudaMallocHost((Node **)&h_internalNodes, internal_size);
   cudaMallocHost((int **) &h_nodeCounter, sizeof(int)*size);
-  checkCudaErrors(cudaGetLastError());
 
   /* Allocate memory on Device */
   cudaMallocManaged((void **)&d_frameBuffer, fb_size);
@@ -586,9 +560,7 @@ int main(int argc, char **argv) {
 
   cudaEventRecord(E0,0);
   cudaEventSynchronize(E0);
-  checkCudaErrors(cudaGetLastError());
 
-  /* Copiamos del Host al Device */
   cudaMemcpy(d_objects, scene.getObjects(), ob_size, cudaMemcpyHostToDevice);
   checkCudaErrors(cudaGetLastError());
   
@@ -656,6 +628,7 @@ int main(int argc, char **argv) {
   cudaFree(d_nodeCounter);
   cudaFree(d_leafNodes);
   cudaFree(d_internalNodes);
+  
   cudaEventDestroy(E0);
   cudaEventDestroy(E1);
   

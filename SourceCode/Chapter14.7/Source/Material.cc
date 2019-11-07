@@ -6,17 +6,18 @@ float schlick(float cosine, float ref_idx){
     return r0 + (1-r0) * pow((1-cosine), 5);
 }
 
-bool refract(const Vector3 &v, const Vector3 &n, float ni_over_nt, Vector3 &refracted){
-    Vector3 uv = unit_vector(v);
-    float dt = dot(uv, n);
-    float discriminant = 1.0 - ni_over_nt*ni_over_nt*(1-dt*dt);
+bool refract(const Vector3 &v, const Vector3 &n, float ni_over_nt, Vector3 &refracted) {
+  
+  Vector3 uv = unit_vector(v);
+  float dt = dot(uv, n);
+  float discriminant = 1.0 - ni_over_nt*ni_over_nt*(1-dt*dt);
+  
+  if(discriminant > 0){
+    refracted = ni_over_nt*(uv - n*dt) - n*sqrt(discriminant);
     
-    if(discriminant > 0){
-        refracted = ni_over_nt*(uv - n*dt) - n*sqrt(discriminant);
-        
-        return true;
-    }
-    else return false;
+    return true;
+  }
+  else return false;
 }
 
 Vector3 reflect(const Vector3& v, const Vector3& n){
@@ -33,6 +34,7 @@ Vector3 random_in_unit_sphere(){
 }
 
 Material::Material(int t, const Vector3 &a, float f, float ri) {
+  
   type = t;
   albedo = a;
   fuzz = f;
@@ -77,41 +79,40 @@ bool Material::Metal(const Ray& r_in, const hit_record& rec, Vector3& attenuatio
 
 bool Material::Dielectric(const Ray& r_in, const hit_record& rec, Vector3& attenuation, Ray& scattered) {
     
-    Vector3 outward_normal;
-    Vector3 reflected = reflect(r_in.direction(), rec.normal);
-    
-    float ni_over_nt;
-    attenuation = albedo;
-    Vector3 refracted;
-    float reflect_prob;
-    float cosine;
-    if(dot(r_in.direction(), rec.normal) > 0){
-        outward_normal = -rec.normal;
-        ni_over_nt = ref_idx;
-        cosine = ref_idx * dot(r_in.direction(), rec.normal) / r_in.direction().length();
-    }
-    else {
-        outward_normal = rec.normal;
-        ni_over_nt = 1.0 / ref_idx;
-        cosine = -dot(r_in.direction(), rec.normal) / r_in.direction().length();
-    }
-    
-    if(refract(r_in.direction(), outward_normal, ni_over_nt, refracted)){
-        reflect_prob = schlick(cosine, ref_idx);
-    }
-    else{
-        scattered = Ray(rec.point, reflected);
-        reflect_prob = 1.0;
-    }
-    
-    if((rand()/(RAND_MAX + 1.0)) < reflect_prob){
-        scattered = Ray(rec.point, reflected);
-    }
-    else{
-        scattered = Ray(rec.point, refracted);
-    }
-    return true;
-    
+  Vector3 outward_normal;
+  Vector3 reflected = reflect(r_in.direction(), rec.normal);
+  
+  float ni_over_nt;
+  attenuation = albedo;
+  Vector3 refracted;
+  float reflect_prob;
+  float cosine;
+  if(dot(r_in.direction(), rec.normal) > 0){
+      outward_normal = -rec.normal;
+      ni_over_nt = ref_idx;
+      cosine = ref_idx * dot(r_in.direction(), rec.normal) / r_in.direction().length();
+  }
+  else {
+      outward_normal = rec.normal;
+      ni_over_nt = 1.0 / ref_idx;
+      cosine = -dot(r_in.direction(), rec.normal) / r_in.direction().length();
+  }
+  
+  if(refract(r_in.direction(), outward_normal, ni_over_nt, refracted)){
+      reflect_prob = schlick(cosine, ref_idx);
+  }
+  else{
+      scattered = Ray(rec.point, reflected);
+      reflect_prob = 1.0;
+  }
+  
+  if((rand()/(RAND_MAX + 1.0)) < reflect_prob){
+      scattered = Ray(rec.point, reflected);
+  }
+  else{
+      scattered = Ray(rec.point, refracted);
+  }
+  return true;
 }
 
 const char *Material::getName() {

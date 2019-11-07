@@ -8,7 +8,7 @@ __host__ __device__ Sphere::Sphere(Vector3 cen, float r, Material mat) {
   bounding_box(box);
 }
 
-__host__ __device__ bool Sphere::hit(const Ray& r, float t_min, float t_max, hit_record &rec) {
+__device__ bool Sphere::hit(const Ray& r, float t_min, float t_max, hit_record &rec) {
   
   Vector3 oc = r.origin() - center;
   float a = dot(r.direction(), r.direction());
@@ -39,7 +39,9 @@ __host__ __device__ bool Sphere::hit(const Ray& r, float t_min, float t_max, hit
 }
 
 __host__ __device__ void Sphere::bounding_box(aabb& box) {
+  
   box = aabb(center - Vector3(radius), center + Vector3(radius));
+  
 }
 
 __host__ __device__ aabb Sphere::getBox() {
@@ -57,3 +59,12 @@ __host__ __device__ void Sphere::setMorton(long long code) {
 __host__ __device__ Vector3 Sphere::getCenter() {
     return center;
 }
+
+__host__ __device__ float Sphere::getRadius() {
+    return radius;
+}
+
+__host__ __device__ Material Sphere::getMaterial() {
+    return mat_ptr;
+}
+

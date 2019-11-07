@@ -1,6 +1,12 @@
 #include "Sphere.hh"
 
-bool Sphere::hit(const Ray& r, float t_min, float t_max, hit_record &rec) const{
+Sphere::Sphere(Vector3 cen, float r, Material mat) {
+    center = cen;
+    radius = r; 
+    mat_ptr = mat;
+}
+
+bool Sphere::hit(const Ray& r, float t_min, float t_max, hit_record& rec) {
   
   Vector3 oc = r.origin() - center;
   float a = dot(r.direction(), r.direction());
@@ -28,4 +34,16 @@ bool Sphere::hit(const Ray& r, float t_min, float t_max, hit_record &rec) const{
     }
   }
   return false;
+}
+
+Vector3 Sphere::getCenter() {
+  return center;
+}
+
+float Sphere::getRadius() {
+  return radius;
+}
+
+Material Sphere::getMaterial() {
+  return mat_ptr;
 }
