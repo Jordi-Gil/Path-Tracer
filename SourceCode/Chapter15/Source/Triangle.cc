@@ -11,7 +11,7 @@ Triangle::Triangle(Vector3 v1, Vector3 v2, Vector3 v3, Material mat) {
 }
 
 bool Triangle::hit(const Ray& r, float t_min, float t_max, hit_record& rec) {
-  
+	
   Vector3 e1 = vertex[1] - vertex[0];
   Vector3 e2 = vertex[2] - vertex[0];
   
@@ -48,10 +48,17 @@ bool Triangle::hit(const Ray& r, float t_min, float t_max, hit_record& rec) {
 
 void Triangle::bounding_box(aabb& box) {
   
-  aabb box1 = aabb(vertex[0], vertex[1]); 
-  aabb box2 = aabb(vertex[0], vertex[2]);
-  
-  box = surrounding_box(box1, box2);
+	float x_max = std::max(std::max(vertex[0].x(),vertex[1].x()),vertex[2].x());
+	float y_max = std::max(std::max(vertex[0].y(),vertex[1].y()),vertex[2].y());
+	float z_max = std::max(std::max(vertex[0].z(),vertex[1].z()),vertex[2].z());
+	
+	float x_min = std::min(std::min(vertex[0].x(),vertex[1].x()),vertex[2].x());
+	float y_min = std::min(std::min(vertex[0].y(),vertex[1].y()),vertex[2].y());
+	float z_min = std::min(std::min(vertex[0].z(),vertex[1].z()),vertex[2].z());
+	
+  Vector3 max(x_max, y_max, z_max), min(x_min, y_min, z_min);
+	
+	box = aabb(min,max);
   
 }
 

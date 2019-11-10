@@ -9,7 +9,7 @@ Node::Node() {
 }
 
 bool Node::checkCollision(const Ray& r, float tmin, float tmax, hit_record& rec) {
-    
+  
   if(box.hit(r, tmin, tmax)) {
     hit_record left_rec, right_rec;
 
@@ -40,6 +40,9 @@ bool Node::checkCollision(const Ray& r, float tmin, float tmax, hit_record& rec)
     }
     else return false;
   }
-  else return false;
+  else {
+		//std::cout << "False" << std::endl;
+		return false;
+	}
 }
 

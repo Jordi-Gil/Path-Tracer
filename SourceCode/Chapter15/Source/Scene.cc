@@ -13,6 +13,7 @@ void compare(Vector3 &max, Vector3 &min, Vector3 point) {
 
 Material loadMaterial(const std::string &line, size_t &pos, char ch,int type) {
 
+	std::cout << "Type " << type << std::endl;
   pos = line.find(ch);
   size_t init = 0;
   
@@ -77,6 +78,56 @@ Sphere loadSphere(const std::string &line) {
   return Sphere(center,radius,mat);
 }
 
+Triangle loadTriangle(const std::string &line) {
+	
+	std::cout << "Line: " << line << std::endl;
+	
+	char ch = ' ';
+	size_t pos = line.find(ch);
+	size_t init = 0;
+	int vertexCount = 0;
+	int trCount = 0;
+	std::string par;
+	
+	Vector3 *position = new Vector3[3];
+	Material mat;
+	
+	while(pos != std::string::npos) {
+		par  = line.substr(init, pos-init);
+		init  = pos + 1;
+		pos = line.find(ch, init);
+		std::cout << "par: " << par << std::endl;
+		if(trCount < 3) {
+			if(vertexCount < 3) {
+				std::cout << "Triangle: " << trCount << " Vertex: " << vertexCount << " Value: " << par << std::endl;
+				position[trCount][vertexCount] = stof(par);
+				++vertexCount;
+			}
+			else{
+				std::cout << "Vertex " << trCount << " : " << position[trCount] << std::endl;
+				vertexCount = 0;
+				++trCount;
+				if(trCount < 3) {
+					std::cout << "Triangle: " << trCount << " Vertex: " << vertexCount << " Value: " << par << std::endl;
+					position[trCount][vertexCount] = stof(par);
+					++vertexCount;
+				}
+			}
+		}
+		else {
+      if(stoi(par) == LAMBERTIAN) {
+				std::cout << "Lambertian ";
+				mat = loadMaterial(line.substr(init,line.size()),pos,ch,LAMBERTIAN);
+			}
+      else if(stoi(par) == METAL) mat = loadMaterial(line.substr(init,line.size()),pos,ch,METAL);
+      else if(stoi(par) == DIELECTRIC) mat = loadMaterial(line.substr(init,line.size()),pos,ch,DIELECTRIC);
+      else if(stoi(par) == DIFFUSE_LIGHT) mat = loadMaterial(line.substr(init,line.size()),pos,ch,DIFFUSE_LIGHT);
+		}
+	}
+	std::cout << "Material " << mat.getName() << " " << mat.getAlbedo() << std::endl;
+	return Triangle(position[0],position[1],position[2], mat);
+}
+
 void Scene::loadScene(int loadType, const std::string &filename){
   
   std::cout << "Loading scene..." << loadType << std::endl;
@@ -96,50 +147,76 @@ void Scene::sceneFromFile(const std::string &filename) {
   std::string line;
   
   int lines = 0;
-  int objs = 0;
+  int objs_sp = 0;
+	int objs_tr = 0;
   
   if(file.fail() or aux.fail()) throw std::runtime_error("Something goes wrong");
   
   while(std::getline(aux,line)) ++lines;
   
-  Sphere *list = new Sphere[lines];
+  Sphere *list_1 = new Sphere[lines];
+	Triangle *list_2 = new Triangle[lines];
   
   Vector3 max(MIN);
   Vector3 min(INF);
   
   while(std::getline(file, line)) {
     if(line[0] == '1'){ 
-      list[objs] = loadSphere(line.substr(2,line.size()));
-      compare(max, min, list[objs].getCenter());
-      ++objs;
-    }/*
+      list_1[objs_sp] = loadSphere(line.substr(2,line.size()));
+      compare(max, min, list_1[objs_sp].getCenter());
+      ++objs_sp;
+    }
     else if(line[0] == '2') {
-      
-    }*/
+      list_2[objs_tr] = loadTriangle(line.substr(2,line.size()));
+			compare(max,min, list_2[objs_tr].getCentroid());
+			++objs_tr;
+    }
   }
   
-  std::cout << "Real size " << objs << std::endl;
+  std::cout << "Real size " << objs_sp+objs_tr << std::endl;
   std::cout << "Max " <<  max << " Min " << min << std::endl;
   
   float max_x = max[0]; float max_y = max[1]; float max_z = max[2];
   float min_x = min[0]; float min_y = min[1]; float min_z = min[2];
   
-  for(int idx = 0; idx < objs; idx++) {
+  for(int idx = 0; idx < objs_sp; idx++) {
       
-    Vector3 point = list[idx].getCenter();
+    Vector3 point = list_1[idx].getCenter();
     
     point[0] = ((point[0] - min_x)/(max_x - min_x));
     point[1] = ((point[1] - min_y)/(max_y - min_y));
     point[2] = ((point[2] - min_z)/(max_z - min_z));
     
-    list[idx].setMorton(Helper::morton3D(point[0],point[1],point[2]));
+    list_1[idx].setMorton(Helper::morton3D(point[0],point[1],point[2]));
   }
+
+    
+  max_x = max[0]; max_y = max[1]; max_z = max[2];
+  min_x = min[0]; min_y = min[1]; min_z = min[2];
   
-  std::sort(list, list + objs, ObjEval());
-  spheres = new Sphere[objs];
-  std::copy(list, list + objs, spheres);
+	for(int idx = 0; idx < objs_tr; idx++) {
+		
+		Vector3 point = list_2[idx].getCentroid();
+		std::cout << "BOX triangle " << idx << " " << list_2[idx].getBox().min() << " " << list_2[idx].getBox().max() << std::endl;
+		std::cout << "Centroid: " << point << std::endl;
+		
+		point[0] = ((point[0] - min_x)/(max_x - min_x));
+		point[1] = ((point[1] - min_y)/(max_y - min_y));
+		point[2] = ((point[2] - min_z)/(max_z - min_z));
+
+		list_2[idx].setMorton(Helper::morton3D(point[0],point[1],point[2]));
+
+  }  
   
-  size = objs;
+  spheres = new Sphere[objs_sp];
+  std::copy(list_1, list_1 + objs_sp, spheres);
+  std::sort(spheres, spheres + objs_sp, ObjEval());
+	
+	triangles = new Triangle[objs_tr];
+  std::copy(list_2, list_2 + objs_tr, triangles);
+  std::sort(triangles, triangles + objs_tr, TriangleEval());
+	
+  size = objs_tr;
   
 }
 
@@ -224,9 +301,10 @@ void Scene::sceneRandom() {
     list[idx].setMorton(Helper::morton3D(point[0],point[1],point[2]));
   }
   
-  std::sort(list, list + objs, ObjEval());
   spheres = new Sphere[objs];
   std::copy(list, list + objs, spheres);
+  std::sort(spheres, spheres + objs, ObjEval());
+  
   
   size = objs;
   
@@ -236,32 +314,42 @@ void Scene::sceneTriangle() {
   
   std::cout << "Triangle scene" << std::endl;
   
-  triangles = new Triangle[1];
-  
-  triangles[0] = Triangle(Vector3(-1.0,0.0,0.0), Vector3(1.0,0.0,0.0), Vector3(0.0,-1.0,0.0) ,Material(LAMBERTIAN, Vector3(1.0,0.0,0.0)));
-  
-  Vector3 max(MIN);
+  triangles = new Triangle[2];
+	
+	Vector3 max(MIN);
   Vector3 min(INF);
+	
+	int objs = 0;
   
-  std::cout << "Centroid: " << triangles[0].getCentroid() << std::endl;
-  
-  compare(max, min, triangles[0].getCentroid());
+  triangles[objs] = Triangle(Vector3(-4.0,0.0,0.0), Vector3(-2.0,0.0,0.5), Vector3(-3.0,-1.0,0.0) ,Material(LAMBERTIAN, Vector3(1.0,0.0,0.0)));
+	compare(max, min, triangles[0].getCentroid()); objs++;
+	
+	triangles[objs] = Triangle(Vector3(0.0,0.0,0.0), Vector3(2.0,0.0,0.0), Vector3(1.0,-1.0,0.0) ,Material(METAL, Vector3(1.0,0.0,0.0)));
+  compare(max, min, triangles[1].getCentroid()); objs++;
   
   float max_x = max[0]; float max_y = max[1]; float max_z = max[2];
   float min_x = min[0]; float min_y = min[1]; float min_z = min[2];
   
-  Vector3 point = triangles[0].getCentroid();
+    for(int idx = 0; idx < objs; idx++) {
+      
+			Vector3 point = triangles[idx].getCentroid();
+			std::cout << "BOX triangle " << idx << " " << triangles[idx].getBox().min() << " " << triangles[idx].getBox().max() << std::endl;
+			std::cout << "Centroid: " << point << std::endl;
+			
+			point[0] = ((point[0] - min_x)/(max_x - min_x));
+			point[1] = ((point[1] - min_y)/(max_y - min_y));
+			point[2] = ((point[2] - min_z)/(max_z - min_z));
+    
+			triangles[idx].setMorton(Helper::morton3D(point[0],point[1],point[2]));
+			
+			std::cout << point << std::endl;
   
-  point[0] = ((point[0] - min_x)/(max_x - min_x));
-  point[1] = ((point[1] - min_y)/(max_y - min_y));
-  point[2] = ((point[2] - min_z)/(max_z - min_z));
+			triangles[idx].setMorton(Helper::morton3D(point[0],point[1],point[2])+1);
+			
+  }
   
-  std::cout << point << std::endl;
-  
-  triangles[0].setMorton(Helper::morton3D(point[0],point[1],point[2])+1);
-  
-  size = 1;
-  
+  std::sort(triangles, triangles+objs, TriangleEval());
+  size = 2;
 }
 
 Sphere *Scene::getObjects() {

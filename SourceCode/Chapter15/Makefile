@@ -13,10 +13,10 @@ all: $(OBJDIR) $(OBJDIR)/$(MAINDIR) $(OBJDIR)/$(MAINDIRTR)  path_tracing_tr_sec 
 $(OBJDIR):
 	mkdir $(OBJDIR)
 
-$(MAINDIR):
+$(OBJDIR)/$(MAINDIR):
 	mkdir $(OBJDIR)/$(MAINDIR)
 	
-$(MAINDIRTR):
+$(OBJDIR)/$(MAINDIRTR):
 	mkdir $(OBJDIR)/$(MAINDIRTR)
 
 path_tracing_sec: $(OBJ)
