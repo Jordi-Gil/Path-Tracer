@@ -353,22 +353,17 @@ Vector3 color(const Ray& ray, Node *world, int depth, bool light, int const _dep
   }
 }
 
-Node *random_scene(int dist, bool random, const std::string filename) {
+Node *random_scene(int dist, int nx, int ny, bool random, const std::string filename, Camera &cam) {
   
-  Scene scene = Scene(dist);
+  Scene scene = Scene(dist, nx, ny);
   
   if(random) scene.loadScene(TRIANGL);
   else scene.loadScene(FFILE,filename);
   
+  cam = scene.getCamera();
+  
   double stamp;
   START_COUNT_TIME;
-  
-  Triangle *triangles = scene.getTriangles(); 
-  
-  for(int i = 0; i < scene.getSize(); i++) {
-    std::cout << triangles[i].getVertex(0) << " " << triangles[i].getVertex(1) << " " << triangles[i].getVertex(2) << " ";
-    std::cout << triangles[i].getMorton() << " " << triangles[i].getMaterial().getName() << std::endl;
-  }
   
   Node *root = generateHierarchy(scene.getTriangles(), scene.getSize());
   
@@ -397,17 +392,19 @@ int main(int argc, char **argv) {
   if(random) std::cout << "The world have " << n << " spheres max." << std::endl;
   else std::cout << "The world loaded via " << filename << std::endl;
   if(light) std::cout << "Ambient light ON" << std::endl;
-  else std::cout << "Ambient light OFF" << std::endl;
-    
-  Node *world = random_scene(dist, random, filename);
+  else std::cout << "Ambient light OFF\n" << std::endl;
   
-  Vector3 lookfrom(13,2,3);
+  Camera cam;
+  
+  Node *world = random_scene(dist, nx, ny, random, filename, cam);
+  /*
+  Vector3 lookfrom(20,40,-40);
   Vector3 lookat(0,0,0);
-  float dist_to_focus = 10.0;
+  float dist_to_focus = 40.0;
   float aperture = 0.1;
 
   Camera cam(lookfrom, lookat, Vector3(0,1,0), 20, float(nx)/float(ny), aperture, dist_to_focus, 0.0, 1.0);
-  
+  */
   std::ofstream pic;
   pic.open(image.c_str());
   

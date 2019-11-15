@@ -387,9 +387,9 @@ int main(int argc, char **argv) {
 
   Node *world = random_scene(dist, random, filename, size);
   
-  Vector3 lookfrom(13,2,3);
+  Vector3 lookfrom(30,20,0);
   Vector3 lookat(0,0,0);
-  float dist_to_focus = 10.0;
+  float dist_to_focus = 20.0;
   float aperture = 0.1;
 
   Camera cam(lookfrom, lookat, Vector3(0,1,0), 20, float(nx)/float(ny), aperture, dist_to_focus, 0.0, 1.0);

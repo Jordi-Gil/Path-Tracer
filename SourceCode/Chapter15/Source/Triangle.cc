@@ -11,15 +11,15 @@ Triangle::Triangle(Vector3 v1, Vector3 v2, Vector3 v3, Material mat) {
 }
 
 bool Triangle::hit(const Ray& r, float t_min, float t_max, hit_record& rec) {
-	
+  
   Vector3 e1 = vertex[1] - vertex[0];
   Vector3 e2 = vertex[2] - vertex[0];
   
   Vector3 P = cross(r.direction(), e2);
   float determinant = dot(e1, P);
   
-  if(determinant > -t_min && determinant < t_min) 
-    return false; // Thisray is parallel to this triangle
+  if(determinant > -t_min and determinant < t_min) 
+    return false;
   
   float invDet = 1.0f / determinant;
   
@@ -37,7 +37,9 @@ bool Triangle::hit(const Ray& r, float t_min, float t_max, hit_record& rec) {
   if(temp > t_min && temp < t_max) {
     rec.t = temp;
     rec.point = r.point_at_parameter(rec.t);
-    rec.normal = normalize(cross(e1, e2));
+    rec.normal = Vector3(0,0,-1);
+      //normalize(cross(e1, e2));
+    //std::cout << "Normal: (" << cross(e1,e2) << ")/" << (cross(e1, e2)).length() << " = " << rec.normal << std::endl;
     rec.mat_ptr = this->mat_ptr;
     
     return true;
@@ -56,6 +58,10 @@ void Triangle::bounding_box(aabb& box) {
 	float y_min = std::min(std::min(vertex[0].y(),vertex[1].y()),vertex[2].y());
 	float z_min = std::min(std::min(vertex[0].z(),vertex[1].z()),vertex[2].z());
 	
+  if(x_max == x_min) x_max += 0.001;
+  if(y_max == y_min) y_max += 0.001;
+  if(z_max == z_min) z_max += 0.001;
+  
   Vector3 max(x_max, y_max, z_max), min(x_min, y_min, z_min);
 	
 	box = aabb(min,max);

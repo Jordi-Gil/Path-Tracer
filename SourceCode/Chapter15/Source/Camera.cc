@@ -9,6 +9,14 @@ Vector3 random_in_unit_disk(){
 }
 
 Camera::Camera(Vector3 lookfrom, Vector3 lookat, Vector3 vup, float vfov, float aspect, float aperture, float focus_dist, float time0, float time1){
+  
+  this->lookat = lookat;
+  this->lookfrom = lookfrom;
+  this->vup = vup;
+  this->aspect = aspect;
+  this->aperture = aperture;
+  this->focus_dist = focus_dist;
+  
     this->time0 = time0;
     this->time1 = time1;
     lens_radius = aperture / 2;

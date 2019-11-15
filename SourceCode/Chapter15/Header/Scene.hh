@@ -6,10 +6,10 @@
 #include <string>
 #include <fstream>
 #include <stdexcept>
-#include <vector>
 
+#include "Camera.hh"
 #include "Sphere.hh"
-#include "Triangle.hh"
+#include "Obj.hh"
 #include "Helper.hh"
 
 #define INF std::numeric_limits<float>::infinity()
@@ -23,25 +23,28 @@ class Scene {
     
 public:
     
-    Scene() {}
-    Scene(int d) : dist(d) {}
-    
-    void loadScene(int loadType, const std::string &filename = "");
-    void sceneRandom();
-    void sceneFromFile(const std::string &filename);
-    void sceneTriangle();
-    
-    Sphere *getObjects();
-    unsigned int getSize();
-    
-    Triangle *getTriangles();
+  Scene() {}
+  Scene(int d, int x, int y) : dist(d), nx(x), ny(y) {}
+  
+  void loadScene(int loadType, const std::string &filename = "");
+  void sceneRandom();
+  void sceneFromFile(const std::string &filename);
+  void sceneTriangle();
+  
+  Camera getCamera();
+  Sphere *getObjects();
+  unsigned int getSize();
+  
+  Triangle *getTriangles();
 
 private:
   
-    Sphere *spheres;
-    Triangle *triangles;
-    unsigned int size;
-    int dist;
+  Camera cam;
+  int dist;
+  int nx, ny;
+  Sphere *spheres;
+  Triangle *triangles;
+  unsigned int size;
 };
 
 #endif //SCENE_HH

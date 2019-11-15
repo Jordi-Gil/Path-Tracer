@@ -189,7 +189,7 @@ void Scene::sceneRandom() {
   list[objs] = Sphere(Vector3(0,1,0), 1.0, Material(DIELECTRIC,Vector3::One(),-1,1.5));
   compare(max, min, list[objs].getCenter()); objs++;
   
-  list[objs] = Sphere(Vector3(-4,1,0),1.0, Material(LAMBERTIAN,Vector3(0.4,0.2,0.1)));
+  list[objs] = Sphere(Vector3(-4,1,0),1.0, Material(DIFFUSE_LIGHT,Vector3::One()));
   compare(max, min, list[objs].getCenter()); objs++;
   
   list[objs] = Sphere(Vector3(4,1,0),1.0, Material(METAL,Vector3(0.7,0.6,0.5),0.0));

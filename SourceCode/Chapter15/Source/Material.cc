@@ -28,7 +28,7 @@ Vector3 random_in_unit_sphere(){
   do{
     p = 2.0*Vector3((rand()/(RAND_MAX + 1.0)), (rand()/(RAND_MAX + 1.0)), (rand()/(RAND_MAX + 1.0))) - Vector3::One();
   }
-  while(p.squared_length() >= 1.0);
+  while(dot(p,p) >= 1.0);
   return p;
 }
 
@@ -41,7 +41,7 @@ Material::Material(int t, const Vector3 &a, float f, float ri) {
 
 bool Material::scatter(const Ray& r_in, const hit_record &rec, Vector3 &attenuation, Ray &scattered) {
   
-  if(type == LAMBERTIAN) return Lambertian(rec, attenuation, scattered);
+  if(type == LAMBERTIAN) return Lambertian(r_in, rec, attenuation, scattered);
   else if(type == METAL) return Metal(r_in, rec, attenuation, scattered);
   else if(type == DIELECTRIC) return Dielectric(r_in, rec, attenuation, scattered);
   else if(type == DIFFUSE_LIGHT) return false;
@@ -54,11 +54,11 @@ Vector3 Material::emitted() {
   else return Vector3::Zero();
 }
 
-bool Material::Lambertian(const hit_record &rec, Vector3 &attenuation, Ray& scattered) {
+bool Material::Lambertian(const Ray& r_in, const hit_record &rec, Vector3 &attenuation, Ray& scattered) {
     
     Vector3 target = rec.point + rec.normal + random_in_unit_sphere();
     
-    scattered = Ray(rec.point, target-rec.point);
+    scattered = Ray(rec.point, target-rec.point,r_in.time());
     attenuation = albedo;
     
     return true;
@@ -66,12 +66,12 @@ bool Material::Lambertian(const hit_record &rec, Vector3 &attenuation, Ray& scat
 
 bool Material::Metal(const Ray& r_in, const hit_record& rec, Vector3& attenuation, Ray& scattered) {
     
-    Vector3 reflected = reflect( unit_vector( r_in.direction()), rec.normal);
+  Vector3 reflected = reflect( unit_vector( r_in.direction()), rec.normal);
     
-    scattered = Ray(rec.point, reflected + fuzz*random_in_unit_sphere());
-    attenuation = albedo;
+  scattered = Ray(rec.point, reflected + fuzz*random_in_unit_sphere(),r_in.time());
+  attenuation = albedo;
     
-    return (dot(scattered.direction(), rec.normal) > 0);
+  return (dot(scattered.direction(), rec.normal) > 0);
     
 }
 

@@ -19,7 +19,7 @@ public:
   bool scatter(const Ray& r_in, const hit_record &rec, Vector3& attenuation, Ray& scattered);
   Vector3 emitted();
   
-  bool Lambertian(const hit_record &rec, Vector3 &attenuation, Ray &scattered);
+  bool Lambertian(const Ray& r_in, const hit_record &rec, Vector3 &attenuation, Ray &scattered);
   bool Metal(const Ray &r_in, const hit_record &rec, Vector3 &attenuation, Ray &scattered);
   bool Dielectric(const Ray &r_in, const hit_record &rec, Vector3 &attenuation, Ray &scattered);
   
