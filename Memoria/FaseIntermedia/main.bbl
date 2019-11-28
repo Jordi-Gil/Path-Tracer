@@ -1,0 +1,890 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 2.9 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\datalist[entry]{none/global//global/global}
+  \entry{Lotto1999}{article}{}
+    \name{author}{3}{}{%
+      {{hash=LRB}{%
+         family={Lotto},
+         familyi={L\bibinitperiod},
+         given={R.\bibnamedelima Beau},
+         giveni={R\bibinitperiod\bibinitdelim B\bibinitperiod},
+      }}%
+      {{hash=WSM}{%
+         family={Williams},
+         familyi={W\bibinitperiod},
+         given={S.\bibnamedelima Mark},
+         giveni={S\bibinitperiod\bibinitdelim M\bibinitperiod},
+      }}%
+      {{hash=PD}{%
+         family={Purves},
+         familyi={P\bibinitperiod},
+         given={Dale},
+         giveni={D\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{LRB+1}
+    \strng{fullhash}{LRBWSMPD1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1999}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    If Mach bands arise as an empirical consequence of real-world luminance
+  profiles, several predictions follow. First, the appearance of Mach bands
+  should accord with the appearance of naturally occurring highlights and
+  lowlights. Second, altering the slope of an ambiguous luminance gradient so
+  that it corresponds more closely to gradients that are typically adorned with
+  luminance maxima and minima in the position of Mach bands should enhance the
+  illusion. Third, altering a luminance gradient so that it corresponds more
+  closely to gradients that normally lack luminance maxima and minima in the
+  position of Mach bands should diminish the salience of the illusion. Fourth,
+  the perception of Mach bands elicited by the same luminance gradient should
+  be changed by contextual cues that indicate whether the gradient is more or
+  less likely to signify a curved or a flat surface. Because each of these
+  predictions is met, we conclude that Mach bands arise because the association
+  elicited by the stimulus (the percept) incorporates these features as a
+  result of past experience.%
+    }
+    \verb{doi}
+    \verb 10.1073/pnas.96.9.5245
+    \endverb
+    \field{issn}{00278424}
+    \field{title}{{Mach bands as empirically derived associations}}
+    \field{journaltitle}{Proceedings of the National Academy of Sciences of the
+  United States of America}
+    \field{year}{1999}
+  \endentry
+
+  \entry{Henri1971}{article}{}
+    \name{author}{1}{}{%
+      {{hash=HG}{%
+         family={Henri},
+         familyi={H\bibinitperiod},
+         given={Gouraud},
+         giveni={G\bibinitperiod},
+      }}%
+    }
+    \keyw{Coons patches,curved surfaces,halftone,hidden-,line removal,shading}
+    \strng{namehash}{HG1}
+    \strng{fullhash}{HG1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1971}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    A procedure for computing shaded pictures of curved surfaces is presented.
+  The surface is approximated by small polygons in order to solve easily the
+  hidden-parts problem, but the shading of each polygon is computed so that
+  discontinuities of shade are eliminated across the surface and a smooth
+  appearance is obtained. In order to achieve speed efficiency, the technique
+  developed by Watkins is used which makes possible a hardware implementation
+  of this algorithm.%
+    }
+    \verb{doi}
+    \verb 10.1109/T-C.1971.223313
+    \endverb
+    \field{issn}{00189340}
+    \field{title}{{Continuous Shading of Curved Surfaces}}
+    \field{journaltitle}{IEEE Transactions on Computers}
+    \field{year}{1971}
+  \endentry
+
+  \entry{Phong1975}{article}{}
+    \name{author}{1}{}{%
+      {{hash=PBT}{%
+         family={Phong},
+         familyi={P\bibinitperiod},
+         given={Bui\bibnamedelima Tuong},
+         giveni={B\bibinitperiod\bibinitdelim T\bibinitperiod},
+      }}%
+    }
+    \keyw{computer graphics,graphic display,hidden surface removal,shading}
+    \strng{namehash}{PBT1}
+    \strng{fullhash}{PBT1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1975}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    The quality of computer generated images of three-dimensional
+  scenes$\backslash$ndepends on the shading technique used to paint the objects
+  on the$\backslash$ncathode-ray tube screen. The shading algorithm itself
+  depends in$\backslash$npart on the method for modeling the object, which also
+  determines$\backslash$nthe hidden surface algorithm. The various methods of
+  object modeling,$\backslash$nshading, and hidden surface removal are thus
+  strongly interconnected.$\backslash$nSeveral shading techniques corresponding
+  to different methods of$\backslash$nobject modeling and the related hidden
+  surface algorithms are presented$\backslash$nhere. Human visual perception
+  and the fundamental laws of optics$\backslash$nare considered in the
+  development of a shading rule that provides$\backslash$nbetter quality and
+  increased realism in generated images.%
+    }
+    \verb{doi}
+    \verb 10.1145/360825.360839
+    \endverb
+    \field{issn}{15577317}
+    \field{number}{6}
+    \field{pages}{311\bibrangedash 317}
+    \field{title}{{Illumination for Computer Generated Pictures}}
+    \field{volume}{18}
+    \field{journaltitle}{Communications of the ACM}
+    \field{year}{1975}
+  \endentry
+
+  \entry{Whitted1980}{article}{}
+    \name{author}{1}{}{%
+      {{hash=WT}{%
+         family={Whitted},
+         familyi={W\bibinitperiod},
+         given={Turner},
+         giveni={T\bibinitperiod},
+      }}%
+    }
+    \keyw{computer animation,computer graphics,raster displays,shading,visible
+  surface algorithms}
+    \strng{namehash}{WT1}
+    \strng{fullhash}{WT1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1980}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    To accurately render a two-dimensional image of a three-dimensional scene,
+  global illumination information that affects the intensity of each pixel of
+  the image must be known at the time the intensity is calculated. In a
+  simplified form, this information is stored in a tree of "rays" extending
+  from the viewer to the first surface encountered and from there to other
+  surfaces and to the light sources. A visible surface algorithm creates this
+  tree for each pixel of the display and passes it to the shader. The shader
+  then traverses the tree to determine the intensity of the light received by
+  the viewer. Consideration of all of these factors allows the shader to
+  accurately simulate true reflection, shadows, and refraction, as well as the
+  effects simulated by conventional shaders. Anti-aliasing is included as an
+  integral part of the visibility calculations. Surfaces displayed include
+  curved as well as polygonal surfaces.%
+    }
+    \verb{doi}
+    \verb 10.1145/358876.358882
+    \endverb
+    \field{issn}{15577317}
+    \field{title}{{An Improved Illumination Model for Shaded Display}}
+    \field{journaltitle}{Communications of the ACM}
+    \field{year}{1980}
+  \endentry
+
+  \entry{Appel1968}{inproceedings}{}
+    \name{author}{1}{}{%
+      {{hash=AA}{%
+         family={Appel},
+         familyi={A\bibinitperiod},
+         given={Arthur},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{AA1}
+    \strng{fullhash}{AA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1968}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    Some applications of computer graphics require a vivid illusion of reality.
+  These include the spatial organization of machine parts, conceptual
+  architectural design, simulation of mechanisms, and industrial design. There
+  has been moderate success in the automatic generation of wire frame,
+  cardboard model, polyhedra, and quadric surface line drawings. The capability
+  of the machine to generate vivid sterographic pictures has been demonstrated.
+  There are, however considerable reasons for developing techniques by which
+  line drawings of solids can be shaded, especially the enhancement of the
+  sense of solidity and depth. Figures 1 and 2 illustrate the value of shading
+  and shadow casting in spatial description. In the line drawing there is no
+  clue as to the relative position of the flat plane and the sheet metal
+  console. When shadows are rendered, it is clear that the plane is below and
+  to the rear of the console, and the hollow nature of the sheet metal assembly
+  is emphasized. Shading can specify the tone or color of a surface and the
+  amount of light falling upon that surface from one or more light sources.
+  Shadows when sharply defined tend to suggest another viewpoint and improves
+  surface definition. When controlled, shading can also emphasize particular
+  parts of the drawing. If techniques for the automatic determination of
+  chiaroscuro with good resolution should prove to be competitive with line
+  drawings, and this is a possibility, machine generated photographs might
+  replace line drawings as the principal mode of graphical communication in
+  engineering and architecture.%
+    }
+    \field{booktitle}{AFIPS Spring Joint Computing Conference}
+    \verb{doi}
+    \verb 10.1145/1468075.1468082
+    \endverb
+    \field{title}{{Some techniques for shading machine renderings of solids}}
+    \field{year}{1968}
+  \endentry
+
+  \entry{Kajiya1986}{inproceedings}{}
+    \name{author}{1}{}{%
+      {{hash=KJT}{%
+         family={Kajiya},
+         familyi={K\bibinitperiod},
+         given={James\bibnamedelima T.},
+         giveni={J\bibinitperiod\bibinitdelim T\bibinitperiod},
+      }}%
+    }
+    \keyw{Computer graphics,Distributed ray tracing,Monte
+  Carlo,Radiosity,Raster graphics,Ray tracing,Variance reduction}
+    \strng{namehash}{KJT1}
+    \strng{fullhash}{KJT1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1986}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    We present an integral equation which generallzes a variety of known
+  rendering algorithms. In the course of discussing a monte carlo solution we
+  also present a new form of variance reduction, called Hierarchical sampling
+  and give a number of elaborations shows that it may be an efficient new
+  technique for a wide variety of monte carlo procedures. The resulting
+  renderlng algorithm extends the range of optical phenomena which can be
+  effectively simulated. KEYWORDS: computer graphics, raster graphics{\~{}} ray
+  tracing{\~{}} radios-ity{\~{}} monte carlo, distributed ray tracing, variance
+  reduction. CR CATEGORIES: 1.3.3, 1.3.5, 1.3.7 1. T h e r e n d e r i n g e q
+  u a t i o n The technique we present subsumes a wide variety of rendering
+  algo-rithms and provides a unified context for viewing them as more or less
+  accurate approximations to the solution of a single equation. That this
+  should be so is not surprising once it is realized that all rendering methods
+  attempt to model the same physical phenomenon, that of light scattering off
+  various types of surfaces. We mention that the idea behind the rendering
+  equation is hardly new. A description of the phenomenon simulated by this
+  equation has been well studied in the radiative heat transfer literature for
+  years [Siegel and Howell 1981]. However, the form in which we present this
+  equation is well suited for computer graphics, and we believe that this form
+  has not appeared before.%
+    }
+    \field{booktitle}{Proceedings of the 13th Annual Conference on Computer
+  Graphics and Interactive Techniques, SIGGRAPH 1986}
+    \verb{doi}
+    \verb 10.1145/15922.15902
+    \endverb
+    \field{isbn}{0897911962}
+    \field{title}{{The rendering equation}}
+    \field{year}{1986}
+  \endentry
+
+  \entry{Immel1986}{inproceedings}{}
+    \name{author}{3}{}{%
+      {{hash=IDS}{%
+         family={Immel},
+         familyi={I\bibinitperiod},
+         given={David\bibnamedelima S.},
+         giveni={D\bibinitperiod\bibinitdelim S\bibinitperiod},
+      }}%
+      {{hash=CMF}{%
+         family={Cohen},
+         familyi={C\bibinitperiod},
+         given={Michael\bibnamedelima F.},
+         giveni={M\bibinitperiod\bibinitdelim F\bibinitperiod},
+      }}%
+      {{hash=GDP}{%
+         family={Greenberg},
+         familyi={G\bibinitperiod},
+         given={Donald\bibnamedelima P.},
+         giveni={D\bibinitperiod\bibinitdelim P\bibinitperiod},
+      }}%
+    }
+    \keyw{Bi-directional reflectance,Depth
+  buffer,Hidden-surface,Intensity,Non-diffuse reflection,Radiosity}
+    \strng{namehash}{IDS+1}
+    \strng{fullhash}{IDSCMFGDP1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1986}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    A general radiosity method accounting for all interreflections of light
+  between diffuse and non-diffuse surfaces in complex environments is
+  introduced. As contrasted with previous radiosity methods, surfaces are no
+  longer required to be perfectly diffuse reflectors and emitters. A complete,
+  viewer independent description of the light leaving each surface in each
+  direction is computed, allowing dynamic sequences of images to be rendered
+  with little additional computation per image. Phenomena such as 'reflection
+  tracking', reflections following a moving observer across a specular surface
+  are produced. Secondary light sources, such as the light from a spotlight
+  reflecting off a mirror onto a wall are also accounted for.%
+    }
+    \field{booktitle}{Proceedings of the 13th Annual Conference on Computer
+  Graphics and Interactive Techniques, SIGGRAPH 1986}
+    \verb{doi}
+    \verb 10.1145/15922.15901
+    \endverb
+    \field{isbn}{0897911962}
+    \field{title}{{A radiosity method for non-diffuse environments}}
+    \field{year}{1986}
+  \endentry
+
+  \entry{Lafortune1993}{article}{}
+    \name{author}{2}{}{%
+      {{hash=LEP}{%
+         family={Lafortune},
+         familyi={L\bibinitperiod},
+         given={Eric\bibnamedelima P.},
+         giveni={E\bibinitperiod\bibinitdelim P\bibinitperiod},
+      }}%
+      {{hash=WYD}{%
+         family={Willems},
+         familyi={W\bibinitperiod},
+         given={Yves\bibnamedelima D.},
+         giveni={Y\bibinitperiod\bibinitdelim D\bibinitperiod},
+      }}%
+    }
+    \keyw{illumination and photorealistic render-,rendering and visualisation
+  global}
+    \strng{namehash}{LEP+1}
+    \strng{fullhash}{LEPWYD1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1993}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    In this paper we present a new Monte Carlo rendering algorithm that
+  seamlessly integrates the ideas of%
+    }
+    \verb{doi}
+    \verb 10.1017/CBO9781107415324.004
+    \endverb
+    \verb{eprint}
+    \verb arXiv:1011.1669v3
+    \endverb
+    \field{isbn}{3-211-82883-4}
+    \field{issn}{1098-6596}
+    \field{title}{{Bi-Directional Path Tracing}}
+    \field{journaltitle}{Proc. SIGGRAPH}
+    \field{eprinttype}{arXiv}
+    \field{year}{1993}
+  \endentry
+
+  \entry{Jensen1996}{incollection}{}
+    \name{author}{1}{}{%
+      {{hash=JHW}{%
+         family={Jensen},
+         familyi={J\bibinitperiod},
+         given={Henrik\bibnamedelima Wann},
+         giveni={H\bibinitperiod\bibinitdelim W\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Springer Vienna}%
+    }
+    \strng{namehash}{JHW1}
+    \strng{fullhash}{JHW1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1996}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    This paper presents a two pass global illumination method based on the
+  concept of photon maps. It represents a significant improvement of a
+  previously described approach both with respect to speed, accuracy and
+  versatility. In the first pass two photon maps are created by emitting
+  packets of energy (photons) from the light sources and storing these as they
+  hit surfaces within the scene. We use one high resolution caustics photon map
+  to render caustics that are visualized directly and one low resolution photon
+  map that is used during the rendering step. The scene is rendered using a
+  distribution ray tracing algorithm optimized by using the in- formation in
+  the photon maps. Shadow photons are used to render shadows more efficiently
+  and the directional information in the photon map is used to generate
+  optimized sampling directions and to limit the recursion in the distribution
+  ray tracer by providing an estimate of the radiance on all surfaces with the
+  exception of specular and highly glossy surfaces. The results presented
+  demonstrate global illumination in scenes containing pro- cedural objects and
+  surfaces with diffuse and glossy reflection models. The imple- mentation is
+  also compared with the Radiance program.%
+    }
+    \field{booktitle}{Rendering Techniques '96}
+    \verb{doi}
+    \verb 10.1007/978-3-7091-7484-5_3
+    \endverb
+    \field{pages}{21\bibrangedash 30}
+    \field{title}{{Global Illumination using Photon Maps}}
+    \field{year}{1996}
+  \endentry
+
+  \entry{Veach1997}{inproceedings}{}
+    \name{author}{2}{}{%
+      {{hash=VE}{%
+         family={Veach},
+         familyi={V\bibinitperiod},
+         given={Eric},
+         giveni={E\bibinitperiod},
+      }}%
+      {{hash=GLJ}{%
+         family={Guibas},
+         familyi={G\bibinitperiod},
+         given={Leonidas\bibnamedelima J.},
+         giveni={L\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+    }
+    \keyw{Markov Chain Monte Carlo methods,Metropolis-Hastings algorithm,Monte
+  Carlo integration,global illumination,lighting simulation,physically-based
+  rendering,radiative heat transfer,variance reduction}
+    \strng{namehash}{VE+1}
+    \strng{fullhash}{VEGLJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1997}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    We present a new Monte Carlo method for solving the light transport
+  problem, inspired by theMetropolis sampling method in computational physics.
+  To render an image, we generate a sequence of light transport paths by
+  randomly mutating a single current path (e.g. adding a new vertex to the
+  path). Eachmutation is accepted or rejected with a care- fully chosen
+  probability, to ensure that paths are sampled according to the contribution
+  they make to the ideal image. We then estimate this image by sampling many
+  paths, and recording their locations on the image plane. Our algorithm is
+  unbiased, handles general geometric and scattering models, uses little
+  storage, and can be orders of magnitude more efficient than previous unbiased
+  approaches. It performs especially well on problems that are usually con-
+  sidered difficult, e.g. those involving bright indirect light, small
+  geometric holes, or glossy surfaces. Furthermore, it is competitive with
+  previous unbiased algorithms even for relatively simple scenes. The key
+  advantage of the Metropolis approach is that the path space is explored
+  locally, by favoring mutations that make small changes to the current path.
+  This has several consequences. First, the average cost per sample is small
+  (typically only one or two rays). Second, once an impor- tant path is found,
+  the nearby paths are explored as well, thus amortizing the expense of finding
+  such paths over many samples. Third, themutation set is easily extended. By
+  con- structing mutations that preserve certain properties of the path (e.g.
+  which light source is used) while changing others, we can exploit various
+  kinds of coherence in the scene. It is often possible to handle difficult
+  lighting problems efficiently by designing a specialized mutation in this
+  way. CR%
+    }
+    \field{booktitle}{Proceedings of the 24th Annual Conference on Computer
+  Graphics and Interactive Techniques, SIGGRAPH 1997}
+    \verb{doi}
+    \verb 10.1145/258734.258775
+    \endverb
+    \field{isbn}{0897918967}
+    \field{title}{{Metropolis light transport}}
+    \field{year}{1997}
+  \endentry
+
+  \entry{Cassagnabere2004}{inproceedings}{}
+    \name{author}{3}{}{%
+      {{hash=CC}{%
+         family={Cassagnab{\`{e}}re},
+         familyi={C\bibinitperiod},
+         given={Christophe},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=RF}{%
+         family={Rousselle},
+         familyi={R\bibinitperiod},
+         given={Fran{\c{c}}ois},
+         giveni={F\bibinitperiod},
+      }}%
+      {{hash=RC}{%
+         family={Renaud},
+         familyi={R\bibinitperiod},
+         given={Christophe},
+         giveni={C\bibinitperiod},
+      }}%
+    }
+    \keyw{AR350,Global illumination,Hardware implementation,Path
+  tracing,RenderMan}
+    \strng{namehash}{CC+1}
+    \strng{fullhash}{CCRFRC1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2004}
+    \field{labeldatesource}{year}
+    \field{booktitle}{Proceedings GRAPHITE 2004 - 2nd International Conference
+  on Computer Graphics and Interactive Techniques in Australasia and Southeast
+  Asia}
+    \field{isbn}{1581138849}
+    \field{title}{{Path tracing using the AR350 processor}}
+    \field{year}{2004}
+  \endentry
+
+  \entry{ShirleyRTA}{book}{}
+    \name{author}{1}{}{%
+      {{hash=SP}{%
+         family={Shirley},
+         familyi={S\bibinitperiod},
+         given={Peter},
+         giveni={P\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Peter Shirley}%
+    }
+    \keyw{Path Tracing,Ray Tracing}
+    \strng{namehash}{SP1}
+    \strng{fullhash}{SP1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2019}
+    \field{extradate}{2}
+    \field{labeldatesource}{year}
+    \field{pages}{41}
+    \field{title}{{Ray Tracing in One Weekend}}
+    \verb{url}
+    \verb https://github.com/RayTracing/InOneWeekend
+    \endverb
+    \verb{file}
+    \verb :home/jordi/Documents/Universidad/Computacio/TFG/Documents/Ray Tracin
+    \verb g in a Weekend.pdf:pdf
+    \endverb
+    \field{year}{2019}
+  \endentry
+
+  \entry{ShirleyRTB}{book}{}
+    \name{author}{1}{}{%
+      {{hash=SP}{%
+         family={Shirley},
+         familyi={S\bibinitperiod},
+         given={Peter},
+         giveni={P\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Peter Shirley}%
+    }
+    \keyw{Path Tracing,Ray Tracing}
+    \strng{namehash}{SP1}
+    \strng{fullhash}{SP1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2019}
+    \field{extradate}{3}
+    \field{labeldatesource}{year}
+    \field{pages}{53}
+    \field{title}{{Ray Tracing: The Rest of Your Life}}
+    \verb{url}
+    \verb https://github.com/RayTracing/TheRestOfYourLife
+    \endverb
+    \verb{file}
+    \verb :home/jordi/Documents/Universidad/Computacio/TFG/Documents/Ray Tracin
+    \verb g{\_} the Rest of Your Life.pdf:pdf
+    \endverb
+    \field{year}{2019}
+  \endentry
+
+  \entry{ShirleyRTC}{book}{}
+    \name{author}{1}{}{%
+      {{hash=SP}{%
+         family={Shirley},
+         familyi={S\bibinitperiod},
+         given={Peter},
+         giveni={P\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Peter Shirley}%
+    }
+    \keyw{Path Tracing,Ray Tracing}
+    \strng{namehash}{SP1}
+    \strng{fullhash}{SP1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2019}
+    \field{extradate}{1}
+    \field{labeldatesource}{year}
+    \field{pages}{50}
+    \field{title}{{Ray Tracing : The Next Week}}
+    \verb{url}
+    \verb https://github.com/petershirley/raytracingthenextweek
+    \endverb
+    \verb{file}
+    \verb :home/jordi/Documents/Universidad/Computacio/TFG/Documents/Ray Tracin
+    \verb g{\_} The Next Week.pdf:pdf
+    \endverb
+    \field{year}{2019}
+  \endentry
+
+  \entry{Karras2012}{inproceedings}{}
+    \name{author}{1}{}{%
+      {{hash=KT}{%
+         family={Karras},
+         familyi={K\bibinitperiod},
+         given={Tero},
+         giveni={T\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{KT1}
+    \strng{fullhash}{KT1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2012}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    A number of methods for constructing bounding volume hierarchies and
+  point-based octrees on the GPU are based on the idea of ordering primitives
+  along a space-filling curve. A major shortcoming with these methods is that
+  they construct levels of the tree sequentially, which limits the amount of
+  parallelism that they can achieve. We present a novel approach that improves
+  scalability by constructing the entire tree in parallel. Our main
+  contribution is an in-place algorithm for constructing binary radix trees,
+  which we use as a building block for other types of trees.%
+    }
+    \field{booktitle}{High-Performance Graphics 2012, HPG 2012 - ACM SIGGRAPH /
+  Eurographics Symposium Proceedings}
+    \verb{doi}
+    \verb 10.2312/EGGH/HPG12/033-037
+    \endverb
+    \field{isbn}{9783905674415}
+    \field{title}{{Maximizing parallelism in the construction of bvhs, octrees,
+  and k-d trees}}
+    \field{year}{2012}
+  \endentry
+
+  \entry{Christensen2018}{article}{}
+    \name{author}{13}{}{%
+      {{hash=CP}{%
+         family={Christensen},
+         familyi={C\bibinitperiod},
+         given={Per},
+         giveni={P\bibinitperiod},
+      }}%
+      {{hash=FJ}{%
+         family={Fong},
+         familyi={F\bibinitperiod},
+         given={Julian},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=SJ}{%
+         family={Shade},
+         familyi={S\bibinitperiod},
+         given={Jonathan},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=WW}{%
+         family={Wooten},
+         familyi={W\bibinitperiod},
+         given={Wayne},
+         giveni={W\bibinitperiod},
+      }}%
+      {{hash=SB}{%
+         family={Schubert},
+         familyi={S\bibinitperiod},
+         given={Brenden},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=KA}{%
+         family={Kensler},
+         familyi={K\bibinitperiod},
+         given={Andrew},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=FS}{%
+         family={Friedman},
+         familyi={F\bibinitperiod},
+         given={Stephen},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=KC}{%
+         family={Kilpatrick},
+         familyi={K\bibinitperiod},
+         given={Charlie},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=RC}{%
+         family={Ramshaw},
+         familyi={R\bibinitperiod},
+         given={Cliff},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=BM}{%
+         family={Bannister},
+         familyi={B\bibinitperiod},
+         given={Marc},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=RB}{%
+         family={Rayner},
+         familyi={R\bibinitperiod},
+         given={Brenton},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=BJ}{%
+         family={Brouillat},
+         familyi={B\bibinitperiod},
+         given={Jonathan},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=LM}{%
+         family={Liani},
+         familyi={L\bibinitperiod},
+         given={Max},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \keyw{Complex scenes,Computergenerated images,Global illumination,Path
+  tracing,Pixar,Production rendering,Ray tracing,RenderMan,Visual effects}
+    \strng{namehash}{CP+1}
+    \strng{fullhash}{CPFJSJWWSBKAFSKCRCBMRBBJLM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2018}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    Pixar's RenderMan renderer is used to render all of Pixar's films and by
+  many film studios to render visual effects for live-action movies. RenderMan
+  started as a scanline renderer based on the Reyes algorithm, and it was
+  extended over the years with ray tracing and several global illumination
+  algorithms. This article describes the modern version of RenderMan, a new
+  architecture for an extensible and programmable path tracer with many
+  features that are essential to handle the fiercely complex scenes in movie
+  production. Users can write their own materials using a bxdf interface and
+  their own light transport algorithms using an integrator interface—or they
+  can use the materials and light transport algorithms provided with RenderMan.
+  Complex geometry and textures are handled with efficient multi-resolution
+  representations, with resolution chosen using path differentials. We trace
+  rays and shade ray hit points in medium-sized groups, which provides the
+  benefits of SIMD execution without excessive memory overhead or data
+  streaming. The path-tracing architecture handles surface, subsurface, and
+  volume scattering. We show examples of the use of path tracing, bidirectional
+  path tracing, VCM, and UPBP light transport algorithms. We also describe our
+  progressive rendering for interactive use and our adaptation of denoising
+  techniques.%
+    }
+    \verb{doi}
+    \verb 10.1145/3182162
+    \endverb
+    \field{issn}{15577368}
+    \field{title}{{RenderMan: An advanced path-tracing architecture for movie
+  rendering}}
+    \field{journaltitle}{ACM Transactions on Graphics}
+    \field{year}{2018}
+  \endentry
+
+  \entry{Karimi2010}{article}{}
+    \name{author}{3}{}{%
+      {{hash=KK}{%
+         family={Karimi},
+         familyi={K\bibinitperiod},
+         given={Kamran},
+         giveni={K\bibinitperiod},
+      }}%
+      {{hash=DNG}{%
+         family={Dickson},
+         familyi={D\bibinitperiod},
+         given={Neil\bibnamedelima G.},
+         giveni={N\bibinitperiod\bibinitdelim G\bibinitperiod},
+      }}%
+      {{hash=HF}{%
+         family={Hamze},
+         familyi={H\bibinitperiod},
+         given={Firas},
+         giveni={F\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{KK+1}
+    \strng{fullhash}{KKDNGHF1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2010}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    CUDA and OpenCL are two different frameworks for GPU programming. OpenCL is
+  an open standard that can be used to program CPUs, GPUs, and other devices
+  from different vendors, while CUDA is specific to NVIDIA GPUs. Although
+  OpenCL promises a portable language for GPU programming, its generality may
+  entail a performance penalty. In this paper, we use complex, near-identical
+  kernels from a Quantum Monte Carlo application to compare the performance of
+  CUDA and OpenCL. We show that when using NVIDIA compiler tools, converting a
+  CUDA kernel to an OpenCL kernel involves minimal modifications. Making such a
+  kernel compile with ATI's build tools involves more modifications. Our
+  performance tests measure and compare data transfer times to and from the
+  GPU, kernel execution times, and end-to-end application execution times for
+  both CUDA and OpenCL.%
+    }
+    \verb{eprint}
+    \verb 1005.2581
+    \endverb
+    \field{number}{1}
+    \field{pages}{10}
+    \field{title}{{A Performance Comparison of CUDA and OpenCL}}
+    \verb{url}
+    \verb http://arxiv.org/abs/1005.2581
+    \endverb
+    \field{volume}{abs/1005.2}
+    \verb{file}
+    \verb :home/jordi/Documents/Universidad/Computacio/TFG/Documents/cuda-ocl-k
+    \verb dh.pdf:pdf
+    \endverb
+    \field{journaltitle}{Computing Research Repository - CORR}
+    \field{eprinttype}{arXiv}
+    \field{year}{2010}
+  \endentry
+
+  \entry{Fang2011}{inproceedings}{}
+    \name{author}{3}{}{%
+      {{hash=FJ}{%
+         family={Fang},
+         familyi={F\bibinitperiod},
+         given={Jianbin},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=VAL}{%
+         family={Varbanescu},
+         familyi={V\bibinitperiod},
+         given={Ana\bibnamedelima Lucia},
+         giveni={A\bibinitperiod\bibinitdelim L\bibinitperiod},
+      }}%
+      {{hash=SH}{%
+         family={Sips},
+         familyi={S\bibinitperiod},
+         given={Henk},
+         giveni={H\bibinitperiod},
+      }}%
+    }
+    \keyw{CUDA,OpenCL,Performance Comparison}
+    \strng{namehash}{FJ+1}
+    \strng{fullhash}{FJVALSH1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2011}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    This paper presents a comprehensive performance comparison between CUDA and
+  OpenCL. We have selected 16 benchmarks ranging from synthetic applications to
+  real-world ones. We make an extensive analysis of the performance gaps taking
+  into account programming models, optimization strategies, architectural
+  details, and underlying compilers. Our results show that, for most
+  applications, CUDA performs at most 30{\%} better than OpenCL. We also show
+  that this difference is due to unfair comparisons: in fact, OpenCL can
+  achieve similar performance to CUDA under a fair comparison. Therefore, we
+  define a fair comparison of the two types of applications, providing
+  guidelines for more potential analyses. We also investigate OpenCL's
+  portability by running the benchmarks on other prevailing platforms with
+  minor modifications. Overall, we conclude that OpenCL's portability does not
+  fundamentally affect its performance, and OpenCL can be a good alternative to
+  CUDA. ? 2011 IEEE.%
+    }
+    \field{booktitle}{Proceedings of the International Conference on Parallel
+  Processing}
+    \verb{doi}
+    \verb 10.1109/ICPP.2011.45
+    \endverb
+    \field{isbn}{9780769545103}
+    \field{issn}{01903918}
+    \field{title}{{A comprehensive performance comparison of CUDA and OpenCL}}
+    \field{year}{2011}
+  \endentry
+\enddatalist
+\endinput
