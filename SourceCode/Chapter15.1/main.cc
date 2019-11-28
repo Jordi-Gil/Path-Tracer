@@ -168,6 +168,10 @@ void computeBoundingBox(Node* root) {
         
         if(root->obj) {
             root->box = root->obj->getBox(); //Leaf node
+            
+            if((root->obj->idx).find("manual_") != std::string::npos){ 
+              std::cout << root->obj->idx << " BOX: [" << root->obj->getBox().min() << "," << root->obj->getBox().max() << "]" << std::endl;
+            }
         }
         else { //Internal node
             
@@ -317,7 +321,7 @@ Node* generateHierarchy(Triangle *sortedMortonCodes, int numberObj) {
         int split = findSplit(sortedMortonCodes, first, last);
         
         //if(idx == 0) 
-        std::cout << "idx " << idx << " range [" << range.x << "," << range.y << "] split in " << split << " ";
+        //std::cout << "idx " << idx << " range [" << range.x << "," << range.y << "] split in " << split << " ";
         
         Node *childA;
         Node *childB;
@@ -339,7 +343,7 @@ Node* generateHierarchy(Triangle *sortedMortonCodes, int numberObj) {
         childB->parent = &internalNodes[idx];
         
         //if(idx == 0) 
-        std::cout << internalNodes[idx].id << "-->" << " LF: " << internalNodes[idx].left->id << " RG " << internalNodes[idx].right->id << std::endl;
+        //std::cout << internalNodes[idx].id << "-->" << " LF: " << internalNodes[idx].left->id << " RG " << internalNodes[idx].right->id << std::endl;
         
     }
     

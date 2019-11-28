@@ -71,7 +71,7 @@ Material loadMaterial(const std::string &line,int type) {
   return Material(type,albedo,fuzz,ref_idx);
 }
 
-Triangle loadTriangle(const std::string &line) {
+Triangle loadTriangle(const std::string &line, int num) {
 
   std::stringstream ssin(line);
   std::string par;
@@ -107,7 +107,7 @@ Triangle loadTriangle(const std::string &line) {
       else if(par == "DL") mat = loadMaterial(line.substr(line.find(par)+par.size()),DIFFUSE_LIGHT);
     }
   }
-  return Triangle(position[0],position[1],position[2], mat);
+  return Triangle("manual_"+std::to_string(num),position[0],position[1],position[2], mat);
 }
 
 void print(Triangle *tl, int n){
@@ -392,7 +392,7 @@ void Scene::sceneFromFile(const std::string &filename) {
     }
     else if(aux == "2") {
       if(sizes != nullptr and num_tr < sizes[1]) {
-        list_1[num_tr] = loadTriangle(line.substr(2,line.size()));
+        list_1[num_tr] = loadTriangle(line.substr(2,line.size()),num_tr);
         compare(max, min, list_1[num_tr].getCentroid());
         ++num_tr;
       }
@@ -412,9 +412,14 @@ void Scene::sceneFromFile(const std::string &filename) {
   int num_objects = num_tr + num_ob_tr;
   
   std::cout << "Real size " << num_objects << std::endl;
-  Triangle *list_aux = (Triangle *) malloc((num_objects) * sizeof(Triangle));
+  
+  Triangle *list_aux = new Triangle[num_objects];//(Triangle *) malloc((num_objects) * sizeof(Triangle));
+  
+  for(int i = 0; i < num_tr; i++) std::cout << list_1[i].idx << std::endl;
+  
   std::copy(list_1, list_1 + num_tr, list_aux);
-  free(list_1);
+  
+  //free(list_1);
   
   int p = num_tr;
   
@@ -427,8 +432,6 @@ void Scene::sceneFromFile(const std::string &filename) {
     p += n;
     
   }
-  
-  free(list_3);
   
   float max_x = max[0]; float max_y = max[1]; float max_z = max[2];
   float min_x = min[0]; float min_y = min[1]; float min_z = min[2];
@@ -447,11 +450,13 @@ void Scene::sceneFromFile(const std::string &filename) {
   std::cout << "Max " <<  max << " Min " << min << std::endl;
   
   if(num_objects > 0) {
-    objects = (Triangle *) malloc(num_objects * sizeof(Triangle));
+    objects = new Triangle[num_objects];
     std::copy(list_aux, list_aux + num_objects, objects);
     std::sort(objects, objects + num_objects, ObjEval());
     size = num_objects;
   }
+  
+  std::cout << "scene Loaded" << std::endl;
 
 }
 
@@ -563,10 +568,10 @@ void Scene::sceneTriangle() {
 	
 	int objs = 0;
   
-  objects[objs] = Triangle(Vector3(-4.0,0.0,0.0), Vector3(-2.0,0.0,0.5), Vector3(-3.0,-1.0,0.0) ,Material(LAMBERTIAN, Vector3(1.0,0.0,0.0)));
+  objects[objs] = Triangle("random_1",Vector3(-4.0,0.0,0.0), Vector3(-2.0,0.0,0.5), Vector3(-3.0,-1.0,0.0) ,Material(LAMBERTIAN, Vector3(1.0,0.0,0.0)));
 	compare(max, min, objects[0].getCentroid()); objs++;
 	
-	objects[objs] = Triangle(Vector3(0.0,0.0,0.0), Vector3(2.0,0.0,0.0), Vector3(1.0,-1.0,0.0) ,Material(METAL, Vector3(1.0,0.0,0.0)));
+	objects[objs] = Triangle("random_2",Vector3(0.0,0.0,0.0), Vector3(2.0,0.0,0.0), Vector3(1.0,-1.0,0.0) ,Material(METAL, Vector3(1.0,0.0,0.0)));
   compare(max, min, objects[1].getCentroid()); objs++;
   
   float max_x = max[0]; float max_y = max[1]; float max_z = max[2];

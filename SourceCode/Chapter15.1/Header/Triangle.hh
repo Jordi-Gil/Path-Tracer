@@ -11,7 +11,7 @@ class Triangle {
 public:
     
   Triangle() {}
-  Triangle(Vector3 v1, Vector3 v2, Vector3 v3, Material mat, Vector3 t = Vector3::One());
+  Triangle(std::string id, Vector3 v1, Vector3 v2, Vector3 v3, Material mat, Vector3 t = Vector3::One());
   bool hit(const Ray& r, float t_min, float t_max, hit_record& rec);
   
   void bounding_box(aabb& box);
@@ -28,6 +28,8 @@ public:
   void resizeBoundingBox();
   
 
+  std::string idx;
+  
 private:
   
   Vector3 vertex[3];
@@ -36,6 +38,7 @@ private:
   Vector3 uv;
   long long morton_code;
   aabb box;
+  
 };
 
 /*

@@ -1,6 +1,6 @@
 #include "Triangle.hh"
 
-Triangle::Triangle(Vector3 v1, Vector3 v2, Vector3 v3, Material mat, Vector3 t) {
+Triangle::Triangle(std::string id, Vector3 v1, Vector3 v2, Vector3 v3, Material mat, Vector3 t) {
     vertex[0] = v1;
     vertex[1] = v2;
     vertex[2] = v3;
@@ -9,6 +9,8 @@ Triangle::Triangle(Vector3 v1, Vector3 v2, Vector3 v3, Material mat, Vector3 t) 
     morton_code = 0;
     bounding_box(box);
     uv = t;
+    
+    idx = id;
 }
 
 bool Triangle::hit(const Ray& r, float t_min, float t_max, hit_record& rec) {
@@ -50,6 +52,8 @@ bool Triangle::hit(const Ray& r, float t_min, float t_max, hit_record& rec) {
 
 void Triangle::bounding_box(aabb& box) {
   
+  if(idx == "manual_3") std::cout << vertex[0] << " " << vertex[1] << " " << vertex[2] << std::endl;
+  
 	float x_max = std::max(std::max(vertex[0].x(),vertex[1].x()),vertex[2].x());
 	float y_max = std::max(std::max(vertex[0].y(),vertex[1].y()),vertex[2].y());
 	float z_max = std::max(std::max(vertex[0].z(),vertex[1].z()),vertex[2].z());
@@ -58,9 +62,13 @@ void Triangle::bounding_box(aabb& box) {
 	float y_min = std::min(std::min(vertex[0].y(),vertex[1].y()),vertex[2].y());
 	float z_min = std::min(std::min(vertex[0].z(),vertex[1].z()),vertex[2].z());
 	
-  if(x_max == x_min) { x_max += 0.000000001; x_min -= 0.000000001; }
-  if(y_max == y_min) { y_max += 0.000000001; y_min -= 0.000000001; }
-  if(z_max == z_min) { z_max += 0.000000001; z_min -= 0.000000001; }
+  if(idx == "manual_3") std::cout << z_max << " " << z_min << std::endl;
+  
+  if(x_max == x_min) { x_max += 0.0005; x_min -= 0.0005; }
+  if(y_max == y_min) { y_max += 0.0005; y_min -= 0.0005; }
+  if(z_max == z_min) { z_max += 0.0005; z_min -= 0.0005; }
+  
+  if(idx == "manual_3") std::cout << z_max << " " << z_min << std::endl;
   
   Vector3 max(x_max, y_max, z_max), min(x_min, y_min, z_min);
 	
