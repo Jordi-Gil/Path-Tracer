@@ -56,17 +56,19 @@ Material loadMaterial(const std::string &line,int type) {
   int albedoCount = 0;
   float fuzz = -1.0;
   float ref_idx = -1.0;
+  bool loaded = false;
   Vector3 albedo;
   
-  while(ssin >> par) {
-  
+  while(ssin >> par and !loaded) {
     if(albedoCount < 3){
       albedo[albedoCount] = stof(par);
       albedoCount++;
     } else {
-      if(type == METAL) fuzz = stof(par);
-      else if(type == DIELECTRIC) ref_idx = stof(par);
+      if(type == METAL){ fuzz = stof(par); loaded = true; }
+      else if(type == DIELECTRIC) { ref_idx = stof(par); loaded = true; }
+      else if(albedoCount == 3) loaded = true;
     }
+    
   }
   return Material(type,albedo,fuzz,ref_idx);
 }
@@ -102,7 +104,7 @@ Triangle loadTriangle(const std::string &line, int num) {
     }
     else {
       if(par == "L") mat = loadMaterial(line.substr(line.find(par)+par.size()),LAMBERTIAN);
-      else if(par == "M") mat = loadMaterial(line.substr(line.find(par)+par.size()),METAL);
+      else if(par == "M"){ mat = loadMaterial(line.substr(line.find(par)+par.size()),METAL); std::cout << mat.getAlbedo() << " " << mat.fuzz << std::endl; }
       else if(par == "D") mat = loadMaterial(line.substr(line.find(par)+par.size()),DIELECTRIC);
       else if(par == "DL") mat = loadMaterial(line.substr(line.find(par)+par.size()),DIFFUSE_LIGHT);
     }
@@ -131,6 +133,7 @@ mat4 getTransformMatrix(const std::vector<std::string> &transforms, const Vector
     std::string par;
     
     while(ssin >> par) {
+      
       if(par == "t") {
         ssin >> par;
         if(par == "center") {
@@ -225,6 +228,7 @@ Obj loadObj(const std::string &line) {
         trans += par;
       }
       else if(par == "nu") {
+        trans += par+" ";
         ssin >> par; trans += par+" ";
         ssin >> par; trans += par+" ";
         ssin >> par; trans += par;
@@ -233,7 +237,7 @@ Obj loadObj(const std::string &line) {
     }
     else if(par == "m") {
       ssin >> par;
-      if(par == "L") { 
+      if(par == "L") {
         mat = loadMaterial(line.substr(line.find(par)+par.size()+1),LAMBERTIAN);
         ssin >> par; ssin >> par; ssin >> par;
       }
