@@ -16,6 +16,8 @@ public:
   void setMorton(long long code);
   aabb getBox();
   Vector3 getCenter();
+	float getRadius();
+	Material getMaterial();
 
   Vector3 center;
   float radius;

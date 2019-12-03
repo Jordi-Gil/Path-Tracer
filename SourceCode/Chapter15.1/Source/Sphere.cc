@@ -59,3 +59,11 @@ void Sphere::setMorton(long long code) {
 Vector3 Sphere::getCenter() {
   return center;
 }
+
+float Sphere::getRadius() {
+	return radius;
+}
+
+Material Sphere::getMaterial() {
+	return mat_ptr;
+}

@@ -1,7 +1,7 @@
 #ifndef Node_HH_INCLUDE
 #define Node_HH_INCLUDE
 
-#include "Shape.hh"
+#include "Triangle.hh"
 #include "Helper.hh"
 #include <algorithm>
 

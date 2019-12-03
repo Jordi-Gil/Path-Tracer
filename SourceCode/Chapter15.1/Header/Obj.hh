@@ -9,7 +9,7 @@
 #include <stdexcept>
 #include <vector>
 
-#include "Shape.hh"
+#include "Triangle.hh"
 #include "Mat4.hh"
 
 #define INF std::numeric_limits<float>::infinity()

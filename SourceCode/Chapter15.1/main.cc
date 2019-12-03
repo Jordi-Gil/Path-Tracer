@@ -185,10 +185,6 @@ void computeBoundingBox(Node* root) {
     }    
 }
 
-long long getMorton(Shape a){
-  return (a.tag == SPHERE) ? a.s.getMorton() : a.t.getMorton();
-}
-
 unsigned int findSplit(Triangle *sortedMortonCodes, int first, int last) {
     
   long long firstCode = sortedMortonCodes[first].getMorton();

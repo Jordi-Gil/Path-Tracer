@@ -2,7 +2,8 @@
 #define SCENE_HH
 
 #include "Camera.hh"
-#include "Shape.hh"
+#include "Triangle.hh"
+#include "Sphere.hh"
 #include "Obj.hh"
 #include "Math.hh"
 #include "Helper.hh"
@@ -37,6 +38,20 @@ private:
   Triangle *objects;
   Sphere *spheres;
   unsigned int size;
+};
+
+struct ObjEval2{
+    
+  inline bool operator()(Sphere a, Sphere b){
+    return (a.getMorton() < b.getMorton());
+  }
+};
+
+struct ObjEval{
+    
+  inline bool operator()(Triangle a, Triangle b){
+    return (a.getMorton() < b.getMorton());
+  }
 };
 
 #endif //SCENE_HH

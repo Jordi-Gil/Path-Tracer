@@ -40,8 +40,7 @@ bool Triangle::hit(const Ray& r, float t_min, float t_max, hit_record& rec) {
   if(temp > t_min && temp < t_max) {
     rec.t = temp;
     rec.point = r.point_at_parameter(rec.t);
-    rec.normal = /*Vector3(0,0,-1);*/ normalize(cross(e1, e2));
-    //std::cout << "Normal: (" << cross(e1,e2) << ")/" << (cross(e1, e2)).length() << " = " << rec.normal << std::endl;
+    rec.normal = normalize(cross(e1, e2));
     rec.mat_ptr = this->mat_ptr;
     
     return true;
@@ -52,8 +51,6 @@ bool Triangle::hit(const Ray& r, float t_min, float t_max, hit_record& rec) {
 
 void Triangle::bounding_box(aabb& box) {
   
-  if(idx == "manual_3") std::cout << vertex[0] << " " << vertex[1] << " " << vertex[2] << std::endl;
-  
 	float x_max = std::max(std::max(vertex[0].x(),vertex[1].x()),vertex[2].x());
 	float y_max = std::max(std::max(vertex[0].y(),vertex[1].y()),vertex[2].y());
 	float z_max = std::max(std::max(vertex[0].z(),vertex[1].z()),vertex[2].z());
@@ -62,13 +59,9 @@ void Triangle::bounding_box(aabb& box) {
 	float y_min = std::min(std::min(vertex[0].y(),vertex[1].y()),vertex[2].y());
 	float z_min = std::min(std::min(vertex[0].z(),vertex[1].z()),vertex[2].z());
 	
-  if(idx == "manual_3") std::cout << z_max << " " << z_min << std::endl;
-  
   if(x_max == x_min) { x_max += 0.0005; x_min -= 0.0005; }
   if(y_max == y_min) { y_max += 0.0005; y_min -= 0.0005; }
   if(z_max == z_min) { z_max += 0.0005; z_min -= 0.0005; }
-  
-  if(idx == "manual_3") std::cout << z_max << " " << z_min << std::endl;
   
   Vector3 max(x_max, y_max, z_max), min(x_min, y_min, z_min);
 	
