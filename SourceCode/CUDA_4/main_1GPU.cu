@@ -368,8 +368,6 @@ __global__ void initLeafNodes(Node *leafNodes, int objs, Triangle *d_list) {
   leafNodes[idx].obj = &d_list[idx];
   leafNodes[idx].box = d_list[idx].getBox();
 	
-	//printf("(%2f,%2f,%2f), (%2f,%2f,%2f),(%2f,%2f,%2f)\n", d_list[idx][0][0], d_list[idx][0][1], d_list[idx][0][2],   d_list[idx][1][0], d_list[idx][1][1], d_list[idx][1][2],   d_list[idx][2][0], d_list[idx][2][1], d_list[idx][2][2]);
-	
 }
 
 __global__ void constructBVH(Node *d_internalNodes, Node *leafNodes, int objs, Triangle *d_list) {
@@ -377,7 +375,7 @@ __global__ void constructBVH(Node *d_internalNodes, Node *leafNodes, int objs, T
   int idx = blockIdx.x*blockDim.x + threadIdx.x;
     
   if(idx >= objs) return;
-
+  
   int2 range = determineRange(d_list, idx, objs+1);
   
   int first = range.x;
@@ -578,7 +576,7 @@ int main(int argc, char **argv) {
   
   constructBVH<<<blocks2,threads>>>(d_internalNodes, d_leafNodes, size-1, d_objects);
   checkCudaErrors(cudaGetLastError());
-  
+ 
   boundingBoxBVH<<<blocks2,threads>>>(d_internalNodes, d_leafNodes, size, d_nodeCounter);
   checkCudaErrors(cudaGetLastError());
   
@@ -586,6 +584,7 @@ int main(int argc, char **argv) {
   checkCudaErrors(cudaGetLastError());
 
   /* Copiamos del Device al Host*/
+
   cudaMemcpy(h_frameBuffer, d_frameBuffer, fb_size, cudaMemcpyDeviceToHost);
   checkCudaErrors(cudaGetLastError());
   
