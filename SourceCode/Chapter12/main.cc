@@ -7,6 +7,9 @@
 #include "Scene.hh"
 #include "HitableList.hh"
 
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image_write.h"
+
 double getusec_() {
   struct timeval time;
   gettimeofday(&time, NULL);
@@ -168,18 +171,13 @@ int main(int argc, char **argv) {
   
   parse_argv(argc, argv, nx, ny, ns, depth, dist, image, filename, light, random);
   
-  Scene scene(dist);
+  Scene scene(dist, nx, ny);
   if(random) scene.loadScene(RANDOM);
   else scene.loadScene(FFILE,filename);
   
   HitableList *world = new HitableList(scene.getObjects(), scene.getSize());
   
-  Vector3 lookfrom(13,2,3);
-  Vector3 lookat(0,0,0);
-  float dist_to_focus = 10.0;
-  float aperture = 0.1;
-
-  Camera cam(lookfrom, lookat, Vector3(0,1,0), 20, float(nx)/float(ny), aperture, dist_to_focus, 0.0, 1.0);
+  Camera cam = scene.getCamera();
 
   std::cout << "Creating " << image << " with (" << nx << "," << ny << ") pixels." << std::endl;
   std::cout << "With " << ns << " iterations for AntiAliasing and depth of " << depth << "." << std::endl;
@@ -187,15 +185,12 @@ int main(int argc, char **argv) {
   if(light) std::cout << "Ambient light ON" << std::endl;
   else std::cout << "Ambient light OFF" << std::endl;
   
-  std::cout << "\n\nCreating image..." << std::endl;
-  
-  std::ofstream pic;
-  pic.open(image.c_str());
-  
-  pic << "P3\n" << nx << " " <<  ny << "\n255" << "\n";
-  
   double stamp;
   START_COUNT_TIME;
+  
+  uint8_t *data = new uint8_t[nx*ny*3];
+  int count = 0;
+  std::cout << "\n\nCreating image..." << std::endl;
   
   for(int j = ny - 1; j >= 0; j--){
     for(int i = 0; i < nx; i++){
@@ -218,10 +213,15 @@ int main(int argc, char **argv) {
       int ig = int(255.99*col[1]);
       int ib = int(255.99*col[2]);
 
-      pic << ir << " " << ig << " " << ib << "\n";
+      
+      data[count++] = ir;
+      data[count++] = ig;
+      data[count++] = ib;
+      
     }
   }
-  pic.close();
+  
   STOP_COUNT_TIME;
   std::cout << "Image created in " << stamp << " seconds" << std::endl;
+  stbi_write_png(image.c_str(), nx, ny, 3, data, nx*3);
 }

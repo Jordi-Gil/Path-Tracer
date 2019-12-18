@@ -168,10 +168,6 @@ void computeBoundingBox(Node* root) {
         
         if(root->obj) {
             root->box = root->obj->getBox(); //Leaf node
-            
-            if((root->obj->idx).find("manual_") != std::string::npos){ 
-              std::cout << root->obj->idx << " BOX: [" << root->obj->getBox().min() << "," << root->obj->getBox().max() << "]" << std::endl;
-            }
         }
         else { //Internal node
             

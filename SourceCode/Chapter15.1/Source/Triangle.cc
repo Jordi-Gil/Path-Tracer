@@ -1,6 +1,6 @@
 #include "Triangle.hh"
 
-Triangle::Triangle(std::string id, Vector3 v1, Vector3 v2, Vector3 v3, Material mat, Vector3 t) {
+Triangle::Triangle(Vector3 v1, Vector3 v2, Vector3 v3, Material mat, Vector3 t) {
     vertex[0] = v1;
     vertex[1] = v2;
     vertex[2] = v3;
@@ -9,8 +9,6 @@ Triangle::Triangle(std::string id, Vector3 v1, Vector3 v2, Vector3 v3, Material 
     morton_code = 0;
     bounding_box(box);
     uv = t;
-    
-    idx = id;
 }
 
 bool Triangle::hit(const Ray& r, float t_min, float t_max, hit_record& rec) {

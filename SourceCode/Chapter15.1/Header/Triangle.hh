@@ -11,7 +11,7 @@ class Triangle {
 public:
     
   Triangle() {}
-  Triangle(std::string id, Vector3 v1, Vector3 v2, Vector3 v3, Material mat, Vector3 t = Vector3::One());
+  Triangle(Vector3 v1, Vector3 v2, Vector3 v3, Material mat, Vector3 t = Vector3::One());
   bool hit(const Ray& r, float t_min, float t_max, hit_record& rec);
   
   void bounding_box(aabb& box);
@@ -27,9 +27,6 @@ public:
   aabb getBox();
   void resizeBoundingBox();
   
-
-  std::string idx;
-  
 private:
   
   Vector3 vertex[3];
@@ -40,15 +37,5 @@ private:
   aabb box;
   
 };
-
-/*
-struct TriangleEval{
-    
-  inline bool operator()(Triangle a, Triangle b){
-    return (a.getMorton() < b.getMorton());
-  }
-
-};
-*/
 
 #endif /* _TRIANGLE_HH_INCLUDE */

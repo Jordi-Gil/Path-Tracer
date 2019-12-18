@@ -2,7 +2,7 @@
 
 HitableList::HitableList(){}
 
-HitableList::HitableList(Sphere *l, int n){
+HitableList::HitableList(Triangle *l, int n){
     list = l;
     list_size = n;
 }
@@ -30,6 +30,6 @@ int HitableList::length() {
   
 }
 
-Sphere *HitableList::getObjects() {
+Triangle *HitableList::getObjects() {
   return list;
 }

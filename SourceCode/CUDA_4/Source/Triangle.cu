@@ -21,7 +21,6 @@ __host__ __device__ bool Triangle::hit(const Ray& r, float t_min, float t_max, h
   
   if(determinant > -t_min and determinant < t_min) 
     return false;
-  
   float invDet = 1.0f / determinant;
   
   Vector3 T = r.origin() - vertex[0];

@@ -10,6 +10,12 @@ Vector3::Vector3(float x, float y, float z){
     v[2] = z;
 }
 
+Vector3::Vector3(float val) {
+    v[0] = val;
+    v[1] = val;
+    v[2] = val;	
+}
+
 float Vector3::x() const {
     return v[0];
 }

@@ -1,21 +1,21 @@
 #ifndef _HITABLELIST_HH_INCLUDE
 #define _HITABLELIST_HH_INCLUDE
 
-#include "Sphere.hh"
+#include "Triangle.hh"
 
 class HitableList {
   
 public:
   
     HitableList();
-    HitableList(Sphere *l, int n);
+    HitableList(Triangle *l, int n);
     bool checkCollision(const Ray& r, float t_min, float t_max, hit_record& rec);
     int length();
-    Sphere *getObjects();
+    Triangle *getObjects();
 
 private:    
     
-    Sphere *list;
+    Triangle *list;
     int list_size;
     
 };

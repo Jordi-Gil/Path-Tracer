@@ -11,6 +11,7 @@ public:
     
     __host__ __device__ Vector3();
     __host__ __device__ Vector3(float x, float y, float z);
+    __host__ __device__ Vector3(float val);
     
     __host__ __device__ float x() const;
     __host__ __device__ float y() const;
@@ -96,7 +97,7 @@ __host__ __device__ inline Vector3 cross(const Vector3 &v1, const Vector3 &v2){
     );
 }
 
-__host__ __device__ inline Vector3 normalize(const Vector3 &v1) {
+__host__ __device__  inline Vector3 normalize(const Vector3 &v1) {
   return v1/v1.length();
 }
 

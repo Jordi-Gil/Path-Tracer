@@ -11,6 +11,7 @@ public:
     
     Vector3();
     Vector3(float x, float y, float z);
+    Vector3(float val);
     
     float x() const;    
     float y() const;
@@ -38,7 +39,7 @@ public:
     float length() const;
     float squared_length() const;
     void make_unit_vector();
-
+    
     float v[3];
 };
 

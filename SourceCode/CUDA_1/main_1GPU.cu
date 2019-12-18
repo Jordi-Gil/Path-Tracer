@@ -10,6 +10,9 @@
 #include "Scene.cuh"
 #include "HitableList.cuh"
 
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image_write.h"
+
 #define checkCudaErrors(val) check_cuda( (val), #val, __FILE__, __LINE__ )
 #define Random (curand_uniform(&local_random))
 
@@ -147,7 +150,7 @@ void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, in
     }
   }
   if(!light) image = image+"_noktem";
-  image = image+".ppm";
+  image = image+".png";
 }
 
 void check_cuda(cudaError_t result, char const *const func, const char *const file, int const line){
@@ -219,14 +222,10 @@ __device__ Vector3 color(const Ray& ray, HitableList **d_world, int depth, bool 
   return Vector3::Zero();
 }
 
-__global__ void setUpCameraWorld(Camera **d_cam, int nx, int ny, HitableList **d_world, Sphere *d_objects, int size) {
+__global__ void setUpCameraWorld(Camera **d_cam, int nx, int ny, HitableList **d_world, Triangle *d_objects, int size, Camera cam) {
   if (threadIdx.x == 0 && blockIdx.x == 0) {
-    Vector3 lookfrom(13,2,3);
-    Vector3 lookat(0,0,0);
-    Vector3 up(0,1,0);
-    float dist_to_focus = 10.0;
-    float aperture = 0.1;
-    *d_cam = new Camera(lookfrom, lookat, up, 20, float(nx)/float(ny), aperture, dist_to_focus,0.0,0.1);
+    
+    *d_cam = new Camera(cam.getLookfrom(), cam.getLookat(), cam.getVUP(), cam.getFOV(), float(nx)/float(ny), cam.getAperture(), cam.getFocus(),0.0,0.1);
     
     *d_world = new HitableList(d_objects,size);
   }
@@ -327,22 +326,23 @@ int main(int argc, char **argv) {
   int blocks = (nx * ny)/(numGPUs * nthreads);
 
   /* Create world */
-  Scene scene(dist);
+  Scene scene(dist, nx, ny);
   if(random) scene.loadScene(RANDOM);
   else scene.loadScene(FFILE,filename);
   
+  Triangle *ob = scene.getObjects();
   size = scene.getSize();
-  float ob_size = size*sizeof(Sphere);
+  float ob_size = size*sizeof(Triangle);
   
   std::cout << "\nCreating " << image << " with (" << nx << "," << ny << ") pixels with " << nthreads << " threads, using " << numGPUs << " GPUs." << std::endl;
   std::cout << "With " << ns << " iterations for AntiAliasing and depth of " << depth << "." << std::endl;
-  std::cout << "The world have " << size << " spheres." << std::endl;
+  std::cout << "The world have " << size << " objects." << std::endl;
   if(light) std::cout << "Ambient light ON" << std::endl;
   else std::cout << "Ambient light OFF" << std::endl;
 
   /* Device variables */
   Vector3 *d_frameBuffer;
-  Sphere *d_objects;
+  Triangle *d_objects;
   Camera **d_cam;
   HitableList **d_world;
   curandState *d_rand_state;
@@ -363,7 +363,7 @@ int main(int argc, char **argv) {
   cudaMemcpy(d_objects, scene.getObjects(), ob_size, cudaMemcpyHostToDevice);
   checkCudaErrors(cudaGetLastError());
   
-  setUpCameraWorld<<<1,1>>>(d_cam, nx, ny, d_world, d_objects, size);
+  setUpCameraWorld<<<1,1>>>(d_cam, nx, ny, d_world, d_objects, size, scene.getCamera());
   checkCudaErrors( cudaGetLastError() );
   
   render_init<<<blocks, nthreads>>>(nx, ny, d_rand_state, seed);
@@ -385,27 +385,26 @@ int main(int argc, char **argv) {
   std::cout << "Total time: " << totalTime << " milisegs. " << std::endl;
 
   std::cout << "Generating file image..." << std::endl;
-  std::ofstream pic;
-  pic.open(image.c_str());
-
-  pic << "P3\n" << nx << " " << ny << "\n255\n";
-  
+  uint8_t *data = new uint8_t[nx*ny*3];
+  int count = 0;
   for(int j = ny-1; j >= 0; j--){
     for(int i = 0; i < nx; i++){
 
       size_t pixel_index = j*nx + i;
-
+      
       Vector3 col = h_frameBuffer[pixel_index];
-
+      
       int ir = int(255.99*col.r());
       int ig = int(255.99*col.g());
       int ib = int(255.99*col.b());
 
-      pic << ir << " " << ig << " " << ib << "\n";
+			data[count++] = ir;
+      data[count++] = ig;
+      data[count++] = ib;
     }
   }
   
-  pic.close();
+  stbi_write_png(image.c_str(), nx, ny, 3, data, nx*3);
 
   cudaFree(d_cam);
   cudaFree(d_world);

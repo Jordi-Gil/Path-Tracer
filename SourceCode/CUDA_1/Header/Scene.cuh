@@ -7,34 +7,43 @@
 #include <fstream>
 #include <stdexcept>
 
+#include "Camera.cuh"
 #include "Sphere.cuh"
-
-#define INF std::numeric_limits<float>::infinity()
-#define MIN std::numeric_limits<float>::min()
+#include "Obj.cuh"
+#include "Math.cuh"
 
 enum loadType {
-  FFILE, RANDOM
+  FFILE, RANDOM, TRIANGL
 };
 
 class Scene {
     
 public:
     
-    Scene() {}
-    Scene(int d) : dist(d) {}
-    
-    void loadScene(int loadType, const std::string &filename = "");
-    void sceneRandom();
-    void sceneFromFile(const std::string &filename);
-    
-    Sphere *getObjects();
-    unsigned int getSize();
+  Scene() {}
+  Scene(int d, int x, int y) : dist(d), nx(x), ny(y) {}
+  
+  void loadScene(int loadType, const std::string &filename = "");
+  void sceneRandom();
+  void sceneFromFile(const std::string &filename);
+  void sceneTriangle();
+  
+  Camera getCamera();
+  
+  unsigned int getSize();
+  
+  Triangle *getObjects();
 
 private:
   
-    Sphere *spheres;
-    unsigned int size;
-    int dist;
+  Camera cam;
+  int dist;
+  int nx, ny;
+  Triangle *objects;
+  Sphere *spheres;
+  unsigned int size;
 };
+
+
 
 #endif //SCENE_HH

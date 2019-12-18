@@ -2,7 +2,7 @@
 
 __device__ HitableList::HitableList(){}
 
-__device__ HitableList::HitableList(Sphere *l, int n){
+__device__ HitableList::HitableList(Triangle *l, int n){
     list = l;
     list_size = n;
 }
@@ -30,6 +30,6 @@ __device__ int HitableList::length() {
   
 }
 
-__device__ Sphere *HitableList::getObjects() {
+__device__ Triangle *HitableList::getObjects() {
   return list;
 }
