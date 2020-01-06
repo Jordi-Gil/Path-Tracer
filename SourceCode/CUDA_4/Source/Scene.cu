@@ -531,7 +531,6 @@ void Scene::sceneRandom() {
   compare(max, min, list[objs].getCenter()); objs++;
   
   std::cout << "Real size " << objs << std::endl;
-  std::cout << "Max " <<  max << " Min " << min << std::endl;
   
   float max_x = max[0]; float max_y = max[1]; float max_z = max[2];
   float min_x = min[0]; float min_y = min[1]; float min_z = min[2];

@@ -387,18 +387,22 @@ Node *random_scene(int dist, int nx, int ny, bool random, const std::string file
   return root;
 }
 
-void p(Vector3 v) {
-  mat4 m = math::rotate(mat4::identity(),45,Vector3(1,0,0));
-  Vector3 v1;
-  for(int j = 0; j < 3; j++){
-    v1 = Vector3( 
-            m(0,0)*v[0] + m(0,1)*v[1] + m(0,2)*v[2] + m(0,3)*1,
-            m(1,0)*v[0] + m(1,1)*v[1] + m(1,2)*v[2] + m(1,3)*1,
-            m(2,0)*v[0] + m(2,1)*v[1] + m(2,2)*v[2] + m(2,3)*1
-                              );
-  }
-  std::cout << v << "  " << v1 << std::endl;
+
+int applyBilateralFilter(){
   
+  
+  
+}
+
+void bilateralFilter(const uint8_t *image, uint8_t filteredImage, int diameter, float dk, float rk){
+  
+  int half = diameter/2;
+  
+  for(int i = 0; i < ny; i++){
+    for(int j = 0; i < nx; j++){
+      filteredImage[i*ny + j*3] = applyBilateralFilter(i, j, Vector3(image[i*ny + j + 0], image[i*ny + j + 1], image[i*ny + j + 2]) , diameter, dk, rk);
+    }
+  }
 }
 
 int main(int argc, char **argv) {
@@ -429,11 +433,9 @@ int main(int argc, char **argv) {
   
   uint8_t *data = new uint8_t[nx*ny*3];
   
-  std::cout << world->box.min() << std::endl;
-  
-  int count = 0;
   std::cout << "Creating image..." << std::endl;
   
+  int count = 0;
   
   for(int j = ny - 1; j >= 0; j--){
     for(int i = 0; i < nx; i++){
