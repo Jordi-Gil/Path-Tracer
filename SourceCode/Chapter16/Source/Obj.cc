@@ -19,13 +19,13 @@ Material loadMat(const std::string &line,int type, int texType) {
   
   
   while(ssin >> par and !loaded) {
+    
     if(albedoCount < 3 and texType == CONSTANT){
       albedo[albedoCount] = stof(par);
       albedoCount++;
     } else {
       if(texType == IMAGE) {
         imageFilename = "Textures/"+par;
-        std::cout << imageFilename << std::endl;
         loaded = true;
       }
       if(type == METAL){ fuzz = stof(par); loaded = true; }

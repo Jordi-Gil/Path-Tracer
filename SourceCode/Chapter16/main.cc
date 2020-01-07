@@ -312,31 +312,19 @@ Node* generateHierarchy(Triangle *sortedMortonCodes, int numberObj) {
         //find partition point
         int split = findSplit(sortedMortonCodes, first, last);
         
-        //if(idx == 0) 
-        //std::cout << "idx " << idx << " range [" << range.x << "," << range.y << "] split in " << split << " ";
-        
         Node *childA;
         Node *childB;
         
-        if(split == first){ childA = &leafNodes[split]; childA->id = "leaf_"+std::to_string(first);}
-        else{
-            childA = &internalNodes[split]; childA->id = "intr_"+std::to_string(split);
-        }
+        if(split == first) childA = &leafNodes[split];
+        else childA = &internalNodes[split];
         
-        if (split + 1 == last) { childB = &leafNodes[split + 1]; childB->id = "leaf_"+std::to_string(last);}
-        else{
-            childB = &internalNodes[split + 1]; childB->id = "intr_"+std::to_string(split+1);
-        }
+        if (split + 1 == last) childB = &leafNodes[split + 1];
+        else childB = &internalNodes[split + 1];
         
-        internalNodes[idx].id = "intr_"+std::to_string(idx);
         internalNodes[idx].left = childA;
         internalNodes[idx].right = childB;
         childA->parent = &internalNodes[idx];
         childB->parent = &internalNodes[idx];
-        
-        //if(idx == 0) 
-        //std::cout << internalNodes[idx].id << "-->" << " LF: " << internalNodes[idx].left->id << " RG " << internalNodes[idx].right->id << std::endl;
-        
     }
     
     return &internalNodes[0];

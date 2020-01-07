@@ -11,14 +11,18 @@ public:
   Sphere() {}
   Sphere(Vector3 cen, float r, Material mat);
   bool hit(const Ray& r, float t_min, float t_max, hit_record& rec);
+  
   void bounding_box(aabb& box);
-  long long getMorton();
   void setMorton(long long code);
-  aabb getBox();
+  
+  float getRadius();
   Vector3 getCenter();
-	float getRadius();
-	Material getMaterial();
+  Material getMaterial();
+  long long getMorton();
+  aabb getBox();
 
+private:
+  
   Vector3 center;
   float radius;
   Material mat_ptr;
@@ -26,13 +30,4 @@ public:
   aabb box;
 };
 
-/*
-struct ObjEval{
-    
-  inline bool operator()(Sphere a, Sphere b){
-    return (a.getMorton() < b.getMorton());
-  }
-
-};
-*/
-#endif /* _MOVING_SPHERE_HH_INCLUDE */
+#endif /* _SPHERE_HH_INCLUDE */

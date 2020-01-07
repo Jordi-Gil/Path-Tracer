@@ -69,7 +69,7 @@ bool Material::Metal(const Ray& r_in, const hit_record& rec, Vector3& attenuatio
   Vector3 reflected = reflect( unit_vector( r_in.direction()), rec.normal);
     
   scattered = Ray(rec.point, reflected + fuzz*random_in_unit_sphere(),r_in.time());
-  attenuation = albedo.value(rec.u,rec.v);
+  attenuation = albedo.value(rec.u, rec.v);
     
   return (dot(scattered.direction(), rec.normal) > 0);
     

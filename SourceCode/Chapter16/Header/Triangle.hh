@@ -16,7 +16,6 @@ public:
   
   void bounding_box(aabb& box);
   
-  //Vector3 getVertex(int i);
   Vector3 operator[](int i) const;
   Vector3& operator[](int i);
   Vector3 getCentroid();

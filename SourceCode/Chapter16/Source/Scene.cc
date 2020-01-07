@@ -73,7 +73,6 @@ Material loadMaterial(const std::string &line,int type, int texType) {
     } else {
       if(texType == IMAGE) {
         imageFilename = "Textures/"+par;
-        std::cout << imageFilename << std::endl;
         loaded = true;
       }
       if(type == METAL){ fuzz = stof(par); loaded = true; }
@@ -123,10 +122,10 @@ Triangle loadTriangle(const std::string &line) {
       
       int type = (par2 == "CONSTANT") ? CONSTANT : IMAGE;
       
-      if(par == "L") mat = loadMaterial(line.substr(line.find(par)+par.size()),LAMBERTIAN,type);
-      else if(par == "M") mat = loadMaterial(line.substr(line.find(par)+par.size()),METAL,type);
-      else if(par == "D") mat = loadMaterial(line.substr(line.find(par)+par.size()),DIELECTRIC,type);
-      else if(par == "DL") mat = loadMaterial(line.substr(line.find(par)+par.size()),DIFFUSE_LIGHT,type);
+      if(par == "L") mat = loadMaterial(line.substr(line.find(par2)+par2.size()),LAMBERTIAN,type);
+      else if(par == "M") mat = loadMaterial(line.substr(line.find(par2)+par2.size()),METAL,type);
+      else if(par == "D") mat = loadMaterial(line.substr(line.find(par2)+par2.size()),DIELECTRIC,type);
+      else if(par == "DL") mat = loadMaterial(line.substr(line.find(par2)+par2.size()),DIFFUSE_LIGHT,type);
     }
   }
   return Triangle(position[0],position[1],position[2], mat);
@@ -352,10 +351,10 @@ Sphere loadSphere(const std::string &line) {
       ssin >> par2;
       int type = (par2 == "CONSTANT") ? CONSTANT : IMAGE;
       
-      if(par == "L") mat = loadMaterial(line.substr(line.find(par)+par.size()),LAMBERTIAN,type);
-      else if(par == "M") mat = loadMaterial(line.substr(line.find(par)+par.size()),METAL,type);
-      else if(par == "D") mat = loadMaterial(line.substr(line.find(par)+par.size()),DIELECTRIC,type);
-      else if(par == "DL") mat = loadMaterial(line.substr(line.find(par)+par.size()),DIFFUSE_LIGHT,type);
+      if(par == "L") mat = loadMaterial(line.substr(line.find(par2)+par2.size()),LAMBERTIAN,type);
+      else if(par == "M") mat = loadMaterial(line.substr(line.find(par2)+par2.size()),METAL,type);
+      else if(par == "D") mat = loadMaterial(line.substr(line.find(par2)+par2.size()),DIELECTRIC,type);
+      else if(par == "DL") mat = loadMaterial(line.substr(line.find(par2)+par2.size()),DIFFUSE_LIGHT,type);
     }
   }
   return Sphere(center,radius,mat);

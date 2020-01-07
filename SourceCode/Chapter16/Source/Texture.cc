@@ -1,6 +1,5 @@
 #include "Texture.hh"
 
-
 Texture::Texture(int t, const Vector3 &a, unsigned char *data, int sx, int sy){
   type = t;
   albedo = a;

@@ -25,12 +25,9 @@ public:
   Node *parent; // Parent
 
   //Sphere *obj; //Null if is an internal node, Object if is a Leaf
-  
   Triangle *obj; //Null if is an internal node, Object if is a Leaf
-  
   aabb box;
   
-  std::string id = "-1";
 };
 
 

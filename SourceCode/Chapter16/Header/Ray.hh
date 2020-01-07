@@ -5,14 +5,15 @@
 
 class Ray
 {
-    
 public:
-    Ray();
-    Ray(const Vector3& a, const Vector3& b, float ti = 0.0);
-    Vector3 origin() const;
-    Vector3 direction() const;
-    float time() const;
-    Vector3 point_at_parameter(float t) const;
+  Ray();
+  Ray(const Vector3& a, const Vector3& b, float ti = 0.0);
+  Vector3 origin() const;
+  Vector3 direction() const;
+  float time() const;
+  Vector3 point_at_parameter(float t) const;
+    
+private:
     
     Vector3 A;
     Vector3 B;

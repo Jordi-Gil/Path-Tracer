@@ -6,6 +6,7 @@
 class Camera {
 
 public:
+
     Camera() {}
     Camera(Vector3 lookfrom, Vector3 lookat, Vector3 vup, float vfov, float aspect, float aperture, float focus_dist, float time0, float time1);
     Ray get_ray(float s, float t);
