@@ -1,4 +1,4 @@
-#include "Vector3.hh"
+#include "Vector3.cuh"
 
 int getColor255(unsigned char *image, int nx, int i, int j, int offset){
   return image[i*nx*3 + j*3 + offset];

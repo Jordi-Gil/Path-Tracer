@@ -9,6 +9,10 @@
 #include "Camera.cuh"
 #include "Scene.cuh"
 #include "HitableList.cuh"
+#include "filters.hh"
+
+#define STB_IMAGE_STATIC
+#include "stb_image.h"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
@@ -71,11 +75,12 @@ void help(){
   
 }
 
-void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, int &dist, int &nthreads, std::string &image, std::string &filename, int &numGPUs, bool &light, bool &random,const int count){
+void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, int &dist, int &nthreads, std::string &image, std::string &filename, int &numGPUs, bool &light, bool &random, bool &filter, int &diameter, float &gs, float &gr, const int count){
   
   if(argc <= 1) error("Error usage. Use [-h] [--help] to see the usage.");
   
   nx = 1280; ny = 720; ns = 50; depth = 50; dist = 11; image = "random"; light = true; random = true;
+	filter = false; gs = 0; gr = 0; diameter = 11;
   
   nthreads = 32; numGPUs = 1;
   
@@ -141,6 +146,13 @@ void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, in
       if((i+1) >= argc) error("-light value expected");
       if(std::string(argv[i+1]) == "ON") light = true;
       else if(std::string(argv[i+1]) == "OFF") light = false;
+    }
+    else if (std::string(argv[i]) == "-filter") {
+      filter = true;
+      diameter = atoi(argv[i+1]);
+      i += 2;
+      gs = atof(argv[i]);
+      gr = atof(argv[i+1]);
     }
     else if(std::string(argv[i]) == "-h" || std::string(argv[i]) == "--help" ){
       help();
@@ -303,11 +315,12 @@ int main(int argc, char **argv) {
   
   float totalTime;
 
-  int nx, ny, ns, depth, dist, nthreads, numGPUs;
-  bool light, random;
+  int nx, ny, ns, depth, dist, nthreads, numGPUs, diameter;
+  bool light, random, filter;
+  float gs,gr;
   std::string filename, image;
 
-  parse_argv(argc, argv, nx, ny, ns, depth, dist, nthreads, image, filename, numGPUs, light, random, 1);
+  parse_argv(argc, argv, nx, ny, ns, depth, dist, nthreads, image, filename, numGPUs, light, random, filter, diameter, gs, gr, 1);
 
   /* Seed for CUDA Random */
   unsigned long long int seed = 1000;
@@ -405,6 +418,16 @@ int main(int argc, char **argv) {
   }
   
   stbi_write_png(image.c_str(), nx, ny, 3, data, nx*3);
+	
+	if(filter){
+    std::cout << "Filtering image using bilateral filter with Gs = " << gs << " and Gr = " << gr << " and window of diameter " << diameter << std::endl;
+    std::string filenameFiltered = image.substr(0, image.length()-4) + "_Filtered.png";
+    int sx, sy, sc;
+    unsigned char *imageData = stbi_load(image.c_str(), &sx, &sy, &sc, 0);
+    unsigned char *imageFiltered = new unsigned char[sx*sy*3];;
+    bilateralFilter(diameter, sx, sy, imageData, imageFiltered, gs, gr);
+    stbi_write_png(filenameFiltered.c_str(), sx, sy, 3, imageFiltered, sx*3);
+  }
 
   cudaFree(d_cam);
   cudaFree(d_world);

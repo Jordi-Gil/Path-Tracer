@@ -3,7 +3,7 @@
 #define STB_IMAGE_STATIC
 #include "stb_image.h"
 
-#define Random Random
+#define Random (rand()/(RAND_MAX + 1.0))
 
 Camera loadCamera(const std::string &line, int nx, int ny) {
   
