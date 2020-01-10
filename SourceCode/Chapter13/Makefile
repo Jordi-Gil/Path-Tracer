@@ -1,34 +1,34 @@
-OPTIONS = -O2 -Wall -Wextra -Werror -Wno-uninitialized -Wno-sign-compare -std=c++17
-OPTIONS2 = -O2 -Wall -Wextra -Wno-sign-compare -std=c++17
+GCC = g++
+GCC_FLAGS = -O2 -Wno-uninitialized -Wno-sign-compare -std=c++17 -I Header/
+#-Wall -Wextra -Werror
+OBJDIR = Object
+MAINDIR = Main
 
-OBJECTS = main.o Vector3.o Ray.o Sphere.o HitableList.o Camera.o Material.o MovingSphere.o
+OBJ = $(addprefix $(OBJDIR)/, $(patsubst Source/%.cc, %.o, $(wildcard Source/*.cc))) $(OBJDIR)/$(MAINDIR)/main.o
 
-main.exe: main.cc $(OBJECTS) Hitable.hh 
-	g++ -o main $(OBJECTS) $(OPTIONS2)
+all: $(OBJDIR) $(OBJDIR)/$(MAINDIR) path_tracing_sec
 
-main.o: main.cc
-	g++ -c main.cc $(OPTIONS)
+$(OBJDIR):
+	mkdir $(OBJDIR)
 
-Vector3.o: Vector3.cc Vector3.hh
-	g++ -c Vector3.cc $(OPTIONS)
+$(MAINDIR):
+	mkdir $(OBJDIR)/$(MAINDIR)
 
-Ray.o: Ray.cc Ray.hh
-	g++ -c Ray.cc $(OPTIONS)
+path_tracing_sec: $(OBJ)
+	$(GCC) $(GCC_FLAGS) -o $@ $(OBJ)
 
-Sphere.o: Sphere.cc Sphere.hh
-	g++ -c Sphere.cc $(OPTIONS)
+$(OBJDIR)/$(MAINDIR)/%.o: %.cc
+	$(GCC) $(GCC_FLAGS) -o $@ -c $<
 
-HitableList.o: HitableList.cc HitableList.hh
-	g++ -c HitableList.cc $(OPTIONS)
+$(OBJDIR)/%.o: Source/%.cc Header/%.hh
+	$(GCC) $(GCC_FLAGS) -o $@ -c $<
 
-Camera.o: Camera.cc Camera.hh
-	g++ -c Camera.cc $(OPTIONS)
-
-Material.o: Material.cc Material.hh
-	g++ -c Material.cc $(OPTIONS2)
-
-MovingSphere.o: MovingSphere.cc MovingSphere.hh
-	g++ -c MovingSphere.cc $(OPTIONS)
-
+projecte.tar:
+	tar -cvf $@  Source/*.cc Header/*.hh Makefile
+	
 clean:
-	rm -rf *.o main
+	rm -rf $(OBJDIR)/*.o $(OBJDIR)/$(MAINDIR)/*.o path_tracing_sec *.ppm
+	
+
+
+

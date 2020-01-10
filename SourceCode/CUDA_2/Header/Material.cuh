@@ -5,6 +5,7 @@
 #include <curand_kernel.h>
 
 #include "Ray.cuh"
+#include "Texture.cuh"
 
 struct hit_record;
 
@@ -17,28 +18,28 @@ class Material {
 public:
   
   __host__ __device__ Material() {}
-  __host__ __device__ Material(int t, const Vector3 &a = Vector3::One(), float f = -1.0, float ri = -1.0);  
+  __host__ __device__ Material(int t, Texture a, float f = -1.0, float ri = -1.0);  
   
   __device__ bool scatter(const Ray& r_in, const hit_record& rec, Vector3& attenuation, Ray& scattered, curandState *random);
-  __device__ Vector3 emitted();
+  __device__ Vector3 emitted(float u, float v);
   
   __device__ bool Lambertian(const hit_record &rec, Vector3 &attenuation, Ray &scattered, curandState *random);
   __device__ bool Metal(const Ray& r_in, const hit_record& rec, Vector3& attenuation, Ray& scattered, curandState *random);
   __device__ bool Dielectric(const Ray& r_in, const hit_record& rec, Vector3& attenuation, Ray& scattered, curandState *random);
-  
-  __host__ __device__ Vector3 getAlbedo();
+
   __host__ __device__ const char *getName();
 
-  Vector3 albedo = Vector3::One();
+  Texture albedo;
   float fuzz;
   float ref_idx;
   int type;
-
+  
 };
 
-struct hit_record{
-
+struct hit_record {
   float t;
+  float u;
+  float v;
   Vector3 point;
   Vector3 normal;
   Material mat_ptr;

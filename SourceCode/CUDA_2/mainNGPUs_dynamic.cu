@@ -11,7 +11,6 @@
 #include "HitableList.cuh"
 #include "Camera.cuh"
 #include "Material.cuh"
-#include "BVH_node.cuh"
 
 #define checkCudaErrors(val) check_cuda( (val), #val, __FILE__, __LINE__ )
 #define Random (curand_uniform(&local_random))
@@ -138,7 +137,7 @@ __global__ void create_world(Hitable **d_list, Hitable **d_world, Camera **d_cam
 	if (threadIdx.x == 0 && blockIdx.x == 0) {
 		curandState local_random = *random;
 
-        d_list[0] = new Sphere(Vector3(0,-1000,-1), 1000, new Lambertian(Vector3(0.5, 0.5, 0.5)));
+        d_list[0] = new MovingSphere(Vector3(0,-1000,-1),Vector3(0,-1000,-1),0.0,1.0, 1000, new Lambertian(Vector3(0.5, 0.5, 0.5)));
     
 		int i = 1;
 		for (int a = -dist; a < dist; a++) {
@@ -148,27 +147,26 @@ __global__ void create_world(Hitable **d_list, Hitable **d_world, Camera **d_cam
 	
 				if ((center-Vector3(0,0,0)).length() > 0.995) {
 					if (material < 0.8) d_list[i++] = new MovingSphere(center, center+Vector3(0,0.5*Random,0),0.0,1.0,.2,new Lambertian(Vector3(Random*Random, Random*Random, Random*Random)));
-					else if (material < 0.95) d_list[i++] = new Sphere(center, 0.2, new Metal(Vector3(0.5*(1.0+Random), 0.5*(1.0+Random), 0.5*(1.0+Random)),0.5*Random));
-					else d_list[i++] = new Sphere(center, 0.2, new Dielectric(1.5));
+					else if (material < 0.95) d_list[i++] = new MovingSphere(center,center,0.0,1.0, 0.2, new Metal(Vector3(0.5*(1.0+Random), 0.5*(1.0+Random), 0.5*(1.0+Random)),0.5*Random));
+					else d_list[i++] = new MovingSphere(center,center,0.0,1.0, 0.2, new Dielectric(1.5));
 				}
 			}
 		}
 	
-		d_list[i++] = new Sphere(Vector3( 0, 1, 0), 1.0, new Dielectric(1.5));
-		d_list[i++] = new Sphere(Vector3(-4, 1, 0), 1.0, new Lambertian(Vector3(0.4, 0.2, 0.1)));
-		d_list[i++] = new Sphere(Vector3( 4, 1, 0), 1.0, new Metal(Vector3(0.7, 0.6, 0.5),0.0));
+		d_list[i++] = new MovingSphere(Vector3( 0, 1, 0), Vector3( 0, 1, 0), 0.0, 1.0, 1.0, new Dielectric(1.5));
+		d_list[i++] = new MovingSphere(Vector3(-4, 1, 0), Vector3(-4, 1, 0), 0.0, 1.0, 1.0, new Lambertian(Vector3(0.4, 0.2, 0.1)));
+		d_list[i++] = new MovingSphere(Vector3( 4, 1, 0), Vector3( 4, 1, 0), 0.0, 1.0, 1.0, new Metal(Vector3(0.7, 0.6, 0.5),0.0));
 		
-		d_list[i++] = new Sphere(Vector3( 4, 1, 5), 1.0, new Metal(Vector3(0.9, 0.2, 0.2),0.0));
+		d_list[i++] = new MovingSphere(Vector3( 4, 1, 5), Vector3( 4, 1, 5), 0.0, 1.0, 1.0, new Metal(Vector3(0.9, 0.2, 0.2),0.0));
 	
 		*random = local_random;
 		
-		//*d_world = new HitableList(d_list, i);
-		*d_world = new BVH_node(d_list, i, 0, 1, &local_random, 0, "Init");
+		*d_world = new HitableList(d_list,i);
 		
 		Vector3 lookfrom(13,2,3);
 		Vector3 lookat(0,0,0);
 		Vector3 up(0,1,0);
-		float dist_to_focus = 10; (lookfrom-lookat).length();
+		float dist_to_focus = 10.0;
 		float aperture = 0.1;
 		*d_cam = new Camera(lookfrom, lookat, up, 20, float(nx)/float(ny), aperture, dist_to_focus,0.0,0.1);
 	}
@@ -273,31 +271,29 @@ __global__ void render(Vector3 *fb, int max_x, int max_y, int ns, Camera **cam, 
 }
 
 int main(int argc, char **argv) {
-	std::cout << "GPU Info " << std::endl;
   
-	cudaSetDevice(0);
-	int device;
-	cudaGetDevice(&device);
+    std::cout << "GPU Info " << std::endl;
+  
+    cudaSetDevice(0);
+    int device;
+    cudaGetDevice(&device);
     
-	cudaDeviceProp properties;
-	checkCudaErrors( cudaDeviceSetLimit( cudaLimitStackSize, 4000 ) );
-	checkCudaErrors( cudaGetDeviceProperties( &properties, device ) );
-	
-	size_t limit;
-	checkCudaErrors( cudaDeviceGetLimit( &limit, cudaLimitStackSize ) );
+    cudaDeviceProp properties;
+    checkCudaErrors( cudaGetDeviceProperties( &properties, device ) );
     
-	if( properties.major > 3 || ( properties.major == 3 && properties.minor >= 5 ) )
-	{
+    if( properties.major > 3 || ( properties.major == 3 && properties.minor >= 5 ) )
+    {
       
-		std::cout << "Running on GPU " << device << " (" << properties.name << ")" << std::endl;
-		std::cout << "Compute mode: " << properties.computeMode << std::endl;
-		std::cout << "Concurrent Kernels: " << properties.concurrentKernels << std::endl;
-		std::cout << "Warp size: " << properties.warpSize << std::endl;
-		std::cout << "Major: " << properties.major << " Minor: " << properties.minor << std::endl;
-		std::cout << "Cuda limit stack size: " << limit << "\n\n" << std::endl;
-	}
-	else std::cout << "GPU " << device << " (" << properties.name << ") does not support CUDA Dynamic Parallelism" << std::endl;
-	
+      std::cout << "Running on GPU " << device << " (" << properties.name << ")" << std::endl;
+      std::cout << "Compute mode: " << properties.computeMode << std::endl;
+      std::cout << "Concurrent Kernels: " << properties.concurrentKernels << std::endl;
+      std::cout << "Warp size: " << properties.warpSize << std::endl;
+      std::cout << "Major: " << properties.major << " Minor: " << properties.minor << "\n\n" << std::endl;
+      
+      
+    }
+    else std::cout << "GPU " << device << " (" << properties.name << ") does not support CUDA Dynamic Parallelism" << std::endl;
+
     int count;
   
     checkCudaErrors(cudaGetDeviceCount(&count));

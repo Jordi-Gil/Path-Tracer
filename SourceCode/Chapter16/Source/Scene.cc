@@ -65,7 +65,6 @@ Material loadMaterial(const std::string &line,int type, int texType) {
   int nx, ny, nc;
   unsigned char *image;
   
-  
   while(ssin >> par and !loaded) {
     if(albedoCount < 3 and texType == CONSTANT){
       albedo[albedoCount] = stof(par);

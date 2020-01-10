@@ -1,5 +1,5 @@
 GCC = g++
-GCC_FLAGS = -O2 -Wall -Wextra -Werror -Wno-uninitialized -Wno-sign-compare -std=c++17 -I Header/
+GCC_FLAGS = -O2 -Wno-uninitialized -Wno-sign-compare -std=c++17 -I Header/
 
 OBJDIR = Object
 MAINDIR = Main

@@ -1,12 +1,13 @@
 #include "Material.cuh"
 
 __host__ __device__ float schlick(float cosine, float ref_idx){
-    float r0 = (1-ref_idx) / (1+ref_idx);
-    r0 = r0*r0;
-    return r0 + (1-r0) * pow((1-cosine), 5);
+  float r0 = (1-ref_idx) / (1+ref_idx);
+  r0 = r0*r0;
+  return r0 + (1-r0) * pow((1-cosine), 5);
 }
 
-__host__ __device__ bool refract(const Vector3 &v, const Vector3 &n, float ni_over_nt, Vector3 &refracted){
+__host__ __device__ bool refract(const Vector3 &v, const Vector3 &n, float ni_over_nt, Vector3 &refracted) {
+  
   Vector3 uv = unit_vector(v);
   float dt = dot(uv, n);
   float discriminant = 1.0 - ni_over_nt*ni_over_nt*(1-dt*dt);
@@ -35,7 +36,7 @@ __device__ Vector3 random_in_unit_sphere(curandState *random){
   return p;
 }
 
-__host__ __device__ Material::Material(int t, const Vector3 &a, float f, float ri) {
+__host__ __device__ Material::Material(int t, const Texture a, float f, float ri) {
   
   type = t;
   albedo = a;
@@ -44,19 +45,18 @@ __host__ __device__ Material::Material(int t, const Vector3 &a, float f, float r
   
 }
 
-__device__ bool Material::scatter(const Ray& r_in, const hit_record &rec, 
-                                           Vector3 &attenuation, 
-                                           Ray& scattered, curandState *random) {
+__device__ bool Material::scatter(const Ray& r_in, const hit_record &rec, Vector3 &attenuation, Ray& scattered, curandState *random) {
     
   if(type == LAMBERTIAN) return Lambertian(rec, attenuation, scattered, random);
   else if (type == METAL) return Metal(r_in, rec, attenuation, scattered, random);
   else if (type == DIELECTRIC) return Dielectric(r_in, rec, attenuation, scattered, random);
+  else if(type == DIFFUSE_LIGHT) return false;
   else return false;
   
 }
 
-__device__ Vector3 Material::emitted(){
-  if(type == DIFFUSE_LIGHT) return albedo;
+__device__ Vector3 Material::emitted(float u, float v){
+  if(type == DIFFUSE_LIGHT) return albedo.value(u, v);
   else return Vector3::Zero();
 }
 
@@ -65,7 +65,7 @@ __device__ bool Material::Lambertian(const hit_record &rec, Vector3 &attenuation
   Vector3 target = rec.point + rec.normal + random_in_unit_sphere(random);
 
   scattered = Ray(rec.point, target-rec.point);
-  attenuation = albedo;
+  attenuation = albedo.value(rec.u, rec.v);;
 
   return true;
 }
@@ -75,7 +75,7 @@ __device__  bool Material::Metal(const Ray& r_in, const hit_record& rec, Vector3
   Vector3 reflected = reflect( unit_vector( r_in.direction()), rec.normal);
 
   scattered = Ray(rec.point, reflected + fuzz*random_in_unit_sphere(random));
-  attenuation = albedo;
+  attenuation = albedo.value(rec.u, rec.v);;
 
   return (dot(scattered.direction(), rec.normal) > 0);
     
@@ -87,7 +87,7 @@ __device__ bool Material::Dielectric(const Ray& r_in, const hit_record& rec, Vec
   Vector3 reflected = reflect(r_in.direction(), rec.normal);
   
   float ni_over_nt;
-  attenuation = albedo;
+  attenuation = albedo.value(rec.u, rec.v);;
   Vector3 refracted;
   float reflect_prob;
   float cosine;
@@ -124,10 +124,7 @@ __host__ __device__ const char *Material::getName(){
   if(type == LAMBERTIAN) return "Lambertian";
   else if (type == METAL) return "Metal";
   else if (type == DIELECTRIC) return "Dielectric";
+  else if (type == DIFFUSE_LIGHT) return "Diffuse Light";
   else return "none";
   
-}
-
-__host__ __device__ Vector3 Material::getAlbedo() {
-  return albedo;
 }

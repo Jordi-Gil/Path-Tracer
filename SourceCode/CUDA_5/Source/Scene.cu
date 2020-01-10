@@ -3,7 +3,7 @@
 #define STB_IMAGE_STATIC
 #include "stb_image.h"
 
-#define Random (rand()/(RAND_MAX + 1.0))
+#define Random Random
 
 Camera loadCamera(const std::string &line, int nx, int ny) {
   
@@ -275,7 +275,7 @@ Obj loadObj(const std::string &line) {
           ssin >> par; ssin >> par; ssin >> par; ssin >> par;
         }
         else if(par == "IMAGE") {
-          mat = loadMaterial(line.substr(line.find(par)+par.size()+1),METAL,CONSTANT);
+          mat = loadMaterial(line.substr(line.find(par)+par.size()+1),METAL,IMAGE);
           ssin >> par; ssin >> par;
         }
       }
@@ -537,23 +537,23 @@ void Scene::sceneRandom() {
   
   for(int a = -dist; a < dist; a++){
     for(int b = -dist; b < dist; b++){
-      float choose_mat = (rand()/(RAND_MAX + 1.0));
-      Vector3 center(a+0.9*(rand()/(RAND_MAX + 1.0)), 0.2, b+0.9*(rand()/(RAND_MAX + 1.0)));
+      float choose_mat = Random;
+      Vector3 center(a+0.9*Random, 0.2, b+0.9*Random);
       if((center-Vector3(0,0,0)).length() > 0.995){
         if(choose_mat < 0.8){ //diffuse
           
           list[objs] = Sphere(center, 0.2, Material(LAMBERTIAN, Texture(CONSTANT, Vector3(
-                                                            (rand()/(RAND_MAX + 1.0))*(rand()/(RAND_MAX + 1.0)), 
-                                                            (rand()/(RAND_MAX + 1.0))*(rand()/(RAND_MAX + 1.0)), 
-                                                            (rand()/(RAND_MAX + 1.0))))));
+                                                            Random*Random, 
+                                                            Random*Random, 
+                                                            Random))));
         }
         else if(choose_mat < 0.90){ //metal
             
           list[objs] = Sphere(center, 0.2, Material(METAL, Texture(CONSTANT, Vector3(
-                                                                0.5*(1+(rand()/(RAND_MAX + 1.0))),
-                                                                0.5*(1+(rand()/(RAND_MAX + 1.0))),
-                                                                0.5*(1+(rand()/(RAND_MAX + 1.0))))),
-                                                            0.5*(rand()/(RAND_MAX + 1.0))
+                                                                0.5*(1+Random),
+                                                                0.5*(1+Random),
+                                                                0.5*(1+Random))),
+                                                            0.5*Random
                                                           ));
         }
         else if(choose_mat < 0.95){
