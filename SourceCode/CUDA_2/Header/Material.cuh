@@ -21,13 +21,14 @@ public:
   __host__ __device__ Material(int t, Texture a, float f = -1.0, float ri = -1.0);  
   
   __device__ bool scatter(const Ray& r_in, const hit_record& rec, Vector3& attenuation, Ray& scattered, curandState *random);
-  __device__ Vector3 emitted(float u, float v);
+  __device__ Vector3 emitted(float u, float v, Vector3 p);
   
   __device__ bool Lambertian(const hit_record &rec, Vector3 &attenuation, Ray &scattered, curandState *random);
   __device__ bool Metal(const Ray& r_in, const hit_record& rec, Vector3& attenuation, Ray& scattered, curandState *random);
   __device__ bool Dielectric(const Ray& r_in, const hit_record& rec, Vector3& attenuation, Ray& scattered, curandState *random);
 
   __host__ __device__ const char *getName();
+  __host__ __device__ const Texture getTexture();
 
   Texture albedo;
   float fuzz;

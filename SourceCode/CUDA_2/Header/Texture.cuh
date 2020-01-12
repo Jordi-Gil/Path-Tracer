@@ -14,8 +14,10 @@ public:
   __host__ __device__ Texture() {}
   __host__ __device__ Texture(int t, const Vector3 &a = Vector3::One(), unsigned char *data = 0, int sx = -1, int sy = -1);
   
-  __host__ __device__ Vector3 value(float u, float v);
-  __host__ __device__ Vector3 imValue(float u, float v);
+  __host__ __device__ Vector3 value(float u, float v, Vector3 p);
+  __host__ __device__ Vector3 imValue(float u, float v, Vector3 p);
+  
+  __host__ __device__ int getType(){return type;};
 
 private:
   

@@ -35,7 +35,7 @@ __host__ __device__ bool Triangle::hit(const Ray& r, float t_min, float t_max, h
   if(temp > t_min && temp < t_max) {
     rec.t = temp;
     rec.u = u;
-    rec.v = v;
+    rec.v = u;
     rec.point = r.point_at_parameter(rec.t);
     rec.normal = normalize(cross(e1, e2));
     rec.mat_ptr = this->mat_ptr;
