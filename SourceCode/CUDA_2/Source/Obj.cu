@@ -143,8 +143,8 @@ __host__  void Obj::loadFromObj(const std::string &filename) {
     else if(par == "vt") {
       float u, v;
       ssin >> u >> v;
-      //std::cout << u << " " << v << std::endl;
       coordText.push_back(Vector3(u,v,-1));
+      std::cout << coordText[coordText.size()-1] << std::endl;
     }
     else if(par == "f") {
       
@@ -166,7 +166,7 @@ __host__  void Obj::loadFromObj(const std::string &filename) {
       
       for(int i = 1; i < face.size()-1; i++){
         
-        aux.push_back(Triangle(vertexs[face[0][0]-1],vertexs[face[i][0]-1],vertexs[face[i+1][0]-1],mat));
+        aux.push_back(Triangle(vertexs[face[0][0]-1],vertexs[face[i][0]-1],vertexs[face[i+1][0]-1],mat,coordText[face[0][1]-1],coordText[face[i][1]-1],coordText[face[i+1][1]-1]));
       }
     }
   }

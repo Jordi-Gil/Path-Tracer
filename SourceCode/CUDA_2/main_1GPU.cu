@@ -213,7 +213,7 @@ __device__ Vector3 color(const Ray& ray, HitableList **d_world, int depth, bool 
     if( (*d_world)->checkCollision(cur_ray, 0.001, FLT_MAX, rec)) {
       Ray scattered;
       Vector3 attenuation;
-      Vector3 emitted = rec.mat_ptr.emitted(rec.u, rec.v, rec.point);
+      Vector3 emitted = rec.mat_ptr.emitted(rec.u, rec.v, rec.vertex, rec.uv);
       if(rec.mat_ptr.scatter(cur_ray, rec, attenuation, scattered, random)){
         cur_attenuation *= attenuation;
         cur_attenuation += emitted;
