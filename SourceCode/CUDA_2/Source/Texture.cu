@@ -8,7 +8,7 @@ __host__ __device__ Texture::Texture(int t, const Vector3 &a, unsigned char *dat
   ny = sy;
 }
 
-__host__ __device__ Vector3 Texture::imValue(float u, float v, const Vector3 vertex[3], const Vector3 uv[3]){
+__host__ __device__ Vector3 Texture::imValue(float u, float v){
   
 //   int i = (  u)*nx;
 //   int j = (1-v)*ny-0.001;
@@ -27,37 +27,23 @@ __host__ __device__ Vector3 Texture::imValue(float u, float v, const Vector3 ver
 
 //   return Vector3(r,g,b); 
 
-  Vector3 P(u,v,1-u-v);
-  
-  Vector3 A = vertex[0]; Vector3 B = vertex[1]; Vector3 C = vertex[2];
-  
-  float baryA = ( (B.y()-C.y())*(P.x()-C.x()) + (C.x()-B.x())*(P.y()-C.y()) ) / ( (B.y()-C.y())*(A.x()-C.x()) + (C.x()-B.x())*(P.y()-C.y()) );
-  
-  float baryB = ( (C.y()-A.y())*(P.x()-C.x()) + (A.x()-C.x())*(P.y()-C.y()) ) / ( (B.y()-C.y())*(A.x()-C.x()) + (C.x()-B.x())*(A.y()-C.y()) );
-  float baryC = 1 - baryA - baryB;
-  
-  Vector3 Puv = baryA*uv[0] + baryB*uv[1] + baryC*uv[2];
-  
-  float uu = Puv[0];
-  float vv = Puv[1];
-
   Vector3 white(1,1,1);
   Vector3 red(1,0,0);
   
-  int tx = (int) 10*uu;
-  int ty = (int) 10*vv;
+  int tx = (int) 10*u;
+  int ty = (int) 10*v;
   
   int oddity = (tx & 0x01) == (ty & 0x01);
   
-  int edge = ((10 * uu - tx < 0.1) && oddity) || (10 * vv - ty < 0.1);
+  int edge = ((10 * u - tx < 0.1) && oddity) || (10 * v - ty < 0.1);
   
   return edge ? white : red;
 
 }
 
-__host__ __device__ Vector3 Texture::value(float u, float v, const Vector3 vertex[3], const Vector3 uv[3]){
+__host__ __device__ Vector3 Texture::value(float u, float v){
   
   if(type == CONSTANT) return albedo;
-  else return imValue(u, v, vertex, uv);
+  else return imValue(u, v);
   
 }

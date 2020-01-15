@@ -1,6 +1,6 @@
 #include "Triangle.hh"
 
-Triangle::Triangle(Vector3 v1, Vector3 v2, Vector3 v3, Material mat, Vector3 t) {
+Triangle::Triangle(Vector3 v1, Vector3 v2, Vector3 v3, Material mat, Vector3 uv1, Vector3 uv2, Vector3 uv3) {
     vertex[0] = v1;
     vertex[1] = v2;
     vertex[2] = v3;
@@ -8,7 +8,9 @@ Triangle::Triangle(Vector3 v1, Vector3 v2, Vector3 v3, Material mat, Vector3 t) 
     mat_ptr = mat;
     morton_code = 0;
     bounding_box(box);
-    uv = t;
+    uv[0] = uv1;
+    uv[1] = uv2;
+    uv[2] = uv3;
 }
 
 bool Triangle::hit(const Ray& r, float t_min, float t_max, hit_record& rec) {
@@ -37,8 +39,9 @@ bool Triangle::hit(const Ray& r, float t_min, float t_max, hit_record& rec) {
   float temp = dot(e2, Q) * invDet;
   if(temp > t_min && temp < t_max) {
     rec.t = temp;
-    rec.u = u;
-    rec.v = v;
+    Vector3 aux = u*uv[0] + v*uv[1] + (1-u-v)*uv[2];
+    rec.u = aux[0];
+    rec.v = aux[1];
     rec.point = r.point_at_parameter(rec.t);
     rec.normal = normalize(cross(e1, e2));
     rec.mat_ptr = this->mat_ptr;

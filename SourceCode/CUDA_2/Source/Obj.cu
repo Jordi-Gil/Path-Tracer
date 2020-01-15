@@ -144,7 +144,7 @@ __host__  void Obj::loadFromObj(const std::string &filename) {
       float u, v;
       ssin >> u >> v;
       coordText.push_back(Vector3(u,v,-1));
-      std::cout << coordText[coordText.size()-1] << std::endl;
+      //std::cout << coordText[coordText.size()-1] << std::endl;
     }
     else if(par == "f") {
       
