@@ -39,7 +39,7 @@ bool Triangle::hit(const Ray& r, float t_min, float t_max, hit_record& rec) {
   float temp = dot(e2, Q) * invDet;
   if(temp > t_min && temp < t_max) {
     rec.t = temp;
-    Vector3 aux = u*uv[0] + v*uv[1] + (1-u-v)*uv[2];
+    Vector3 aux = (1-u-v)*uv[0] + u*uv[1] + v*uv[2];
     rec.u = aux[0];
     rec.v = aux[1];
     rec.point = r.point_at_parameter(rec.t);

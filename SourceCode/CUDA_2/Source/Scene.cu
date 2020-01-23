@@ -421,7 +421,6 @@ void Scene::sceneFromFile(const std::string &filename) {
   Vector3 min(INF);
   
   while(std::getline(file, line)) {
-    
     std::string aux;
     std::stringstream ssin(line);
     ssin >> aux;

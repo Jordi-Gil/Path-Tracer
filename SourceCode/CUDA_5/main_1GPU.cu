@@ -530,7 +530,7 @@ int main(int argc, char **argv) {
   if(random) scene.loadScene(TRIANGL);
   else scene.loadScene(FFILE,filename);
 	
-	Triangle *ob = scene.getObjects();
+	Triangle *h_objects = scene.getObjects();
 	size = scene.getSize();
 	
   float ob_size = size*sizeof(Triangle);
@@ -572,10 +572,14 @@ int main(int argc, char **argv) {
   cudaMalloc((void **)&d_nodeCounter, sizeof(int)*size);
   cudaMemset(d_nodeCounter, 0, sizeof(int)*size);
 
+  for(int i = 0; i < size; i++){
+    h_objects[i].hostToDevice();
+  }
+  
   cudaEventRecord(E0,0);
   cudaEventSynchronize(E0);
 
-  cudaMemcpy(d_objects, scene.getObjects(), ob_size, cudaMemcpyHostToDevice);
+  cudaMemcpy(d_objects, h_objects, ob_size, cudaMemcpyHostToDevice);
   checkCudaErrors(cudaGetLastError());
   
   setupCamera<<<1,1>>>(d_cam,nx,ny, scene.getCamera());
@@ -597,7 +601,6 @@ int main(int argc, char **argv) {
   checkCudaErrors(cudaGetLastError());
 
   /* Copiamos del Device al Host*/
-
   cudaMemcpy(h_frameBuffer, d_frameBuffer, fb_size, cudaMemcpyDeviceToHost);
   checkCudaErrors(cudaGetLastError());
   
@@ -626,7 +629,7 @@ int main(int argc, char **argv) {
       int ig = int(255.99*col.g());
       int ib = int(255.99*col.b());
 
-			data[count++] = ir;
+      data[count++] = ir;
       data[count++] = ig;
       data[count++] = ib;
     }

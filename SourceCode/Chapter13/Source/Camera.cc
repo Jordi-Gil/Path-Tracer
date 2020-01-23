@@ -8,11 +8,10 @@ Vector3 random_in_unit_disk(){
     return p;
 }
 
-Camera::Camera(Vector3 lookfrom, Vector3 lookat, Vector3 vup, float vfov, float aspect, float aperture, float focus_dist, float time0, float time1) {
+Camera::Camera(Vector3 lookfrom, Vector3 lookat, Vector3 vup, float vfov, float aspect, float aperture, float focus_dist, float t0, float t1) {
   
-  this->time0 = time0;
-  this->time1 = time1;
-  
+  time0 = t0;
+  time1 = t1;
   lens_radius = aperture / 2;
   float theta = vfov*M_PI/180.0;
   float half_height = tan(theta/2);
@@ -30,8 +29,9 @@ Camera::Camera(Vector3 lookfrom, Vector3 lookat, Vector3 vup, float vfov, float 
 Ray Camera::get_ray(float s, float t) {
   
   Vector3 rd = lens_radius*random_in_unit_disk();
-  Vector3 offset = u*rd.x() + v*rd.y();
-  float time = time0 + (rand()/(RAND_MAX + 1.0)) * (time1-time0);
-  return Ray(origin + offset, 
-              lower_left_corner + s*horizontal + t*vertical - origin - offset, time);
+    Vector3 offset = u*rd.x() + v*rd.y();
+    float time = time0 + (rand()/(RAND_MAX + 1.0)) * (time1-time0);
+    return Ray(origin + offset, 
+               lower_left_corner + s*horizontal + t*vertical - origin - offset, time);
 }
+

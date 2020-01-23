@@ -24,21 +24,21 @@ Camera loadCamera(const std::string &line, int nx, int ny) {
     pos = line.find(ch, init);
     
     if(countV3 < 3 and count < 9) {
-			if(countIdx < 3) {
-				paramV3[countV3][countIdx] = stof(par);
-				++countIdx;
-			}
-			else{
-				countIdx = 0;
-				++countV3;
-				if(countV3 < 3) {
-					paramV3[countV3][countIdx] = stof(par);
-					++countIdx;
-				}
-			}
-			++count;
-		}
-		else if(countF < 3){
+      if(countIdx < 3) {
+        paramV3[countV3][countIdx] = stof(par);
+        ++countIdx;
+      }
+      else{
+        countIdx = 0;
+        ++countV3;
+        if(countV3 < 3) {
+          paramV3[countV3][countIdx] = stof(par);
+          ++countIdx;
+        }
+      }
+      ++count;
+    }
+    else if(countF < 3){
       paramF[countF] = stof(par);
       ++countF;
     }
@@ -413,7 +413,6 @@ void Scene::sceneFromFile(const std::string &filename) {
   Obj *list_3;
   
   while(std::getline(file, line)) {
-    
     std::string aux;
     std::stringstream ssin(line);
     ssin >> aux;
@@ -448,6 +447,10 @@ void Scene::sceneFromFile(const std::string &filename) {
         num_ob_tr += list_3[num_ob].getSize();
         num_ob++;
       }
+    }
+    else if(aux == "4") {
+      ssin >> aux;
+      sky = Skybox(Vector3(13.-10000, 2.-10000, 3.-10000), Vector3(13.+10000, 2.+10000, 3.+10000), aux);
     }
   }
   
@@ -579,4 +582,8 @@ unsigned int Scene::getSize() {
 
 Camera Scene::getCamera() {
   return cam;
+}
+
+Skybox Scene::getSkybox(){
+  return sky;
 }

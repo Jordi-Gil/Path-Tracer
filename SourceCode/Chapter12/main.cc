@@ -205,8 +205,8 @@ int main(int argc, char **argv) {
   int count = 0;
   std::cout << "\n\nCreating image..." << std::endl;
   
-  for(int j = ny - 1; j >= 0; j--){
-    for(int i = 0; i < nx; i++){
+ for(int j = ny-1; j >= 0; j--){
+   for(int i = 0; i < nx; i++){
         
       Vector3 col = Vector3::Zero();
       

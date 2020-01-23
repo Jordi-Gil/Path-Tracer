@@ -223,10 +223,9 @@ __device__ Vector3 color(const Ray& ray, HitableList **d_world, int depth, bool 
     }
     else {
       if(light) {
-        Vector3 unit_direction = unit_vector(cur_ray.direction());
-        float t = 0.5*(unit_direction.y() + 1.0);
-        Vector3 c = (1.0 - t)*Vector3::One() + t*Vector3(0.5, 0.7, 1.0);
-        return cur_attenuation * c;
+        Vector3 unit_direction = unit_vector(ray.direction());
+        float t = 0.5 * (unit_direction.y() + 1.0);
+        return (1.0-t) * Vector3::One() + t*Vector3(0.5, 0.7, 1.0);
       }
       else return Vector3::Zero();
     }
@@ -343,7 +342,7 @@ int main(int argc, char **argv) {
   if(random) scene.loadScene(RANDOM);
   else scene.loadScene(FFILE,filename);
   
-  Triangle *ob = scene.getObjects();
+  Triangle *h_objects = scene.getObjects();
   size = scene.getSize();
   float ob_size = size*sizeof(Triangle);
   
@@ -373,7 +372,11 @@ int main(int argc, char **argv) {
   cudaEventRecord(E0,0);
   cudaEventSynchronize(E0);
   
-  cudaMemcpy(d_objects, scene.getObjects(), ob_size, cudaMemcpyHostToDevice);
+  for(int i = 0; i < size; i++){
+    h_objects[i].hostToDevice();
+  }
+  
+  cudaMemcpy(d_objects, h_objects, ob_size, cudaMemcpyHostToDevice);
   checkCudaErrors(cudaGetLastError());
   
   setUpCameraWorld<<<1,1>>>(d_cam, nx, ny, d_world, d_objects, size, scene.getCamera());

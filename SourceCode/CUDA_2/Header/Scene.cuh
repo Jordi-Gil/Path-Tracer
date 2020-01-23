@@ -33,7 +33,7 @@ public:
   unsigned int getSize();
   
   Triangle *getObjects();
-
+  
 private:
   
   Camera cam;

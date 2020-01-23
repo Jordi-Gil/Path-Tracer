@@ -342,28 +342,33 @@ Node* generateHierarchy(Triangle *sortedMortonCodes, int numberObj) {
     return &internalNodes[0];
 }
 
-Vector3 color(const Ray& ray, Node *world, int depth, bool light, int const _depth) {
+Vector3 color(const Ray& ray, Node *world, int depth, bool light, int const _depth, Skybox sky) {
   hit_record rec;
   if(world->checkCollision(ray, 0.00001, MAXFLOAT, rec)){
       Ray scattered;
       Vector3 attenuation;
       Vector3 emitted = rec.mat_ptr.emitted(rec.u, rec.v);
       if(depth < _depth and rec.mat_ptr.scatter(ray, rec, attenuation, scattered)){
-          return emitted + attenuation*color(scattered, world, depth+1,light, _depth);
+          return emitted + attenuation*color(scattered, world, depth+1,light, _depth, sky);
       }
       else return emitted;
   }
   else{
-  if(light) {
-    Vector3 unit_direction = unit_vector(ray.direction());
-    float t = 0.5 * (unit_direction.y() + 1.0);
-    return (1.0-t) * Vector3::One() + t*Vector3(0.5, 0.7, 1.0);
-  }
-  else return Vector3::Zero();
+    if(sky.hit(ray, 0.001, MAXFLOAT, rec)){
+      return rec.mat_ptr.emitted(rec.u, rec.v);
+    }
+    else{
+      if(light) {
+        Vector3 unit_direction = unit_vector(ray.direction());
+        float t = 0.5 * (unit_direction.y() + 1.0);
+        return (1.0-t) * Vector3::One() + t*Vector3(0.5, 0.7, 1.0);
+      }
+      else return Vector3::Zero();
+    }
   }
 }
 
-Node *random_scene(int dist, int nx, int ny, bool random, const std::string filename, Camera &cam) {
+Node *random_scene(int dist, int nx, int ny, bool random, const std::string filename, Camera &cam, Skybox &sky) {
   
   Scene scene = Scene(dist, nx, ny);
   
@@ -371,6 +376,7 @@ Node *random_scene(int dist, int nx, int ny, bool random, const std::string file
   else scene.loadScene(FFILE,filename);
   
   cam = scene.getCamera();
+  sky = scene.getSkybox();
   
   double stamp;
   START_COUNT_TIME;
@@ -406,8 +412,9 @@ int main(int argc, char **argv) {
   else std::cout << "Ambient light OFF\n" << std::endl;
   
   Camera cam;
+  Skybox sky;
   
-  Node *world = random_scene(dist, nx, ny, random, filename, cam);
+  Node *world = random_scene(dist, nx, ny, random, filename, cam, sky);
   
   std::cout << "\n\nWorld created\n\n";
 
@@ -431,7 +438,7 @@ int main(int argc, char **argv) {
 
         Ray r = cam.get_ray(u, v);
 
-        col += color(r, world, 0, light, depth);
+        col += color(r, world, 0, light, depth, sky);
       }
       
       col /= float(ns);

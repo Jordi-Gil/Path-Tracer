@@ -7,7 +7,7 @@
 struct hit_record;
 
 enum type {
-  LAMBERTIAN, METAL, DIELECTRIC, DIFFUSE_LIGHT
+  LAMBERTIAN, METAL, DIELECTRIC, DIFFUSE_LIGHT, SKYBOX
 };
 
 class Material {

@@ -7,6 +7,7 @@
 #include "Obj.hh"
 #include "Math.hh"
 #include "Helper.hh"
+#include "Skybox.hh"
 
 enum loadType {
   FFILE, RANDOM, TRIANGL
@@ -29,6 +30,7 @@ public:
   unsigned int getSize();
   
   Triangle *getObjects();
+  Skybox getSkybox();
 
 private:
   
@@ -38,6 +40,7 @@ private:
   Triangle *objects;
   Sphere *spheres;
   unsigned int size;
+  Skybox sky;
 };
 
 struct ObjEval2{

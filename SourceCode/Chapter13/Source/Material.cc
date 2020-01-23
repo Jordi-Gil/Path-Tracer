@@ -54,14 +54,15 @@ bool Material::scatter(const Ray& r_in, const hit_record &rec, Vector3 &attenuat
 
 Vector3 Material::emitted(float u, float v) {
   if(type == DIFFUSE_LIGHT) return albedo.value(u,v);
+  else if (type == SKYBOX) return albedo.value(u, v);
   else return Vector3::Zero();
 }
 
-bool Material::Lambertian(const hit_record &rec, Vector3 &attenuation, Ray& scattered) {
+bool Material::Lambertian(const Ray& r_in, const hit_record &rec, Vector3 &attenuation, Ray& scattered) {
     
   Vector3 target = rec.point + rec.normal + random_in_unit_sphere();
   
-  scattered = Ray(rec.point, target-rec.point);
+  scattered = Ray(rec.point, target-rec.point,r_in.time());
   attenuation = albedo.value(rec.u, rec.v);
   
   return true;

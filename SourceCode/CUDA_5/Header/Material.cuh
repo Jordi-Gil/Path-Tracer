@@ -28,6 +28,8 @@ public:
   __device__ bool Dielectric(const Ray& r_in, const hit_record& rec, Vector3& attenuation, Ray& scattered, curandState *random);
   
   __host__ __device__ const char *getName();
+  
+  __host__ void hostToDevice(){ albedo.hostToDevice(); }
 
   Texture albedo;
   float fuzz;

@@ -154,24 +154,30 @@ void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, in
   image = image+".png";
 }
 
-Vector3 color(const Ray& ray, HitableList *world, int depth, bool light, int const _depth){
+Vector3 color(const Ray& ray, HitableList *world, int depth, bool light, int const _depth, Skybox sky){
   hit_record rec;
   if(world->checkCollision(ray, 0.001, MAXFLOAT, rec)){
       Ray scattered;
       Vector3 attenuation;
       Vector3 emitted = rec.mat_ptr.emitted(rec.u, rec.v);
       if(depth < _depth and rec.mat_ptr.scatter(ray, rec, attenuation, scattered)){
-          return emitted + attenuation*color(scattered, world, depth+1,light, _depth);
+          return emitted + attenuation*color(scattered, world, depth+1,light, _depth, sky);
       }
       else return emitted;
   }
   else{
-  if(light) {
-    Vector3 unit_direction = unit_vector(ray.direction());
-    float t = 0.5 * (unit_direction.y() + 1.0);
-    return (1.0-t) * Vector3::One() + t*Vector3(0.5, 0.7, 1.0);
-  }
-  else return Vector3::Zero();
+    
+    if(sky.hit(ray, 0.001, MAXFLOAT, rec)){
+      return rec.mat_ptr.emitted(rec.u, rec.v);
+    }
+    else{
+      if(light) {
+        Vector3 unit_direction = unit_vector(ray.direction());
+        float t = 0.5 * (unit_direction.y() + 1.0);
+        return (1.0-t) * Vector3::One() + t*Vector3(0.5, 0.7, 1.0);
+      }
+      else return Vector3::Zero();
+    }
   }
 }
 
@@ -194,7 +200,7 @@ int main(int argc, char **argv) {
 
   std::cout << "Creating " << image << " with (" << nx << "," << ny << ") pixels." << std::endl;
   std::cout << "With " << ns << " iterations for AntiAliasing and depth of " << depth << "." << std::endl;
-  std::cout << "The world have " << scene.getSize() << " spheres." << std::endl;
+  std::cout << "The world have " << scene.getSize() << " triangles." << std::endl;
   if(light) std::cout << "Ambient light ON" << std::endl;
   else std::cout << "Ambient light OFF" << std::endl;
   
@@ -205,8 +211,9 @@ int main(int argc, char **argv) {
   int count = 0;
   std::cout << "\n\nCreating image..." << std::endl;
   
-  for(int j = ny - 1; j >= 0; j--){
-    for(int i = 0; i < nx; i++){
+ for(int j = ny - 1; j >= 0; j--){
+   for(int i = 0; i < nx; i++){
+
         
       Vector3 col = Vector3::Zero();
       
@@ -216,7 +223,7 @@ int main(int argc, char **argv) {
         
         Ray r = cam.get_ray(u, v);
         
-        col += color(r, world, 0, light, dist);
+        col += color(r, world, 0, light, dist, scene.getSkybox());
       }
       
       col /= float(ns);

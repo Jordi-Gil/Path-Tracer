@@ -461,6 +461,10 @@ void Scene::sceneFromFile(const std::string &filename) {
         num_ob++;
       }
     }
+    else if(aux == "4") {
+      ssin >> aux;
+      sky = Skybox(Vector3(13.-10000, 2.-10000, 3.-10000), Vector3(13.+10000, 2.+10000, 3.+10000), aux);
+    }
   }
   
   int num_objects = num_tr + num_ob_tr;
@@ -650,4 +654,8 @@ unsigned int Scene::getSize() {
 
 Camera Scene::getCamera() {
   return cam;
+}
+
+Skybox Scene::getSkybox(){
+  return sky;
 }

@@ -129,6 +129,6 @@ __host__ __device__ const char *Material::getName(){
   
 }
 
-__host__ __device__ const Texture Material::getTexture(){
+__host__ __device__ Texture Material::getTexture(){
   return albedo;
 }

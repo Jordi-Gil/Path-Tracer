@@ -50,7 +50,8 @@ bool Material::scatter(const Ray& r_in, const hit_record &rec, Vector3 &attenuat
 }
 
 Vector3 Material::emitted(float u, float v) {
-  if(type == DIFFUSE_LIGHT) return albedo.value(u,v);
+  if(type == DIFFUSE_LIGHT) return albedo.value(u, v);
+  else if (type == SKYBOX) return albedo.value(u, v);
   else return Vector3::Zero();
 }
 

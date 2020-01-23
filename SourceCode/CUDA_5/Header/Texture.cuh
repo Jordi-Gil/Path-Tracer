@@ -3,6 +3,8 @@
 
 #include "Vector3.cuh"
 
+#include <assert.h>
+
 enum Textype {
   CONSTANT, IMAGE
 };
@@ -16,12 +18,15 @@ public:
   
   __host__ __device__ Vector3 value(float u, float v);
   __host__ __device__ Vector3 imValue(float u, float v);
+  
+  __host__ void hostToDevice();
 
 private:
   
   int type;
   Vector3 albedo;
-  unsigned char *image;
+  unsigned char *h_image;
+  unsigned char *d_image;
   int nx;
   int ny;
   
