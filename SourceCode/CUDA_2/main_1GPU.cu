@@ -223,9 +223,10 @@ __device__ Vector3 color(const Ray& ray, HitableList **d_world, int depth, bool 
     }
     else {
       if(light) {
-        Vector3 unit_direction = unit_vector(ray.direction());
-        float t = 0.5 * (unit_direction.y() + 1.0);
-        return (1.0-t) * Vector3::One() + t*Vector3(0.5, 0.7, 1.0);
+        Vector3 unit_direction = unit_vector(cur_ray.direction());
+        float t = 0.5*(unit_direction.y() + 1.0);
+        Vector3 c = (1.0 - t)*Vector3::One() + t*Vector3(0.5, 0.7, 1.0);
+        return cur_attenuation * c;
       }
       else return Vector3::Zero();
     }

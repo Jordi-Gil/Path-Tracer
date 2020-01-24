@@ -10,12 +10,12 @@ __device__ Vector3 random_in_unit_disk(curandState *random){
 
 __host__ __device__ Camera::Camera(Vector3 lookfrom, Vector3 lookat, Vector3 vup, float vfov, float aspect, float aperture, float focus_dist, float time0, float time1){
   
-	this->lookfrom = lookfrom;
-	this->lookat = lookat;
-	this->vup = vup;
-	this->vfov = vfov;
-	this->focus_dist = focus_dist;
-	this->aperture = aperture;
+  this->lookfrom = lookfrom;
+  this->lookat = lookat;
+  this->vup = vup;
+  this->vfov = vfov;
+  this->focus_dist = focus_dist;
+  this->aperture = aperture;
   this->time0 = time0;
   this->time1 = time1;
 	

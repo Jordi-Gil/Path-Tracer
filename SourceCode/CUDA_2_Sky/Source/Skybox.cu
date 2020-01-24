@@ -42,7 +42,6 @@ void Skybox::load(const std::string &dir){
   
 }
 
-
 Skybox::Skybox(Vector3 a, Vector3 b, const std::string &dir) {
   
   bottomLeft = a;

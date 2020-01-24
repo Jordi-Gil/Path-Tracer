@@ -14,7 +14,7 @@ class Texture {
 public:
   
   __host__ __device__ Texture() {}
-  __host__ __device__ Texture(int t, const Vector3 &a = Vector3::One(), unsigned char *data = 0, int sx = -1, int sy = -1);
+  __host__ __device__ Texture(int t, const Vector3 &a = Vector3::One(), unsigned char *data = 0, int sx = -1, int sy = -1, bool _fH = false, bool _fV = false, bool _flipUV = false);
   
   __host__ __device__ Vector3 value(float u, float v);
   __host__ __device__ Vector3 imValue(float u, float v);
@@ -29,7 +29,7 @@ private:
   unsigned char *d_image;
   int nx;
   int ny;
-  
+  bool flipHorizontal, flipVertical, flipUV;
 };
 
 #endif /* _TEXTURE_HH_INCLUDE */

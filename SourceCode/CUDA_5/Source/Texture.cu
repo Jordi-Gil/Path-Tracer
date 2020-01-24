@@ -1,17 +1,31 @@
 #include "Texture.cuh"
 
-__host__ __device__ Texture::Texture(int t, const Vector3 &a, unsigned char *data, int sx, int sy){
+__host__ __device__ Texture::Texture(int t, const Vector3 &a, unsigned char *data, int sx, int sy, bool _fH, bool _fV, bool _flipUV) {
+  
   type = t;
   albedo = a;
   h_image = data;
   nx = sx;
   ny = sy;
+  flipHorizontal = _fH;
+  flipVertical = _fV;
+  flipUV = _flipUV;
+  
 }
 
 __host__ __device__ Vector3 Texture::imValue(float u, float v){
   
-  int i = (  u)*nx;
-  int j = (  v)*ny;
+  u = flipHorizontal ? 1-u : u; 
+  v = flipVertical ? 1-v : v;
+  
+  if(flipUV) {
+    float aux = u;
+    u = v;
+    v = aux;
+  }
+  
+  int i = u * (nx-1);
+  int j = v * (ny-1);
   
   if(i < 0) i = 0;
   if(j < 0) j = 0;
