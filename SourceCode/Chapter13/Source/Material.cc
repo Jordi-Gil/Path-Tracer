@@ -44,7 +44,7 @@ Material::Material(int t, const Texture a, float f, float ri) {
 
 bool Material::scatter(const Ray& r_in, const hit_record &rec, Vector3 &attenuation, Ray &scattered) {
   
-  if(type == LAMBERTIAN) return Lambertian(rec, attenuation, scattered);
+  if(type == LAMBERTIAN) return Lambertian(r_in, rec, attenuation, scattered);
   else if(type == METAL) return Metal(r_in, rec, attenuation, scattered);
   else if(type == DIELECTRIC) return Dielectric(r_in, rec, attenuation, scattered);
   else if(type == DIFFUSE_LIGHT) return false;

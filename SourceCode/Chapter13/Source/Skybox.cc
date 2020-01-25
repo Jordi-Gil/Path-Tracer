@@ -13,12 +13,12 @@ void Skybox::load(const std::string &dir){
   //Front
   filename = "Textures/" + dir + "/front.jpg";
   image = stbi_load(filename.c_str(), &nx, &ny, &nn, 0);
-  list[0] = Rectangle(bottomLeft.x(), topRight.x(), bottomLeft.y(), topRight.y(), topRight.z(), Material(SKYBOX, Texture(IMAGE, Vector3::Zero(), image, nx, ny, false, false, false)), FRONT, true);
+  list[0] = Rectangle(bottomLeft.x(), topRight.x(), bottomLeft.y(), topRight.y(), topRight.z(), Material(SKYBOX, Texture(IMAGE, Vector3::Zero(), image, nx, ny, false, true, false)), FRONT, true);
   
   //Back
   filename = "Textures/" + dir + "/back.jpg";
   image = stbi_load(filename.c_str(), &nx, &ny, &nn, 0);
-  list[1] = Rectangle(bottomLeft.x(), topRight.x(), bottomLeft.y(), topRight.y(), bottomLeft.z(), Material(SKYBOX, Texture(IMAGE, Vector3::Zero(), image, nx, ny, true, false, false)), BACK);
+  list[1] = Rectangle(bottomLeft.x(), topRight.x(), bottomLeft.y(), topRight.y(), bottomLeft.z(), Material(SKYBOX, Texture(IMAGE, Vector3::Zero(), image, nx, ny, true, true, false)), BACK);
   
   //Bottom
   filename = "Textures/" + dir + "/bottom.jpg";
@@ -33,12 +33,12 @@ void Skybox::load(const std::string &dir){
   //Right
   filename = "Textures/" + dir + "/right.jpg";
   image = stbi_load(filename.c_str(), &nx, &ny, &nn, 0);
-  list[4] = Rectangle(bottomLeft.y(), topRight.y(), bottomLeft.z(), topRight.z(), topRight.x(), Material(SKYBOX, Texture(IMAGE, Vector3::Zero(), image, nx, ny, false, true, true)), RIGHT, true);
+  list[4] = Rectangle(bottomLeft.y(), topRight.y(), bottomLeft.z(), topRight.z(), topRight.x(), Material(SKYBOX, Texture(IMAGE, Vector3::Zero(), image, nx, ny, true, true, true)), RIGHT, true);
   
   //Left
   filename = "Textures/" + dir + "/left.jpg";
   image = stbi_load(filename.c_str(), &nx, &ny, &nn, 0);
-  list[5] = Rectangle(bottomLeft.y(), topRight.y(), bottomLeft.z(), topRight.z(), bottomLeft.x(), Material(SKYBOX, Texture(IMAGE, Vector3::Zero(), image, nx, ny, false, false, true)), LEFT);
+  list[5] = Rectangle(bottomLeft.y(), topRight.y(), bottomLeft.z(), topRight.z(), bottomLeft.x(), Material(SKYBOX, Texture(IMAGE, Vector3::Zero(), image, nx, ny, true, false, true)), LEFT);
   
 }
 
