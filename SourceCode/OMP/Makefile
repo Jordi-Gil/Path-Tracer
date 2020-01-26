@@ -9,7 +9,7 @@ main.exe: main.cc $(OBJECTS) Hitable.hh
 	g++ -o main $(OBJECTS) $(OMP)
 
 main.o: main.cc
-	g++ -c main.cc $(OPTIONS) $(OMP) -lpthread
+	g++ -c main.cc $(OPTIONS) $(OMP)
 
 Vector3.o: Vector3.cc Vector3.hh
 	g++ -c Vector3.cc $(OPTIONS)

@@ -1,0 +1,6 @@
+#sizes
+ns            0 nt           0 no      1
+#camera
+0 12 15.05 -15.05 0 0 0 0 1 0 60 0.005 100
+
+3 0 m L IMAGE joan.jpeg untitled t center s u 4 r -90 1 0 0
