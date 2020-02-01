@@ -219,7 +219,7 @@ int main(int argc, char **argv) {
   
   std::vector<std::vector<Vector3>> pic(nx,std::vector<Vector3>(ny, Vector3(-1,-1,-1)));
   
-  #pragma omp parallel for collapse(2) private(i,j, count) shared(data)
+  #pragma omp parallel for collapse(2) private(i,j)
   for(j = ny - 1; j >= 0; j--){
     for(i = 0; i < nx; i++){
         

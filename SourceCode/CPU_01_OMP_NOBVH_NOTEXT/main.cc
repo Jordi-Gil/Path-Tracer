@@ -207,12 +207,12 @@ int main(int argc, char **argv) {
   std::cout << "\n\nCreating image..." << std::endl;
   
   int maxthreads = omp_get_max_threads();
-  omp_set_num_threads(maxthreads);
+  omp_set_num_threads(maxthreads/2);
   
   int i, j;
   std::vector<std::vector<Vector3>> pic(nx,std::vector<Vector3>(ny, Vector3(-1,-1,-1)));
   
-  #pragma omp parallel for collapse(2) private(i,j, count) shared(data)
+  #pragma omp parallel for collapse(2) private(i,j)
   for(int j = ny-1; j >= 0; j--){
     for(int i = 0; i < nx; i++){
         
