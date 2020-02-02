@@ -1,8 +1,9 @@
-CUDA_HOME = /usr/local/cuda-10.1
+#CUDA_HOME = /usr/local/cuda-10.1
+CUDA_HOME = /Soft/cuda/9.0.176
 HOST_COMPILER = g++
 NVCC = $(CUDA_HOME)/bin/nvcc -ccbin $(HOST_COMPILER)
 NVCC_DBG = -g -G
-NVCC_FLAGS = -m64 -rdc=true -lcudadevrt -I Header/
+NVCC_FLAGS = -m64 -rdc=true -lcudadevrt -I Header/ -std=c++11
 
 OBJDIR = Object
 1GPUDIR = 1GPU
@@ -12,7 +13,8 @@ HEADERDIR = Header
 SOURCEDIR = Source
 
 # Gencode arguments
-SMS ?= 61
+SMS ?= 35
+#61
 
 ifeq ($(SMS),)
 $(info >>> WARNING - no SM architectures have been specified - waiving sample <<<)
@@ -32,11 +34,11 @@ endif
 OBJ = $(addprefix $(OBJDIR)/, $(patsubst Source/%.cu, %.o, $(wildcard Source/*.cu)))
 
 OBJS_1 = $(OBJ) $(OBJDIR)/$(1GPUDIR)/main_1GPU.o
-OBJS_2 = $(OBJ) $(OBJDIR)/$(NGPUDIR)/mainNGPUs.o
+OBJS_2 = $(OBJ) $(OBJDIR)/$(NGPUDIR)/main_NGPUs.o
 OBJS_3 = $(OBJ) $(OBJDIR)/$(NGPUDYNDIR)/mainNGPUs_dynamic.o
 
 
-all: $(OBJDIR) $(OBJDIR)/$(1GPUDIR) $(OBJDIR)/$(NGPUDIR) $(OBJDIR)/$(NGPUDYNDIR) path_tracing_1GPU #path_tracing_NGPUs path_tracing_NGPUs_dynamic
+all: $(OBJDIR) $(OBJDIR)/$(1GPUDIR) $(OBJDIR)/$(NGPUDIR) $(OBJDIR)/$(NGPUDYNDIR) path_tracing_1GPU path_tracing_NGPUs #path_tracing_NGPUs_dynamic
 
 $(OBJDIR):
 	mkdir $(OBJDIR)
