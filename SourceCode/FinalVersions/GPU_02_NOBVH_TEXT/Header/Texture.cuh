@@ -23,7 +23,6 @@ public:
   
   __host__ void hostToDevice(int numGPUs);
 
-private:
   
   int type;
   Vector3 albedo;
@@ -31,6 +30,7 @@ private:
   unsigned char *d_image;
   int nx;
   int ny;
+  int size;
   bool flipHorizontal, flipVertical, flipUV;
   
 };

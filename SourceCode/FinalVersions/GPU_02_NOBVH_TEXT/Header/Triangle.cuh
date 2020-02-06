@@ -22,11 +22,12 @@ public:
   
   __host__ void hostToDevice(int numGPUs){ mat_ptr.hostToDevice(numGPUs); }
   
+  Material mat_ptr;
+  
 private:
   
   Vector3 vertex[3];
   Vector3 centroid;
-  Material mat_ptr;
   Vector3 uv[3];
   
 };

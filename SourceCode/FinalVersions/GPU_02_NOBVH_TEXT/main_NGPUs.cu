@@ -62,6 +62,7 @@ void help(){
   std::cout << "\t[-light]        Turn on/off the ambient light. Values can be ON/OFF" << std::endl;
   std::cout << "\t[-nthreads]     Number of threads to use" << std::endl;
   std::cout << "\t[-nGPUs]        Number of GPUs to distribute the work" << std::endl;
+  std::cout << "\t[-skybox]       The scene have skybox" << std::endl;
   std::cout << "\t[-i][--image]   File name of pic generated." << std::endl;
   std::cout << "\t[-f][--file]    File name of the scene." << std::endl;
   std::cout << "\t[-h][--help]    Show help." << std::endl;
@@ -75,12 +76,12 @@ void help(){
   
 }
 
-void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, int &dist, int &nthreads, std::string &image, std::string &filename, int &numGPUs, bool &light, bool &random, bool &filter, int &diameter, float &gs, float &gr, const int count){
+void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, int &dist, int &nthreads, std::string &image, std::string &filename, int &numGPUs, bool &light, bool &skybox, bool &random, bool &filter, int &diameter, float &gs, float &gr, const int count){
   
   if(argc <= 1) error("Error usage. Use [-h] [--help] to see the usage.");
   
   nx = 1280; ny = 720; ns = 50; depth = 50; dist = 11; image = "random"; light = true; random = true;
-	filter = false; gs = 0; gr = 0; diameter = 11;
+	filter = false; gs = 0; gr = 0; diameter = 11; skybox = false;
   
   nthreads = 32; numGPUs = 1;
   
@@ -147,6 +148,11 @@ void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, in
       if(std::string(argv[i+1]) == "ON") light = true;
       else if(std::string(argv[i+1]) == "OFF") light = false;
     }
+    else if(std::string(argv[i]) == "-skybox") {
+      if((i+1) >= argc) error("-skybox value expected");
+      if(std::string(argv[i+1]) == "ON") skybox = true;
+      else if(std::string(argv[i+1]) == "OFF") skybox = false;
+    }
     else if (std::string(argv[i]) == "-filter") {
       filter = true;
       diameter = atoi(argv[i+1]);
@@ -204,7 +210,7 @@ void properties(){
   else std::cout << "GPU " << device << " (" << properties.name << ") does not support CUDA Dynamic Parallelism" << std::endl;
 }
 
-__device__ Vector3 color(const Ray& ray, HitableList **d_world, int depth, bool light, curandState *random){
+__device__ Vector3 color(const Ray& ray, HitableList **d_world, int depth, bool light, bool skybox, curandState *random){
   
   Ray cur_ray = ray;
   Vector3 cur_attenuation = Vector3(1.0,1.0,1.0);
@@ -222,13 +228,19 @@ __device__ Vector3 color(const Ray& ray, HitableList **d_world, int depth, bool 
       else return cur_attenuation * emitted;
     }
     else {
-      if(light) {
-        Vector3 unit_direction = unit_vector(cur_ray.direction());
-        float t = 0.5*(unit_direction.y() + 1.0);
-        Vector3 c = (1.0 - t)*Vector3::One() + t*Vector3(0.5, 0.7, 1.0);
-        return cur_attenuation * c;
-      }
-      else return Vector3::Zero();
+			if(skybox){
+				//checkhit and return
+				return Vector3::Zero();
+			}
+			else {
+				if(light) {
+					Vector3 unit_direction = unit_vector(cur_ray.direction());
+					float t = 0.5*(unit_direction.y() + 1.0);
+					Vector3 c = (1.0 - t)*Vector3::One() + t*Vector3(0.5, 0.7, 1.0);
+					return cur_attenuation * c;
+				}
+				else return Vector3::Zero();
+			}
     }
   }
   return Vector3::Zero();
@@ -266,7 +278,7 @@ __global__ void render_init(int max_x, int max_y, curandState *rand_state,unsign
   
 }
 
-__global__ void render(Vector3 *fb, int max_x, int max_y, int ns, Camera **cam, HitableList **d_world, curandState *d_rand_state, int depth, bool light, int minY, int maxY) {
+__global__ void render(Vector3 *fb, int max_x, int max_y, int ns, Camera **cam, HitableList **d_world, curandState *d_rand_state, int depth, bool light, bool skybox, int minY, int maxY) {
 
   int num = blockIdx.x*blockDim.x + threadIdx.x;
  
@@ -287,7 +299,7 @@ __global__ void render(Vector3 *fb, int max_x, int max_y, int ns, Camera **cam, 
     float v = float(j + Random) / float(max_y);
       
     Ray r = (*cam)->get_ray(u, v, &local_random);
-    col += color(r, d_world, depth, light, &local_random);
+    col += color(r, d_world, depth, light, skybox, &local_random);
     
   }
 
@@ -316,7 +328,7 @@ int main(int argc, char **argv) {
 	float totalTime;
 
 	int nx, ny, ns, depth, dist, nthreads, numGPUs, diameter;
-	bool light, random, filter;
+	bool light, random, filter, skybox;
 	float gs,gr;
 	std::string filename, image;
 
@@ -324,7 +336,7 @@ int main(int argc, char **argv) {
 
 	checkCudaErrors(cudaGetDeviceCount(&count));
 
-	parse_argv(argc, argv, nx, ny, ns, depth, dist, nthreads, image, filename, numGPUs, light, random, filter, diameter, gs, gr, count);
+	parse_argv(argc, argv, nx, ny, ns, depth, dist, nthreads, image, filename, numGPUs, light, skybox, random, filter, diameter, gs, gr, count);
 
 	/* Seed for CUDA Random */
 	unsigned long long int seed = 1000;
@@ -349,24 +361,24 @@ int main(int argc, char **argv) {
 	if(random) scene.loadScene(RANDOM);
 	else scene.loadScene(FFILE,filename);
 	
-	Triangle *ob = scene.getObjects();
 	Camera cam = scene.getCamera();
 	size = scene.getSize();
 	float ob_size = size*sizeof(Triangle);
+	float sky_size = size*sizeof(Skybox);
 	
 	std::cout << "\nCreating " << image << " with (" << nx << "," << ny << ") pixels with " << nthreads << " threads, using " << numGPUs << " GPUs." << std::endl;
 	std::cout << "With " << ns << " iterations for AntiAliasing and depth of " << depth << "." << std::endl;
 	std::cout << "The world have " << size << " objects." << std::endl;
 	if(light) std::cout << "Ambient light ON" << std::endl;
 	else std::cout << "Ambient light OFF" << std::endl;
-
 	
 	/* Device variables */
 	Vector3 **d_frames = (Vector3 **) malloc(numGPUs * sizeof(Vector3));
 	Triangle **d_objectsGPUs = (Triangle **) malloc(numGPUs * sizeof(Triangle));
 	Camera ***d_cameras = (Camera ***) malloc(numGPUs * sizeof(Camera));
 	HitableList ***d_worlds = (HitableList ***) malloc(numGPUs * sizeof(HitableList));
-	curandState **d_randstates = (curandState **) malloc(numGPUs * sizeof(curandState));  
+	curandState **d_randstates = (curandState **) malloc(numGPUs * sizeof(curandState));
+	Skybox **d_skyboxes = (Skybox **) malloc(numGPUs * sizeof(Skybox));
 	
 	cudaEventRecord(E0,0);
 	cudaEventSynchronize(E0);
@@ -383,26 +395,40 @@ int main(int argc, char **argv) {
 		Camera **d_cam;
 		HitableList **d_world;
 		curandState *d_rand_state;
+		Skybox *d_skybox;
 		
 		cudaMalloc((void **)&d_frameBuffer, fb_size/numGPUs);
 		cudaMalloc((void **)&d_objects, ob_size);
 		cudaMalloc((void **)&d_world, world_size);
 		cudaMalloc((void **)&d_cam, cam_size);
 		cudaMalloc((void **)&d_rand_state, drand_size);
+		cudaMalloc((void **)&d_skybox, sky_size);
 		
 		d_frames[i] = d_frameBuffer;
 		d_objectsGPUs[i] = d_objects;
 		d_cameras[i] = d_cam;
 		d_worlds[i] = d_world;
 		d_randstates[i] = d_rand_state;
-		
+		d_skyboxes[i] = d_skybox;
 	}
 	
 	for(int i = 0; i < numGPUs; i++) {
 	
 		cudaSetDevice(i);
 		
+		Triangle *ob = scene.getObjects();
+		Skybox *sky = scene.getSkybox();
+	
+		sky->hostToDevice(i);
+		
+		for(int j = 0; j < size; j++){
+			cudaMemcpy(ob[size].mat_ptr.albedo.d_image, &ob[size].mat_ptr.albedo.h_image, ob[size].mat_ptr.albedo.size * sizeof(unsigned char), cudaMemcpyHostToDevice);
+		}
+		
 		cudaMemcpy(d_objectsGPUs[i], ob, ob_size, cudaMemcpyHostToDevice);
+		checkCudaErrors(cudaGetLastError());
+		
+		cudaMemcpy(d_skyboxes[i], sky, sky_size, cudaMemcpyHostToDevice);
 		checkCudaErrors(cudaGetLastError());
 		
 	}
@@ -417,7 +443,7 @@ int main(int argc, char **argv) {
 		render_init<<<blocks, nthreads>>>(nx, ny, d_randstates[i], seed, i*(ny/numGPUs), (i+1)*(ny/numGPUs));
 		checkCudaErrors(cudaGetLastError());
 		
-		render<<<blocks, nthreads>>>(d_frames[i], nx, ny, ns, d_cameras[i], d_worlds[i], d_randstates[i], depth, light, i*(ny/numGPUs), (i+1)*(ny/numGPUs));
+		render<<<blocks, nthreads>>>(d_frames[i], nx, ny, ns, d_cameras[i], d_worlds[i], d_randstates[i], depth, light, skybox, i*(ny/numGPUs), (i+1)*(ny/numGPUs));
 		checkCudaErrors(cudaGetLastError());
 	}
 	
