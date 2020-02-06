@@ -48,12 +48,15 @@ __device__ Vector3 Texture::value(float u, float v){
   
 }
 
-__host__ void Texture::hostToDevice(){
+__host__ void Texture::hostToDevice(int numGPUs){
   
   if(type == IMAGE){
-  
-    float size = sizeof(unsigned char) * nx * ny * 3;
-    cudaMalloc((void **)&d_image, size);
-    assert(cudaMemcpy(d_image, h_image, size, cudaMemcpyHostToDevice) == cudaSuccess);
+			
+		cudaSetDevice(numGPUs);
+			
+		float size = sizeof(unsigned char) * nx * ny * 3;
+		cudaMallocManaged((void **)&d_image, size);
+		assert(cudaMemcpy(d_image, h_image, size, cudaMemcpyHostToDevice) == cudaSuccess);
+		
   }
 }

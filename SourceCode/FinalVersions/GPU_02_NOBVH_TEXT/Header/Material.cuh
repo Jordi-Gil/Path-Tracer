@@ -30,7 +30,7 @@ public:
   __host__ __device__ const char *getName();
   __host__ __device__ Texture getTexture();
   
-  __host__ void hostToDevice(){ albedo.hostToDevice(); }
+  __host__ void hostToDevice(int numGPUs){ albedo.hostToDevice(numGPUs); }
 
   Texture albedo;
   float fuzz;

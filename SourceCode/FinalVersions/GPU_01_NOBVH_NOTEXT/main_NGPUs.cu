@@ -408,11 +408,6 @@ int main(int argc, char **argv) {
 	}
 	
 	for(int i = 0; i < numGPUs; i++) {
-		cudaSetDevice(i);
-		cudaDeviceSynchronize();
-	}
-	
-	for(int i = 0; i < numGPUs; i++) {
 	
 		cudaSetDevice(i);
 		

@@ -21,7 +21,7 @@ public:
   
   __host__ __device__ int getType(){return type;};
   
-  __host__ void hostToDevice();
+  __host__ void hostToDevice(int numGPUs);
 
 private:
   

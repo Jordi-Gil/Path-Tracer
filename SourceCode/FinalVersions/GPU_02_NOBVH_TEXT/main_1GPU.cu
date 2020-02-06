@@ -388,10 +388,10 @@ int main(int argc, char **argv) {
   cudaEventSynchronize(E0);
   
   for(int i = 0; i < size; i++){
-    h_objects[i].hostToDevice();
+    h_objects[i].hostToDevice(0);
   }
   
-  h_skybox->hostToDevice();
+  h_skybox->hostToDevice(0);
   
   cudaMemcpy(d_skybox, h_skybox, sizeof(Skybox), cudaMemcpyHostToDevice);
   checkCudaErrors(cudaGetLastError());

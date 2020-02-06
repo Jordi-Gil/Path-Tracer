@@ -20,7 +20,7 @@ public:
   __host__ __device__ Vector3 getCentroid();
   __host__ __device__ Material getMaterial();
   
-  __host__ void hostToDevice(){ mat_ptr.hostToDevice(); }
+  __host__ void hostToDevice(int numGPUs){ mat_ptr.hostToDevice(numGPUs); }
   
 private:
   
