@@ -11,7 +11,7 @@
 #include "HitableList.cuh"
 #include "filters.hh"
 
-#define STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_STATIC
 #include "stb_image.h"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -75,12 +75,12 @@ void help(){
   
 }
 
-void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, int &dist, int &nthreads, std::string &image, std::string &filename, int &numGPUs, bool &light, bool &random, bool &filter, int &diameter, float &gs, float &gr, const int count){
+void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, int &dist, int &nthreads, std::string &image, std::string &filename, int &numGPUs, bool &light, bool &random, bool &filter, int &diameter, float &gs, float &gr, bool &skybox, const int count){
   
   if(argc <= 1) error("Error usage. Use [-h] [--help] to see the usage.");
   
   nx = 1280; ny = 720; ns = 50; depth = 50; dist = 11; image = "random"; light = true; random = true;
-	filter = false; gs = 0; gr = 0; diameter = 11;
+	filter = false; gs = 0; gr = 0; diameter = 11; skybox = false;
   
   nthreads = 32; numGPUs = 1;
   
@@ -154,6 +154,11 @@ void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, in
       gs = atof(argv[i]);
       gr = atof(argv[i+1]);
     }
+    else if(std::string(argv[i]) == "-skybox") {
+      if((i+1) >= argc) error("-skybox value expected");
+      if(std::string(argv[i+1]) == "ON") skybox = true;
+      else if(std::string(argv[i+1]) == "OFF") skybox = false;
+    }
     else if(std::string(argv[i]) == "-h" || std::string(argv[i]) == "--help" ){
       help();
     }
@@ -204,16 +209,16 @@ void properties(){
   else std::cout << "GPU " << device << " (" << properties.name << ") does not support CUDA Dynamic Parallelism" << std::endl;
 }
 
-__device__ Vector3 color(const Ray& ray, HitableList **d_world, int depth, bool light, curandState *random){
+__device__ Vector3 color(const Ray& ray, HitableList **d_world, int depth, bool light, bool skybox, curandState *random/*, Skybox *sky*/){
   
   Ray cur_ray = ray;
   Vector3 cur_attenuation = Vector3(1.0,1.0,1.0);
   for(int i = 0; i < depth; i++){ 
     hit_record rec;
-    if( (*d_world)->checkCollision(cur_ray, 0.001, FLT_MAX, rec)) {
+    if( (*d_world)->checkCollision(cur_ray, 0.00001, FLT_MAX, rec)) {
       Ray scattered;
       Vector3 attenuation;
-      Vector3 emitted = rec.mat_ptr.emitted();
+      Vector3 emitted = rec.mat_ptr.emitted(rec.u, rec.v);
       if(rec.mat_ptr.scatter(cur_ray, rec, attenuation, scattered, random)){
         cur_attenuation *= attenuation;
         cur_attenuation += emitted;
@@ -222,13 +227,19 @@ __device__ Vector3 color(const Ray& ray, HitableList **d_world, int depth, bool 
       else return cur_attenuation * emitted;
     }
     else {
-      if(light) {
-        Vector3 unit_direction = unit_vector(cur_ray.direction());
-        float t = 0.5*(unit_direction.y() + 1.0);
-        Vector3 c = (1.0 - t)*Vector3::One() + t*Vector3(0.5, 0.7, 1.0);
-        return cur_attenuation * c;
+      /*
+      if(skybox && sky->hit(cur_ray, 0.00001, FLT_MAX, rec)){
+        return cur_attenuation * rec.mat_ptr.emitted(rec.u, rec.v);
       }
-      else return Vector3::Zero();
+      else {*/
+        if(light) {
+          Vector3 unit_direction = unit_vector(cur_ray.direction());
+          float t = 0.5*(unit_direction.y() + 1.0);
+          Vector3 c = (1.0 - t)*Vector3::One() + t*Vector3(0.5, 0.7, 1.0);
+          return cur_attenuation * c;
+        }
+        else return Vector3::Zero();
+      //}
     }
   }
   return Vector3::Zero();
@@ -251,12 +262,13 @@ __global__ void rand_init(curandState *random, int seed) {
 
 }
 
-__global__ void render_init(int max_x, int max_y, curandState *rand_state,unsigned long long seed) {
+__global__ void render_init(int max_x, int max_y, curandState *rand_state,unsigned long long seed, int minY, int maxY) {
   
   int num = blockIdx.x*blockDim.x + threadIdx.x;
   
   int i = num%max_x;
-  int j = num/max_x;
+  int j = num/max_x + minY
+  ;
   
   if( (i >= max_x) || (j >= max_y) ) return;
     
@@ -266,12 +278,12 @@ __global__ void render_init(int max_x, int max_y, curandState *rand_state,unsign
   
 }
 
-__global__ void render(Vector3 *fb, int max_x, int max_y, int ns, Camera **cam, HitableList **d_world, curandState *d_rand_state, int depth, bool light) {
+__global__ void render(Vector3 *fb, int max_x, int max_y, int ns, Camera **cam, HitableList **d_world, curandState *d_rand_state, int depth, bool light, bool skybox,/* Skybox *sky,*/ int minY, int maxY) {
 
   int num = blockIdx.x*blockDim.x + threadIdx.x;
  
   int i = num%max_x;
-  int j = num/max_x;
+  int j = num/max_x + minY;
 
   curandState local_random;
 
@@ -287,7 +299,7 @@ __global__ void render(Vector3 *fb, int max_x, int max_y, int ns, Camera **cam, 
     float v = float(j + Random) / float(max_y);
       
     Ray r = (*cam)->get_ray(u, v, &local_random);
-    col += color(r, d_world, depth, light, &local_random);
+    col += color(r, d_world, depth, light, skybox, &local_random/*, sky*/);
     
   }
 
@@ -316,17 +328,19 @@ int main(int argc, char **argv) {
   float totalTime;
 
   int nx, ny, ns, depth, dist, nthreads, numGPUs, diameter;
-  bool light, random, filter;
+  bool light, random, filter, skybox;
   float gs,gr;
   std::string filename, image;
 
-  parse_argv(argc, argv, nx, ny, ns, depth, dist, nthreads, image, filename, numGPUs, light, random, filter, diameter, gs, gr, 1);
+  parse_argv(argc, argv, nx, ny, ns, depth, dist, nthreads, image, filename, numGPUs, light, random, filter, diameter, gs, gr, skybox, 1);
 
   /* Seed for CUDA Random */
   unsigned long long int seed = 1000;
 
   /* #pixels of the image */
   int num_pixels = nx*ny;
+  int elementsToJump = num_pixels/numGPUs;
+	int bytesToJump = elementsToJump * sizeof(Vector3);
   int size = 0;
 
   /* Host variables */
@@ -334,6 +348,8 @@ int main(int argc, char **argv) {
   float drand_size = num_pixels*sizeof(curandState);
   float cam_size = sizeof(Camera*);
   float world_size = sizeof(HitableList*);
+  float ob_size = size*sizeof(Triangle);
+  float skyboxSize = sizeof(Skybox);
   Vector3 *h_frameBuffer;
 
   int blocks = (nx * ny)/(numGPUs * nthreads);
@@ -343,56 +359,111 @@ int main(int argc, char **argv) {
   if(random) scene.loadScene(RANDOM);
   else scene.loadScene(FFILE,filename);
   
-  Triangle *ob = scene.getObjects();
   size = scene.getSize();
-  float ob_size = size*sizeof(Triangle);
+  Camera cam = scene.getCamera();
   
   std::cout << "\nCreating " << image << " with (" << nx << "," << ny << ") pixels with " << nthreads << " threads, using " << numGPUs << " GPUs." << std::endl;
   std::cout << "With " << ns << " iterations for AntiAliasing and depth of " << depth << "." << std::endl;
   std::cout << "The world have " << size << " objects." << std::endl;
   if(light) std::cout << "Ambient light ON" << std::endl;
-  else std::cout << "Ambient light OFF" << std::endl;
+	else std::cout << "Ambient light OFF" << std::endl;
 
-  /* Device variables */
-  Vector3 *d_frameBuffer;
-  Triangle *d_objects;
-  Camera **d_cam;
-  HitableList **d_world;
-  curandState *d_rand_state;
+	/* Device variables */
+	Vector3 **d_frames = (Vector3 **) malloc(numGPUs * sizeof(Vector3));
+	Triangle **d_objectsGPUs = (Triangle **) malloc(numGPUs * sizeof(Triangle));
+	Camera ***d_cameras = (Camera ***) malloc(numGPUs * sizeof(Camera));
+	HitableList ***d_worlds = (HitableList ***) malloc(numGPUs * sizeof(HitableList));
+	curandState **d_randstates = (curandState **) malloc(numGPUs * sizeof(curandState));  
+	Skybox **d_skyboxes = (Skybox **) malloc(numGPUs * sizeof(Skybox));
   
-  /* Allocate Memory Host */
-  cudaMallocHost((Vector3**)&h_frameBuffer, fb_size);
-
-  /* Allocate memory on device */
-  cudaMallocManaged((void **)&d_frameBuffer, fb_size);
-  cudaMalloc((void **)&d_objects, ob_size);
-  cudaMalloc((void **)&d_world, world_size);
-  cudaMalloc((void **)&d_cam, cam_size);
-  cudaMalloc((void **)&d_rand_state, drand_size);
+  Triangle *h_objects = scene.getObjects();
+  //Skybox *h_skybox = scene.getSkybox();
+  
+  for(int j = 0; j < size; j++) {
+    h_objects->hostToDevice(0);
+  }
+  //h_skybox->hostToDevice(0);
   
   cudaEventRecord(E0,0);
   cudaEventSynchronize(E0);
   
-  cudaMemcpy(d_objects, scene.getObjects(), ob_size, cudaMemcpyHostToDevice);
-  checkCudaErrors(cudaGetLastError());
-  
-  setUpCameraWorld<<<1,1>>>(d_cam, nx, ny, d_world, d_objects, size, scene.getCamera());
-  checkCudaErrors( cudaGetLastError() );
-  
-  render_init<<<blocks, nthreads>>>(nx, ny, d_rand_state, seed);
-  checkCudaErrors(cudaGetLastError());
-  
-  render<<<blocks, nthreads>>>(d_frameBuffer, nx, ny, ns, d_cam, d_world, d_rand_state, depth, light);
-  checkCudaErrors(cudaGetLastError());
+  /* Allocate Memory Host */
+  cudaMallocHost((Vector3**)&h_frameBuffer, fb_size);
 
-  cudaMemcpy(h_frameBuffer, d_frameBuffer, fb_size, cudaMemcpyDeviceToHost);
-  checkCudaErrors(cudaGetLastError());
+	/* Allocate memory on device */
+  for(int i = 0; i < numGPUs; i++) {
+		
+	  cudaSetDevice(i);
 
+		Vector3 *d_frameBuffer;
+		Triangle *d_objects;
+		Camera **d_cam;
+		HitableList **d_world;
+		curandState *d_rand_state;
+		Skybox *d_skybox;
+		
+		cudaMalloc((void **)&d_frameBuffer, fb_size/numGPUs);
+		cudaMalloc((void **)&d_objects, ob_size);
+		cudaMalloc((void **)&d_world, world_size);
+		cudaMalloc((void **)&d_cam, cam_size);
+		cudaMalloc((void **)&d_rand_state, drand_size);
+		cudaMalloc((void **)&d_skybox, skyboxSize);
+		
+		d_frames[i] = d_frameBuffer;
+		d_objectsGPUs[i] = d_objects;
+		d_cameras[i] = d_cam;
+		d_worlds[i] = d_world;
+		d_randstates[i] = d_rand_state;
+		d_skyboxes[i] = d_skybox;
+	  
+  }
+  
+	for(int i = 0; i < numGPUs; i++) {
+	
+		cudaSetDevice(i);
+
+    cudaMemcpy(d_objectsGPUs[i], h_objects, ob_size, cudaMemcpyHostToDevice);
+    checkCudaErrors(cudaGetLastError());
+  
+    //cudaMemcpy(d_skyboxes[i], h_skybox, skyboxSize, cudaMemcpyHostToDevice);
+    //checkCudaErrors(cudaGetLastError());
+  
+  }
+  
+  for(int i = 0; i < numGPUs; i++) {
+		
+		cudaSetDevice(i);
+			
+		setUpCameraWorld<<<1,1>>>(d_cameras[i], nx, ny, d_worlds[i], d_objectsGPUs[i], size, cam);
+		checkCudaErrors( cudaGetLastError() );
+		
+		render_init<<<blocks, nthreads>>>(nx, ny, d_randstates[i], seed, i*(ny/numGPUs), (i+1)*(ny/numGPUs));
+		checkCudaErrors(cudaGetLastError());
+		
+		render<<<blocks, nthreads>>>(d_frames[i], nx, ny, ns, d_cameras[i], d_worlds[i], d_randstates[i], depth, light, skybox/*, d_skyboxes[i]*/, i*(ny/numGPUs), (i+1)*(ny/numGPUs));
+		checkCudaErrors(cudaGetLastError());
+			
+	}
+  
+	for(int i = 0; i < numGPUs; i++) {
+		
+		cudaSetDevice(i);
+		
+		cudaMemcpy(&h_frameBuffer[elementsToJump*i], d_frames[i], bytesToJump, cudaMemcpyDeviceToHost);
+		checkCudaErrors(cudaGetLastError());
+	
+	}
+	
+	for(int i = 0; i < numGPUs; i++){
+		cudaSetDevice(i);
+		cudaDeviceSynchronize();
+	}
+	
+	cudaSetDevice(0);
+	
   cudaEventRecord(E1,0);
   cudaEventSynchronize(E1);
-
   cudaEventElapsedTime(&totalTime,E0,E1);
-
   checkCudaErrors(cudaGetLastError());
   
   std::cout << "Total time: " << totalTime << " milisegs. " << std::endl;
@@ -418,7 +489,7 @@ int main(int argc, char **argv) {
   }
   
   stbi_write_png(image.c_str(), nx, ny, 3, data, nx*3);
-
+	
 	if(filter){
     std::cout << "Filtering image using bilateral filter with Gs = " << gs << " and Gr = " << gr << " and window of diameter " << diameter << std::endl;
     std::string filenameFiltered = image.substr(0, image.length()-4) + "_Filtered.png";
@@ -428,12 +499,17 @@ int main(int argc, char **argv) {
     bilateralFilter(diameter, sx, sy, imageData, imageFiltered, gs, gr);
     stbi_write_png(filenameFiltered.c_str(), sx, sy, 3, imageFiltered, sx*3);
   }
-	
-  cudaFree(d_cam);
-  cudaFree(d_world);
-  cudaFree(d_objects);
-  cudaFree(d_rand_state);
-  cudaFree(d_frameBuffer);
+
+  for(int i = 0; i < numGPUs; i++) {
+		cudaSetDevice(i);
+		
+		cudaFree(d_cameras[i]);
+		cudaFree(d_worlds[i]);
+		cudaFree(d_objectsGPUs[i]);
+		cudaFree(d_randstates[i]);
+		cudaFree(d_frames[i]);
+		cudaFree(d_skyboxes[i]);
+	}
 
   cudaEventDestroy(E0); 
   cudaEventDestroy(E1);
