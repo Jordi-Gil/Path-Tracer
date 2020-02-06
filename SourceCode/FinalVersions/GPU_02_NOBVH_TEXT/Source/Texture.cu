@@ -7,7 +7,6 @@ __host__ __device__ Texture::Texture(int t, const Vector3 &a, unsigned char *dat
   h_image = data;
   nx = sx;
   ny = sy;
-  size = nx*ny*3;
   flipHorizontal = _fH;
   flipVertical = _fV;
   flipUV = _flipUV;
@@ -52,9 +51,11 @@ __device__ Vector3 Texture::value(float u, float v){
 __host__ void Texture::hostToDevice(int numGPUs){
   
   if(type == IMAGE){
+    
+    cudaSetDevice(numGPUs);
 		
 		float size = sizeof(unsigned char) * nx * ny * 3;
-		cudaMallocManaged((void **)&d_image, size);
+		cudaMalloc((void **)&d_image, size);
 		assert(cudaMemcpy(d_image, h_image, size, cudaMemcpyHostToDevice) == cudaSuccess);
 		
   }

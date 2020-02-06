@@ -284,7 +284,7 @@ __global__ void render(Vector3 *fb, int max_x, int max_y, int ns, Camera **cam, 
  
   int i = num%max_x;
   int j = num/max_x + minY;
-
+  
   curandState local_random;
 
   int pixel_index = num;
@@ -364,7 +364,7 @@ int main(int argc, char **argv) {
 	Camera cam = scene.getCamera();
 	size = scene.getSize();
 	float ob_size = size*sizeof(Triangle);
-	float sky_size = size*sizeof(Skybox);
+	float sky_size = sizeof(Skybox);
 	
 	std::cout << "\nCreating " << image << " with (" << nx << "," << ny << ") pixels with " << nthreads << " threads, using " << numGPUs << " GPUs." << std::endl;
 	std::cout << "With " << ns << " iterations for AntiAliasing and depth of " << depth << "." << std::endl;
@@ -379,13 +379,13 @@ int main(int argc, char **argv) {
 	HitableList ***d_worlds = (HitableList ***) malloc(numGPUs * sizeof(HitableList));
 	curandState **d_randstates = (curandState **) malloc(numGPUs * sizeof(curandState));
 	Skybox **d_skyboxes = (Skybox **) malloc(numGPUs * sizeof(Skybox));
-	
+  
 	cudaEventRecord(E0,0);
 	cudaEventSynchronize(E0);
 	
 	/* Allocate Memory Host */
 	cudaMallocHost((Vector3**)&h_frameBuffer, fb_size);
-	
+  
 	/* Allocate memory on device */
 	for(int i = 0; i < numGPUs; i++) {
 		cudaSetDevice(i);
@@ -420,14 +420,14 @@ int main(int argc, char **argv) {
 		Skybox *sky = scene.getSkybox();
 	
 		sky->hostToDevice(i);
-		
+    
 		for(int j = 0; j < size; j++){
-			cudaMemcpy(ob[size].mat_ptr.albedo.d_image, &ob[size].mat_ptr.albedo.h_image, ob[size].mat_ptr.albedo.size * sizeof(unsigned char), cudaMemcpyHostToDevice);
+			ob[j].hostToDevice(i);
 		}
 		
 		cudaMemcpy(d_objectsGPUs[i], ob, ob_size, cudaMemcpyHostToDevice);
 		checkCudaErrors(cudaGetLastError());
-		
+    
 		cudaMemcpy(d_skyboxes[i], sky, sky_size, cudaMemcpyHostToDevice);
 		checkCudaErrors(cudaGetLastError());
 		
@@ -509,6 +509,7 @@ int main(int argc, char **argv) {
 		cudaFree(d_objectsGPUs[i]);
 		cudaFree(d_randstates[i]);
 		cudaFree(d_frames[i]);
+    cudaFree(d_skyboxes);
 		
 	}
 	
