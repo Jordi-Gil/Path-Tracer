@@ -1,5 +1,5 @@
-CUDA_HOME = /usr/local/cuda-10.1
-#CUDA_HOME = /Soft/cuda/9.0.176
+#CUDA_HOME = /usr/local/cuda-10.1
+CUDA_HOME = /Soft/cuda/9.0.176
 HOST_COMPILER = g++
 NVCC = $(CUDA_HOME)/bin/nvcc -ccbin $(HOST_COMPILER)
 NVCC_DBG = -g -G

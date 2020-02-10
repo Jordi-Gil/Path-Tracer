@@ -13,7 +13,7 @@ class Triangle {
 public:
     
   __host__ __device__ Triangle() {}
-  __host__ __device__ Triangle(Vector3 v1, Vector3 v2, Vector3 v3, Material mat, Vector3 t = Vector3::One());
+  __host__ __device__ Triangle(Vector3 v1, Vector3 v2, Vector3 v3, Material mat, int i = -1, Vector3 t = Vector3::One());
   __host__ __device__ bool hit(const Ray& r, float t_min, float t_max, hit_record& rec);
   
   __host__ __device__ void bounding_box(aabb& box);
@@ -27,6 +27,8 @@ public:
   __host__ __device__ void setMorton(long long code);
   __host__ __device__ aabb getBox();
   __host__ __device__ void resizeBoundingBox();
+
+	int id;
   
 private:
   
@@ -36,6 +38,7 @@ private:
   Vector3 uv;
   long long morton_code;
   aabb box;
+
   
 };
 

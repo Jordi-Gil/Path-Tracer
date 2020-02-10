@@ -77,7 +77,7 @@ __host__  void Obj::loadFromTXT(const std::string &filename) {
         else if(par == "DL") mat = loadMat(line.substr(line.find(par)+par.size()),DIFFUSE_LIGHT);
         
         cTri = 0;
-        triangles[count] = Triangle(tri[0],tri[1],tri[2],(materialB) ? material : mat);
+        triangles[count] = Triangle(tri[0],tri[1],tri[2],(materialB) ? material : mat, count);
         compare(max_l, min_l, tri[0]); compare(max_l, min_l, tri[1]); compare(max_l, min_l, tri[2]);
         ++count;
       }
@@ -144,7 +144,7 @@ __host__  void Obj::loadFromObj(const std::string &filename) {
       }
       
       for(int i = 1; i < face.size()-1; i++){
-        aux.push_back(Triangle(vertexs[face[0][0]-1],vertexs[face[i][0]-1],vertexs[face[i+1][0]-1],mat));
+        aux.push_back(Triangle(vertexs[face[0][0]-1],vertexs[face[i][0]-1],vertexs[face[i+1][0]-1],mat, aux.size()));
       }
     }
   }

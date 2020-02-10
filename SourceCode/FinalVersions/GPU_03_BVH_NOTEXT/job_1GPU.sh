@@ -7,10 +7,9 @@ export PATH=/Soft/cuda/8.0.61/bin:$PATH
 # Asegurar que el job mantiene las variables de entorno del shell lamador
 #$ -V
 # Cambiar el nombre del job
-#$ -N PathTracing_NGPUs
+#$ -N PathTracing_1GPU 
 # Cambiar el shell
 #$ -S /bin/bash
 
-./path_tracing_NGPUs -filter 11 15 6 -f cornell2 -depth 10 -light ON -sizeX 640 -sizeY 360 -nGPUs 1
-./path_tracing_NGPUs -filter 11 15 6 -f little -depth 10 -light ON -sizeX 640 -sizeY 360 -skybox ON -nGPUs 1
+./path_tracing_1GPU -filter 11 15 6 -f cornell -depth 10 -light ON -sizeX 640 -sizeY 360
 

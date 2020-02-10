@@ -111,7 +111,7 @@ Triangle loadTriangle(const std::string &line, int num) {
       else if(par == "DL") mat = loadMaterial(line.substr(line.find(par)+par.size()),DIFFUSE_LIGHT);
     }
   }
-  return Triangle(position[0],position[1],position[2], mat);
+  return Triangle(position[0],position[1],position[2], mat, num);
 }
 
 void print(Triangle *tl, int n){

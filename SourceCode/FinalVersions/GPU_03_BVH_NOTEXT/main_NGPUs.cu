@@ -180,19 +180,26 @@ void check_cuda(cudaError_t result, char const *const func, const char *const fi
   }
 }
 
-void properties(){
+void properties(int numGPUs){
     
-  std::cout << "GPU Info " << std::endl;
+	std::cout << "GPU Info " << std::endl;
 
-  cudaSetDevice(0);
-  int device;
+	for(int i = 0; i < numGPUs; i++)
+	{
+		cudaSetDevice(i);
+
+		
+		checkCudaErrors( cudaDeviceSetLimit( cudaLimitMallocHeapSize, 67108864 ) );
+		checkCudaErrors( cudaDeviceSetLimit( cudaLimitStackSize, 131072 ) );
+		
+	}
+
+	int device;
   cudaGetDevice(&device);
-
-  cudaDeviceProp properties;
-  checkCudaErrors( cudaDeviceSetLimit( cudaLimitMallocHeapSize, 67108864 ) );
-  checkCudaErrors( cudaDeviceSetLimit( cudaLimitStackSize, 131072 ) );
-  checkCudaErrors( cudaGetDeviceProperties( &properties, device ) );
-
+  
+	cudaDeviceProp properties;
+	checkCudaErrors( cudaGetDeviceProperties( &properties, device ) );
+	
   size_t limit1;
   checkCudaErrors( cudaDeviceGetLimit( &limit1, cudaLimitMallocHeapSize ) );
   size_t limit2;
@@ -357,12 +364,12 @@ __global__ void setupCamera(Camera **d_cam, int nx, int ny, Camera cam) {
   }
 }
 
-__global__ void render_init(int max_x, int max_y, curandState *rand_state,unsigned long long seed) {
+__global__ void render_init(int max_x, int max_y, curandState *rand_state,unsigned long long seed, int minY, int maxY) {
   
   int num = blockIdx.x*blockDim.x + threadIdx.x;
   
   int i = num%max_x;
-  int j = num/max_x;
+  int j = num/max_x + minY;
   
   if( (i >= max_x) || (j >= max_y) ) return;
     
@@ -376,6 +383,11 @@ __global__ void initLeafNodes(Node *leafNodes, int objs, Triangle *d_list) {
   int idx = blockIdx.x*blockDim.x + threadIdx.x;
   
   if(idx >= objs) return;
+  
+  int device;
+  cudaGetDevice(&device);
+  
+  //printf("IDX: %d, DEVICE: %d",idx,device);
   
   leafNodes[idx].obj = &d_list[idx];
   leafNodes[idx].box = d_list[idx].getBox();
@@ -454,12 +466,12 @@ __global__ void boundingBoxBVH(Node *d_internalNodes, Node *d_leafNodes, int obj
   }
 }
 
-__global__ void render(Vector3 *fb, int max_x, int max_y, int ns, Camera **cam, Node *world, curandState *d_rand_state, int depth, bool light) {
+__global__ void render(Vector3 *fb, int max_x, int max_y, int ns, Camera **cam, Node *world, curandState *d_rand_state, int depth, bool light, int minY, int maxY) {
 
   int num = blockIdx.x*blockDim.x + threadIdx.x;
 
   int i = num%max_x;
-  int j = num/max_x;
+  int j = num/max_x + minY;
 
   curandState local_random;
 
@@ -493,26 +505,27 @@ int main(int argc, char **argv) {
     
   cudaDeviceReset();
 
-  properties();
-
-  cudaEvent_t E0, E1;
-  cudaEventCreate(&E0); 
-  cudaEventCreate(&E1);
-
   float totalTime;
 
   int nx, ny, ns, depth, dist, nthreads, numGPUs, diameter;
   bool light, random, filter;
   float gs,gr;
   std::string filename, image;
+  int count;
 
-  parse_argv(argc, argv, nx, ny, ns, depth, dist, nthreads, image, filename, numGPUs, light, random, filter, diameter, gs, gr, 1);
+	checkCudaErrors(cudaGetDeviceCount(&count));
 
+  parse_argv(argc, argv, nx, ny, ns, depth, dist, nthreads, image, filename, numGPUs, light, random, filter, diameter, gs, gr, count);
+	
+	properties(numGPUs);
+	
   /* Seed for CUDA cuRandom */
   unsigned long long int seed = 1000;
 
   /* #pixels of the image */
   int num_pixels = nx*ny;
+  int elementsToJump = num_pixels/numGPUs;
+	int bytesToJump = elementsToJump * sizeof(Vector3);
   int size = 0;
 
   /* Host variables */
@@ -529,13 +542,12 @@ int main(int argc, char **argv) {
   else scene.loadScene(FFILE,filename);
 	
 	Triangle *ob = scene.getObjects();
+	Camera cam = scene.getCamera();
 	size = scene.getSize();
 	
   float ob_size = size*sizeof(Triangle);
-
-  int threads = nthreads;
-  while(size < threads) threads /= 2;
-  int blocks2 = (size+threads-1)/(numGPUs * threads);
+  
+  int blocks2 = (size+nthreads-1)/(nthreads);
   
   std::cout << "Creating " << image << " with (" << nx << "," << ny << ") pixels with " << nthreads << " threads, using " << numGPUs << " GPUs." << std::endl;
   std::cout << "With " << ns << " iterations for AntiAliasing and depth of " << depth << "." << std::endl;
@@ -544,59 +556,115 @@ int main(int argc, char **argv) {
   else std::cout << "Ambient light OFF" << std::endl;
 
   /* Device variables */
-  Vector3 *d_frameBuffer;
-  Triangle *d_objects;
-  Camera **d_cam;
-  curandState *d_rand_state;
-  Node *d_internalNodes;
-  Node *d_leafNodes;
-  int *d_nodeCounter;
+  Vector3 **d_frames = (Vector3 **) malloc(numGPUs * sizeof(Vector3));
+  Triangle **d_objectsGPUs = (Triangle **) malloc(numGPUs * sizeof(Triangle));
+  Camera ***d_cameras = (Camera ***) malloc(numGPUs * sizeof(Camera));
+  curandState **d_randstates = (curandState **) malloc(numGPUs * sizeof(curandState));
+  Node **d_internalNodes = (Node **) malloc(numGPUs * sizeof(Node));
+  Node **d_leafNodes = (Node **) malloc(numGPUs * sizeof(Node));
+  int **d_nodeCounters = (int **) malloc(numGPUs * sizeof(int));
+  
 
   float internal_size = (size-1)*sizeof(Node);
   float leaves_size = size*sizeof(Node);
   
+  Node *h_leaves;
+
+	cudaSetDevice(0);
+	  
   /* Allocate Memory Host */
   cudaMallocHost((Vector3**)&h_frameBuffer, fb_size);
+	cudaMallocHost((Node **) &h_leaves, leaves_size);
 
   /* Allocate memory on Device */
-  cudaMallocManaged((void **)&d_frameBuffer, fb_size);
-  cudaMalloc((void **)&d_objects, ob_size);
-  cudaMalloc((void **)&d_cam, cam_size);
-  cudaMalloc((void **)&d_rand_state, drand_size);
-  cudaMalloc((void **)&d_internalNodes, internal_size);
-  cudaMalloc((void **)&d_leafNodes, leaves_size);
-  cudaMalloc((void **)&d_nodeCounter, sizeof(int)*size);
-  cudaMemset(d_nodeCounter, 0, sizeof(int)*size);
+	
+	cudaEvent_t E0, E1;
+  cudaEventCreate(&E0); 
+  cudaEventCreate(&E1);
 
   cudaEventRecord(E0,0);
   cudaEventSynchronize(E0);
 
-  cudaMemcpy(d_objects, scene.getObjects(), ob_size, cudaMemcpyHostToDevice);
-  checkCudaErrors(cudaGetLastError());
-  
-  setupCamera<<<1,1>>>(d_cam,nx,ny, scene.getCamera());
-  checkCudaErrors(cudaGetLastError());
+	for(int i = 0; i < numGPUs; i++) {
+		
+		cudaSetDevice(i);
+		
+		Vector3 *d_frameBuffer;
+		Triangle *d_objects;
+		Camera **d_cam;
+		curandState *d_rand_state;
+		Node *d_internalNode;
+		Node *d_leafNode;
+		int *d_nodeCounter;
+		
+		cudaMalloc((void **)&d_frameBuffer, fb_size);
+		cudaMalloc((void **)&d_objects, ob_size);
+		cudaMalloc((void **)&d_cam, cam_size);
+		cudaMalloc((void **)&d_rand_state, drand_size);
+		cudaMalloc((void **)&d_internalNode, internal_size);
+		cudaMalloc((void **)&d_leafNode, leaves_size);
+		cudaMalloc((void **)&d_nodeCounter, sizeof(int)*size);
+		cudaMemset(d_nodeCounter, 0, sizeof(int)*size);
+		cudaMemset(d_frameBuffer, 0, ob_size);
+		
+		d_frames[i] = d_frameBuffer;
+		d_objectsGPUs[i] = d_objects;
+		d_cameras[i] = d_cam;
+		d_randstates[i] = d_rand_state;
+		d_internalNodes[i] = d_internalNode;
+		d_leafNodes[i] = d_leafNode;
+		d_nodeCounters[i] = d_nodeCounter;
+		
+	}
+	
+	for(int i = 0; i < numGPUs; i++) {
+		cudaSetDevice(i);
+		
+		cudaMemcpy(d_objectsGPUs[i], ob, ob_size, cudaMemcpyHostToDevice);
+		checkCudaErrors(cudaGetLastError());
+		
+		
+	}
+	
+	for(int i = 0; i < numGPUs; i++) {
+		cudaSetDevice(i);
+		
+		setupCamera<<<1,1>>>(d_cameras[i],nx,ny, cam);
+		checkCudaErrors(cudaGetLastError());
 
-  render_init<<<blocks, nthreads>>>(nx, ny, d_rand_state, seed);
-  checkCudaErrors(cudaGetLastError());
-  
-  initLeafNodes<<<blocks2,threads>>>(d_leafNodes, size, d_objects);
-  checkCudaErrors(cudaGetLastError());
-  
-  constructBVH<<<blocks2,threads>>>(d_internalNodes, d_leafNodes, size-1, d_objects);
-  checkCudaErrors(cudaGetLastError());
- 
-  boundingBoxBVH<<<blocks2,threads>>>(d_internalNodes, d_leafNodes, size, d_nodeCounter);
-  checkCudaErrors(cudaGetLastError());
-  
-  render<<<blocks, nthreads>>>(d_frameBuffer, nx, ny, ns, d_cam, d_internalNodes, d_rand_state, depth, light);
-  checkCudaErrors(cudaGetLastError());
-
+		render_init<<<blocks, nthreads>>>(nx, ny, d_randstates[i], seed, i*(ny/numGPUs), (i+1)*(ny/numGPUs));
+		checkCudaErrors(cudaGetLastError());
+		
+		initLeafNodes<<<blocks2,nthreads>>>(d_leafNodes[i], size, d_objectsGPUs[i]);
+		checkCudaErrors(cudaGetLastError());
+		
+		constructBVH<<<blocks2,nthreads>>>(d_internalNodes[i], d_leafNodes[i], size-1, d_objectsGPUs[i]);
+		checkCudaErrors(cudaGetLastError());
+	 
+		boundingBoxBVH<<<blocks2,nthreads>>>(d_internalNodes[i], d_leafNodes[i], size, d_nodeCounters[i]);
+		checkCudaErrors(cudaGetLastError());
+		
+		render<<<blocks, nthreads>>>(d_frames[i], nx, ny, ns, d_cameras[i], d_internalNodes[i], d_randstates[i], depth, light, i*(ny/numGPUs), (i+1)*(ny/numGPUs));
+		checkCudaErrors(cudaGetLastError());
+	}
+	
   /* Copiamos del Device al Host*/
 
-  cudaMemcpy(h_frameBuffer, d_frameBuffer, fb_size, cudaMemcpyDeviceToHost);
-  checkCudaErrors(cudaGetLastError());
+	for(int i = 0; i < numGPUs; i++) {
+
+		cudaSetDevice(i);
   
+		cudaMemcpyAsync(&h_frameBuffer[elementsToJump*i], d_frames[i], bytesToJump, cudaMemcpyDeviceToHost);
+		checkCudaErrors(cudaGetLastError());
+		
+  }
+  
+  for(int i = 0; i < numGPUs; i++){
+		cudaSetDevice(i);
+		cudaDeviceSynchronize();
+	}
+  
+  cudaSetDevice(0);
   cudaEventRecord(E1,0);
   checkCudaErrors(cudaGetLastError());
 
@@ -610,7 +678,7 @@ int main(int argc, char **argv) {
 
   std::cout << "Generating file image..." << std::endl;
   uint8_t *data = new uint8_t[nx*ny*3];
-  int count = 0;
+  count = 0;
   for(int j = ny-1; j >= 0; j--){
     for(int i = 0; i < nx; i++){
 
@@ -639,15 +707,10 @@ int main(int argc, char **argv) {
     bilateralFilter(diameter, sx, sy, imageData, imageFiltered, gs, gr);
     stbi_write_png(filenameFiltered.c_str(), sx, sy, 3, imageFiltered, sx*3);
   }
-	
-  cudaFree(d_cam);
-  cudaFree(d_objects);
-  cudaFree(d_rand_state);
-  cudaFree(d_frameBuffer);
-  cudaFree(d_nodeCounter);
-  cudaFree(d_leafNodes);
-  cudaFree(d_internalNodes);
   
+  std::cout << "Destroy events" << std::endl;
+  
+  cudaSetDevice(0);
   cudaEventDestroy(E0);
   cudaEventDestroy(E1);
   
