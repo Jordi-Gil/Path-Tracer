@@ -586,10 +586,10 @@ int main(int argc, char **argv) {
   cudaMalloc((void **)&d_skybox, sizeof(Skybox));
 
   for(int i = 0; i < size; i++){
-    h_objects[i].hostToDevice();
+    h_objects[i].hostToDevice(0);
   }
   
-  h_skybox->hostToDevice();
+  h_skybox->hostToDevice(0);
   
   cudaEventRecord(E0,0);
   cudaEventSynchronize(E0);

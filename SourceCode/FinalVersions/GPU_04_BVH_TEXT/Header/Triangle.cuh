@@ -28,7 +28,7 @@ public:
   __host__ __device__ aabb getBox();
   __host__ __device__ void resizeBoundingBox();
   
-  __host__ void hostToDevice(){ mat_ptr.hostToDevice(); }
+  __host__ void hostToDevice(int numGPUs){ mat_ptr.hostToDevice(numGPUs); }
   
 private:
   

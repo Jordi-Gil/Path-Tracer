@@ -509,7 +509,7 @@ int main(int argc, char **argv) {
 		cudaFree(d_objectsGPUs[i]);
 		cudaFree(d_randstates[i]);
 		cudaFree(d_frames[i]);
-    cudaFree(d_skyboxes);
+    cudaFree(d_skyboxes[i]);
 		
 	}
 	

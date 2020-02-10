@@ -19,7 +19,7 @@ public:
   __host__ __device__ Vector3 value(float u, float v);
   __host__ __device__ Vector3 imValue(float u, float v);
   
-  __host__ void hostToDevice();
+  __host__ void hostToDevice(int numGPUs);
 
 private:
   

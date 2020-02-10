@@ -17,7 +17,7 @@
 #include "Node.cuh"
 #include "filters.hh"
 
-#define STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_STATIC
 #include "stb_image.h"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -81,12 +81,12 @@ void help(){
   
 }
 
-void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, int &dist, int &nthreads, std::string &image, std::string &filename, int &numGPUs, bool &light, bool &random, bool &filter, int &diameter, float &gs, float &gr, const int count){
+void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, int &dist, int &nthreads, std::string &image, std::string &filename, int &numGPUs, bool &light, bool &random, bool &filter, int &diameter, float &gs, float &gr, bool &skybox, const int count){
   
   if(argc <= 1) error("Error usage. Use [-h] [--help] to see the usage.");
   
   nx = 1280; ny = 720; ns = 50; depth = 50; dist = 11; image = "random"; light = true; random = true;
-	filter = false; gs = 0; gr = 0; diameter = 11;
+	filter = false; gs = 0; gr = 0; diameter = 11; skybox = false;
   
   nthreads = 32; numGPUs = 1;
   
@@ -160,6 +160,11 @@ void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, in
       gs = atof(argv[i]);
       gr = atof(argv[i+1]);
     }
+    else if(std::string(argv[i]) == "-skybox") {
+      if((i+1) >= argc) error("-skybox value expected");
+      if(std::string(argv[i+1]) == "ON") skybox = true;
+      else if(std::string(argv[i+1]) == "OFF") skybox = false;
+    }
     else if(std::string(argv[i]) == "-h" || std::string(argv[i]) == "--help" ){
       help();
     }
@@ -182,24 +187,19 @@ void check_cuda(cudaError_t result, char const *const func, const char *const fi
 
 void properties(int numGPUs){
     
-	std::cout << "GPU Info " << std::endl;
+  std::cout << "GPU Info " << std::endl;
 
-	for(int i = 0; i < numGPUs; i++)
-	{
+	for(int i = 0; i < numGPUs; i++) {
 		cudaSetDevice(i);
-
-		
 		checkCudaErrors( cudaDeviceSetLimit( cudaLimitMallocHeapSize, 67108864 ) );
 		checkCudaErrors( cudaDeviceSetLimit( cudaLimitStackSize, 131072 ) );
-		
 	}
 
 	int device;
   cudaGetDevice(&device);
-  
 	cudaDeviceProp properties;
-	checkCudaErrors( cudaGetDeviceProperties( &properties, device ) );
-	
+  checkCudaErrors( cudaGetDeviceProperties( &properties, device ) );
+
   size_t limit1;
   checkCudaErrors( cudaDeviceGetLimit( &limit1, cudaLimitMallocHeapSize ) );
   size_t limit2;
@@ -217,7 +217,7 @@ void properties(int numGPUs){
   else std::cout << "GPU " << device << " (" << properties.name << ") does not support CUDA Dynamic Parallelism" << std::endl;
 }
 
-__device__ Vector3 color(const Ray& ray, Node *world, int depth, bool light, curandState *random){
+__device__ Vector3 color(const Ray& ray, Node *world, int depth, bool light, bool skybox, curandState *random, Skybox *sky){
   
   Ray cur_ray = ray;
   Vector3 cur_attenuation = Vector3::One();
@@ -226,7 +226,7 @@ __device__ Vector3 color(const Ray& ray, Node *world, int depth, bool light, cur
     if( world->checkCollision(cur_ray, 0.001, FLT_MAX, rec) ) {
       Ray scattered;
       Vector3 attenuation;
-      Vector3 emitted = rec.mat_ptr.emitted();
+      Vector3 emitted = rec.mat_ptr.emitted(rec.u, rec.v);
       if(rec.mat_ptr.scatter(cur_ray, rec, attenuation, scattered, random)){
         cur_attenuation *= attenuation;
         cur_attenuation += emitted;
@@ -235,13 +235,18 @@ __device__ Vector3 color(const Ray& ray, Node *world, int depth, bool light, cur
       else return cur_attenuation * emitted;
     }
     else {
-      if(light) {
-        Vector3 unit_direction = unit_vector(cur_ray.direction());
-        float t = 0.5*(unit_direction.y() + 1.0);
-        Vector3 c = (1.0 - t)*Vector3::One() + t*Vector3(0.5, 0.7, 1.0);
-        return cur_attenuation * c;
+      if(skybox && sky->hit(cur_ray, 0.00001, FLT_MAX, rec)){
+        return cur_attenuation * rec.mat_ptr.emitted(rec.u, rec.v);
       }
-      else return Vector3::Zero();
+      else {
+        if(light) {
+          Vector3 unit_direction = unit_vector(cur_ray.direction());
+          float t = 0.5*(unit_direction.y() + 1.0);
+          Vector3 c = (1.0 - t)*Vector3::One() + t*Vector3(0.5, 0.7, 1.0);
+          return cur_attenuation * c;
+        }
+        else return Vector3::Zero();
+      }
     }
   }
   return Vector3::Zero();
@@ -384,11 +389,6 @@ __global__ void initLeafNodes(Node *leafNodes, int objs, Triangle *d_list) {
   
   if(idx >= objs) return;
   
-  int device;
-  cudaGetDevice(&device);
-  
-  //printf("IDX: %d, DEVICE: %d",idx,device);
-  
   leafNodes[idx].obj = &d_list[idx];
   leafNodes[idx].box = d_list[idx].getBox();
 	
@@ -466,7 +466,7 @@ __global__ void boundingBoxBVH(Node *d_internalNodes, Node *d_leafNodes, int obj
   }
 }
 
-__global__ void render(Vector3 *fb, int max_x, int max_y, int ns, Camera **cam, Node *world, curandState *d_rand_state, int depth, bool light, int minY, int maxY) {
+__global__ void render(Vector3 *fb, int max_x, int max_y, int ns, Camera **cam, Node *world, curandState *d_rand_state, int depth, bool light, bool skybox, Skybox *sky, int minY, int maxY) {
 
   int num = blockIdx.x*blockDim.x + threadIdx.x;
 
@@ -487,7 +487,7 @@ __global__ void render(Vector3 *fb, int max_x, int max_y, int ns, Camera **cam, 
     float v = float(j + cuRandom) / float(max_y);
       
     Ray r = (*cam)->get_ray(u, v, &local_random);
-    col += color(r, world, depth, light, &local_random);
+    col += color(r, world, depth, light, skybox, &local_random, sky);
   }
     
   d_rand_state[pixel_index] = local_random;
@@ -508,17 +508,14 @@ int main(int argc, char **argv) {
   float totalTime;
 
   int nx, ny, ns, depth, dist, nthreads, numGPUs, diameter;
-  bool light, random, filter;
+  bool light, random, filter, skybox;
   float gs,gr;
   std::string filename, image;
-  int count;
 
-	checkCudaErrors(cudaGetDeviceCount(&count));
+  parse_argv(argc, argv, nx, ny, ns, depth, dist, nthreads, image, filename, numGPUs, light, random, filter, diameter, gs, gr, skybox, 1);
+  
+  properties(numGPUs);
 
-  parse_argv(argc, argv, nx, ny, ns, depth, dist, nthreads, image, filename, numGPUs, light, random, filter, diameter, gs, gr, count);
-	
-	properties(numGPUs);
-	
   /* Seed for CUDA cuRandom */
   unsigned long long int seed = 1000;
 
@@ -541,11 +538,11 @@ int main(int argc, char **argv) {
   if(random) scene.loadScene(TRIANGL);
   else scene.loadScene(FFILE,filename);
 	
-	Triangle *ob = scene.getObjects();
 	Camera cam = scene.getCamera();
 	size = scene.getSize();
 	
   float ob_size = size*sizeof(Triangle);
+  float sky_size = sizeof(Skybox);
   int blocks2 = (size+nthreads-1)/(nthreads);
   
   std::cout << "Creating " << image << " with (" << nx << "," << ny << ") pixels with " << nthreads << " threads, using " << numGPUs << " GPUs." << std::endl;
@@ -562,13 +559,13 @@ int main(int argc, char **argv) {
   Node **d_internalNodes = (Node **) malloc(numGPUs * sizeof(Node));
   Node **d_leafNodes = (Node **) malloc(numGPUs * sizeof(Node));
   int **d_nodeCounters = (int **) malloc(numGPUs * sizeof(int));
-  
+  Skybox **d_skyboxes = (Skybox **) malloc(numGPUs * sizeof(Skybox));
 
   float internal_size = (size-1)*sizeof(Node);
   float leaves_size = size*sizeof(Node);
   
 	cudaSetDevice(0);
-	  
+  
   /* Allocate Memory Host */
   cudaMallocHost((Vector3**)&h_frameBuffer, fb_size);
 
@@ -577,11 +574,12 @@ int main(int argc, char **argv) {
 	cudaEvent_t E0, E1;
   cudaEventCreate(&E0); 
   cudaEventCreate(&E1);
-
+  
   cudaEventRecord(E0,0);
   cudaEventSynchronize(E0);
 
-	for(int i = 0; i < numGPUs; i++) {
+  /* Allocate memory on Device */
+  for(int i = 0; i < numGPUs; i++) {
 		
 		cudaSetDevice(i);
 		
@@ -589,39 +587,56 @@ int main(int argc, char **argv) {
 		Triangle *d_objects;
 		Camera **d_cam;
 		curandState *d_rand_state;
-		Node *d_internalNode;
-		Node *d_leafNode;
+		Node *d_internals;
+		Node *d_leaves;
 		int *d_nodeCounter;
+		Skybox *d_skybox;
 		
-		cudaMalloc((void **)&d_frameBuffer, fb_size);
+		cudaMallocManaged((void **)&d_frameBuffer, fb_size);
 		cudaMalloc((void **)&d_objects, ob_size);
 		cudaMalloc((void **)&d_cam, cam_size);
 		cudaMalloc((void **)&d_rand_state, drand_size);
-		cudaMalloc((void **)&d_internalNode, internal_size);
-		cudaMalloc((void **)&d_leafNode, leaves_size);
+		cudaMalloc((void **)&d_internals, internal_size);
+		cudaMalloc((void **)&d_leaves, leaves_size);
 		cudaMalloc((void **)&d_nodeCounter, sizeof(int)*size);
+		cudaMalloc((void **)&d_skybox, sizeof(Skybox));
 		cudaMemset(d_nodeCounter, 0, sizeof(int)*size);
-		cudaMemset(d_frameBuffer, 0, ob_size);
+		cudaMemset(d_frameBuffer, 0, fb_size);
 		
 		d_frames[i] = d_frameBuffer;
 		d_objectsGPUs[i] = d_objects;
 		d_cameras[i] = d_cam;
 		d_randstates[i] = d_rand_state;
-		d_internalNodes[i] = d_internalNode;
-		d_leafNodes[i] = d_leafNode;
+		d_internalNodes[i] = d_internals;
+		d_leafNodes[i] = d_leaves;
 		d_nodeCounters[i] = d_nodeCounter;
+		d_skyboxes[i] = d_skybox;
 		
 	}
 	
 	for(int i = 0; i < numGPUs; i++) {
+	
 		cudaSetDevice(i);
+		
+		Triangle *ob = scene.getObjects();
+		Skybox *sky = scene.getSkybox();
+	
+		sky->hostToDevice(i);
+    
+		for(int j = 0; j < size; j++){
+			ob[j].hostToDevice(i);
+		}
 		
 		cudaMemcpy(d_objectsGPUs[i], ob, ob_size, cudaMemcpyHostToDevice);
 		checkCudaErrors(cudaGetLastError());
+    
+		cudaMemcpy(d_skyboxes[i], sky, sky_size, cudaMemcpyHostToDevice);
+		checkCudaErrors(cudaGetLastError());
 		
 	}
-	
+  
 	for(int i = 0; i < numGPUs; i++) {
+		
 		cudaSetDevice(i);
 		
 		setupCamera<<<1,1>>>(d_cameras[i],nx,ny, cam);
@@ -630,36 +645,40 @@ int main(int argc, char **argv) {
 		render_init<<<blocks, nthreads>>>(nx, ny, d_randstates[i], seed, i*(ny/numGPUs), (i+1)*(ny/numGPUs));
 		checkCudaErrors(cudaGetLastError());
 		
-		initLeafNodes<<<blocks2,nthreads>>>(d_leafNodes[i], size, d_objectsGPUs[i]);
+		initLeafNodes<<<blocks2, nthreads>>>(d_leafNodes[i], size, d_objectsGPUs[i]);
 		checkCudaErrors(cudaGetLastError());
 		
-		constructBVH<<<blocks2,nthreads>>>(d_internalNodes[i], d_leafNodes[i], size-1, d_objectsGPUs[i]);
+		constructBVH<<<blocks2, nthreads>>>(d_internalNodes[i], d_leafNodes[i], size-1, d_objectsGPUs[i]);
 		checkCudaErrors(cudaGetLastError());
 	 
-		boundingBoxBVH<<<blocks2,nthreads>>>(d_internalNodes[i], d_leafNodes[i], size, d_nodeCounters[i]);
+		boundingBoxBVH<<<blocks2, nthreads>>>(d_internalNodes[i], d_leafNodes[i], size, d_nodeCounters[i]);
 		checkCudaErrors(cudaGetLastError());
 		
-		render<<<blocks, nthreads>>>(d_frames[i], nx, ny, ns, d_cameras[i], d_internalNodes[i], d_randstates[i], depth, light, i*(ny/numGPUs), (i+1)*(ny/numGPUs));
+		render<<<blocks, nthreads>>>(d_frames[i], nx, ny, ns, d_cameras[i], d_internalNodes[i], d_randstates[i], depth, light, skybox, d_skyboxes[i], i*(ny/numGPUs), (i+1)*(ny/numGPUs));
 		checkCudaErrors(cudaGetLastError());
+		
 	}
 	
   /* Copiamos del Device al Host*/
-
-	for(int i = 0; i < numGPUs; i++) {
-
-		cudaSetDevice(i);
   
+  for(int i = 0; i < numGPUs; i++) {
+		
+		cudaSetDevice(i);
+		
 		cudaMemcpyAsync(&h_frameBuffer[elementsToJump*i], d_frames[i], bytesToJump, cudaMemcpyDeviceToHost);
 		checkCudaErrors(cudaGetLastError());
 		
   }
   
   for(int i = 0; i < numGPUs; i++){
+		
 		cudaSetDevice(i);
 		cudaDeviceSynchronize();
+		
 	}
   
   cudaSetDevice(0);
+  
   cudaEventRecord(E1,0);
   checkCudaErrors(cudaGetLastError());
 
@@ -673,7 +692,7 @@ int main(int argc, char **argv) {
 
   std::cout << "Generating file image..." << std::endl;
   uint8_t *data = new uint8_t[nx*ny*3];
-  count = 0;
+  int count = 0;
   for(int j = ny-1; j >= 0; j--){
     for(int i = 0; i < nx; i++){
 
@@ -685,14 +704,14 @@ int main(int argc, char **argv) {
       int ig = int(255.99*col.g());
       int ib = int(255.99*col.b());
 
-			data[count++] = ir;
+      data[count++] = ir;
       data[count++] = ig;
       data[count++] = ib;
     }
   }
   
   stbi_write_png(image.c_str(), nx, ny, 3, data, nx*3);
-  
+	
 	if(filter){
     std::cout << "Filtering image using bilateral filter with Gs = " << gs << " and Gr = " << gr << " and window of diameter " << diameter << std::endl;
     std::string filenameFiltered = image.substr(0, image.length()-4) + "_Filtered.png";
@@ -703,9 +722,20 @@ int main(int argc, char **argv) {
     stbi_write_png(filenameFiltered.c_str(), sx, sy, 3, imageFiltered, sx*3);
   }
   
-  std::cout << "Destroy events" << std::endl;
+	
+	for(int i = 0; i < numGPUs; i++) {
+		cudaSetDevice(i);
+		
+		cudaFree(d_cameras[i]);
+		cudaFree(d_objectsGPUs[i]);
+		cudaFree(d_randstates[i]);
+		cudaFree(d_frames[i]);
+    cudaFree(d_skyboxes[i]);
+    cudaFree(d_leafNodes[i]);
+		cudaFree(d_internalNodes[i]);
+		
+	}
   
-  cudaSetDevice(0);
   cudaEventDestroy(E0);
   cudaEventDestroy(E1);
   

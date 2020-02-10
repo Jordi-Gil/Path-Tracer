@@ -88,7 +88,7 @@ public:
     
   }
   
-  __host__ void hostToDevice(){ mat.hostToDevice(); }
+  __host__ void hostToDevice(int numGPUs){ mat.hostToDevice(numGPUs); }
   
 private:
   
@@ -108,8 +108,8 @@ public:
   void load(const std::string &dir);
   __device__ bool hit(const Ray& r, float t_min, float t_max, hit_record& rec);
   
-  __host__ void hostToDevice(){ 
-    for(int i = 0; i < 6; i++) list[i].hostToDevice();
+  __host__ void hostToDevice(int numGPUs){ 
+    for(int i = 0; i < 6; i++) list[i].hostToDevice(numGPUs);
   }
   
 private:
