@@ -1,5 +1,5 @@
 #!/bin/bash
-export PATH=/Soft/cuda/8.0.61/bin:$PATH
+#export PATH=/Soft/cuda/8.0.61/bin:$PATH
 
 ### Directivas para el gestor de colas
 # Asegurar que el job se ejecuta en el directorio actual

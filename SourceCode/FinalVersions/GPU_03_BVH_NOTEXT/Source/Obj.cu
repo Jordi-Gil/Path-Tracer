@@ -39,7 +39,7 @@ __host__  Vector3 loadVector3(const std::string &line){
 
 __host__  void Obj::loadFromTXT(const std::string &filename) {
   
-  std::ifstream file("Models/"+filename);
+  std::ifstream file("../Resources/Models/TRI/"+filename);
   if(file.fail()) throw std::runtime_error("Something goes wrong");
   
   std::string line;
@@ -90,7 +90,7 @@ __host__  void Obj::loadFromTXT(const std::string &filename) {
 
 __host__  void Obj::loadFromObj(const std::string &filename) {
   
-  std::ifstream file("Models/"+filename);
+  std::ifstream file("../Resources/Models/OBJ/"+filename);
   if(file.fail()) throw std::runtime_error("Something goes wrong");
   
   std::string line;

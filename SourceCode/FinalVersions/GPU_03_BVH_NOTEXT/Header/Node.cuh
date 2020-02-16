@@ -20,6 +20,7 @@ public:
     //Sphere *obj; //Null if is an internal node, Object if is a Leaf
 		Triangle *obj;
     aabb box;
+    bool boxB = false;
 
 };
 

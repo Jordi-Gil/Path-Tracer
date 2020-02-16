@@ -240,17 +240,34 @@ __device__ Vector3 color(const Ray& ray, Node *world, int depth, bool light, cur
   return Vector3::Zero();
 }
 
+__device__ int LongestCommonPrefix(int i, int j, int numObjects, Triangle *d_list) {
+  
+  if(i < 0 or i > numObjects - 1 or j < 0 or j > numObjects - 1) return -1;
+  
+  int codeI = d_list[i].getMorton();
+  int codeJ = d_list[j].getMorton();
+  
+  if(i == j) {
+    printf("Equals Longest\n");
+    return __clz(codeI ^ codeJ);
+  }
+  else return __clz(codeI ^ codeJ);
+  
+}
+
 __device__ unsigned int findSplit(Triangle *d_list, int first, int last) {
     
-    long long firstCode = d_list[first].getMorton();
-    long long lastCode = d_list[last].getMorton();
     
-    if(firstCode == lastCode)
-        return (first + last) >> 1;
-     
+    if(first == last){
+      return -1;
+    }
+    
+    int firstCode = d_list[first].getMorton();
+    int lastCode = d_list[last].getMorton();
+    
     int commonPrefix = __clz(firstCode ^ lastCode);
-    int split = first;
     
+    int split = first;
     int step = last - first;
     
     do {
@@ -259,7 +276,7 @@ __device__ unsigned int findSplit(Triangle *d_list, int first, int last) {
         
         if(newSplit < last){
       
-            long long splitCode = d_list[newSplit].getMorton();
+            int splitCode = d_list[newSplit].getMorton();
             
             int splitPrefix = __clz(firstCode ^ splitCode);
       
@@ -276,79 +293,33 @@ __device__ unsigned int findSplit(Triangle *d_list, int first, int last) {
 }
 
 __device__ int2 determineRange(Triangle *d_list, int idx, int objs) {
+
+  
+    int d =  LongestCommonPrefix(idx, idx + 1, objs, d_list) - 
+             LongestCommonPrefix(idx, idx - 1, objs, d_list) >= 0 ? 1 : -1;
     
-    int numberObj = objs-1;
+    int dmin = LongestCommonPrefix(idx, idx - d, objs, d_list);
     
-    if(idx == 0)
-        return make_int2(0,numberObj);
+    int lmax = 2;
     
-    long long idxCode = d_list[idx].getMorton();
-    long long idxCodeUp = d_list[idx+1].getMorton();
-    long long idxCodeDown = d_list[idx-1].getMorton();
-    
-    if((idxCode == idxCodeDown) and (idxCode == idxCodeUp)) {
-    
-        int idxInit = idx;
-        bool dif = false;
-        while(!dif and idx > 0 and idx < numberObj){
-            ++idx;
-            if(idx >= numberObj) dif = true;
-                
-            if(d_list[idx].getMorton() != d_list[idx+1].getMorton()) dif = true;
-        }
-        
-        return make_int2(idxInit, idx);
-        
-    } else {
-        
-        int prefixUp = __clz(idxCode ^ idxCodeUp);
-        int prefixDown = __clz(idxCode ^ idxCodeDown);
-        
-        int d = Helper::sgn( prefixUp - prefixDown );
-        int dmin;
-        
-        if(d < 0) dmin = prefixUp;
-        else if (d > 0) dmin = prefixDown;
-        
-        int lmax = 2;
-        
-        int newBoundary;
-        int bitPrefix;
-        do {
-            
-            newBoundary = idx + lmax * d;
-            bitPrefix = -1;
-            
-            if(newBoundary >= 0 and newBoundary <= numberObj){
-                long long newCode = d_list[idx + lmax * d].getMorton();
-                
-                bitPrefix = __clz(idxCode ^ newCode);
-                if(bitPrefix > dmin) lmax *= 2;
-                
-            }
-            
-        } while(bitPrefix > dmin);
-        
-        int l = 0;
-        
-        for(int t = lmax/2; t >= 1; t /= 2){
-            
-            int newUpperBound = idx + (l + t) * d;
-            
-            if(newUpperBound <= numberObj and newUpperBound >= 0){
-                long long splitCode = d_list[newUpperBound].getMorton();
-                int splitPrefix = __clz(idxCode ^ splitCode);
-                
-                if(splitPrefix > dmin) l += t;
-            }
-            
-        }
-        
-        int jdx = idx + l * d;
-        
-        if(jdx < idx) return make_int2(jdx,idx);
-        else return make_int2(idx,jdx);
+    while(LongestCommonPrefix(idx, idx + lmax*d, objs, d_list) > dmin){
+      lmax <<=1;
     }
+    
+    int l = 0;
+    int div = 2;
+    
+    for(int t = lmax/div; t >= 1; t >>= 1) {
+      
+      if(LongestCommonPrefix(idx, idx + (l + t) * d, objs, d_list) > dmin) l += t;
+        
+    }
+    
+    int jdx = idx + l * d;
+        
+    if(jdx < idx) return make_int2(jdx,idx);
+    else return make_int2(idx,jdx);
+    
 }
 
 __global__ void setupCamera(Camera **d_cam, int nx, int ny, Camera cam) {
@@ -379,13 +350,14 @@ __global__ void initLeafNodes(Node *leafNodes, int objs, Triangle *d_list) {
   
   leafNodes[idx].obj = &d_list[idx];
   leafNodes[idx].box = d_list[idx].getBox();
+  leafNodes[idx].boxB = true;
 	
 }
 
 __global__ void constructBVH(Node *d_internalNodes, Node *leafNodes, int objs, Triangle *d_list) {
     
   int idx = blockIdx.x*blockDim.x + threadIdx.x;
-    
+  
   if(idx >= objs) return;
   
   int2 range = determineRange(d_list, idx, objs+1);
@@ -395,26 +367,69 @@ __global__ void constructBVH(Node *d_internalNodes, Node *leafNodes, int objs, T
   
   int split = findSplit(d_list, first, last);
   
-  Node *current = d_internalNodes + idx;
+  if(split == -1){
+    (d_internalNodes + idx)->left = leafNodes + first;
+    (d_internalNodes + idx)->right = leafNodes + last;
+  }else{
   
   if(split == first) {
-    current->left = leafNodes + split;
-    (leafNodes + split)->parent = current;
+    (d_internalNodes + idx)->left = leafNodes + split;
+    (leafNodes + split)->parent = (d_internalNodes + idx);
   }
   else{
-    current->left = d_internalNodes + split;
-    (d_internalNodes + split)->parent = current;
+    (d_internalNodes + idx)->left = d_internalNodes + split;
+    (d_internalNodes + split)->parent = (d_internalNodes + idx);
   }
   
   if (split + 1 == last) {
-    current->right = leafNodes + split + 1;
-    (leafNodes + split + 1)->parent = current;
+    (d_internalNodes + idx)->right = leafNodes + split + 1;
+    (leafNodes + split + 1)->parent = (d_internalNodes + idx);
   }
   else{
-    current->right = d_internalNodes + split + 1;
-    (d_internalNodes + split + 1)->parent = current;
+    (d_internalNodes + idx)->right = d_internalNodes + split + 1;
+    (d_internalNodes + split + 1)->parent = (d_internalNodes + idx);
   }
+  }
+}
+
+__device__ void trace(Node *currentNode, int d){
+  
+  if(!currentNode->boxB){
+    printf("BVH Broken - Bounding box - depth %d\n",d);
+    //assert(0);
+  }
+  
+  if(!currentNode->obj){
     
+    if(!currentNode->left or !currentNode->right) {
+      printf("BVH Broken");
+      assert(0);
+    }
+    else{
+      
+      if(currentNode->left) trace(currentNode->left,d+1);
+      if(currentNode->right) trace(currentNode->right,d+1);
+      
+      
+    }
+    
+  }
+  else{
+    if(!currentNode->boxB) printf("Leaf without box");
+    
+  }
+  
+}
+
+__global__ void checkBVHRecursive(Node *d_internalNodes){
+  
+  if (threadIdx.x == 0 && blockIdx.x == 0){
+    
+    Node *current = d_internalNodes + threadIdx.x;
+    trace(current,0);
+    
+  }
+  
 }
 
 __global__ void boundingBoxBVH(Node *d_internalNodes, Node *d_leafNodes, int objs, int *nodeCounter) {
@@ -423,7 +438,7 @@ __global__ void boundingBoxBVH(Node *d_internalNodes, Node *d_leafNodes, int obj
   
   if(idx >= objs) return;
   
-  Node *leaf = &d_leafNodes[idx];
+  Node *leaf = d_leafNodes + idx;
   
   Node* current = leaf->parent;
   
@@ -432,16 +447,13 @@ __global__ void boundingBoxBVH(Node *d_internalNodes, Node *d_leafNodes, int obj
     
   while (true) {
       
-    if(res == 0){
-        
-      return;
-    }
+    if(res == 0) return;
 
     aabb leftBoundingBox = current->left->box;
     aabb rightBoundingBox = current->right->box;
 
     current->box = surrounding_box(leftBoundingBox, rightBoundingBox);
-    
+    current->boxB = true;
     
     if (current == d_internalNodes) {
       return;
@@ -582,13 +594,16 @@ int main(int argc, char **argv) {
   
   initLeafNodes<<<blocks2,threads>>>(d_leafNodes, size, d_objects);
   checkCudaErrors(cudaGetLastError());
-  
+  std::cout << "constructBVH" << std::endl;
   constructBVH<<<blocks2,threads>>>(d_internalNodes, d_leafNodes, size-1, d_objects);
   checkCudaErrors(cudaGetLastError());
- 
+  std::cout << "boundingBoxBVH" << std::endl;
   boundingBoxBVH<<<blocks2,threads>>>(d_internalNodes, d_leafNodes, size, d_nodeCounter);
   checkCudaErrors(cudaGetLastError());
   
+  checkBVHRecursive<<<1,1>>>(d_internalNodes);
+  
+  std::cout << "rendering" << std::endl;
   render<<<blocks, nthreads>>>(d_frameBuffer, nx, ny, ns, d_cam, d_internalNodes, d_rand_state, depth, light);
   checkCudaErrors(cudaGetLastError());
 

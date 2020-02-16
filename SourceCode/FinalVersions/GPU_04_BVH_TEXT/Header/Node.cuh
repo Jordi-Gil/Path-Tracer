@@ -17,9 +17,9 @@ public:
   Node *right;  // Right child
   Node *parent; // Parent
   
-  //Sphere *obj; //Null if is an internal node, Object if is a Leaf
   Triangle *obj;
   aabb box;
+  bool isLeaf = false;
 
 };
 

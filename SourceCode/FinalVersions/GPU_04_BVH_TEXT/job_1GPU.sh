@@ -1,5 +1,5 @@
 #!/bin/bash
-export PATH=/Soft/cuda/8.0.61/bin:$PATH
+#export PATH=/Soft/cuda/8.0.61/bin:$PATH
 
 ### Directivas para el gestor de colas
 # Asegurar que el job se ejecuta en el directorio actual
@@ -12,5 +12,5 @@ export PATH=/Soft/cuda/8.0.61/bin:$PATH
 #$ -S /bin/bash
 
 
-./path_tracing_1GPU -filter 11 15 6 -f cornell -depth 10 -light ON -sizeX 640 -sizeY 360 -skybox OFF
-./path_tracing_1GPU -filter 11 15 6 -f little -depth 10 -light ON -sizeX 640 -sizeY 360 -skybox ON
+cuda-memcheck ./path_tracing_1GPU -filter 11 15 6 -f cornell_buddha -depth 25 -light ON -sizeX 640 -sizeY 360 -skybox OFF -AAit 50
+#./path_tracing_1GPU -filter 11 15 6 -f little -depth 10 -light ON -sizeX 640 -sizeY 360 -skybox ON

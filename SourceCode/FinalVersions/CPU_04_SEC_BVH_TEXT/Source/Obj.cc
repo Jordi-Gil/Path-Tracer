@@ -162,8 +162,12 @@ void Obj::loadFromObj(const std::string &filename) {
         face.push_back(Vector3(v,vt,vn));
       }
       
-      for(int i = 1; i < face.size()-1; i++){
-        aux.push_back(Triangle(vertexs[face[0][0]-1],vertexs[face[i][0]-1],vertexs[face[i+1][0]-1],mat,coordText[face[0][1]-1],coordText[face[i][1]-1],coordText[face[i+1][1]-1]));
+      bool text = (coordText.size() == 0) ? false : true;
+      
+      for(int i = 1; i < face.size()-1; i++) {
+        
+        if(text) aux.push_back(Triangle(vertexs[face[0][0]-1],vertexs[face[i][0]-1],vertexs[face[i+1][0]-1],mat,coordText[face[0][1]-1],coordText[face[i][1]-1],coordText[face[i+1][1]-1]));
+        else aux.push_back(Triangle(vertexs[face[0][0]-1],vertexs[face[i][0]-1],vertexs[face[i+1][0]-1],mat));
       }
     }
   }

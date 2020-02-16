@@ -500,7 +500,7 @@ void Scene::sceneFromFile(const std::string &filename) {
     point[1] = ((point[1] - min_y)/(max_y - min_y));
     point[2] = ((point[2] - min_z)/(max_z - min_z));
     
-    list_aux[idx].setMorton(Helper::morton3D(point[0],point[1],point[2])+(idx*2));
+    list_aux[idx].setMorton(Helper::morton3D(point[0],point[1],point[2])+(idx*2 + idx));
   }
 
   std::cout << "Max " <<  max << " Min " << min << std::endl;
