@@ -1,31 +1,31 @@
 \boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
 \babel@toc {spanish}{}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {1}Contextualizaci\IeC {\'o}n y alcance del proyecto}{4}{chapter.1}
+\contentsline {chapter}{\numberline {1}Contextualization and scope of the project}{4}{chapter.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {1.1}Introducci\IeC {\'o}n}{4}{section.1.1}
+\contentsline {section}{\numberline {1.1}Introduction}{4}{section.1.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {1.2}Contextualizaci\IeC {\'o}n}{7}{section.1.2}
+\contentsline {section}{\numberline {1.2}Contextualization}{7}{section.1.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.2.1}Contexto}{7}{subsection.1.2.1}
+\contentsline {subsection}{\numberline {1.2.1}Context}{7}{subsection.1.2.1}
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {1.2.2}Stakeholders}{11}{subsection.1.2.2}
 \defcounter {refsection}{0}\relax 
 \contentsline {subsubsection}{Desarrollador}{11}{section*.8}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Director del proyecto}{12}{section*.9}
+\contentsline {subsubsection}{Director del proyecto}{11}{section*.9}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Usuarios beneficiados}{12}{section*.10}
+\contentsline {subsubsection}{Usuarios beneficiados}{11}{section*.10}
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {1.3}Justificaci\IeC {\'o}n}{12}{section.1.3}
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {1.4}Alcance del proyecto}{14}{section.1.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.4.1}Objetivos}{15}{subsection.1.4.1}
+\contentsline {subsection}{\numberline {1.4.1}Objetivos}{14}{subsection.1.4.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Objetivos principales}{15}{section*.12}
+\contentsline {subsubsection}{Objetivos principales}{14}{section*.12}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Objetivos secundarios}{16}{section*.13}
+\contentsline {subsubsection}{Objetivos secundarios}{15}{section*.13}
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {1.4.2}Obst\IeC {\'a}culos y riesgos del proyecto}{16}{subsection.1.4.2}
 \defcounter {refsection}{0}\relax 
@@ -33,70 +33,70 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsubsection}{Algoritmo utilizado}{16}{section*.15}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {1.5}Metodolog\IeC {\'\i }a y rigor}{17}{section.1.5}
+\contentsline {section}{\numberline {1.5}Metodolog\IeC {\'\i }a y rigor}{16}{section.1.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.5.1}Metodolog\IeC {\'\i }a}{17}{subsection.1.5.1}
+\contentsline {subsection}{\numberline {1.5.1}Metodolog\IeC {\'\i }a}{16}{subsection.1.5.1}
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {1.5.2}Herramientas de desarrollo}{17}{subsection.1.5.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.5.3}Herramientas de seguimiento}{18}{subsection.1.5.3}
+\contentsline {subsection}{\numberline {1.5.3}Herramientas de seguimiento}{17}{subsection.1.5.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {2}Planificaci\IeC {\'o}n temporal}{19}{chapter.2}
+\contentsline {chapter}{\numberline {2}Planificaci\IeC {\'o}n temporal}{18}{chapter.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.1}Planificaci\IeC {\'o}n y programaci\IeC {\'o}n}{19}{section.2.1}
+\contentsline {section}{\numberline {2.1}Planificaci\IeC {\'o}n y programaci\IeC {\'o}n}{18}{section.2.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.2}Descripci\IeC {\'o}n de tareas y recursos utilizados}{19}{section.2.2}
+\contentsline {section}{\numberline {2.2}Descripci\IeC {\'o}n de tareas y recursos utilizados}{18}{section.2.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2.1}Descripci\IeC {\'o}n de tareas}{19}{subsection.2.2.1}
+\contentsline {subsection}{\numberline {2.2.1}Descripci\IeC {\'o}n de tareas}{18}{subsection.2.2.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Estudio de conceptos}{19}{section*.17}
+\contentsline {subsubsection}{Estudio de conceptos}{18}{section*.17}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Configuraci\IeC {\'o}n del sistema}{20}{section*.18}
+\contentsline {subsubsection}{Configuraci\IeC {\'o}n del sistema}{19}{section*.18}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Planificaci\IeC {\'o}n del proyecto}{20}{section*.19}
+\contentsline {subsubsection}{Planificaci\IeC {\'o}n del proyecto}{19}{section*.19}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Desarrollo}{20}{section*.20}
+\contentsline {subsubsection}{Desarrollo}{19}{section*.20}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Etapa final}{21}{section*.21}
+\contentsline {subsubsection}{Etapa final}{20}{section*.21}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2.2}Tabla resumen y Estimaci\IeC {\'o}n}{21}{subsection.2.2.2}
+\contentsline {subsection}{\numberline {2.2.2}Tabla resumen y Estimaci\IeC {\'o}n}{20}{subsection.2.2.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2.3}Recursos utilizados}{22}{subsection.2.2.3}
+\contentsline {subsection}{\numberline {2.2.3}Recursos utilizados}{21}{subsection.2.2.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Software}{22}{section*.22}
+\contentsline {subsubsection}{Software}{21}{section*.22}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Hardware}{22}{section*.23}
+\contentsline {subsubsection}{Hardware}{21}{section*.23}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.3}Gesti\IeC {\'o}n de riesgos: Planes alternativos y obst\IeC {\'a}culos}{22}{section.2.3}
+\contentsline {section}{\numberline {2.3}Gesti\IeC {\'o}n de riesgos: Planes alternativos y obst\IeC {\'a}culos}{21}{section.2.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.4}Diagrama de Gantt}{23}{section.2.4}
+\contentsline {section}{\numberline {2.4}Diagrama de Gantt}{22}{section.2.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {3}Presupuesto y sostenibilidad}{26}{chapter.3}
+\contentsline {chapter}{\numberline {3}Presupuesto y sostenibilidad}{25}{chapter.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.1}Presupuesto}{26}{section.3.1}
+\contentsline {section}{\numberline {3.1}Presupuesto}{25}{section.3.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.1.1}Costes directos}{26}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {3.1.1}Costes directos}{25}{subsection.3.1.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Recursos de Software}{27}{section*.27}
+\contentsline {subsubsection}{Recursos de Software}{26}{section*.27}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Recursos de Hardware}{27}{section*.28}
+\contentsline {subsubsection}{Recursos de Hardware}{26}{section*.28}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Recursos Humanos}{28}{section*.29}
+\contentsline {subsubsection}{Recursos Humanos}{27}{section*.29}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.1.2}Costes indirectos}{29}{subsection.3.1.2}
+\contentsline {subsection}{\numberline {3.1.2}Costes indirectos}{28}{subsection.3.1.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.1.3}Costes inesperados}{30}{subsection.3.1.3}
+\contentsline {subsection}{\numberline {3.1.3}Costes inesperados}{29}{subsection.3.1.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.1.4}Presupuesto total}{30}{subsection.3.1.4}
+\contentsline {subsection}{\numberline {3.1.4}Presupuesto total}{29}{subsection.3.1.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.2}Control de gesti\IeC {\'o}n}{30}{section.3.2}
+\contentsline {section}{\numberline {3.2}Control de gesti\IeC {\'o}n}{29}{section.3.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.3}Sostenibilidad}{31}{section.3.3}
+\contentsline {section}{\numberline {3.3}Sostenibilidad}{30}{section.3.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.3.1}Autoevaluaci\IeC {\'o}n}{31}{subsection.3.3.1}
+\contentsline {subsection}{\numberline {3.3.1}Autoevaluaci\IeC {\'o}n}{30}{subsection.3.3.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.3.2}Impacto ambiental}{32}{subsection.3.3.2}
+\contentsline {subsection}{\numberline {3.3.2}Impacto ambiental}{31}{subsection.3.3.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.3.3}Impacto econ\IeC {\'o}mico}{33}{subsection.3.3.3}
+\contentsline {subsection}{\numberline {3.3.3}Impacto econ\IeC {\'o}mico}{32}{subsection.3.3.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.3.4}Impacto social}{33}{subsection.3.3.4}
+\contentsline {subsection}{\numberline {3.3.4}Impacto social}{32}{subsection.3.3.4}
