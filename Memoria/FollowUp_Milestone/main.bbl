@@ -61,10 +61,7 @@
   elicited by the stimulus (the percept) incorporates these features as a
   result of past experience.%
     }
-    \verb{doi}
-    \verb 10.1073/pnas.96.9.5245
-    \endverb
-    \field{issn}{00278424}
+    \field{pages}{5245 \bibrangedash  5250}
     \field{title}{{Mach bands as empirically derived associations}}
     \field{journaltitle}{Proceedings of the National Academy of Sciences of the
   United States of America}
@@ -96,10 +93,7 @@
   developed by Watkins is used which makes possible a hardware implementation
   of this algorithm.%
     }
-    \verb{doi}
-    \verb 10.1109/T-C.1971.223313
-    \endverb
-    \field{issn}{00189340}
+    \field{pages}{623 \bibrangedash  629}
     \field{title}{{Continuous Shading of Curved Surfaces}}
     \field{journaltitle}{IEEE Transactions on Computers}
     \field{year}{1971}
@@ -135,10 +129,6 @@
   development of a shading rule that provides$\backslash$nbetter quality and
   increased realism in generated images.%
     }
-    \verb{doi}
-    \verb 10.1145/360825.360839
-    \endverb
-    \field{issn}{15577317}
     \field{number}{6}
     \field{pages}{311\bibrangedash 317}
     \field{title}{{Illumination for Computer Generated Pictures}}
@@ -179,10 +169,7 @@
   integral part of the visibility calculations. Surfaces displayed include
   curved as well as polygonal surfaces.%
     }
-    \verb{doi}
-    \verb 10.1145/358876.358882
-    \endverb
-    \field{issn}{15577317}
+    \field{pages}{343\bibrangedash 349}
     \field{title}{{An Improved Illumination Model for Shaded Display}}
     \field{journaltitle}{Communications of the ACM}
     \field{year}{1980}
@@ -228,9 +215,7 @@
   engineering and architecture.%
     }
     \field{booktitle}{AFIPS Spring Joint Computing Conference}
-    \verb{doi}
-    \verb 10.1145/1468075.1468082
-    \endverb
+    \field{pages}{37\bibrangedash 45}
     \field{title}{{Some techniques for shading machine renderings of solids}}
     \field{year}{1968}
   \endentry
@@ -276,10 +261,7 @@
     }
     \field{booktitle}{Proceedings of the 13th Annual Conference on Computer
   Graphics and Interactive Techniques, SIGGRAPH 1986}
-    \verb{doi}
-    \verb 10.1145/15922.15902
-    \endverb
-    \field{isbn}{0897911962}
+    \field{pages}{143\bibrangedash 150}
     \field{title}{{The rendering equation}}
     \field{year}{1986}
   \endentry
@@ -327,10 +309,7 @@
     }
     \field{booktitle}{Proceedings of the 13th Annual Conference on Computer
   Graphics and Interactive Techniques, SIGGRAPH 1986}
-    \verb{doi}
-    \verb 10.1145/15922.15901
-    \endverb
-    \field{isbn}{0897911962}
+    \field{pages}{133\bibrangedash 142}
     \field{title}{{A radiosity method for non-diffuse environments}}
     \field{year}{1986}
   \endentry
@@ -362,17 +341,10 @@
     In this paper we present a new Monte Carlo rendering algorithm that
   seamlessly integrates the ideas of%
     }
-    \verb{doi}
-    \verb 10.1017/CBO9781107415324.004
-    \endverb
-    \verb{eprint}
-    \verb arXiv:1011.1669v3
-    \endverb
-    \field{isbn}{3-211-82883-4}
-    \field{issn}{1098-6596}
+    \field{pages}{145\bibrangedash 153}
     \field{title}{{Bi-Directional Path Tracing}}
-    \field{journaltitle}{Proc. SIGGRAPH}
-    \field{eprinttype}{arXiv}
+    \field{journaltitle}{Proceedings of Third International Conference on
+  Computational Graphics and Visualization Techniques (Compugraphics '93)}
     \field{year}{1993}
   \endentry
 
@@ -414,9 +386,6 @@
   also compared with the Radiance program.%
     }
     \field{booktitle}{Rendering Techniques '96}
-    \verb{doi}
-    \verb 10.1007/978-3-7091-7484-5_3
-    \endverb
     \field{pages}{21\bibrangedash 30}
     \field{title}{{Global Illumination using Photon Maps}}
     \field{year}{1996}
@@ -475,10 +444,7 @@
     }
     \field{booktitle}{Proceedings of the 24th Annual Conference on Computer
   Graphics and Interactive Techniques, SIGGRAPH 1997}
-    \verb{doi}
-    \verb 10.1145/258734.258775
-    \endverb
-    \field{isbn}{0897918967}
+    \field{pages}{65\bibrangedash 76}
     \field{title}{{Metropolis light transport}}
     \field{year}{1997}
   \endentry
@@ -515,7 +481,7 @@
     \field{booktitle}{Proceedings GRAPHITE 2004 - 2nd International Conference
   on Computer Graphics and Interactive Techniques in Australasia and Southeast
   Asia}
-    \field{isbn}{1581138849}
+    \field{pages}{23\bibrangedash 29}
     \field{title}{{Path tracing using the AR350 processor}}
     \field{year}{2004}
   \endentry
@@ -643,10 +609,6 @@
     }
     \field{booktitle}{High-Performance Graphics 2012, HPG 2012 - ACM SIGGRAPH /
   Eurographics Symposium Proceedings}
-    \verb{doi}
-    \verb 10.2312/EGGH/HPG12/033-037
-    \endverb
-    \field{isbn}{9783905674415}
     \field{title}{{Maximizing parallelism in the construction of bvhs, octrees,
   and k-d trees}}
     \field{year}{2012}
@@ -762,10 +724,6 @@
   progressive rendering for interactive use and our adaptation of denoising
   techniques.%
     }
-    \verb{doi}
-    \verb 10.1145/3182162
-    \endverb
-    \field{issn}{15577368}
     \field{title}{{RenderMan: An advanced path-tracing architecture for movie
   rendering}}
     \field{journaltitle}{ACM Transactions on Graphics}
@@ -813,22 +771,13 @@
   GPU, kernel execution times, and end-to-end application execution times for
   both CUDA and OpenCL.%
     }
-    \verb{eprint}
-    \verb 1005.2581
-    \endverb
-    \field{number}{1}
     \field{pages}{10}
     \field{title}{{A Performance Comparison of CUDA and OpenCL}}
-    \verb{url}
-    \verb http://arxiv.org/abs/1005.2581
-    \endverb
-    \field{volume}{abs/1005.2}
     \verb{file}
     \verb :home/jordi/Documents/Universidad/Computacio/TFG/Documents/cuda-ocl-k
     \verb dh.pdf:pdf
     \endverb
     \field{journaltitle}{Computing Research Repository - CORR}
-    \field{eprinttype}{arXiv}
     \field{year}{2010}
   \endentry
 
@@ -878,11 +827,7 @@
     }
     \field{booktitle}{Proceedings of the International Conference on Parallel
   Processing}
-    \verb{doi}
-    \verb 10.1109/ICPP.2011.45
-    \endverb
-    \field{isbn}{9780769545103}
-    \field{issn}{01903918}
+    \field{pages}{216\bibrangedash 215}
     \field{title}{{A comprehensive performance comparison of CUDA and OpenCL}}
     \field{year}{2011}
   \endentry

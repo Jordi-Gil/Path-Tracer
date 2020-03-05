@@ -252,34 +252,17 @@ __device__ Vector3 color(const Ray& ray, Node *world, int depth, bool light, boo
   return Vector3::Zero();
 }
 
-__device__ int LongestCommonPrefix(int i, int j, int numObjects, Triangle *d_list) {
-  
-  if(i < 0 or i > numObjects - 1 or j < 0 or j > numObjects - 1) return -1;
-  
-  int codeI = d_list[i].getMorton();
-  int codeJ = d_list[j].getMorton();
-  
-  if(i == j) {
-    printf("Equals Longest\n");
-    return __clz(codeI ^ codeJ);
-  }
-  else return __clz(codeI ^ codeJ);
-  
-}
-
 __device__ unsigned int findSplit(Triangle *d_list, int first, int last) {
     
+    long long firstCode = d_list[first].getMorton();
+    long long lastCode = d_list[last].getMorton();
     
-    if(first == last){
-      return -1;
-    }
-    
-    int firstCode = d_list[first].getMorton();
-    int lastCode = d_list[last].getMorton();
-    
+    if(firstCode == lastCode)
+        return (first + last) >> 1;
+     
     int commonPrefix = __clz(firstCode ^ lastCode);
-    
     int split = first;
+    
     int step = last - first;
     
     do {
@@ -288,7 +271,7 @@ __device__ unsigned int findSplit(Triangle *d_list, int first, int last) {
         
         if(newSplit < last){
       
-            int splitCode = d_list[newSplit].getMorton();
+            long long splitCode = d_list[newSplit].getMorton();
             
             int splitPrefix = __clz(firstCode ^ splitCode);
       
@@ -305,33 +288,79 @@ __device__ unsigned int findSplit(Triangle *d_list, int first, int last) {
 }
 
 __device__ int2 determineRange(Triangle *d_list, int idx, int objs) {
-
-  
-    int d =  LongestCommonPrefix(idx, idx + 1, objs, d_list) - 
-             LongestCommonPrefix(idx, idx - 1, objs, d_list) >= 0 ? 1 : -1;
     
-    int dmin = LongestCommonPrefix(idx, idx - d, objs, d_list);
+    int numberObj = objs-1;
     
-    int lmax = 2;
+    if(idx == 0)
+        return make_int2(0,numberObj);
     
-    while(LongestCommonPrefix(idx, idx + lmax*d, objs, d_list) > dmin){
-      lmax <<=1;
-    }
+    long long idxCode = d_list[idx].getMorton();
+    long long idxCodeUp = d_list[idx+1].getMorton();
+    long long idxCodeDown = d_list[idx-1].getMorton();
     
-    int l = 0;
-    int div = 2;
+    if((idxCode == idxCodeDown) and (idxCode == idxCodeUp)) {
     
-    for(int t = lmax/div; t >= 1; t >>= 1) {
-      
-      if(LongestCommonPrefix(idx, idx + (l + t) * d, objs, d_list) > dmin) l += t;
+        int idxInit = idx;
+        bool dif = false;
+        while(!dif and idx > 0 and idx < numberObj){
+            ++idx;
+            if(idx >= numberObj) dif = true;
+                
+            if(d_list[idx].getMorton() != d_list[idx+1].getMorton()) dif = true;
+        }
         
-    }
-    
-    int jdx = idx + l * d;
+        return make_int2(idxInit, idx);
         
-    if(jdx < idx) return make_int2(jdx,idx);
-    else return make_int2(idx,jdx);
-    
+    } else {
+        
+        int prefixUp = __clz(idxCode ^ idxCodeUp);
+        int prefixDown = __clz(idxCode ^ idxCodeDown);
+        
+        int d = Helper::sgn( prefixUp - prefixDown );
+        int dmin;
+        
+        if(d < 0) dmin = prefixUp;
+        else if (d > 0) dmin = prefixDown;
+        
+        int lmax = 2;
+        
+        int newBoundary;
+        int bitPrefix;
+        do {
+            
+            newBoundary = idx + lmax * d;
+            bitPrefix = -1;
+            
+            if(newBoundary >= 0 and newBoundary <= numberObj){
+                long long newCode = d_list[idx + lmax * d].getMorton();
+                
+                bitPrefix = __clz(idxCode ^ newCode);
+                if(bitPrefix > dmin) lmax *= 2;
+                
+            }
+            
+        } while(bitPrefix > dmin);
+        
+        int l = 0;
+        
+        for(int t = lmax/2; t >= 1; t /= 2){
+            
+            int newUpperBound = idx + (l + t) * d;
+            
+            if(newUpperBound <= numberObj and newUpperBound >= 0){
+                long long splitCode = d_list[newUpperBound].getMorton();
+                int splitPrefix = __clz(idxCode ^ splitCode);
+                
+                if(splitPrefix > dmin) l += t;
+            }
+            
+        }
+        
+        int jdx = idx + l * d;
+        
+        if(jdx < idx) return make_int2(jdx,idx);
+        else return make_int2(idx,jdx);
+    }
 }
 
 __global__ void setupCamera(Camera **d_cam, int nx, int ny, Camera cam) {

@@ -81,12 +81,12 @@ void help(){
   
 }
 
-void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, int &dist, int &nthreads, std::string &image, std::string &filename, int &numGPUs, bool &light, bool &random, bool &filter, int &diameter, float &gs, float &gr, bool &skybox, const int count){
+void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, int &dist, int &nthreads, std::string &image, std::string &filename, int &numGPUs, bool &light, bool &random, bool &filter, int &diameter, float &gs, float &gr, bool &skybox, bool &oneTex, const int count){
   
   if(argc <= 1) error("Error usage. Use [-h] [--help] to see the usage.");
   
   nx = 1280; ny = 720; ns = 50; depth = 50; dist = 11; image = "random"; light = true; random = true;
-	filter = false; gs = 0; gr = 0; diameter = 11; skybox = false;
+	filter = false; gs = 0; gr = 0; diameter = 11; skybox = false; oneTex = false;
   
   nthreads = 32; numGPUs = 1;
   
@@ -164,6 +164,11 @@ void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, in
       if((i+1) >= argc) error("-skybox value expected");
       if(std::string(argv[i+1]) == "ON") skybox = true;
       else if(std::string(argv[i+1]) == "OFF") skybox = false;
+    }
+    else if(std::string(argv[i]) == "-oneTex") {
+      if((i+1) >= argc) error("-oneTex value expected");
+      if(std::string(argv[i+1]) == "ON") oneTex = true;
+      else if(std::string(argv[i+1]) == "OFF") oneTex = false;
     }
     else if(std::string(argv[i]) == "-h" || std::string(argv[i]) == "--help" ){
       help();
@@ -265,7 +270,7 @@ __device__ int LongestCommonPrefix(int i, int j, int numObjects, Triangle *d_lis
   
 }
 
-__device__ unsigned int findSplit(Triangle *d_list, int first, int last) {
+__device__ int findSplit(Triangle *d_list, int first, int last) {
     
     
     if(first == last){
@@ -376,32 +381,32 @@ __global__ void constructBVH(Node *d_internalNodes, Node *leafNodes, int objs, T
   
   int split = findSplit(d_list, first, last);
   
+  if(split == -1){
+    split = (first+last) >> 1;
+    ++last;
+  }
+  
   Node *current = d_internalNodes + idx;
   
-  if(split == -1){
-    (d_internalNodes + idx)->left = leafNodes + first;
-    (d_internalNodes + idx)->right = leafNodes + last;
+  if(split == first) {
+    current->left = leafNodes + split;
+    current->left->isLeaf = true;
+    (leafNodes + split)->parent = current;
   }
   else{
-    if(split == first) {
-      current->left = leafNodes + split;
-      current->left->isLeaf = true;
-      (leafNodes + split)->parent = current;
-    }
-    else{
-      current->left = d_internalNodes + split;
-      (d_internalNodes + split)->parent = current;
-    }
-    
-    if (split + 1 == last) {
-      current->right = leafNodes + split + 1;
-      current->right->isLeaf = true;
-      (leafNodes + split + 1)->parent = current;
-    }
-    else{
-      current->right = d_internalNodes + split + 1;
-      (d_internalNodes + split + 1)->parent = current;
-    }
+    current->left = d_internalNodes + split;
+    (d_internalNodes + split)->parent = current;
+  }
+  
+  if (split + 1 == last) {
+    current->right = leafNodes + split + 1;
+    current->right->isLeaf = true;
+    (leafNodes + split + 1)->parent = current;
+  }
+  else{
+    current->right = d_internalNodes + split + 1;
+    (d_internalNodes + split + 1)->parent = current;
+  }
     
 }
 
@@ -444,11 +449,9 @@ __global__ void render(Vector3 *fb, int max_x, int max_y, int ns, Camera **cam, 
 
   int i = num%max_x;
   int j = num/max_x;
-  
-  printf("Pixel(%d,%d)\n",i,j);
 
   curandState local_random;
-
+  
   int pixel_index = num;
     
   local_random = d_rand_state[pixel_index];
@@ -475,6 +478,39 @@ __global__ void render(Vector3 *fb, int max_x, int max_y, int ns, Camera **cam, 
   fb[pixel_index] = col;
 }
 
+__global__ void checkBVH(Node *d_internalNodes, Node *d_leaves, int objs){
+  
+  if (threadIdx.x == 0 && blockIdx.x == 0){
+    
+    printf("Checking BVH...\n");
+    
+    for(int i = 0; i < objs; i++){
+      
+      if(!d_leaves[i].parent){
+        printf("Leaf without parent %d\n",i);
+      }
+    }
+    
+    for(int i = 0; i < objs-1; i++){
+      
+      if(!d_internalNodes[i].left){
+        printf("Internal without left %d\n",i);
+      }
+      
+      if(!d_internalNodes[i].right){
+        printf("Internal without right %d\n",i);
+      }
+      
+      if(!d_internalNodes[i].parent){
+        printf("Internal without parent %d\n",i);
+      }
+      
+    }
+    printf("BVH checked!\n");
+  }
+}
+
+
 int main(int argc, char **argv) {
     
   cudaDeviceReset();
@@ -488,11 +524,11 @@ int main(int argc, char **argv) {
   float totalTime;
 
   int nx, ny, ns, depth, dist, nthreads, numGPUs, diameter;
-  bool light, random, filter, skybox;
+  bool light, random, filter, skybox, oneTex;
   float gs,gr;
   std::string filename, image;
 
-  parse_argv(argc, argv, nx, ny, ns, depth, dist, nthreads, image, filename, numGPUs, light, random, filter, diameter, gs, gr, skybox, 1);
+  parse_argv(argc, argv, nx, ny, ns, depth, dist, nthreads, image, filename, numGPUs, light, random, filter, diameter, gs, gr, skybox, oneTex, 1);
 
   /* Seed for CUDA cuRandom */
   unsigned long long int seed = 1000;
@@ -518,6 +554,7 @@ int main(int argc, char **argv) {
 	
 	Triangle *h_objects = scene.getObjects();
   Skybox *h_skybox = scene.getSkybox();
+  
 	size = scene.getSize();
 	
   float ob_size = size*sizeof(Triangle);
@@ -589,6 +626,9 @@ int main(int argc, char **argv) {
   constructBVH<<<blocks2,threads>>>(d_internalNodes, d_leafNodes, size-1, d_objects);
   checkCudaErrors(cudaGetLastError());
   
+  checkBVH<<<1,1>>>(d_internalNodes, d_leafNodes, size);
+  checkCudaErrors(cudaGetLastError());
+  
   std::cout << "boundingBoxBVH..." << std::endl;
   boundingBoxBVH<<<blocks2,threads>>>(d_internalNodes, d_leafNodes, size, size*2-1, d_nodeCounter);
   checkCudaErrors(cudaGetLastError());
@@ -631,6 +671,8 @@ int main(int argc, char **argv) {
       data[count++] = ib;
     }
   }
+  
+  image = "../Resources/Images/GPU_BVH_1_GPU/"+image;
   
   stbi_write_png(image.c_str(), nx, ny, 3, data, nx*3);
 	

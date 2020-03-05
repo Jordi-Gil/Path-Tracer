@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.9.20)  21 FEB 2020 00:42
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.9.20)  29 FEB 2020 20:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2741,14 +2741,7 @@ LaTeX Font Info:    Font shape `T1/qhv/m/sc' will be
 Package microtype Info: Character `029' is missing
 (microtype)             in font `T1/qhv/m/sc/12'.
 (microtype)             Ignoring protrusion settings for this character.
-
-Overfull \hbox (1.37889pt too wide) in paragraph at lines 252--252
-\T1/qhv/m/it/12 (-20) puter Graph-ics and In-ter-ac-tive Tech-niques, SIG-GRAPH
- 1986\T1/qhv/m/n/12 (-20) . 1986. \T1/qhv/m/sc/12 (-20) isbn\T1/qhv/m/n/12 (-20
-) : 0897911962. 
- []
-
-[18] (./main.lof)
+ [18] (./main.lof)
 \tf@lof=\write8
 \openout8 = `main.lof'.
 
@@ -2771,11 +2764,11 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 44166 strings out of 492982
- 821767 string characters out of 6134896
- 1276747 words of memory out of 5000000
+ 44168 strings out of 492982
+ 821785 string characters out of 6134896
+ 1276749 words of memory out of 5000000
  46829 multiletter control sequences out of 15000+600000
- 597374 words of font info for 150 fonts, out of 8000000 for 9000
+ 597506 words of font info for 151 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  85i,12n,109p,10465b,1697s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/tex-gyre/q-ec-sc.enc}{/usr/share/texlive/te
@@ -2784,10 +2777,10 @@ xmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texmf/fonts/enc/dvips/tex-gyre
 f/fonts/type1/public/tex-gyre/qhvb.pfb></usr/share/texmf/fonts/type1/public/tex
 -gyre/qhvr.pfb></usr/share/texmf/fonts/type1/public/tex-gyre/qhvri.pfb></usr/sh
 are/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb>
-Output written on main.pdf (19 pages, 2238907 bytes).
+Output written on main.pdf (19 pages, 2236264 bytes).
 PDF statistics:
- 309 PDF objects out of 1000 (max. 8388607)
- 253 compressed objects within 3 object streams
+ 305 PDF objects out of 1000 (max. 8388607)
+ 249 compressed objects within 3 object streams
  72 named destinations out of 1000 (max. 500000)
  22693 words of extra memory for PDF output out of 24883 (max. 10000000)
 

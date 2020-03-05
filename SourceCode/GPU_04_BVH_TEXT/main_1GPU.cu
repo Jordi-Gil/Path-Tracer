@@ -439,8 +439,6 @@ __global__ void render(Vector3 *fb, int max_x, int max_y, int ns, Camera **cam, 
 
   int i = num%max_x;
   int j = num/max_x;
-  
-  printf("Pixel(%d,%d)\n",i,j);
 
   curandState local_random;
 
@@ -469,6 +467,37 @@ __global__ void render(Vector3 *fb, int max_x, int max_y, int ns, Camera **cam, 
 
   fb[pixel_index] = col;
 }
+
+__global__ void checkBVH(Node *d_internalNodes, Node *d_leaves, int objs){
+  
+  if (threadIdx.x == 0 && blockIdx.x == 0){
+    
+    for(int i = 0; i < objs; i++){
+      
+      if(!d_leaves[i].parent){
+        printf("Leaf without parent %d\n",i);
+      }
+    }
+    
+    for(int i = 0; i < objs-1; i++){
+      
+      if(!d_internalNodes[i].left){
+        printf("Internal without left %d\n",i);
+      }
+      
+      if(!d_internalNodes[i].right){
+        printf("Internal without right %d\n",i);
+      }
+      
+      if(!d_internalNodes[i].parent){
+        printf("Internal without parent %d\n",i);
+      }
+      
+    }
+    
+  }
+}
+
 
 int main(int argc, char **argv) {
     

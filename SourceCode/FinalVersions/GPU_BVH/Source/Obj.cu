@@ -24,7 +24,7 @@ __host__ Material loadMat(const std::string &line, int type, int texType) {
       albedoCount++;
     } else {
       if(texType == IMAGE){
-        imageFilename = "..Resources/Textures/"+par;
+        imageFilename = "../Resources/Textures/"+par;
         loaded = true;
       }
       if(type == METAL) { fuzz = stof(par); loaded = true; }

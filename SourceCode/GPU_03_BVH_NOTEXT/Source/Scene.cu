@@ -348,7 +348,7 @@ void Scene::loadScene(int loadType, const std::string &filename){
 void Scene::sceneFromFile(const std::string &filename) {
   std::cout << "Scene file from " << filename << std::endl;
   
-  std::ifstream file("Scenes/"+filename);
+  std::ifstream file("../Resourcers/Scenes/NoTextures/"+filename);
   std::string line;
   
   int num_sp = 0;
