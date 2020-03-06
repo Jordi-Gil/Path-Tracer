@@ -1,0 +1,8 @@
+#sizes
+ns            0 nt           0 no      1
+#camera
+0 0 0 20 0 0 0 0 1 0 60 0.08 100
+
+4 SaintPetersSquares
+
+3 0 m L IMAGE porcelain.jpg Hercule_LowPoly r -90 1 0 0 t center
