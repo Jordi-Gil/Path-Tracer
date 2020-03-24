@@ -13,4 +13,4 @@ ns            0 nt           0 no      9
 
 3 0 m DL CONSTANT 1 1 1 untitled t center s nu 1 1 2 t 4 4.5 0
 3 0 m M CONSTANT 0.56078 0.56078 0.56078 0.0 untitled t center s nu 1 2 1 t 2 -1 2 r 47 0 1 0
-3 0 m D CONSTANT 1 1 1 1.5 untitled t center t 3 -2.5 -2
+3 0 m L CONSTANT 1 1 1 untitled t center t 3 -2.5 -2

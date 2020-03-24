@@ -1,0 +1,136 @@
+\usepackage[utf8]{inputenc}
+\usepackage[usegeometry]{typearea}
+\usepackage[a4paper,headheight=15pt]{geometry}
+\usepackage{newtxtext,newtxmath}
+\usepackage[scaled=1]{couriers}
+%\usepackage[spanish,es-tabla]{babel}
+\usepackage{microtype}
+\usepackage[bottom]{footmisc}
+\usepackage{graphicx}
+\usepackage{blindtext}
+\usepackage{scrextend}
+\usepackage{tocloft}
+\usepackage{parskip}
+\usepackage{multicol}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage{multicol}
+\usepackage{verbatimbox}
+\usepackage[nottoc, notlot, notlof]{tocbibind}
+\usepackage{listingsutf8}
+\usepackage{url}
+\usepackage[sorting=none,maxcitenames=1,natbib=true,backend=bibtex,citestyle=authoryear,doi=false]{biblatex}
+\usepackage{adjustbox}
+\usepackage[makeroom]{cancel}
+\usepackage[hidelinks]{hyperref}
+\usepackage[Glenn]{fncychap}
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\usepackage[inline]{enumitem}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage[style=english]{csquotes}
+\usepackage{array}
+\usepackage{float}
+\usepackage{pdflscape}
+\usepackage{multirow}
+\usepackage{afterpage}
+\usepackage[toc,page]{appendix}
+
+\restylefloat{table}
+
+\DefineBibliographyStrings{english}{%
+  andothers = {et\addabbrvspace al\adddot}
+}
+
+\begin{filecontents}{mylocal.bib}
+@online{tuSalario,
+  author = {WageIndicator Foundation},
+  title = {TuSalario.es},
+  year = 2019,
+  url = {https://tusalario.es/},
+  urldate = {2019-10-12}
+}
+
+@online{tuLuz,
+  author = {Selectra Group},
+  title = {{?`}Cu{\'a}nto vale el kilovatio hora de luz en Espa{\~n}a?},
+  year = 2019,
+  url = {https://tarifasgasluz.com/faq/precio-kwh},
+  urldate = {2019-10-12}
+}
+
+@online{gene,
+  author = {Generalitat de Catalunya},
+  title = {Factor d'emissi{\'o} de l'energia el{\'`e}ctrica: el mix},
+  year = 2019,
+  url = {https://canviclimatic.gencat.cat/ca/actua/factors_demissio_associats_a_lenergia/},
+  urldate = {2019-10-12}
+}
+
+@online{hostel,
+  author = {HostelTur},
+  title = {Air France lanza un calculador de emisiones de CO2},
+  year = 2019,
+  url = {https://www.hosteltur.com/44347_air-france-lanza-calculador-emisiones-co2.html},
+  urldate = {2019-10-12}
+}
+
+\end{filecontents}
+
+\bibliography{./includes/library,mylocal}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\rightmark}
+\fancyfoot[C]{\leftmark}
+\fancyfoot[R]{\thepage}
+\renewcommand{\footrulewidth}{0.6pt}% Line at the footer visible
+%\addto\captionscatalan{%
+%  \renewcommand\contentsname{Índice}%
+%}
+
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \fancyfoot[R]{\thepage}%
+  \renewcommand{\headrulewidth}{0pt}% Line at the header invisible
+  \renewcommand{\footrulewidth}{0.6pt}% Line at the footer visible
+}
+
+\renewcommand{\cftpartleader}{\cftdotfill{\cftdotsep}}%
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}%
+\renewcommand\familydefault{\sfdefault}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows}
+
+\newcommand{\Lagr}{\mathcal{L}}
+\newcommand{\Xagr}{\mathcal{X}}
+
+\setlength{\skip\footins}{1cm}
+
+\makeatletter
+% \patchcmd{<cmd>}{<search>}{<replace>}{<success>}{<failure>}
+\patchcmd{\@makechapterhead}{\huge}{\large}{}{}% for \chapter
+\patchcmd{\@makechapterhead}{\Huge}{\large}{}{}% for \chapter
+\patchcmd{\@makeschapterhead}{\Huge}{\large}{}{}% for \chapter*
+\makeatother
+
+\geometry{
+  left=1.1811in, right=1.1811in, top=1.0in, bottom=2.0in,headheight=15pt,includehead
+}
+\newcommand*{\useportrait}{%
+  \clearpage
+  \KOMAoptions{paper=portrait,DIV=current}%switch to portrait
+  \newgeometry{% geometry settings for portrait
+  left=1.1811in, right=1.1811in, top=1.0in, bottom=2.0in,headheight=15pt,includehead
+  }%
+  \fancyhfoffset{0pt}% <- recalculate head and foot width for fancyhdr
+}
+\newcommand*{\uselandscape}{%
+  \clearpage
+  \KOMAoptions{paper=landscape,DIV=current}%switch to landscape
+  \newgeometry{% geometry settings for landscap
+  left=1.1811in, right=1.1811in, top=1.0in, bottom=2.0in,headheight=15pt,includehead
+  }%
+  \fancyhfoffset{0pt}% recalculate head and foot width for fancyhdr
+}

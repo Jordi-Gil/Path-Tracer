@@ -230,6 +230,7 @@ __device__ Vector3 color(const Ray& ray, Node *world, int depth, bool light, boo
       Ray scattered;
       Vector3 attenuation;
       Vector3 emitted = rec.mat_ptr.emitted(rec.u, rec.v, oneTex, d_textures);
+      
       if(rec.mat_ptr.scatter(cur_ray, rec, attenuation, scattered, random, oneTex, d_textures)){
         cur_attenuation *= attenuation;
         cur_attenuation += emitted;
@@ -702,7 +703,7 @@ int main(int argc, char **argv) {
     }
   }
   
-  image = "../Resources/Images/GPU_BVH_1_GPU/"+image;
+  image = "../Resources/Images/GPU_BVH_OT_1_GPU/"+image;
   
   stbi_write_png(image.c_str(), nx, ny, 3, data, nx*3);
 	
