@@ -294,19 +294,16 @@ __device__ Vector3 color(const Ray& ray, Node *world, int depth, bool light, boo
   for(int i = 0; i < depth; i++){ 
     hit_record rec;
     if( intersect(world, cur_ray, 0.00001, FLT_MAX, rec) ) {
-//     if( world->checkCollision(cur_ray, 0.00001, FLT_MAX, rec) ) {
       Ray scattered;
       Vector3 attenuation;
       Vector3 emitted = rec.mat_ptr.emitted(rec.u, rec.v, oneTex, d_textures);
       
       if(rec.mat_ptr.scatter(cur_ray, rec, attenuation, scattered, random, oneTex, d_textures)){
         cur_attenuation *= attenuation;
-//         cur_attenuation = rec.normal;
         cur_attenuation += emitted;
         cur_ray = scattered;
       }
       else return cur_attenuation * emitted;
-//       else return cur_attenuation;
     }
     else {
       if(skybox && sky->hit(cur_ray, 0.00001, FLT_MAX, rec)){

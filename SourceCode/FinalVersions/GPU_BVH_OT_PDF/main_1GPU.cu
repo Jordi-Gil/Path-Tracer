@@ -27,6 +27,8 @@
 #define checkCudaErrors(val) check_cuda( (val), #val, __FILE__, __LINE__ )
 #define cuRandom (curand_uniform(&local_random))
 
+#define STACK_SIZE 128
+
 void error(const char *message) {
 
     std::cout << message << std::endl;
@@ -221,13 +223,78 @@ void properties(){
   else std::cout << "GPU " << device << " (" << properties.name << ") does not support CUDA Dynamic Parallelism" << std::endl;
 }
 
+__device__ bool intersect(Node *root, const Ray &cur_ray, float t_min, float t_max, hit_record &rec) {
+  
+  float t = FLT_MAX;
+  
+  Node *stack[STACK_SIZE];
+  int top = -1;
+  
+  stack[++top] = root;
+  
+  hit_record rec_left, rec_right;
+  bool hit_left = false, hit_right = false;
+  
+  do {
+  
+    hit_record rec_aux;
+    
+    Node *new_node = stack[top--];
+    
+    if(new_node->box.hit(cur_ray, t_min, t_max)) {
+      
+      if(new_node->isLeaf) {
+          bool hit = (new_node->obj)->hit(cur_ray, t_min, t_max, rec_aux);
+          if(hit && rec_aux.t < t){
+            
+            t = rec_aux.t;
+            
+            if(new_node->isRight){
+              rec_right = rec_aux;
+              hit_right = true;
+            }
+            else if(new_node->isLeft){
+              rec_left = rec_aux;
+              hit_left = true;
+            }
+            
+          }
+        }
+        
+      else {
+        
+        stack[++top] = new_node->right;
+        stack[++top] = new_node->left;
+        
+      }
+    }
+    
+  } while(top != -1);
+  
+  if(hit_left && hit_right) {
+    if(rec_left.t < rec_right.t) rec = rec_left;
+    else rec = rec_right;
+    return true;
+  }
+  else if(hit_left){ 
+    rec = rec_left; 
+    return true;
+  }
+  else if(hit_right) {
+    rec = rec_right;
+    return true;
+  }
+  else return false;
+  
+}
+
 __device__ Vector3 color(const Ray& ray, Node *world, int depth, bool light, bool skybox, curandState *random, Skybox *sky, bool oneTex, unsigned char **d_textures, ShapeList *d_importanceSamplings){
   
   Ray cur_ray = ray;
   Vector3 cur_attenuation = Vector3::One();
   for(int i = 0; i < depth; i++){ 
     hit_record hrec;
-    if( world->checkCollision(cur_ray, 0.001, FLT_MAX, hrec) ) {
+    if( intersect(world, cur_ray, 0.00001, FLT_MAX, hrec) ) {
       
       scatter_record srec;
       Vector3 emitted = hrec.mat_ptr.emitted(hrec.u, hrec.v, oneTex, d_textures);
@@ -408,20 +475,24 @@ __global__ void constructBVH(Node *d_internalNodes, Node *leafNodes, int objs, T
   if(split == first) {
     current->left = leafNodes + split;
     current->left->isLeaf = true;
+    current->left->isLeft = true;
     (leafNodes + split)->parent = current;
   }
   else{
     current->left = d_internalNodes + split;
+    current->left->isLeft = true;
     (d_internalNodes + split)->parent = current;
   }
   
   if (split + 1 == last) {
     current->right = leafNodes + split + 1;
     current->right->isLeaf = true;
+    current->right->isRight = true;
     (leafNodes + split + 1)->parent = current;
   }
   else{
     current->right = d_internalNodes + split + 1;
+    current->right->isRight = true;
     (d_internalNodes + split + 1)->parent = current;
   }
     

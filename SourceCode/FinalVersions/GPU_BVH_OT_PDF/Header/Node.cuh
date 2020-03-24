@@ -20,6 +20,8 @@ public:
   Triangle *obj;
   aabb box;
   bool isLeaf = false;
+  bool isRight = false;
+  bool isLeft = false;
 
 };
 
