@@ -106,16 +106,52 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {4.1}Introduction}{30}{section.4.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.2}What is a ray?}{32}{section.4.2}
+\contentsline {subsection}{\numberline {4.1.1}Supersampling}{32}{subsection.4.1.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.3}Triangles}{32}{section.4.3}
+\contentsline {section}{\numberline {4.2}What is a ray?}{33}{section.4.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.4}Materials}{32}{section.4.4}
+\contentsline {section}{\numberline {4.3}Triangles}{34}{section.4.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.5}Textures}{32}{section.4.5}
+\contentsline {subsection}{\numberline {4.3.1}Collision detection}{34}{subsection.4.3.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.6}BVH}{32}{section.4.6}
+\contentsline {subsection}{\numberline {4.3.2}Axis-Aligned Bounding Box intersection algorithm}{35}{subsection.4.3.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{Appendices}{35}{section*.28}
+\contentsline {subsection}{\numberline {4.3.3}M\IeC {\"o}ller\IeC {\textendash }Trumbore intersection algorithm}{37}{subsection.4.3.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {A}Gantt Diagram}{36}{Appendix.1.A}
+\contentsline {section}{\numberline {4.4}Materials}{39}{section.4.4}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {4.4.1}Diffuse}{39}{subsection.4.4.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {4.4.2}Metals}{41}{subsection.4.4.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {4.4.3}Dielectrics}{43}{subsection.4.4.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Snell's Law of Refraction}{44}{section*.38}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Fresnel Equations}{46}{section*.41}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {4.4.4}Textures}{47}{subsection.4.4.4}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {4.5}Acceleration Data Structures}{48}{section.4.5}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {4.5.1}Bounding Volume Hierarchy}{49}{subsection.4.5.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{BVH Construction}{49}{section*.45}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Bounding-box calculation CPU}{54}{section*.48}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Bounding-box calculation GPU}{54}{section*.49}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {4.6}Scene manager}{54}{section.4.6}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Geometric vertices}{54}{section*.50}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Texture vertices}{55}{section*.51}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Vertex normal}{55}{section*.52}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Polygon Faces}{55}{section*.53}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{Appendices}{59}{section*.54}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {A}Gantt Diagram}{60}{Appendix.1.A}

@@ -1,0 +1,13 @@
+#sizes
+ns            0 nt           0 no      5
+#camera
+0 0 2 -8 0 0 0 0 1 0 60 0.005 100
+
+4 HotelRoom
+
+3 0 m M CONSTANT 0.79216 0.79216 0.79216 0 sphere t center t 4 2 -2
+3 0 m M CONSTANT 0.79216 0.79216 0.79216 0.25 sphere t center t 0 2 -2
+3 0 m M CONSTANT 0.79216 0.79216 0.79216 0.5 sphere t center t -4 2 -2
+
+3 0 m M CONSTANT 0.79216 0.79216 0.79216 0.75 sphere t center t 2 -2 -2
+3 0 m M CONSTANT 0.79216 0.79216 0.79216 1 sphere t center t -2 -2 -2

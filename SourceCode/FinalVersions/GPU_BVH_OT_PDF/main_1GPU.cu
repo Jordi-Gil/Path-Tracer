@@ -15,7 +15,6 @@
 #include "Node.cuh"
 #include "mixture_pdf.cuh"
 #include "filters.hh"
-#include "ShapeList.cuh"
 
 
 #define STB_IMAGE_STATIC
@@ -307,17 +306,18 @@ __device__ Vector3 color(const Ray& ray, Node *world, int depth, bool light, boo
           cur_ray = srec.specular_ray;
         }
         else{
-//           pdf shape_pdf(SHAPE, Vector3::Zero(), d_importanceSamplings, hrec.point);
-//           mixture_pdf pdf(&shape_pdf, srec.pdf_ptr);
+          pdf shape_pdf(SHAPE, Vector3::Zero(), d_importanceSamplings, hrec.point);
+          mixture_pdf pdf(shape_pdf, srec.pdf_ptr);
           
-//           Ray scattered = Ray(hrec.point, pdf.generate(random), cur_ray.time());
-          Ray scattered = Ray(hrec.point, srec.pdf_ptr->generate(random), cur_ray.time());
-//           pdf_val = pdf.value(scattered.direction());
-          pdf_val = srec.pdf_ptr->value(scattered.direction());
+          Ray scattered = Ray(hrec.point, pdf.generate(random), cur_ray.time());
+//           Ray scattered = Ray(hrec.point, srec.pdf_ptr.generate(random), cur_ray.time());
+          pdf_val = pdf.value(scattered.direction());
+//           pdf_val = srec.pdf_ptr.value(scattered.direction());
           cur_attenuation *= srec.attenuation * hrec.mat_ptr.scatter_pdf(cur_ray, hrec, scattered)/pdf_val;
           cur_ray = scattered;
+          cur_attenuation += emitted;
         }
-        cur_attenuation += emitted;
+        
       }
       else return cur_attenuation * emitted;
     }
@@ -419,6 +419,14 @@ __device__ int2 determineRange(Triangle *d_list, int idx, int objs) {
     if(jdx < idx) return make_int2(jdx,idx);
     else return make_int2(idx,jdx);
     
+}
+
+__device__ inline Vector3 de_nan(const Vector3& c) {
+  Vector3 temp = c;
+  if((temp[0]) != temp[0]) temp[0] = 0.0f;
+  if((temp[1]) != temp[1]) temp[1] = 0.0f;
+  if((temp[2]) != temp[2]) temp[2] = 0.0f;
+  return(temp);
 }
 
 __global__ void setupCamera(Camera **d_cam, int nx, int ny, Camera cam) {
@@ -552,7 +560,7 @@ __global__ void render(Vector3 *fb, int max_x, int max_y, int ns, Camera **cam, 
     float v = float(j + cuRandom) / float(max_y);
       
     Ray r = (*cam)->get_ray(u, v, &local_random);
-    col += color(r, world, depth, light, skybox, &local_random, sky, oneTex, d_textures, d_imporanceSamplings);
+    col += de_nan(color(r, world, depth, light, skybox, &local_random, sky, oneTex, d_textures, d_imporanceSamplings));
   }
     
   d_rand_state[pixel_index] = local_random;

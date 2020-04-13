@@ -11,7 +11,7 @@ __device__ inline Vector3 random_cosine_direction(curandState *_random){
   return Vector3(x,y,z);
 }
 
-__host__ __device__ pdf::pdf(int _type, const Vector3 &w,/* ShapeList* p,*/ const Vector3 &o) {
+__host__ __device__ pdf::pdf(int _type, const Vector3 &w, ShapeList* p, const Vector3 &o) {
   
   type = _type;
   
@@ -20,17 +20,17 @@ __host__ __device__ pdf::pdf(int _type, const Vector3 &w,/* ShapeList* p,*/ cons
     uvw.build_from_w(w);
     
   }
-//   else if (type == SHAPE){
-//     ptr = p;
-//     origin = o;
-//   }
+  else if (type == SHAPE){
+    ptr = p;
+    origin = o;
+  }
   
 }
   
-__device__ Vector3 pdf::generate(curandState *nrandom){
+__device__ Vector3 pdf::generate(curandState *_random){
   
-  if(type == COSINE) return generate_cosine(nrandom);
-//   else if (type == SHAPE) return generate_shape(_random);
+  if(type == COSINE) return generate_cosine(_random);
+  else if (type == SHAPE) return generate_shape(_random);
   else return Vector3::Zero();
   
 }
@@ -39,14 +39,14 @@ __device__ Vector3 pdf::generate_cosine(curandState *_random) {
   return uvw.local(random_cosine_direction(_random));
 }
 
-// __device__ Vector3 pdf::generate_shape(curandState *_random) {
-//   return ptr->random(origin, _random);
-// }
+__device__ Vector3 pdf::generate_shape(curandState *_random) {
+  return ptr->random(origin, _random);
+}
 
 __device__ float pdf::value(const Vector3 &direction){
   
   if(type == COSINE) return cosine_value(direction);
-//   else if(type == SHAPE) return shape_value(direction);
+  else if(type == SHAPE) return shape_value(direction);
   else return 0;
   
 }
@@ -60,6 +60,6 @@ __device__ float pdf::cosine_value(const Vector3 &direction) {
   
 }
 
-// __device__ float pdf::shape_value(const Vector3 &direction){
-//   return ptr->pdf_value(origin, direction);
-// }
+__device__ float pdf::shape_value(const Vector3 &direction){
+  return ptr->pdf_value(origin, direction);
+}

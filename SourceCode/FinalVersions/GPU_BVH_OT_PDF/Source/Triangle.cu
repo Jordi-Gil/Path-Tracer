@@ -11,7 +11,9 @@ __host__ __device__ Triangle::Triangle(Vector3 v1, Vector3 v2, Vector3 v3, Mater
     uv[0] = uv1;
     uv[1] = uv2;
     uv[2] = uv3;
-    area = (cross(v2-v1, v3-v1)).length()/2;
+    Vector3 e1 = v2-v1;
+    Vector3 e2 = v3-v1;
+    area = ((cross(e1, e2)).length())/2;
 }
 
 __host__ __device__ bool Triangle::hit(const Ray& r, float t_min, float t_max, hit_record& rec) {
@@ -55,9 +57,9 @@ __host__ __device__ bool Triangle::hit(const Ray& r, float t_min, float t_max, h
 __device__ float Triangle::pdf_value(const Vector3 &origin, const Vector3 &direction) {
   
   hit_record rec;
-  if(this->hit(Ray(origin, direction), 0.001, FLT_MAX, rec)){
+  if(this->hit(Ray(origin, direction), 0.00001, FLT_MAX, rec)){
     float distance = rec.t * rec.t * direction.squared_length();
-    float cosine = dot(direction, rec.normal);
+    float cosine = abs(dot(direction, rec.normal)/direction.length());
     return (distance/(cosine*area));
   }
   return 0;

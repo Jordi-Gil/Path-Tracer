@@ -1003,5 +1003,452 @@
     \field{urlmonth}{10}
     \field{urlyear}{2019}
   \endentry
+
+  \entry{Kurt2010}{article}{}
+    \name{author}{3}{}{%
+      {{hash=KM}{%
+         family={Kurt},
+         familyi={K\bibinitperiod},
+         given={Murat},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=SKL}{%
+         family={Szirmay-Kalos},
+         familyi={S\bibinitperiod-K\bibinitperiod},
+         given={L{\'{a}}szl{\'{o}}},
+         giveni={L\bibinitperiod},
+      }}%
+      {{hash=KJ}{%
+         family={Křiv{\'{a}}nek},
+         familyi={K\bibinitperiod},
+         given={Jaroslav},
+         giveni={J\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{KM+1}
+    \strng{fullhash}{KMSKLKJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2010}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    M the editor: The graphic representation of the formulas integral to this
+  paper are poorly interpreted due the e-quarterly's restricted access to use
+  loaded java scripts. Please use this link to download a supplemented PDF
+  version of the article.%
+    }
+    \field{title}{{An anisotropic BRDF model for fitting and Monte Carlo
+  rendering}}
+    \field{journaltitle}{ACM SIGGRAPH Computer Graphics}
+    \field{year}{2010}
+  \endentry
+
+  \entry{Ericson2004}{book}{}
+    \name{author}{1}{}{%
+      {{hash=EC}{%
+         family={Ericson},
+         familyi={E\bibinitperiod},
+         given={Christer},
+         giveni={C\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{EC1}
+    \strng{fullhash}{EC1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2004}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    Today's sophisticated 3D games, virtual reality applications, and physical
+  simulators involve rich graphical environments of millions of polygons. In
+  these worlds, hundreds, perhaps even thousands of detailed animated objects
+  may be interacting not only with these complex environments but also amongst
+  themselves. With a typical update rate of 60 frames per second, a minimal
+  amount of time is available for determining the intersection status of all
+  objects in the world at a given time in order to maintain a believable
+  simulation. Real-Time Collision Detection is a comprehensive, in-depth survey
+  of the data structures and algorithms that make this possible. Taking a
+  practical approach, the book discusses all the important components of an
+  efficient real-time collision detection system. Topics covered include object
+  representations, intersection tests, and distance queries, and the
+  mathematics behind them: hierarchical and spatial partitioning methods,
+  numerical and geometrical robustness issues, hardware acceleration methods,
+  and advanced optimization for modern computer architectures. This book
+  extends and broadens the discussion of collision detection in Collision
+  Detection in Interactive 3D Environments.%
+    }
+    \field{booktitle}{Real-Time Collision Detection}
+    \verb{doi}
+    \verb 10.1201/b14581
+    \endverb
+    \field{pages}{236\bibrangedash 237}
+    \field{title}{{Real-Time Collision Detection}}
+    \field{year}{2004}
+  \endentry
+
+  \entry{Moller2005}{inproceedings}{}
+    \name{author}{2}{}{%
+      {{hash=MT}{%
+         family={M{\"{o}}ller},
+         familyi={M\bibinitperiod},
+         given={Tomas},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=TB}{%
+         family={Trumbore},
+         familyi={T\bibinitperiod},
+         given={Ben},
+         giveni={B\bibinitperiod},
+      }}%
+    }
+    \keyw{Base transformation,Intersection,Ray
+  tracing,Ray/triangle-intersection}
+    \strng{namehash}{MT+1}
+    \strng{fullhash}{MTTB1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2005}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    We present a clean algorithm for determining whether a ray intersects a
+  triangle. The algorithm translates the origin of the ray and then changes the
+  base of that vector which yields a vector (t u v)T, where t is the distance
+  to the plane in which the triangle lies and (u, v) represents the coordinates
+  inside the triangle. One advantage of this method is that the plane equation
+  need not be computed on the fly nor be stored, which can amount to
+  significant memory savings for triangle meshes. As we found our method to be
+  comparable in speed to previous methods, we believe it is the fastest
+  ray/triangle intersection routine for triangles which do not have precomputed
+  plane equations.%
+    }
+    \field{booktitle}{ACM SIGGRAPH 2005 Courses, SIGGRAPH 2005}
+    \field{title}{{Fast, minimum storage ray/triangle intersection}}
+    \field{year}{2005}
+  \endentry
+
+  \entry{Schlick1994}{article}{}
+    \name{author}{1}{}{%
+      {{hash=SC}{%
+         family={Schlick},
+         familyi={S\bibinitperiod},
+         given={Christophe},
+         giveni={C\bibinitperiod},
+      }}%
+    }
+    \keyw{Bidirectional Reflectance Distribution
+  Function,Optimization,Physically‐Based Rendering}
+    \strng{namehash}{SC1}
+    \strng{fullhash}{SC1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1994}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    A new BRDF model is presented which can be viewed as an kind of
+  intermediary model between empirism and theory. Main results of physics are
+  observed (energy conservation, reciprocity rule, microfacet theory) and
+  numerous phenomena involved in light reflection are accounted for, in a
+  physically plausible way (incoherent and coherent reflection, spectrum
+  modifications, anisotropy, self‐shadowing, multiple surface and subsurface
+  reflection, differences between homogeneous and heterogeneous materials). The
+  model has been especially intended for computer graphics applications and
+  therefore includes two main features: simplicity (a small number of
+  intuitively understandable parameters controls the model) and efficiency (the
+  formulation provides adequation to Monte‐Carlo rendering techniques and/or
+  hardware implementations). {\textcopyright} 1994 Eurographics Association%
+    }
+    \field{title}{{An Inexpensive BRDF Model for Physically‐based Rendering}}
+    \field{journaltitle}{Computer Graphics Forum}
+    \field{year}{1994}
+  \endentry
+
+  \entry{Fujimoto1986}{article}{}
+    \name{author}{3}{}{%
+      {{hash=FA}{%
+         family={Fujimoto},
+         familyi={F\bibinitperiod},
+         given={Akira},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=TT}{%
+         family={Tanaka},
+         familyi={T\bibinitperiod},
+         given={Takayuki},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=IK}{%
+         family={Iwata},
+         familyi={I\bibinitperiod},
+         given={Kansei},
+         giveni={K\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{FA+1}
+    \strng{fullhash}{FATTIK1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1986}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    In this article we propose algorithms that address the two basic problems
+  encountered in generating continuous-tone images by ray tracing: Speed and
+  aliasing. We examine previous approaches to the problem and then propose a
+  scheme based on the coherency of an auxiliary data structure imposed on the
+  original object domain. After investigating both simple spatial enumeration
+  and a hybrid octree approach, we developed 3DDDA, a 3D line generator for
+  efficient traversing of both structures. 3DDDA provides an order of magnitude
+  improvement in processing speed compared to other known ray-tracing methods.
+  Processing time is found to be virtually independent of the number of objects
+  involved in the scene. For large numbers of objects, this method actully
+  becomes faster than Scan Line methods. To remove jags from edges, a scheme
+  for identifying edge orientation and distance from pixel center to true edge
+  has been implemented. The time required for antialiasing depends on the total
+  length of the edges encountered, but it is normally only a fractional
+  addition to the time needed to produce the scene without antialiasing.
+  {\textcopyright} 1986 IEEE%
+    }
+    \verb{doi}
+    \verb 10.1109/MCG.1986.276715
+    \endverb
+    \field{issn}{02721716}
+    \field{pages}{16\bibrangedash 26}
+    \field{title}{{Arts: Accelerated Ray-Tracing System}}
+    \field{journaltitle}{IEEE Computer Graphics and Applications}
+    \field{year}{1986}
+  \endentry
+
+  \entry{Bentley1975}{article}{}
+    \name{author}{1}{}{%
+      {{hash=BJL}{%
+         family={Bentley},
+         familyi={B\bibinitperiod},
+         given={Jon\bibnamedelima Louis},
+         giveni={J\bibinitperiod\bibinitdelim L\bibinitperiod},
+      }}%
+    }
+    \keyw{associative retrieval,attribute,binary search trees,binary tree
+  insertion,information retrieval system,intersection queries,key,nearest
+  neighbor queries,partial match queries}
+    \strng{namehash}{BJL1}
+    \strng{fullhash}{BJL1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1975}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    This paper develops the multidimensional binary search tree (or k-d tree,
+  where k is the dimensionality of the search space) as a data structure for
+  storage of information to be retrieved by associative searches. The k-d tree
+  is defined and examples are given. It is shown to be quite efficient in its
+  storage requirements. A significant advantage of this structure is that a
+  single data structure can handle many types of queries very efficiently.
+  Various utility algorithms are developed; their proven average running times
+  in an n record file are: insertion, O(log n); deletion of the root,
+  O(n(k-1)/k); deletion of a random node, O(log n); and optimization
+  (guarantees logarithmic performance of searches), O(n log n). Search
+  algorithms are given for partial match queries with t keys specified [proven
+  maximum running time of O(n(k-t)/k)] and for nearest neighbor queries
+  [empirically observed average running time of O(log n).] These performances
+  far surpass the best currently known algorithms for these tasks. An algorithm
+  is presented to handle any general intersection query. The main focus of this
+  paper is theoretical. It is felt, however, that k-d trees could be quite
+  useful in many applications, and examples of potential uses are given.
+  {\textcopyright} 1975, ACM. All rights reserved.%
+    }
+    \verb{doi}
+    \verb 10.1145/361002.361007
+    \endverb
+    \field{issn}{15577317}
+    \field{pages}{509\bibrangedash 517}
+    \field{title}{{Multidimensional Binary Search Trees Used for Associative
+  Searching}}
+    \field{journaltitle}{Communications of the ACM}
+    \field{year}{1975}
+  \endentry
+
+  \entry{DonaldMeagher1982}{report}{}
+    \name{author}{1}{}{%
+      {{hash=D}{%
+         family={{Donald Meagher}},
+         familyi={D\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{D1}
+    \strng{fullhash}{D1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1982}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    A geometric modeling technique called Octree Encoding is presented.
+  Arbitrary 3-D objects can be represented to any specified resolution in a
+  hierarchical I-ary tree structure or "octree." Objects may be concave or
+  convex, have holes (including interior holes), consist of disjoint parts, and
+  possess sculptured (i.e., "free-form") surfaces. The memory required for
+  representation and manipulation is on the order of the surface area of the
+  object. A complexity metric is proposed based on the number of nodes in an
+  object's tree representation. Efficient (linear time) algorithms have been
+  developed for the Boolean operations (union, intersection and difference),
+  geometric operations (translation, scaling and rotation), N-dimensional
+  interference detection, and display from any point in space with hidden
+  surfaces removed. The algorithms require neither floating-point operations,
+  integer multiplications, nor integer divisions. In addition, many independent
+  sets of very simple calculations are typically generated, allowing
+  implementation over many inexpensive high-bandwidth processors operating in
+  parallel. Real time analysis and manipulation of highly complex situations
+  thus becomes possible.%
+    }
+    \field{booktitle}{COMPUTER GRAPHICS AND IMAGE PROCESSING}
+    \field{title}{{Geometric Modeling Using Octree Encoding}}
+    \field{type}{techreport}
+    \field{year}{1982}
+  \endentry
+
+  \entry{Gunther2007}{inproceedings}{}
+    \name{author}{4}{}{%
+      {{hash=GJ}{%
+         family={G{\"{u}}nther},
+         familyi={G\bibinitperiod},
+         given={Johannes},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=PS}{%
+         family={Popov},
+         familyi={P\bibinitperiod},
+         given={Stefan},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=SHP}{%
+         family={Seidel},
+         familyi={S\bibinitperiod},
+         given={Hans\bibnamedelima Peter},
+         giveni={H\bibinitperiod\bibinitdelim P\bibinitperiod},
+      }}%
+      {{hash=SP}{%
+         family={Slusallek},
+         familyi={S\bibinitperiod},
+         given={Philipp},
+         giveni={P\bibinitperiod},
+      }}%
+    }
+    \keyw{I.3.6 [computer graphics]: Methodology and techniq}
+    \strng{namehash}{GJ+1}
+    \strng{fullhash}{GJPSSHPSP1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2007}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    Recent GPU ray tracers can already achieve performance competitive to that
+  of their CPU counterparts. Nevertheless, these systems can not yet fully
+  exploit the capabilities of modern GPUs and can only handle medium-sized,
+  static scenes. In this paper we present a BVH-based GPU ray tracer with a
+  parallel packet traversal algorithm using a shared stack. We also present a
+  fast, CPU-based BVH construction algorithm which very accurately approximates
+  the surface area heuristic using streamed binning while still being one order
+  of magnitude faster than previously published results. Furthermore, using a
+  BVH allows us to push the size limit of supported scenes on the GPU: We can
+  now ray trace the 12.7 million triangle POWER PLANT at 1024×1024 image
+  resolution with 3 fps, including shading and shadows. {\textcopyright} 2007
+  IEEE.%
+    }
+    \field{booktitle}{IEEE/ EG Symposium on Interactive Ray Tracing 2007
+  Proceedings, IRT}
+    \verb{doi}
+    \verb 10.1109/RT.2007.4342598
+    \endverb
+    \field{isbn}{9781424416295}
+    \field{title}{{Realtime ray tracing on GPU with BVH-based packet
+  traversal}}
+    \field{year}{2007}
+  \endentry
+
+  \entry{Lauterbach2009}{article}{}
+    \name{author}{5}{}{%
+      {{hash=LC}{%
+         family={Lauterbach},
+         familyi={L\bibinitperiod},
+         given={C.},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=GM}{%
+         family={Garland},
+         familyi={G\bibinitperiod},
+         given={M.},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=SS}{%
+         family={Sengupta},
+         familyi={S\bibinitperiod},
+         given={S.},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=LD}{%
+         family={Luebke},
+         familyi={L\bibinitperiod},
+         given={D.},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=MD}{%
+         family={Manocha},
+         familyi={M\bibinitperiod},
+         given={D.},
+         giveni={D\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{LC+1}
+    \strng{fullhash}{LCGMSSLDMD1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2009}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    We present two novel parallel algorithms for rapidly constructing bounding
+  volume hierarchies on manycore GPUs. The first uses a linear ordering derived
+  from spatial Morton codes to build hierarchies extremely quickly and with
+  high parallel scalability. The second is a top-down approach that uses the
+  surface area heuristic (SAH) to build hierarchies optimized for fast ray
+  tracing. Both algorithms are combined into a hybrid algorithm that removes
+  existing bottlenecks in the algorithm for GPU construction performance and
+  scalability leading to significantly decreased build time. The resulting
+  hierarchies are close in to optimized SAH hierarchies, but the construction
+  process is substantially faster, leading to a significant net benefit when
+  both construction and traversal cost are accounted for. Our preliminary
+  results show that current GPU architectures can compete with CPU
+  implementations of hierarchy construction running on multicore systems. In
+  practice, we can construct hierarchies of models with up to several million
+  triangles and use them for fast ray tracing or other applications.
+  {\textcopyright} 2008 The Eurographics Association and Blackwell Publishing
+  Ltd.%
+    }
+    \verb{doi}
+    \verb 10.1111/j.1467-8659.2009.01377.x
+    \endverb
+    \field{issn}{14678659}
+    \field{pages}{375\bibrangedash 384}
+    \field{title}{{Fast BVH construction on GPUs}}
+    \field{journaltitle}{Computer Graphics Forum}
+    \field{year}{2009}
+  \endentry
+
+  \entry{Morton1966ACO}{inproceedings}{}
+    \name{author}{1}{}{%
+      {{hash=MGH}{%
+         family={Morton},
+         familyi={M\bibinitperiod},
+         given={G.\bibnamedelima H.},
+         giveni={G\bibinitperiod\bibinitdelim H\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{MGH1}
+    \strng{fullhash}{MGH1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1966}
+    \field{labeldatesource}{year}
+    \field{title}{A computer oriented geodetic data base and a new technique in
+  file sequencing}
+    \field{year}{1966}
+  \endentry
 \enddatalist
 \endinput

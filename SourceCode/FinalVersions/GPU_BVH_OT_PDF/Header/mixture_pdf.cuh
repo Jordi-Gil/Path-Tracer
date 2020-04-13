@@ -12,7 +12,7 @@ class mixture_pdf {
 public:
 
   __host__ __device__ mixture_pdf() {};
-  __host__ __device__ mixture_pdf(pdf *pdf0, pdf *pdf1);
+  __host__ __device__ mixture_pdf(pdf pdf0, pdf pdf1);
   
   __device__ float value(const Vector3 &direction);
   
@@ -20,7 +20,7 @@ public:
   
 private:
   
-  pdf *pdfs[2];
+  pdf pdfs[2];
   
 };
 

@@ -301,6 +301,11 @@ Node* generateHierarchy(Triangle *sortedMortonCodes, int numberObj) {
         Node *childA;
         Node *childB;
         
+        if(split == -1){
+          split = (first+last) >> 1;
+          ++last;
+        }
+        
         if(split == first) { 
           childA = &leafNodes[split];
           childA->isLeaf = true;
@@ -397,8 +402,8 @@ bool intersect(Node *root, const Ray &cur_ray, float t_min, float t_max, hit_rec
 
 Vector3 color(const Ray& ray, Node *world, int depth, bool light, int const _depth, Skybox sky) {
   hit_record rec;
-  if( intersect(world, ray, 0.00001, FLT_MAX, rec) ) {
-//   if(world->checkCollision(ray, 0.00001, FLT_MAX, rec)){
+//   if( intersect(world, ray, 0.00001, FLT_MAX, rec) ) {
+  if(world->checkCollision(ray, 0.00001, FLT_MAX, rec)){
       Ray scattered;
       Vector3 attenuation;
       Vector3 emitted = rec.mat_ptr.emitted(rec.u, rec.v);

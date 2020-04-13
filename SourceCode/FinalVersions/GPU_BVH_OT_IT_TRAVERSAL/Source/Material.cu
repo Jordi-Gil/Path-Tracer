@@ -6,15 +6,12 @@ __host__ __device__ float schlick(float cosine, float ref_idx){
     return r0 + (1-r0) * pow((1-cosine), 5);
 }
 
-__host__ __device__ bool refract(const Vector3 &v, const Vector3 &n, float ni_over_nt, Vector3 &refracted) {
+__host__ __device__ bool refract(const Vector3 &v, const Vector3 &n, float ni_over_nt, float cos1, Vector3 &refracted) {
   
-  Vector3 uv = unit_vector(v);
-  float dt = dot(uv, n);
-  float discriminant = 1.0 - ni_over_nt*ni_over_nt*(1-dt*dt);
-
-  if(discriminant > 0){
-    refracted = ni_over_nt*(uv - n*dt) - n*sqrt(discriminant);
-    
+  float cos2 = 1.0 - ni_over_nt*ni_over_nt*(1-cos1*cos1);
+  
+  if(cos2 > 0){
+    refracted = ni_over_nt*v + (ni_over_nt*cos1 - sqrt(cos2))*n;
     return true;
   }
   else return false;
@@ -36,13 +33,20 @@ __device__ Vector3 random_in_unit_sphere(curandState *random){
   return p;
 }
 
+__device__ float random_val(int min, int max, curandState *random){
+  
+  float rand = curand_uniform(random);
+  rand *= (max - min + 0.999999);
+  rand += min;
+  
+  return rand;
+  
+}
+
 __device__ Vector3 random_on_unit_sphere(curandState *random){
   Vector3 p;
   do{
-    p = 2.0*Vector3(curand_uniform(random), 
-                    curand_uniform(random),
-                    curand_uniform(random)
-                   ) - Vector3::One();
+    p = Vector3(random_val(-1,1,random), random_val(-1,1,random), random_val(-1,1,random));
   }
   while(p.squared_length() >= 1.0);
   return unit_vector(p);
@@ -74,9 +78,9 @@ __device__ Vector3 Material::emitted(float u, float v, bool oneTex, unsigned cha
 
 __device__ bool Material::Lambertian(const Ray& r_in, const hit_record &rec, Vector3 &attenuation, Ray &scattered, curandState *random, bool oneTex, unsigned char **d_textures) {
 
-  Vector3 target = rec.point + rec.normal + random_in_unit_sphere(random);
+  Vector3 scattered_direction = rec.normal + random_on_unit_sphere(random);
   
-  scattered = Ray(rec.point, target-rec.point, r_in.time());
+  scattered = Ray(rec.point, scattered_direction, r_in.time());
   attenuation = albedo.value(rec.u, rec.v,oneTex,d_textures);
   
   return true;
@@ -98,23 +102,25 @@ __device__ bool Material::Dielectric(const Ray& r_in, const hit_record& rec, Vec
   Vector3 outward_normal;
   Vector3 reflected = reflect(r_in.direction(), rec.normal);
   
-  float ni_over_nt;
   attenuation = albedo.value(rec.u, rec.v,oneTex,d_textures);
+  
+  float ni_over_nt;
   Vector3 refracted;
   float reflect_prob;
   float cosine;
+  
   if(dot(r_in.direction(), rec.normal) > 0){
     outward_normal = -rec.normal;
     ni_over_nt = ref_idx;
-    cosine = ref_idx * dot(r_in.direction(), rec.normal) / r_in.direction().length();
+    cosine = dot(unit_vector(r_in.direction()), rec.normal);
   }
   else {
     outward_normal = rec.normal;
     ni_over_nt = 1.0 / ref_idx;
-    cosine = -dot(r_in.direction(), rec.normal) / r_in.direction().length();
+    cosine = -dot(unit_vector(r_in.direction()), rec.normal);
   }
     
-  if(refract(r_in.direction(), outward_normal, ni_over_nt, refracted)){
+  if(refract(unit_vector(r_in.direction()), outward_normal, ni_over_nt, cosine, refracted)){
     reflect_prob = schlick(cosine, ref_idx);
   }
   else{

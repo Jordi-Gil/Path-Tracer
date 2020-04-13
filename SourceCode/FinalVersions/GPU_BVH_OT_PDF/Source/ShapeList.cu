@@ -5,17 +5,18 @@ __host__ __device__ ShapeList::ShapeList(Triangle* p, int n) {
     
   h_list = p; 
   size = n;
-  
-  printf("Shape list size: %d\n",size);
     
 }
 
 __device__ float ShapeList::pdf_value(const Vector3 &origin, const Vector3 &direction) {
     
   float weight = 1.0/size;
+  
   float sum = 0;
   
-  for(int i = 0; i < size; i++) sum += weight*d_list[i].pdf_value(origin, direction);
+  for(int i = 0; i < size; i++){ 
+    sum += weight*d_list[i].pdf_value(origin, direction);
+  }
   
   return sum;
     

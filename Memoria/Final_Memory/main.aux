@@ -217,7 +217,9 @@
 \@writefile{lot}{\defcounter {refsection}{0}\relax }\@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {4.1}Introduction}{30}{section.4.1}}
 \@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces \textit  {Ray Casting} algorithm overview. Source: Ray tracing (graphics), Wikipedia\relax }}{30}{figure.caption.26}}
-\newlabel{globalil}{{4.1}{30}{\textit {Ray Casting} algorithm overview. Source: Ray tracing (graphics), Wikipedia\relax }{figure.caption.26}{}}
+\newlabel{globalilum}{{4.1}{30}{\textit {Ray Casting} algorithm overview. Source: Ray tracing (graphics), Wikipedia\relax }{figure.caption.26}{}}
+\citation{Kajiya1986}
+\abx@aux@segm{0}{0}{Kajiya1986}
 \newlabel{mr_rect_1}{{4.2a}{31}{1 bounce per ray\relax }{figure.caption.27}{}}
 \newlabel{sub@mr_rect_1}{{a}{31}{1 bounce per ray\relax }{figure.caption.27}{}}
 \newlabel{mr_rect_2}{{4.2b}{31}{2 bounce per ray\relax }{figure.caption.27}{}}
@@ -232,27 +234,135 @@
 \newlabel{sub@mr_rect_20}{{f}{31}{20 bounce per ray\relax }{figure.caption.27}{}}
 \@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces Reflections increase with the numbers of bounces.\relax }}{31}{figure.caption.27}}
 \newlabel{bounces}{{4.2}{31}{Reflections increase with the numbers of bounces.\relax }{figure.caption.27}{}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {4.2}What is a ray?}{32}{section.4.2}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {4.3}Triangles}{32}{section.4.3}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {4.4}Materials}{32}{section.4.4}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {4.5}Textures}{32}{section.4.5}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {4.6}BVH}{32}{section.4.6}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {chapter}{Appendices}{35}{section*.28}}
-\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {chapter}{\numberline {A}Gantt Diagram}{36}{Appendix.1.A}}
+\citation{Kurt2010}
+\abx@aux@cite{Kurt2010}
+\abx@aux@segm{0}{0}{Kurt2010}
+\citation{Kurt2010}
+\abx@aux@segm{0}{0}{Kurt2010}
+\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {4.3}{\ignorespaces Hemisphere scheme. Source: \citep {Kurt2010}\relax }}{32}{figure.caption.28}}
+\newlabel{rendeq}{{4.3}{32}{Hemisphere scheme. Source: \citep {Kurt2010}\relax }{figure.caption.28}{}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.1}Supersampling}{32}{subsection.4.1.1}}
+\citation{Kurt2010}
+\abx@aux@segm{0}{0}{Kurt2010}
+\citation{Kurt2010}
+\abx@aux@segm{0}{0}{Kurt2010}
+\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {4.4}{\ignorespaces Example of supersampling for one pixel: \citep {Kurt2010}\relax }}{33}{figure.caption.29}}
+\newlabel{SA}{{4.4}{33}{Example of supersampling for one pixel: \citep {Kurt2010}\relax }{figure.caption.29}{}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {4.2}What is a ray?}{33}{section.4.2}}
+\newlabel{rayeq}{{4.3}{33}{What is a ray?}{equation.4.2.3}{}}
+\citation{Ericson2004}
+\abx@aux@cite{Ericson2004}
+\abx@aux@segm{0}{0}{Ericson2004}
+\citation{Ericson2004}
+\abx@aux@segm{0}{0}{Ericson2004}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {4.3}Triangles}{34}{section.4.3}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.1}Collision detection}{34}{subsection.4.3.1}}
+\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {4.5}{\ignorespaces Bounding volumes shapes. Source: \citep [pp.\nobreakspace  {}236\IeC {\textendash }237]{Ericson2004}\relax }}{34}{figure.caption.30}}
+\newlabel{BV}{{4.5}{34}{Bounding volumes shapes. Source: \citep [pp.~236–237]{Ericson2004}\relax }{figure.caption.30}{}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.2}Axis-Aligned Bounding Box intersection algorithm}{35}{subsection.4.3.2}}
+\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {4.6}{\ignorespaces 2D Bounding box\relax }}{35}{figure.caption.31}}
+\newlabel{AABB1}{{4.6}{35}{2D Bounding box\relax }{figure.caption.31}{}}
+\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {4.7}{\ignorespaces Ray-box intersection\relax }}{35}{figure.caption.32}}
+\newlabel{AABB2}{{4.7}{35}{Ray-box intersection\relax }{figure.caption.32}{}}
+\newlabel{slab_method_1}{{4.4}{36}{Axis-Aligned Bounding Box intersection algorithm}{equation.4.3.4}{}}
+\newlabel{slab_method_2}{{4.5}{36}{Axis-Aligned Bounding Box intersection algorithm}{equation.4.3.5}{}}
+\newlabel{slab_method_3}{{4.6}{36}{Axis-Aligned Bounding Box intersection algorithm}{equation.4.3.6}{}}
+\citation{Moller2005}
+\abx@aux@cite{Moller2005}
+\abx@aux@segm{0}{0}{Moller2005}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.3}M\IeC {\"o}ller\IeC {\textendash }Trumbore intersection algorithm}{37}{subsection.4.3.3}}
+\newlabel{barycentric}{{4.7}{37}{Möller–Trumbore intersection algorithm}{equation.4.3.7}{}}
+\newlabel{cramer}{{4.12}{38}{Möller–Trumbore intersection algorithm}{equation.4.3.12}{}}
+\newlabel{cramer2}{{4.13}{39}{Möller–Trumbore intersection algorithm}{equation.4.3.13}{}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {4.4}Materials}{39}{section.4.4}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.1}Diffuse}{39}{subsection.4.4.1}}
+\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {4.8}{\ignorespaces Diffuse reflection diagram. Source: Wikimedia Commons\relax }}{40}{figure.caption.33}}
+\newlabel{diff1}{{4.8}{40}{Diffuse reflection diagram. Source: Wikimedia Commons\relax }{figure.caption.33}{}}
+\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {4.9}{\ignorespaces Random diffuse bounce ray\relax }}{40}{figure.caption.34}}
+\newlabel{diff2}{{4.9}{40}{Random diffuse bounce ray\relax }{figure.caption.34}{}}
+\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {4.10}{\ignorespaces Diffuse objects example. Rendered with our application.\relax }}{41}{figure.caption.35}}
+\newlabel{diff3}{{4.10}{41}{Diffuse objects example. Rendered with our application.\relax }{figure.caption.35}{}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.2}Metals}{41}{subsection.4.4.2}}
+\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {4.11}{\ignorespaces Ray reflection diagram. Source: Reflection (physics), Wikipedia \relax }}{42}{figure.caption.36}}
+\newlabel{metal1}{{4.11}{42}{Ray reflection diagram. Source: Reflection (physics), Wikipedia \relax }{figure.caption.36}{}}
+\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {4.12}{\ignorespaces Example of metallic spheres with different roughness value. Rendered with our application.\relax }}{43}{figure.caption.37}}
+\newlabel{metal2}{{4.12}{43}{Example of metallic spheres with different roughness value. Rendered with our application.\relax }{figure.caption.37}{}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.3}Dielectrics}{43}{subsection.4.4.3}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {subsubsection}{Snell's Law of Refraction}{44}{section*.38}}
+\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {4.13}{\ignorespaces Snell's law diagram.\relax }}{44}{figure.caption.39}}
+\newlabel{snell}{{4.13}{44}{Snell's law diagram.\relax }{figure.caption.39}{}}
+\newlabel{snlaw1}{{4.17}{44}{Snell's Law of Refraction}{equation.4.4.17}{}}
+\newlabel{eq1}{{4.20}{45}{Snell's Law of Refraction}{equation.4.4.20}{}}
+\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {4.14}{\ignorespaces Refracted ray calculation.\relax }}{45}{figure.caption.40}}
+\newlabel{snell2}{{4.14}{45}{Refracted ray calculation.\relax }{figure.caption.40}{}}
+\citation{Schlick1994}
+\abx@aux@cite{Schlick1994}
+\abx@aux@segm{0}{0}{Schlick1994}
+\newlabel{refracted_ray}{{4.21}{46}{Snell's Law of Refraction}{equation.4.4.21}{}}
+\newlabel{refracted_ray_2}{{4.22}{46}{Snell's Law of Refraction}{equation.4.4.22}{}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {subsubsection}{Fresnel Equations}{46}{section*.41}}
+\newlabel{schlick}{{4.23}{46}{Fresnel Equations}{equation.4.4.23}{}}
+\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {4.15}{\ignorespaces Glass bunny, $\eta _1 = 1.42$. Rendered with our application.\relax }}{47}{figure.caption.42}}
+\newlabel{dielectric1}{{4.15}{47}{Glass bunny, $\eta _1 = 1.42$. Rendered with our application.\relax }{figure.caption.42}{}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.4}Textures}{47}{subsection.4.4.4}}
+\citation{Fujimoto1986}
+\abx@aux@cite{Fujimoto1986}
+\abx@aux@segm{0}{0}{Fujimoto1986}
+\citation{Bentley1975}
+\abx@aux@cite{Bentley1975}
+\abx@aux@segm{0}{0}{Bentley1975}
+\citation{DonaldMeagher1982}
+\abx@aux@cite{DonaldMeagher1982}
+\abx@aux@segm{0}{0}{DonaldMeagher1982}
+\citation{Gunther2007}
+\abx@aux@cite{Gunther2007}
+\abx@aux@segm{0}{0}{Gunther2007}
+\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {4.16}{\ignorespaces Scene with objects using textures. Rendered with our application.\relax }}{48}{figure.caption.43}}
+\newlabel{textures_1}{{4.16}{48}{Scene with objects using textures. Rendered with our application.\relax }{figure.caption.43}{}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {4.5}Acceleration Data Structures}{48}{section.4.5}}
+\citation{Lauterbach2009}
+\abx@aux@cite{Lauterbach2009}
+\abx@aux@segm{0}{0}{Lauterbach2009}
+\citation{Lauterbach2009}
+\abx@aux@segm{0}{0}{Lauterbach2009}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.1}Bounding Volume Hierarchy}{49}{subsection.4.5.1}}
+\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {4.17}{\ignorespaces Bounding Volume Hierarchy example. Source: Wikipedia. Bounding volume hierarchy.\relax }}{49}{figure.caption.44}}
+\newlabel{bvh1}{{4.17}{49}{Bounding Volume Hierarchy example. Source: Wikipedia. Bounding volume hierarchy.\relax }{figure.caption.44}{}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {subsubsection}{BVH Construction}{49}{section*.45}}
+\citation{Morton1966ACO}
+\abx@aux@cite{Morton1966ACO}
+\abx@aux@segm{0}{0}{Morton1966ACO}
+\citation{Karras2012}
+\abx@aux@segm{0}{0}{Karras2012}
+\citation{Karras2012}
+\abx@aux@segm{0}{0}{Karras2012}
+\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {4.18}{\ignorespaces Example of binary radix tree. Source: Wikipedia. Radix tree.\relax }}{50}{figure.caption.46}}
+\newlabel{radix}{{4.18}{50}{Example of binary radix tree. Source: Wikipedia. Radix tree.\relax }{figure.caption.46}{}}
+\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {4.19}{\ignorespaces Ordered radix tree. Source: \citep {Karras2012}.\relax }}{51}{figure.caption.47}}
+\newlabel{radix}{{4.19}{51}{Ordered radix tree. Source: \citep {Karras2012}.\relax }{figure.caption.47}{}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {subsubsection}{Bounding-box calculation CPU}{54}{section*.48}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {subsubsection}{Bounding-box calculation GPU}{54}{section*.49}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {section}{\numberline {4.6}Scene manager}{54}{section.4.6}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {subsubsection}{Geometric vertices}{54}{section*.50}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {subsubsection}{Texture vertices}{55}{section*.51}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {subsubsection}{Vertex normal}{55}{section*.52}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {subsubsection}{Polygon Faces}{55}{section*.53}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {chapter}{Appendices}{59}{section*.54}}
+\@writefile{toc}{\defcounter {refsection}{0}\relax }\@writefile{toc}{\contentsline {chapter}{\numberline {A}Gantt Diagram}{60}{Appendix.1.A}}
 \@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\defcounter {refsection}{0}\relax }\@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {A.1}{\ignorespaces Complete Gantt Chart.\relax }}{37}{figure.caption.29}}
-\newlabel{gantt_esp}{{A.1}{37}{Complete Gantt Chart.\relax }{figure.caption.29}{}}
-\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {A.2}{\ignorespaces GEP Stage.\relax }}{38}{figure.caption.30}}
-\newlabel{gantt_1}{{A.2}{38}{GEP Stage.\relax }{figure.caption.30}{}}
-\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {A.3}{\ignorespaces Development Stage.\relax }}{39}{figure.caption.31}}
-\newlabel{gantt_2}{{A.3}{39}{Development Stage.\relax }{figure.caption.31}{}}
-\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {A.4}{\ignorespaces Complete Gantt Chart.\relax }}{40}{figure.caption.32}}
-\newlabel{gantt_eng}{{A.4}{40}{Complete Gantt Chart.\relax }{figure.caption.32}{}}
-\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {A.5}{\ignorespaces Development Stage new tasks.\relax }}{41}{figure.caption.33}}
-\newlabel{gantt_3}{{A.5}{41}{Development Stage new tasks.\relax }{figure.caption.33}{}}
-\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {A.6}{\ignorespaces Final Stage.\relax }}{41}{figure.caption.34}}
-\newlabel{gantt_4}{{A.6}{41}{Final Stage.\relax }{figure.caption.34}{}}
+\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {A.1}{\ignorespaces Complete Gantt Chart.\relax }}{61}{figure.caption.55}}
+\newlabel{gantt_esp}{{A.1}{61}{Complete Gantt Chart.\relax }{figure.caption.55}{}}
+\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {A.2}{\ignorespaces GEP Stage.\relax }}{62}{figure.caption.56}}
+\newlabel{gantt_1}{{A.2}{62}{GEP Stage.\relax }{figure.caption.56}{}}
+\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {A.3}{\ignorespaces Development Stage.\relax }}{63}{figure.caption.57}}
+\newlabel{gantt_2}{{A.3}{63}{Development Stage.\relax }{figure.caption.57}{}}
+\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {A.4}{\ignorespaces Complete Gantt Chart.\relax }}{64}{figure.caption.58}}
+\newlabel{gantt_eng}{{A.4}{64}{Complete Gantt Chart.\relax }{figure.caption.58}{}}
+\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {A.5}{\ignorespaces Development Stage new tasks.\relax }}{65}{figure.caption.59}}
+\newlabel{gantt_3}{{A.5}{65}{Development Stage new tasks.\relax }{figure.caption.59}{}}
+\@writefile{lof}{\defcounter {refsection}{0}\relax }\@writefile{lof}{\contentsline {figure}{\numberline {A.6}{\ignorespaces Final Stage.\relax }}{65}{figure.caption.60}}
+\newlabel{gantt_4}{{A.6}{65}{Final Stage.\relax }{figure.caption.60}{}}
 \abx@aux@refcontextdefaultsdone
 \abx@aux@defaultrefcontext{0}{Lotto1999}{none/global//global/global}
 \abx@aux@defaultrefcontext{0}{Henri1971}{none/global//global/global}
@@ -277,6 +387,16 @@
 \abx@aux@defaultrefcontext{0}{tuSalario}{none/global//global/global}
 \abx@aux@defaultrefcontext{0}{tuLuz}{none/global//global/global}
 \abx@aux@defaultrefcontext{0}{gene}{none/global//global/global}
-\newlabel{LastPage}{{}{43}{}{page.43}{}}
-\xdef\lastpage@lastpage{43}
-\xdef\lastpage@lastpageHy{43}
+\abx@aux@defaultrefcontext{0}{Kurt2010}{none/global//global/global}
+\abx@aux@defaultrefcontext{0}{Ericson2004}{none/global//global/global}
+\abx@aux@defaultrefcontext{0}{Moller2005}{none/global//global/global}
+\abx@aux@defaultrefcontext{0}{Schlick1994}{none/global//global/global}
+\abx@aux@defaultrefcontext{0}{Fujimoto1986}{none/global//global/global}
+\abx@aux@defaultrefcontext{0}{Bentley1975}{none/global//global/global}
+\abx@aux@defaultrefcontext{0}{DonaldMeagher1982}{none/global//global/global}
+\abx@aux@defaultrefcontext{0}{Gunther2007}{none/global//global/global}
+\abx@aux@defaultrefcontext{0}{Lauterbach2009}{none/global//global/global}
+\abx@aux@defaultrefcontext{0}{Morton1966ACO}{none/global//global/global}
+\newlabel{LastPage}{{}{67}{}{page.67}{}}
+\xdef\lastpage@lastpage{67}
+\xdef\lastpage@lastpageHy{67}

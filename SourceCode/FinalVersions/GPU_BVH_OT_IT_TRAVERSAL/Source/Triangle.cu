@@ -15,34 +15,35 @@ __host__ __device__ Triangle::Triangle(Vector3 v1, Vector3 v2, Vector3 v3, Mater
 
 __host__ __device__ bool Triangle::hit(const Ray& r, float t_min, float t_max, hit_record& rec) {
   
-  Vector3 e1 = vertex[1] - vertex[0];
-  Vector3 e2 = vertex[2] - vertex[0];
+  Vector3 E1 = vertex[1] - vertex[0];
+  Vector3 E2 = vertex[2] - vertex[0];
+  Vector3 T = r.origin() - vertex[0];
+
+  Vector3 P = cross(r.direction(), E2);
+  Vector3 Q = cross(T, E1);
   
-  Vector3 P = cross(r.direction(), e2);
-  float determinant = dot(e1, P);
+  float determinant = dot(P,E1);
+  float invDet = 1.0f / determinant;
+  
+  float t = dot(Q, E2) * invDet;
+  float u = dot(P, T) * invDet;
+  float v = dot(Q, r.direction()) * invDet;
+  
   
   if(determinant > -t_min and determinant < t_min) 
     return false;
-  float invDet = 1.0f / determinant;
-  
-  Vector3 T = r.origin() - vertex[0];
-  float u = dot(T, P) * invDet;
   
   if(u < 0.0f || u > 1.0f) return false;
   
-  Vector3 Q = cross(T, e1);
-  float v = dot(r.direction(), Q) * invDet;
-  
   if(v < 0.0f || u + v > 1.0f) return false;
   
-  float temp = dot(e2, Q) * invDet;
-  if(temp > t_min && temp < t_max) {
-    rec.t = temp;
+  if(t > t_min && t < t_max) {
+    rec.t = t;
     Vector3 aux = (1-u-v)*uv[0] + u*uv[1] + v*uv[2];
     rec.u = aux[0];
     rec.v = aux[1];
     rec.point = r.point_at_parameter(rec.t);
-    rec.normal = normalize(cross(e1, e2));
+    rec.normal = normalize(cross(E1, E2));
     rec.mat_ptr = this->mat_ptr;
     
     return true;

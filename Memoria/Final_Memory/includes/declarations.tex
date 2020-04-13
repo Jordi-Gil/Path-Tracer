@@ -3,6 +3,7 @@
 \usepackage[a4paper,headheight=15pt]{geometry}
 \usepackage{newtxtext,newtxmath}
 \usepackage[scaled=1]{couriers}
+\usepackage{amsmath}
 %\usepackage[spanish,es-tabla]{babel}
 \usepackage{microtype}
 \usepackage[bottom]{footmisc}
@@ -75,6 +76,12 @@
   urldate = {2019-10-12}
 }
 
+@inproceedings{Morton1966ACO,
+  title={A computer oriented geodetic data base and a new technique in file sequencing},
+  author={G. H. Morton},
+  year={1966}
+}
+
 \end{filecontents}
 
 \bibliography{./includes/library,mylocal}
@@ -133,4 +140,13 @@
   left=1.1811in, right=1.1811in, top=1.0in, bottom=2.0in,headheight=15pt,includehead
   }%
   \fancyhfoffset{0pt}% recalculate head and foot width for fancyhdr
+}
+
+\lstset{language=C++,
+                backgroundcolor=\color{black!5},
+                basicstyle=\ttfamily,
+                keywordstyle=\color{blue}\ttfamily,
+                stringstyle=\color{red}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
 }

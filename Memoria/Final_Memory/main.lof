@@ -28,16 +28,50 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {figure}{\numberline {4.2}{\ignorespaces Reflections increase with the numbers of bounces.\relax }}{31}{figure.caption.27}
 \defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Hemisphere scheme. Source: \citep {Kurt2010}\relax }}{32}{figure.caption.28}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Example of supersampling for one pixel: \citep {Kurt2010}\relax }}{33}{figure.caption.29}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Bounding volumes shapes. Source: \citep [pp.\nobreakspace {}236\IeC {\textendash }237]{Ericson2004}\relax }}{34}{figure.caption.30}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {4.6}{\ignorespaces 2D Bounding box\relax }}{35}{figure.caption.31}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Ray-box intersection\relax }}{35}{figure.caption.32}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {4.8}{\ignorespaces Diffuse reflection diagram. Source: Wikimedia Commons\relax }}{40}{figure.caption.33}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {4.9}{\ignorespaces Random diffuse bounce ray\relax }}{40}{figure.caption.34}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {4.10}{\ignorespaces Diffuse objects example. Rendered with our application.\relax }}{41}{figure.caption.35}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {4.11}{\ignorespaces Ray reflection diagram. Source: Reflection (physics), Wikipedia \relax }}{42}{figure.caption.36}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {4.12}{\ignorespaces Example of metallic spheres with different roughness value. Rendered with our application.\relax }}{43}{figure.caption.37}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {4.13}{\ignorespaces Snell's law diagram.\relax }}{44}{figure.caption.39}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {4.14}{\ignorespaces Refracted ray calculation.\relax }}{45}{figure.caption.40}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {4.15}{\ignorespaces Glass bunny, $\eta _1 = 1.42$. Rendered with our application.\relax }}{47}{figure.caption.42}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {4.16}{\ignorespaces Scene with objects using textures. Rendered with our application.\relax }}{48}{figure.caption.43}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {4.17}{\ignorespaces Bounding Volume Hierarchy example. Source: Wikipedia. Bounding volume hierarchy.\relax }}{49}{figure.caption.44}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {4.18}{\ignorespaces Example of binary radix tree. Source: Wikipedia. Radix tree.\relax }}{50}{figure.caption.46}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {4.19}{\ignorespaces Ordered radix tree. Source: \citep {Karras2012}.\relax }}{51}{figure.caption.47}
+\defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {A.1}{\ignorespaces Complete Gantt Chart.\relax }}{37}{figure.caption.29}
+\contentsline {figure}{\numberline {A.1}{\ignorespaces Complete Gantt Chart.\relax }}{61}{figure.caption.55}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {A.2}{\ignorespaces GEP Stage.\relax }}{38}{figure.caption.30}
+\contentsline {figure}{\numberline {A.2}{\ignorespaces GEP Stage.\relax }}{62}{figure.caption.56}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {A.3}{\ignorespaces Development Stage.\relax }}{39}{figure.caption.31}
+\contentsline {figure}{\numberline {A.3}{\ignorespaces Development Stage.\relax }}{63}{figure.caption.57}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {A.4}{\ignorespaces Complete Gantt Chart.\relax }}{40}{figure.caption.32}
+\contentsline {figure}{\numberline {A.4}{\ignorespaces Complete Gantt Chart.\relax }}{64}{figure.caption.58}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {A.5}{\ignorespaces Development Stage new tasks.\relax }}{41}{figure.caption.33}
+\contentsline {figure}{\numberline {A.5}{\ignorespaces Development Stage new tasks.\relax }}{65}{figure.caption.59}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {A.6}{\ignorespaces Final Stage.\relax }}{41}{figure.caption.34}
+\contentsline {figure}{\numberline {A.6}{\ignorespaces Final Stage.\relax }}{65}{figure.caption.60}

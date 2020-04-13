@@ -97,7 +97,7 @@ __device__ bool Material::Lambertian(const Ray& r_in, const hit_record &hrec, sc
   
   srec.is_specular = false;
   srec.attenuation = albedo.value(hrec.u, hrec.v,oneTex,d_textures);
-  srec.pdf_ptr = new pdf(COSINE,hrec.normal);
+  srec.pdf_ptr = pdf(COSINE,hrec.normal);
   
   return true;
 }
@@ -135,6 +135,7 @@ __device__ bool Material::Dielectric(const Ray& r_in, const hit_record& hrec, sc
   float ni_over_nt;
   
   srec.attenuation = albedo.value(hrec.u, hrec.v, oneTex, d_textures);
+  srec.pdf_ptr = 0;
   
   Vector3 refracted;
   float reflect_prob;

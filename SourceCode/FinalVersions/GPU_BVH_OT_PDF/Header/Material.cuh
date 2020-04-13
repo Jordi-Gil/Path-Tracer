@@ -58,7 +58,7 @@ struct scatter_record {
   Ray specular_ray;
   bool is_specular;
   Vector3 attenuation;
-  pdf *pdf_ptr;
+  pdf pdf_ptr;
 };
 
 

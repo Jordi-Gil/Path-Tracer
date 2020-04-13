@@ -6,6 +6,14 @@
 __host__  __device__ inline float ffmin(float a, float b) {return a < b ? a : b;}
 __host__  __device__ inline float ffmax(float a, float b) {return a > b ? a : b;}
 
+__host__  __device__ inline Vector3 fmin(Vector3 a, Vector3 b) {
+  return (a.x() < b.x() && a.y() < b.y() && a.z() < b.z()) ? a : b;
+}
+
+__host__  __device__ inline Vector3 fmax(Vector3 a, Vector3 b) {
+  return (a.x() > b.x() && a.y() > b.y() && a.z() > b.z()) ? a : b;
+}
+
 class aabb {
 
 public:
@@ -18,23 +26,20 @@ public:
 
   
   __device__ inline bool hit(const Ray& r, float tmin, float tmax) const {
-    for (int i = 0; i < 3; i++) {
     
-      float invD = 1.0f / r.direction()[i];
-      float t0 = (min()[i] - r.origin()[i]) * invD;
-      float t1 = (max()[i] - r.origin()[i]) * invD;
-      if(invD < 0.0f){
-        //std::swap(t0,t1);
-        float tmp = t0;
-        t0 = t1;
-        t1 = tmp;
-      }
-      tmin = t0 > tmin ? t0 : tmin;
-      tmax = t1 < tmax ? t1 : tmax;
-      if(tmax <= tmin) return false;
+    Vector3 invD = Vector3::One()/r.direction();
     
-    }
-    return true;
+    Vector3 t0 = (min() - r.origin()) * invD;
+    Vector3 t1 = (max() - r.origin()) * invD;
+    
+    Vector3 tsmaller = fmin(t0, t1);
+    Vector3 tbigger = fmax(t0, t1);
+    
+    tmin = fmax(tmin, fmax(tsmaller[0], fmax(tsmaller[1], tsmaller[2])));
+    tmax = fmin(tmax, fmin(tbigger[0] , fmin(tbigger[1], tbigger[2])));
+    
+    return (tmin < tmax);
+    
   }
 
   

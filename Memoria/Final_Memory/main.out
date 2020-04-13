@@ -34,10 +34,19 @@
 \BOOKMARK [2][-]{subsection.3.3.4}{Social impact}{section.3.3}% 34
 \BOOKMARK [0][-]{chapter.4}{Design and Development}{}% 35
 \BOOKMARK [1][-]{section.4.1}{Introduction}{chapter.4}% 36
-\BOOKMARK [1][-]{section.4.2}{What is a ray?}{chapter.4}% 37
-\BOOKMARK [1][-]{section.4.3}{Triangles}{chapter.4}% 38
-\BOOKMARK [1][-]{section.4.4}{Materials}{chapter.4}% 39
-\BOOKMARK [1][-]{section.4.5}{Textures}{chapter.4}% 40
-\BOOKMARK [1][-]{section.4.6}{BVH}{chapter.4}% 41
-\BOOKMARK [0][-]{section*.28}{Appendices}{}% 42
-\BOOKMARK [0][-]{Appendix.1.A}{Gantt Diagram}{}% 43
+\BOOKMARK [2][-]{subsection.4.1.1}{Supersampling}{section.4.1}% 37
+\BOOKMARK [1][-]{section.4.2}{What is a ray?}{chapter.4}% 38
+\BOOKMARK [1][-]{section.4.3}{Triangles}{chapter.4}% 39
+\BOOKMARK [2][-]{subsection.4.3.1}{Collision detection}{section.4.3}% 40
+\BOOKMARK [2][-]{subsection.4.3.2}{Axis-Aligned Bounding Box intersection algorithm}{section.4.3}% 41
+\BOOKMARK [2][-]{subsection.4.3.3}{M\366ller\205Trumbore intersection algorithm}{section.4.3}% 42
+\BOOKMARK [1][-]{section.4.4}{Materials}{chapter.4}% 43
+\BOOKMARK [2][-]{subsection.4.4.1}{Diffuse}{section.4.4}% 44
+\BOOKMARK [2][-]{subsection.4.4.2}{Metals}{section.4.4}% 45
+\BOOKMARK [2][-]{subsection.4.4.3}{Dielectrics}{section.4.4}% 46
+\BOOKMARK [2][-]{subsection.4.4.4}{Textures}{section.4.4}% 47
+\BOOKMARK [1][-]{section.4.5}{Acceleration Data Structures}{chapter.4}% 48
+\BOOKMARK [2][-]{subsection.4.5.1}{Bounding Volume Hierarchy}{section.4.5}% 49
+\BOOKMARK [1][-]{section.4.6}{Scene manager}{chapter.4}% 50
+\BOOKMARK [0][-]{section*.54}{Appendices}{}% 51
+\BOOKMARK [0][-]{Appendix.1.A}{Gantt Diagram}{}% 52
