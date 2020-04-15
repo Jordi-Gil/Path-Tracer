@@ -733,27 +733,139 @@ Where $O$ is the origin point, for example the camera, and $D$ is the direction.
 
 \section{Camera}
 
-The camera is the entity that defines how we will see the scene. To define a camera we need its position in world space, the direction it is facing, a vector pointing to the right and a vector pointing upwards from the camera. The up vector can have another direction, but it will make us see the scene rotated.
+The camera is the entity that defines how we will see the scene. To define a camera we need its position in world space, the direction it is facing, a vector pointing to the right and a vector pointing upwards from the camera. 
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=0.35]{media/camera.png}
+	\caption{Camera geometry.}
+	\label{camegeom}
+\end{figure}
+
+The up vector can have another direction, but it will make us see the scene rotated. In Figure \ref{cameraup} we can see how the resulting image varies according to the definition of the vector up.
 
 \begin{figure}[H]
 	\centering
 	\medskip
-	\begin{subfigure}
+	\begin{subfigure}{.48\textwidth}
 		\centering
-		\includegraphics[scale=0.315]{media/mirrors_rect/cornell_mirrors_1.png}
+		\includegraphics[scale=0.35]{media/cornell_bunny.png}
 		\label{cameraupy}
-	\end{subfigure
-	
-	\medskip
-	\begin{subfigure}
+	\end{subfigure}
+	\begin{subfigure}{.48\textwidth}
 		\centering
-		\includegraphics[scale=0.315]{media/mirrors_rect/cornell_mirrors_3.png}
+		\includegraphics[scale=0.35]{media/cornell_bunny_z_1.png}
 		\label{cameraupz}
 	\end{subfigure}
 	
-	\caption{Vector up $(0,1,0)$ (left) and $(0,0,1)$ (right).}
+	\caption{Vector up $(0,1,0)$ (top) and $(0,0,1)$ (bottom).}
 	\label{cameraup}
 \end{figure}
+
+\subsubsection{Camera position - $\vec{lookFrom}$}
+
+The position of the camera is defined by a vector, $\vec{lookFrom}$, in world space that points to the camera position. The position of the camera is defined by a vector in world space that points to the camera position.The scene in Figure \ref{cameraup}, for example, has the position set to $(12 0.05 0.05)$.
+
+\subsubsection{Camera direction - $\vec{w}$}
+
+To determine the direction vector, $\vec{w}$, we need the position vector, $\vec{lookFrom}$, and a target vector. This target vector, $\vec{lookAt}$, is where the camera looks and represents the centre of the canvas. We can define the direction as:
+
+\begin{equation}
+\vec{w} = \frac{\vec{lookFrom} - \vec{lookAt}}{||\vec{lookFrom} - \vec{lookAt}||}
+\end{equation}
+
+\subsubsection{Right axis - $\vec{u}$}
+
+The right vector, $u$, represents the positive $x$-axis in camera space. This vector can be obtained from the cross product of up vector and $w$ vector.
+
+\begin{equation}
+\vec{u} = \frac{\vec{lookFrom} \times \vec{lookAt}}{||\vec{lookFrom} \times \vec{lookAt}||}
+\end{equation}
+
+\subsubsection{Up axis - $\vec{v}$}
+
+To get this vector, we only need to do the cross product between $\vec{w}$ and $\vec{u}$. 
+
+\begin{equation}
+\vec{v} = \vec{w} \times \vec{u}
+\end{equation}
+
+\subsubsection{Image plane}
+
+Once we have all the vectors we can calculate the lower left corner to obtain the image plane (canvas). We will use this value to move through the frustum to throw the rays.
+
+The set of vectors $e_1 = (1,0,0)$, $e_2 = (0,1,0)$ and $e_3 = (0,0,1)$ form between them an orthogonal basis of $\mathbb{R}^3$. So all the vectors $(x,y,z)$ in $\mathbb{R}^3$ can be expressed as the sum of the base vectors:
+
+\begin{equation}
+(x,y,z) = xe_1 + ye_2 + ze_3
+\end{equation}
+
+Then we can define the lower left corner as:
+
+\begin{equation}
+lfc = origin - half\_width e_1 - half\_heigth e_2 - e_3
+\end{equation}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=0.65]{media/camera-model-summary-0.jpg}
+	\caption{Camera geometry.}
+	\label{camegeom2}
+\end{figure}
+
+Looking the Figure \ref{camegeom2}, if the open angle of camera lens is $\theta$, then $half\_height = tan(\frac{\theta}{2})$. The theta angle is given by the camera's field of view (FOV). By convention the FOV is stipulated in degrees, but to perform the calculations we must make a conversion to radians, so $\theta = \frac{FOV \pi}{180}$.
+
+The vectors u,v and w are a projection of the x,y and z axes respectively, so we can use them as a basis for the calculation of the lower left corner. Then, the equation to find it would look like this:
+
+\begin{equation}
+lfc = origin - half\_width v - half\_heigth v - w
+\end{equation}
+
+\subsubsection{Defocus blur}
+
+Defocus Blur, commonly called Depth of Field, is an effect caused by cameras in which objects farther away from the lens are blurred. The Defocus Blur can be calculated from the focal length, the circle of confusion and the aperture.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=0.65]{media/camera-model-summary-2.jpg}
+	\caption{Camera geometry.}
+	\label{camegeom3}
+\end{figure}
+
+To add this effect we must multiply $half\_height$ by the focal length. Also when we generate a ray we will add an offset calculated from the radius of the lens (half of the aperture) and the circle of confusion. If we have no blur, all ray are originated at the disk center($\vec{lookFrom}$).
+
+By experimenting with the aperture value and the focal length, we can obtain results like those shown in Figure \ref{dof}. Also, we can see how the aperture affects at the total illumination captured by the camera.
+
+\begin{figure}[H]
+	\centering
+	\medskip
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.315]{media/cornell_textures_dof_1.png}
+		\caption{Background of image blurred.}
+		\label{dof1}
+	\end{subfigure}
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.315]{media/cornell_textures_dof_2.png}
+		\caption{Front of image blurred.}
+		\label{dof2}
+	\end{subfigure}
+	
+	\medskip
+	\begin{subfigure}{.98\textwidth}
+		\centering
+		\includegraphics[scale=0.65]{media/cornell_textures_dof_3.png}	
+		\caption{Non blurred image.}
+		\label{dof3}
+	\end{subfigure}
+	\caption{Scene rendered experimenting with focus length and aperture of the camera.}
+	\label{dof}
+\end{figure}
+
+We use an aperture of 0.5 in both Figures, \ref{dof1} and \ref{dof2}. But in Figure \ref{dof1} we set the focus length as $\frac{|(\vec{lookFrom}-\vec{lookAt})|}{6}$. Having a length of focus close to the camera lens causes the background of the image to be blurred and also catches less light. On the other hand, in Figure \ref{dof2}, we have put the focus length closer to the centre of the scene so that what is closer to the camera is blurred, thus focusing on the background.
+
+Finally, we can see in Figure \ref{dof} how it is the result of an image where the rays that come out of the centre of the circle of confusion, so they are centred in the origin of the camera and there is no blurring.
 
 \section{Triangles}
 
@@ -949,6 +1061,170 @@ u & = \frac{1}{P \cdot E_1} \left(P \cdot T \right) \\
 v & = \frac{1}{P \cdot E_1} \left(Q \cdot D \right) \\
 \end{split}
 \end{equation}
+
+\section{Geometric transforms}
+
+To be able to place an object in the position of the scene we want, it is necessary to apply a series of basic geometric transformations that allow us to do it. In addition, it is possible that many models have a different coordinate system from ours. Therefore we must accurately handle them to be able to visualize them. That's why for each of the models we must calculate the centre of it, in order to bring it to the centre of the coordinate system of the scene and thus be able to manage it properly.
+
+The geometric transformations we can make to the models are translation, rotation and scaling. For all of them, we will use a homogeneous coordinate system to represent them by means of a space vector multiplied by the appropriate matrix. If we want to apply some transformation $T$ to a  vector $p = (p_x, p_y, p_z)$, we rewrite $p$ using four homogeneous coordinates as $p = (p_x, p_y, p_z, 1)$.
+
+\subsection{Translation}
+
+If we want to move an object $O$ by a vector $t = (t_x, t_y, t_z)$, then we need to add $t$ to the set of vertices $V$ from $O$.
+
+\begin{equation}
+\{\forall v \in V | v + t\}
+\end{equation}
+
+It is better to perform these transformations in matrix notation, because if we want to apply more than one transformation to an object we simply have to perform matrix multiplications. Therefore, we must multiply each vertex by the following matrix.
+
+\begin{equation}
+T_v = 
+\begin{bmatrix}
+1 & 0 & 0 & t_x \\
+0 & 1 & 0 & t_y \\
+0 & 0 & 1 & t_z \\
+\end{bmatrix}
+\end{equation}
+
+By convention, it is common to use a homogeneous coordinate system, so we will have to add a fourth coordinate w to each vertex.
+
+\begin{equation}
+\{\forall v \in V | v = (v_x, v_y, v_z) \rightarrow (v_x, v_y, v_z, 1)\}
+\end{equation}
+
+Then we have to add a new row to the matrix with the homogeneous coordinate. We have the following matrix.
+
+\begin{equation}
+T_t = 
+\begin{bmatrix}
+1 & 0 & 0 & t_x \\
+0 & 1 & 0 & t_y \\
+0 & 0 & 1 & t_z \\
+0 & 0 & 0 & 1 \\
+\end{bmatrix}
+\end{equation}
+
+For each vertex we multiply it by the matrix $T_t$.
+
+\begin{equation}\label{translate}
+T_t v = 
+\begin{bmatrix}
+1 & 0 & 0 & t_x \\
+0 & 1 & 0 & t_y \\
+0 & 0 & 1 & t_z \\
+0 & 0 & 0 & 1 \\
+\end{bmatrix}
+\begin{bmatrix}
+v_x \\
+v_y \\
+v_z \\
+1 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+v_x + t_x \\
+v_y + t_y \\
+v_z + t_z \\
+1 \\
+\end{bmatrix}
+= v + t
+\end{equation}
+
+\subsection{Scaling}
+
+The scaling is very similar to the translation, but instead of adding the scaling vector $s = (s_x, s_y, s_z)$ to the set of vertices $V$ of the object, it has to be multiplied.
+
+\begin{equation}
+\{\forall v \in V | v s\}
+\end{equation}
+
+We define scaling as a vector s, because sometimes we may not want uniform scaling on all axes. As with translation, we will define the scaling with a scaling matrix $S_s$ with a homogeneous coordinate system.
+
+\begin{equation}\label{scaling}
+T_t v = 
+\begin{bmatrix}
+S_x & 0 & 0 & 0 \\
+0 & S_y & 0 & 0 \\
+0 & 0 & S_z & 0 \\
+0 & 0 & 0 & 1 \\
+\end{bmatrix}
+\begin{bmatrix}
+v_x \\
+v_y \\
+v_z \\
+1 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+v_x s_x \\
+v_y s_y \\
+v_z s_z \\
+1 \\
+\end{bmatrix}
+= v s
+\end{equation}
+
+\subsection{Rotation}
+
+In the rotation, we have three axes in which we can rotate the object, the $x$, $y$ and $z$-axis. The most basic rotation only uses one of these axes so we can define a rotation matrix for each of the axes. The following matrices rotate a vector $v$ by an angle $\theta$ in the $x$, $y$ and $z$-axes using the right-hand rule (all matrices represent a clockwise rotation).
+
+\begin{equation}\label{rotx}
+R_x = 
+\begin{bmatrix}
+1 & 0 & 0 & 0 \\
+0 & cos\theta_x & -sin\theta_x & 0 \\
+0 & sin\theta_x & cos\theta_x & 0 \\
+0 & 0 & 0 & 1 \\
+\end{bmatrix}
+\end{equation}
+
+\begin{equation}\label{roty}
+R_x = 
+\begin{bmatrix}
+cos\theta_y & 0 & sin\theta_y & 0 \\
+0 & 1 & 0 & 0 \\
+-sin\theta_y  & 0 & cos\theta_y & 0 \\
+0 & 0 & 0 & 1 \\
+\end{bmatrix}
+\end{equation}
+
+\begin{equation}\label{rotz}
+R_z = 
+\begin{bmatrix}
+cos\theta_z & \sin\theta_z & 0 & 0 \\
+sin\theta_z & cos\theta_z & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1 \\
+\end{bmatrix}
+\end{equation}
+
+We can define the rotation matrix $R = R_z R_y R_x$. This yields 
+
+\begin{equation}\label{rot}
+R = 
+\begin{bmatrix}
+cos\theta_y cos\theta_z 	& -cos\theta_x sin\theta_z + sin\theta_x sin\theta_y cos\theta_z & sin\theta_x sin\theta_z + cos\theta_x sin\theta_y cos\theta_z & 0 \\
+cos\theta_y sin\theta_z 	& cos\theta_x cos\theta_z + sin\theta_x sin\theta_y sin\theta_z & -sin\theta_x cos\theta_z + cos\theta_x sin\theta_y sin\theta_z & 0 \\
+-sin\theta_y 				& sin\theta_x cos\theta_y & cos\theta_x cos\theta_y & 0 \\
+0 							& 0 & 0 & 1 \\
+\end{bmatrix}
+\end{equation}
+
+But if we want to rotate on an arbitrary axis $r = (r_x, r_y, r_z)$, where ${r_x}^2 + {r_y}^2 + {r_z}^2 = 1$, the rotation matrix $R$ of an angle $\theta$ can be given by
+
+\begin{equation}\label{rotation2}
+R = 
+\begin{bmatrix}
+cos\theta + {r_x}^2(1 - cos\theta) 	& {r_x}{r_y}(1 - cos\theta) - {r_z}sin\theta & {r_x}{r_z}(1 - cos\theta) + {r_y}sin\theta & 0 \\
+{r_y}{r_x}(1 - cos\theta) + {r_z}sin\theta & cos\theta + {r_y}^2(1 - cos\theta) & {r_y}{r_z}(1 - cos\theta) - {r_x}sin\theta & 0\\
+
+{r_z}{r_x}(1 - cos\theta) - {r_y}sin\theta & {r_z}{r_y}(1 - cos\theta) + {r_x}sin\theta & cos\theta + {r_z}^2 (1 - cos\theta) & 0\\
+0 							& 0 & 0 & 1 \\
+\end{bmatrix}
+\end{equation}
+
+Using the matrix defined in \ref{rotation2}, we only make use of a single multiplication for each vertex v.
 
 \section{Materials}
 
@@ -1156,6 +1432,27 @@ In the Möller-Trumbore algorithm, we explained that the calculated UV coordinat
 	\label{textures_1}
 \end{figure}
 
+\subsection{Skybox}
+
+In scenes where you are not inside a room, such as the Cornell Box, you can use for the background some flat colour or sort of gradient. But this is quite limited and not very fancy, so is usually to use skyboxes that allow us to add a background to our scene, making it richer in detail. It is a generally used resource in video game design because they allow us to create levels that look bigger than they are. It also allows us to integrate elements in the scene without having to add unnecessary geometry because we are using only a 2D texture. They are often used to represent skies and elements that are far away from the epicentre of the scene. It is for this reason that skyboxes remain static, to create the illusion of distance. In the Figure \ref{skybox1} we can see a very clear example, for the buildings in the background instead of modelling them they are in a texture just like the sky.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.20]{media/skybox.png}
+	\caption{Image extracted from Bloodborne game.}
+	\label{skybox1}
+\end{figure}
+
+When we're using a skybox, what we're doing is encapsulating the whole scene in a cuboid. This cuboid is where we will map the texture that the skybox will represent using the cube mapping technique. Usually, a cube map texture is defined as shown in Figure \ref{skybox2}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.45]{media/cubemaps_skybox.png}
+	\caption{Cube map texture.}
+	\label{skybox2}
+\end{figure}
+
+In our case, we have decided to use six textures (six faces of the cuboid) and map it on each of the corresponding faces of the defined cuboid that wraps the scene. We can see an example of a scene using a skybox in Figures \ref{metal2} and \ref{dielectric1}.
 
 \section{Acceleration Data Structures}
 
@@ -1199,7 +1496,7 @@ For each internal node, we must find the range $[i,j]$ that it represents and on
 	\centering
 	\includegraphics[scale=0.45]{media/radix_tero_1.png}
 	\caption{Ordered radix tree. Source: \citep{Karras2012}.}
-	\label{radix}
+	\label{radix_tero}
 \end{figure}
 
 As we have already indicated, we must first find the range [i,j] in which the internal node Ii covers. To do this we will define i as one of the limits of this range. First of all we must determine the direction $d$ (that can be 1 or -1) we should go, for it we will take the code $k_i$ and we will compare the length of the longest common prefix, denoted by $\delta(i,j)$, with its two surroundings $k_{i-1}$ and $k_{i+1}$. Since we know that each internal node has exactly two children, we know that $k_i$ and $K_{i+d}$ belongs to the internal node $I_i$. 
@@ -1331,6 +1628,10 @@ This describes the normal with components $(i,j,k)$. For polygons, vertex normal
 \textbf{f v/vt/vn v/vt/vn v/vt/vn v/vt/vn...}
 
 This is the face. The format, in this case, is quite different. Here we are indicating all the vertices that compose a face that can be formed by more than one vertex. The simplest example can be a plane, which is formed by four triangles that make up a face. To be able to interpret this in triangles, we have to do a fan triangulation. We will choose one vertex and from them, we will generate triangles using the other vertices reading in groups of three.
+
+\section{Image Filters}
+
+
 
 \newpage
 

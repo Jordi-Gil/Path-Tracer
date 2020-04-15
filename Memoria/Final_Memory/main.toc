@@ -110,48 +110,72 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {4.2}What is a ray?}{33}{section.4.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.3}Triangles}{34}{section.4.3}
+\contentsline {section}{\numberline {4.3}Camera}{34}{section.4.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.3.1}Collision detection}{34}{subsection.4.3.1}
+\contentsline {subsubsection}{Camera position - $\mathaccentV {vec}2AE{lookFrom}$}{35}{section*.32}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.3.2}Axis-Aligned Bounding Box intersection algorithm}{35}{subsection.4.3.2}
+\contentsline {subsubsection}{Camera direction - $\mathaccentV {vec}2AE{w}$}{35}{section*.33}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.3.3}M\IeC {\"o}ller\IeC {\textendash }Trumbore intersection algorithm}{37}{subsection.4.3.3}
+\contentsline {subsubsection}{Right axis - $\mathaccentV {vec}2AE{u}$}{35}{section*.34}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.4}Materials}{39}{section.4.4}
+\contentsline {subsubsection}{Up axis - $\mathaccentV {vec}2AE{v}$}{36}{section*.35}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.4.1}Diffuse}{39}{subsection.4.4.1}
+\contentsline {subsubsection}{Image plane}{36}{section*.36}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.4.2}Metals}{41}{subsection.4.4.2}
+\contentsline {subsubsection}{Defocus blur}{37}{section*.38}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.4.3}Dielectrics}{43}{subsection.4.4.3}
+\contentsline {section}{\numberline {4.4}Triangles}{39}{section.4.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Snell's Law of Refraction}{44}{section*.38}
+\contentsline {subsection}{\numberline {4.4.1}Collision detection}{39}{subsection.4.4.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Fresnel Equations}{46}{section*.41}
+\contentsline {subsection}{\numberline {4.4.2}Axis-Aligned Bounding Box intersection algorithm}{40}{subsection.4.4.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.4.4}Textures}{47}{subsection.4.4.4}
+\contentsline {subsection}{\numberline {4.4.3}M\IeC {\"o}ller\IeC {\textendash }Trumbore intersection algorithm}{42}{subsection.4.4.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.5}Acceleration Data Structures}{48}{section.4.5}
+\contentsline {section}{\numberline {4.5}Geometric transforms}{44}{section.4.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.5.1}Bounding Volume Hierarchy}{49}{subsection.4.5.1}
+\contentsline {subsection}{\numberline {4.5.1}Translation}{44}{subsection.4.5.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{BVH Construction}{49}{section*.45}
+\contentsline {subsection}{\numberline {4.5.2}Scaling}{45}{subsection.4.5.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Bounding-box calculation CPU}{54}{section*.48}
+\contentsline {subsection}{\numberline {4.5.3}Rotation}{46}{subsection.4.5.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Bounding-box calculation GPU}{54}{section*.49}
+\contentsline {section}{\numberline {4.6}Materials}{47}{section.4.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.6}Scene manager}{54}{section.4.6}
+\contentsline {subsection}{\numberline {4.6.1}Diffuse}{47}{subsection.4.6.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Geometric vertices}{54}{section*.50}
+\contentsline {subsection}{\numberline {4.6.2}Metals}{49}{subsection.4.6.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Texture vertices}{55}{section*.51}
+\contentsline {subsection}{\numberline {4.6.3}Dielectrics}{50}{subsection.4.6.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Vertex normal}{55}{section*.52}
+\contentsline {subsubsection}{Snell's Law of Refraction}{51}{section*.49}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Polygon Faces}{55}{section*.53}
+\contentsline {subsubsection}{Fresnel Equations}{54}{section*.52}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{Appendices}{59}{section*.54}
+\contentsline {subsection}{\numberline {4.6.4}Textures}{55}{subsection.4.6.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {A}Gantt Diagram}{60}{Appendix.1.A}
+\contentsline {subsection}{\numberline {4.6.5}Skybox}{56}{subsection.4.6.5}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {4.7}Acceleration Data Structures}{58}{section.4.7}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {4.7.1}Bounding Volume Hierarchy}{58}{subsection.4.7.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{BVH Construction}{59}{section*.58}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Bounding-box calculation CPU}{63}{section*.61}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Bounding-box calculation GPU}{63}{section*.62}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {4.8}Scene manager}{63}{section.4.8}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Geometric vertices}{64}{section*.63}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Texture vertices}{64}{section*.64}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Vertex normal}{64}{section*.65}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Polygon Faces}{65}{section*.66}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{Appendices}{69}{section*.67}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {A}Gantt Diagram}{70}{Appendix.1.A}

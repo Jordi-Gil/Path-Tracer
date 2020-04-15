@@ -36,17 +36,23 @@
 \BOOKMARK [1][-]{section.4.1}{Introduction}{chapter.4}% 36
 \BOOKMARK [2][-]{subsection.4.1.1}{Supersampling}{section.4.1}% 37
 \BOOKMARK [1][-]{section.4.2}{What is a ray?}{chapter.4}% 38
-\BOOKMARK [1][-]{section.4.3}{Triangles}{chapter.4}% 39
-\BOOKMARK [2][-]{subsection.4.3.1}{Collision detection}{section.4.3}% 40
-\BOOKMARK [2][-]{subsection.4.3.2}{Axis-Aligned Bounding Box intersection algorithm}{section.4.3}% 41
-\BOOKMARK [2][-]{subsection.4.3.3}{M\366ller\205Trumbore intersection algorithm}{section.4.3}% 42
-\BOOKMARK [1][-]{section.4.4}{Materials}{chapter.4}% 43
-\BOOKMARK [2][-]{subsection.4.4.1}{Diffuse}{section.4.4}% 44
-\BOOKMARK [2][-]{subsection.4.4.2}{Metals}{section.4.4}% 45
-\BOOKMARK [2][-]{subsection.4.4.3}{Dielectrics}{section.4.4}% 46
-\BOOKMARK [2][-]{subsection.4.4.4}{Textures}{section.4.4}% 47
-\BOOKMARK [1][-]{section.4.5}{Acceleration Data Structures}{chapter.4}% 48
-\BOOKMARK [2][-]{subsection.4.5.1}{Bounding Volume Hierarchy}{section.4.5}% 49
-\BOOKMARK [1][-]{section.4.6}{Scene manager}{chapter.4}% 50
-\BOOKMARK [0][-]{section*.54}{Appendices}{}% 51
-\BOOKMARK [0][-]{Appendix.1.A}{Gantt Diagram}{}% 52
+\BOOKMARK [1][-]{section.4.3}{Camera}{chapter.4}% 39
+\BOOKMARK [1][-]{section.4.4}{Triangles}{chapter.4}% 40
+\BOOKMARK [2][-]{subsection.4.4.1}{Collision detection}{section.4.4}% 41
+\BOOKMARK [2][-]{subsection.4.4.2}{Axis-Aligned Bounding Box intersection algorithm}{section.4.4}% 42
+\BOOKMARK [2][-]{subsection.4.4.3}{M\366ller\205Trumbore intersection algorithm}{section.4.4}% 43
+\BOOKMARK [1][-]{section.4.5}{Geometric transforms}{chapter.4}% 44
+\BOOKMARK [2][-]{subsection.4.5.1}{Translation}{section.4.5}% 45
+\BOOKMARK [2][-]{subsection.4.5.2}{Scaling}{section.4.5}% 46
+\BOOKMARK [2][-]{subsection.4.5.3}{Rotation}{section.4.5}% 47
+\BOOKMARK [1][-]{section.4.6}{Materials}{chapter.4}% 48
+\BOOKMARK [2][-]{subsection.4.6.1}{Diffuse}{section.4.6}% 49
+\BOOKMARK [2][-]{subsection.4.6.2}{Metals}{section.4.6}% 50
+\BOOKMARK [2][-]{subsection.4.6.3}{Dielectrics}{section.4.6}% 51
+\BOOKMARK [2][-]{subsection.4.6.4}{Textures}{section.4.6}% 52
+\BOOKMARK [2][-]{subsection.4.6.5}{Skybox}{section.4.6}% 53
+\BOOKMARK [1][-]{section.4.7}{Acceleration Data Structures}{chapter.4}% 54
+\BOOKMARK [2][-]{subsection.4.7.1}{Bounding Volume Hierarchy}{section.4.7}% 55
+\BOOKMARK [1][-]{section.4.8}{Scene manager}{chapter.4}% 56
+\BOOKMARK [0][-]{section*.67}{Appendices}{}% 57
+\BOOKMARK [0][-]{Appendix.1.A}{Gantt Diagram}{}% 58

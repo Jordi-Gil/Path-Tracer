@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.9.20)  13 APR 2020 11:02
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.9.20)  14 APR 2020 23:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2190,17 +2190,13 @@ Package biblatex Info: ... file 'english.lbx' found.
 
 (/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/english.lbx
 File: english.lbx 2017/12/19 v3.10 biblatex localization (PK/JW/AB)
-) (./main.aux
-
-LaTeX Warning: Label `radix' multiply defined.
-
-)
+) (./main.aux)
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/ntxmi/m/it on input line 5.
 LaTeX Font Info:    Try loading font information for OML+ntxmi on input line 5.
 
- (/usr/share/texlive/texmf-dist/tex/latex/newtx/omlntxmi.fd
+(/usr/share/texlive/texmf-dist/tex/latex/newtx/omlntxmi.fd
 File: omlntxmi.fd 2015/08/25 Fontinst v1.933 font definitions for OML/ntxmi.
 )
 LaTeX Font Info:    ... okay on input line 5.
@@ -2379,7 +2375,7 @@ LaTeX Font Info:    Font shape `T1/qhv/bx/n' in size <17.28> not available
 (Font)              Font shape `T1/qhv/b/n' tried instead on input line 13.
 LaTeX Font Info:    Font shape `T1/qhv/b/n' will be
 (Font)              scaled to size 15.55188pt on input line 13.
-<media/FIB_UPC.png, id=216, 597.23125pt x 223.83624pt>
+<media/FIB_UPC.png, id=240, 597.23125pt x 223.83624pt>
 File: media/FIB_UPC.png Graphic file (type png)
 <use media/FIB_UPC.png>
 Package pdftex.def Info: media/FIB_UPC.png  used on input line 16.
@@ -2457,7 +2453,7 @@ File: t1ntxtlf.fd 2015/01/17 v1.0 font definition file for T1/ntx/tlf
 )
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
 (Font)              scaled to size 17.28pt on input line 15.
-<media/Dolphin_triangle_mesh.png, id=287, 636.3775pt x 392.46625pt>
+<media/Dolphin_triangle_mesh.png, id=317, 636.3775pt x 392.46625pt>
 File: media/Dolphin_triangle_mesh.png Graphic file (type png)
 <use media/Dolphin_triangle_mesh.png>
 Package pdftex.def Info: media/Dolphin_triangle_mesh.png  used on input line 27
@@ -2468,7 +2464,7 @@ LaTeX Font Info:    Font shape `T1/qhv/m/it' will be
  [4
 
  <./media/Dolphin_triangle_mesh.png (PNG copy)>]
-<media/Flat-shading-sample.png, id=296, 186.6975pt x 194.7275pt>
+<media/Flat-shading-sample.png, id=326, 186.6975pt x 194.7275pt>
 File: media/Flat-shading-sample.png Graphic file (type png)
 <use media/Flat-shading-sample.png>
 Package pdftex.def Info: media/Flat-shading-sample.png  used on input line 36.
@@ -2483,7 +2479,7 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `qhv' (encoding: TS1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-<media/Gouraudshading00.png, id=299, 762.85pt x 461.725pt>
+<media/Gouraudshading00.png, id=329, 762.85pt x 461.725pt>
 File: media/Gouraudshading00.png Graphic file (type png)
 <use media/Gouraudshading00.png>
 Package pdftex.def Info: media/Gouraudshading00.png  used on input line 54.
@@ -2494,36 +2490,36 @@ LaTeX Font Info:    Font shape `T1/qhv/bx/n' in size <14.4> not available
 (Font)              Font shape `T1/qhv/b/n' tried instead on input line 79.
 LaTeX Font Info:    Font shape `T1/qhv/b/n' will be
 (Font)              scaled to size 12.9599pt on input line 79.
-<media/shad2-globalillum3.png, id=338, 504.38437pt x 211.54031pt>
+<media/shad2-globalillum3.png, id=369, 504.38437pt x 211.54031pt>
 File: media/shad2-globalillum3.png Graphic file (type png)
 <use media/shad2-globalillum3.png>
 Package pdftex.def Info: media/shad2-globalillum3.png  used on input line 87.
 (pdftex.def)             Requested size: 226.97086pt x 95.19225pt.
  [8 <./media/shad2-globalillum3.png>]
-<media/lightPathRT.png, id=354, 632.3625pt x 298.11375pt>
+<media/lightPathRT.png, id=384, 632.3625pt x 298.11375pt>
 File: media/lightPathRT.png Graphic file (type png)
 <use media/lightPathRT.png>
 Package pdftex.def Info: media/lightPathRT.png  used on input line 106.
 (pdftex.def)             Requested size: 284.5605pt x 134.14995pt.
-<media/lightPathPT.png, id=355, 632.3625pt x 302.12875pt>
+<media/lightPathPT.png, id=385, 632.3625pt x 302.12875pt>
 File: media/lightPathPT.png Graphic file (type png)
 <use media/lightPathPT.png>
 Package pdftex.def Info: media/lightPathPT.png  used on input line 113.
 (pdftex.def)             Requested size: 284.5605pt x 135.95668pt.
  [9 <./media/lightPathRT.png>]
-<media/RayTracing.png, id=363, 441.65pt x 416.55624pt>
+<media/RayTracing.png, id=393, 441.65pt x 416.55624pt>
 File: media/RayTracing.png Graphic file (type png)
 <use media/RayTracing.png>
 Package pdftex.def Info: media/RayTracing.png  used on input line 126.
 (pdftex.def)             Requested size: 102.4312pt x 96.60678pt.
 LaTeX Font Info:    Font shape `T1/qhv/m/it' will be
 (Font)              scaled to size 9.85492pt on input line 127.
-<media/PathTracing.png, id=364, 441.65pt x 416.55624pt>
+<media/PathTracing.png, id=394, 441.65pt x 416.55624pt>
 File: media/PathTracing.png Graphic file (type png)
 <use media/PathTracing.png>
 Package pdftex.def Info: media/PathTracing.png  used on input line 132.
 (pdftex.def)             Requested size: 102.4312pt x 96.60678pt.
-<media/PathTracingMD.png, id=365, 441.65pt x 416.55624pt>
+<media/PathTracingMD.png, id=395, 441.65pt x 416.55624pt>
 File: media/PathTracingMD.png Graphic file (type png)
 <use media/PathTracingMD.png>
 Package pdftex.def Info: media/PathTracingMD.png  used on input line 138.
@@ -2544,7 +2540,7 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             See the microtype manual for details.
  [12]
 [13] [14]
-<media/agile.png, id=437, 1204.5pt x 602.25pt>
+<media/agile.png, id=467, 1204.5pt x 602.25pt>
 File: media/agile.png Graphic file (type png)
 <use media/agile.png>
 Package pdftex.def Info: media/agile.png  used on input line 245.
@@ -2567,7 +2563,7 @@ LaTeX Font Info:    Font shape `TS1/qhv/b/n' will be
 (Font)              scaled to size 10.79993pt on input line 470.
  [24] [25] [26] [27] [28] [29]
 Chapter 4.
-<media/Ray_trace_diagram.png, id=556, 702.625pt x 467.346pt>
+<media/Ray_trace_diagram.png, id=587, 702.625pt x 467.346pt>
 File: media/Ray_trace_diagram.png Graphic file (type png)
 <use media/Ray_trace_diagram.png>
 Package pdftex.def Info: media/Ray_trace_diagram.png  used on input line 631.
@@ -2575,37 +2571,37 @@ Package pdftex.def Info: media/Ray_trace_diagram.png  used on input line 631.
 [30
 
  <./media/Ray_trace_diagram.png>]
-<media/mirrors_rect/cornell_mirrors_1.png, id=564, 642.4pt x 361.35pt>
+<media/mirrors_rect/cornell_mirrors_1.png, id=595, 642.4pt x 361.35pt>
 File: media/mirrors_rect/cornell_mirrors_1.png Graphic file (type png)
 <use media/mirrors_rect/cornell_mirrors_1.png>
 Package pdftex.def Info: media/mirrors_rect/cornell_mirrors_1.png  used on inpu
 t line 643.
 (pdftex.def)             Requested size: 202.35707pt x 113.82585pt.
-<media/mirrors_rect/cornell_mirrors_2.png, id=565, 642.4pt x 361.35pt>
+<media/mirrors_rect/cornell_mirrors_2.png, id=596, 642.4pt x 361.35pt>
 File: media/mirrors_rect/cornell_mirrors_2.png Graphic file (type png)
 <use media/mirrors_rect/cornell_mirrors_2.png>
 Package pdftex.def Info: media/mirrors_rect/cornell_mirrors_2.png  used on inpu
 t line 649.
 (pdftex.def)             Requested size: 202.35707pt x 113.82585pt.
-<media/mirrors_rect/cornell_mirrors_3.png, id=566, 642.4pt x 361.35pt>
+<media/mirrors_rect/cornell_mirrors_3.png, id=597, 642.4pt x 361.35pt>
 File: media/mirrors_rect/cornell_mirrors_3.png Graphic file (type png)
 <use media/mirrors_rect/cornell_mirrors_3.png>
 Package pdftex.def Info: media/mirrors_rect/cornell_mirrors_3.png  used on inpu
 t line 657.
 (pdftex.def)             Requested size: 202.35707pt x 113.82585pt.
-<media/mirrors_rect/cornell_mirrors_4.png, id=567, 642.4pt x 361.35pt>
+<media/mirrors_rect/cornell_mirrors_4.png, id=598, 642.4pt x 361.35pt>
 File: media/mirrors_rect/cornell_mirrors_4.png Graphic file (type png)
 <use media/mirrors_rect/cornell_mirrors_4.png>
 Package pdftex.def Info: media/mirrors_rect/cornell_mirrors_4.png  used on inpu
 t line 663.
 (pdftex.def)             Requested size: 202.35707pt x 113.82585pt.
-<media/mirrors_rect/cornell_mirrors_5.png, id=568, 642.4pt x 361.35pt>
+<media/mirrors_rect/cornell_mirrors_5.png, id=599, 642.4pt x 361.35pt>
 File: media/mirrors_rect/cornell_mirrors_5.png Graphic file (type png)
 <use media/mirrors_rect/cornell_mirrors_5.png>
 Package pdftex.def Info: media/mirrors_rect/cornell_mirrors_5.png  used on inpu
 t line 671.
 (pdftex.def)             Requested size: 202.35707pt x 113.82585pt.
-<media/mirrors_rect/cornell_mirrors_20.png, id=569, 642.4pt x 361.35pt>
+<media/mirrors_rect/cornell_mirrors_20.png, id=600, 642.4pt x 361.35pt>
 File: media/mirrors_rect/cornell_mirrors_20.png Graphic file (type png)
 <use media/mirrors_rect/cornell_mirrors_20.png>
 Package pdftex.def Info: media/mirrors_rect/cornell_mirrors_20.png  used on inp
@@ -2616,123 +2612,207 @@ ect/cornell_mirrors_2.png (PNG copy)> <./media/mirrors_rect/cornell_mirrors_3.p
 ng (PNG copy)> <./media/mirrors_rect/cornell_mirrors_4.png (PNG copy)> <./media
 /mirrors_rect/cornell_mirrors_5.png (PNG copy)> <./media/mirrors_rect/cornell_m
 irrors_20.png (PNG copy)>]
-<media/Rendering_eq.png, id=578, 619.31375pt x 423.5825pt>
+<media/Rendering_eq.png, id=608, 619.31375pt x 423.5825pt>
 File: media/Rendering_eq.png Graphic file (type png)
 <use media/Rendering_eq.png>
 Package pdftex.def Info: media/Rendering_eq.png  used on input line 689.
 (pdftex.def)             Requested size: 216.76306pt x 148.25609pt.
  [32 <./media/Rendering_eq.png>]
-<media/Supersampling.png, id=591, 1284.8pt x 692.5875pt>
+<media/Supersampling.png, id=621, 1284.8pt x 692.5875pt>
 File: media/Supersampling.png Graphic file (type png)
 <use media/Supersampling.png>
 Package pdftex.def Info: media/Supersampling.png  used on input line 713.
 (pdftex.def)             Requested size: 256.95544pt x 138.51505pt.
  [33 <./media/Supersampling.png>]
-<media/volumes.jpg, id=603, 215.1293pt x 81.6819pt>
+<media/camera.png, id=633, 1141.26375pt x 998.73125pt>
+File: media/camera.png Graphic file (type png)
+<use media/camera.png>
+Package pdftex.def Info: media/camera.png  used on input line 740.
+(pdftex.def)             Requested size: 399.4483pt x 349.56117pt.
+<media/cornell_bunny.png, id=635, 642.4pt x 361.35pt>
+File: media/cornell_bunny.png Graphic file (type png)
+<use media/cornell_bunny.png>
+Package pdftex.def Info: media/cornell_bunny.png  used on input line 752.
+(pdftex.def)             Requested size: 224.84337pt x 126.4744pt.
+
+Overfull \hbox (19.98564pt too wide) in paragraph at lines 752--754
+ [][] 
+ []
+
+<media/cornell_bunny_z_1.png, id=636, 642.4pt x 361.35pt>
+File: media/cornell_bunny_z_1.png Graphic file (type png)
+<use media/cornell_bunny_z_1.png>
+Package pdftex.def Info: media/cornell_bunny_z_1.png  used on input line 757.
+(pdftex.def)             Requested size: 224.84337pt x 126.4744pt.
+
+Overfull \hbox (19.98564pt too wide) in paragraph at lines 757--759
+ [][] 
+ []
+
+[34 <./media/camera.png>] [35 <./media/cornell_bunny.png (PNG copy)> <./media/c
+ornell_bunny_z_1.png (PNG copy)>]
+LaTeX Font Info:    Font shape `T1/qhv/m/n' will be
+(Font)              scaled to size 5.93996pt on input line 806.
+<media/camera-model-summary-0.jpg, id=654, 462.528pt x 260.172pt>
+File: media/camera-model-summary-0.jpg Graphic file (type jpg)
+<use media/camera-model-summary-0.jpg>
+Package pdftex.def Info: media/camera-model-summary-0.jpg  used on input line 8
+11.
+(pdftex.def)             Requested size: 300.63962pt x 169.10977pt.
+ [36 <./media/camera-model-summary-0.jpg>]
+<media/camera-model-summary-2.jpg, id=667, 462.528pt x 260.172pt>
+File: media/camera-model-summary-2.jpg Graphic file (type jpg)
+<use media/camera-model-summary-2.jpg>
+Package pdftex.def Info: media/camera-model-summary-2.jpg  used on input line 8
+30.
+(pdftex.def)             Requested size: 300.63962pt x 169.10977pt.
+<media/cornell_textures_dof_1.png, id=669, 642.4pt x 361.35pt>
+File: media/cornell_textures_dof_1.png Graphic file (type png)
+<use media/cornell_textures_dof_1.png>
+Package pdftex.def Info: media/cornell_textures_dof_1.png  used on input line 8
+44.
+(pdftex.def)             Requested size: 202.35707pt x 113.82585pt.
+<media/cornell_textures_dof_2.png, id=670, 642.4pt x 361.35pt>
+File: media/cornell_textures_dof_2.png Graphic file (type png)
+<use media/cornell_textures_dof_2.png>
+Package pdftex.def Info: media/cornell_textures_dof_2.png  used on input line 8
+50.
+(pdftex.def)             Requested size: 202.35707pt x 113.82585pt.
+<media/cornell_textures_dof_3.png, id=671, 642.4pt x 361.35pt>
+File: media/cornell_textures_dof_3.png Graphic file (type png)
+<use media/cornell_textures_dof_3.png>
+Package pdftex.def Info: media/cornell_textures_dof_3.png  used on input line 8
+58.
+(pdftex.def)             Requested size: 417.55505pt x 234.87471pt.
+
+[37 <./media/camera-model-summary-2.jpg>] [38 <./media/cornell_textures_dof_1.p
+ng (PNG copy)> <./media/cornell_textures_dof_2.png (PNG copy)> <./media/cornell
+_textures_dof_3.png (PNG copy)>]
+<media/volumes.jpg, id=690, 215.1293pt x 81.6819pt>
 File: media/volumes.jpg Graphic file (type jpg)
 <use media/volumes.jpg>
-Package pdftex.def Info: media/volumes.jpg  used on input line 746.
+Package pdftex.def Info: media/volumes.jpg  used on input line 882.
 (pdftex.def)             Requested size: 268.91095pt x 102.1021pt.
- [34 <./media/volumes.jpg>]
-<media/slab_1.png, id=612, 557.08125pt x 164.615pt>
+ [39 <./media/volumes.jpg>]
+<media/slab_1.png, id=699, 557.08125pt x 164.615pt>
 File: media/slab_1.png Graphic file (type png)
 <use media/slab_1.png>
-Package pdftex.def Info: media/slab_1.png  used on input line 762.
+Package pdftex.def Info: media/slab_1.png  used on input line 898.
 (pdftex.def)             Requested size: 278.53995pt x 82.3073pt.
-<media/slab_2.png, id=613, 605.26125pt x 462.72874pt>
+<media/slab_2.png, id=700, 605.26125pt x 462.72874pt>
 File: media/slab_2.png Graphic file (type png)
 <use media/slab_2.png>
-Package pdftex.def Info: media/slab_2.png  used on input line 771.
+Package pdftex.def Info: media/slab_2.png  used on input line 907.
 (pdftex.def)             Requested size: 302.62987pt x 231.3638pt.
+ [40 <./media/slab_1.png> <./media/slab_2.png>] [41] [42] [43] [44] [45]
+Overfull \hbox (6.10066pt too wide) detected at line 1212
+[]\OML/ntxmi/m/it/12 R \U/ntxmia/m/it/12 = []
+ []
 
-[35 <./media/slab_1.png> <./media/slab_2.png>] [36] [37] [38]
-<media/Diffuse_Reflection.png, id=668, 443.6575pt x 244.915pt>
+[46]
+<media/Diffuse_Reflection.png, id=783, 443.6575pt x 244.915pt>
 File: media/Diffuse_Reflection.png Graphic file (type png)
 <use media/Diffuse_Reflection.png>
-Package pdftex.def Info: media/Diffuse_Reflection.png  used on input line 941.
+Package pdftex.def Info: media/Diffuse_Reflection.png  used on input line 1241.
+
 (pdftex.def)             Requested size: 155.28244pt x 85.72153pt.
-<media/random_ray.png, id=669, 553.06625pt x 580.1675pt>
+<media/random_ray.png, id=784, 553.06625pt x 580.1675pt>
 File: media/random_ray.png Graphic file (type png)
 <use media/random_ray.png>
-Package pdftex.def Info: media/random_ray.png  used on input line 950.
+Package pdftex.def Info: media/random_ray.png  used on input line 1250.
 (pdftex.def)             Requested size: 193.57608pt x 203.06166pt.
- [39] [40 <./media/Diffuse_Reflection.png> <./media/random_ray.png>]
-<media/cornell_normal_test.png, id=693, 642.4pt x 361.35pt>
+ [47]
+<media/cornell_normal_test.png, id=790, 642.4pt x 361.35pt>
 File: media/cornell_normal_test.png Graphic file (type png)
 <use media/cornell_normal_test.png>
-Package pdftex.def Info: media/cornell_normal_test.png  used on input line 974.
-
+Package pdftex.def Info: media/cornell_normal_test.png  used on input line 1274
+.
 (pdftex.def)             Requested size: 417.55505pt x 234.87471pt.
-<media/Reflection_angles.png, id=694, 170.6375pt x 204.765pt>
+ [48 <./media/Diffuse_Reflection.png> <./media/random_ray.png>]
+<media/Reflection_angles.png, id=810, 170.6375pt x 204.765pt>
 File: media/Reflection_angles.png Graphic file (type png)
 <use media/Reflection_angles.png>
-Package pdftex.def Info: media/Reflection_angles.png  used on input line 985.
+Package pdftex.def Info: media/Reflection_angles.png  used on input line 1285.
 (pdftex.def)             Requested size: 110.91304pt x 133.09566pt.
- [41 <./media/cornell_normal_test.png (PNG copy)>]
-<media/example_metals.png, id=703, 642.4pt x 361.35pt>
+
+[49 <./media/cornell_normal_test.png (PNG copy)> <./media/Reflection_angles.png
+>]
+<media/example_metals.png, id=819, 642.4pt x 361.35pt>
 File: media/example_metals.png Graphic file (type png)
 <use media/example_metals.png>
-Package pdftex.def Info: media/example_metals.png  used on input line 1002.
+Package pdftex.def Info: media/example_metals.png  used on input line 1302.
 (pdftex.def)             Requested size: 417.55505pt x 234.87471pt.
- [42 <./media/Reflection_angles.png>]
-<media/refraction.png, id=711, 501.875pt x 501.875pt>
+ [50 <./media/example_metals.png (PNG copy)>]
+<media/refraction.png, id=826, 501.875pt x 501.875pt>
 File: media/refraction.png Graphic file (type png)
 <use media/refraction.png>
-Package pdftex.def Info: media/refraction.png  used on input line 1027.
+Package pdftex.def Info: media/refraction.png  used on input line 1327.
 (pdftex.def)             Requested size: 225.84166pt x 225.84166pt.
- [43 <./media/example_metals.png (PNG copy)>] [44 <./media/refraction.png (PNG 
-copy)>]
-<media/refraction_unit_sphere.png, id=728, 551.05875pt x 560.0925pt>
+ [51 <./media/refraction.png (PNG copy)>]
+<media/refraction_unit_sphere.png, id=834, 551.05875pt x 560.0925pt>
 File: media/refraction_unit_sphere.png Graphic file (type png)
 <use media/refraction_unit_sphere.png>
 Package pdftex.def Info: media/refraction_unit_sphere.png  used on input line 1
-070.
+370.
 (pdftex.def)             Requested size: 247.97414pt x 252.03929pt.
- [45 <./media/refraction_unit_sphere.png>]
-<media/CapeHill_cristal_bunny.png, id=739, 642.4pt x 361.35pt>
+ [52] [53 <./media/refraction_unit_sphere.png>]
+<media/CapeHill_cristal_bunny.png, id=854, 642.4pt x 361.35pt>
 File: media/CapeHill_cristal_bunny.png Graphic file (type png)
 <use media/CapeHill_cristal_bunny.png>
 Package pdftex.def Info: media/CapeHill_cristal_bunny.png  used on input line 1
-111.
+411.
 (pdftex.def)             Requested size: 417.55505pt x 234.87471pt.
- [46] [47 <./media/CapeHill_cristal_bunny.png (PNG copy)>]
-<media/cornell_textures.png, id=755, 642.4pt x 361.35pt>
+ [54] [55 <./media/CapeHill_cristal_bunny.png (PNG copy)>]
+<media/cornell_textures.png, id=870, 642.4pt x 361.35pt>
 File: media/cornell_textures.png Graphic file (type png)
 <use media/cornell_textures.png>
-Package pdftex.def Info: media/cornell_textures.png  used on input line 1130.
+Package pdftex.def Info: media/cornell_textures.png  used on input line 1430.
 (pdftex.def)             Requested size: 417.55505pt x 234.87471pt.
- [48 <./media/cornell_textures.png (PNG copy)>]
-<media/BVH_example.png, id=767, 501.875pt x 156.585pt>
+<media/skybox.png, id=872, 1927.2pt x 1084.05pt>
+File: media/skybox.png Graphic file (type png)
+<use media/skybox.png>
+Package pdftex.def Info: media/skybox.png  used on input line 1441.
+(pdftex.def)             Requested size: 385.43318pt x 216.80615pt.
+ [56 <./media/cornell_textures.png (PNG copy)>]
+<media/cubemaps_skybox.png, id=880, 702.625pt x 526.96875pt>
+File: media/cubemaps_skybox.png Graphic file (type png)
+<use media/cubemaps_skybox.png>
+Package pdftex.def Info: media/cubemaps_skybox.png  used on input line 1450.
+(pdftex.def)             Requested size: 316.17833pt x 237.13374pt.
+ [57 <./media/skybox.png (PNG copy)> <./media/cubemaps_skybox.png>]
+<media/BVH_example.png, id=891, 501.875pt x 156.585pt>
 File: media/BVH_example.png Graphic file (type png)
 <use media/BVH_example.png>
-Package pdftex.def Info: media/BVH_example.png  used on input line 1148.
+Package pdftex.def Info: media/BVH_example.png  used on input line 1467.
 (pdftex.def)             Requested size: 326.21487pt x 101.77904pt.
- [49 <./media/BVH_example.png>]
-<media/radixtree.png, id=782, 762.85pt x 429.605pt>
+ [58]
+<media/radixtree.png, id=904, 762.85pt x 429.605pt>
 File: media/radixtree.png Graphic file (type png)
 <use media/radixtree.png>
-Package pdftex.def Info: media/radixtree.png  used on input line 1167.
+Package pdftex.def Info: media/radixtree.png  used on input line 1486.
 (pdftex.def)             Requested size: 343.27933pt x 193.32045pt.
-<media/radix_tero_1.png, id=783, 382.42876pt x 234.8775pt>
+
+[59 <./media/BVH_example.png>]
+<media/radix_tero_1.png, id=915, 382.42876pt x 234.8775pt>
 File: media/radix_tero_1.png Graphic file (type png)
 <use media/radix_tero_1.png>
-Package pdftex.def Info: media/radix_tero_1.png  used on input line 1176.
+Package pdftex.def Info: media/radix_tero_1.png  used on input line 1495.
 (pdftex.def)             Requested size: 172.09134pt x 105.6939pt.
- [50 <./media/radixtree.png>] [51 <./media/radix_tero_1.png>] [52]
-[53] [54] [55] [56
+ [60 <./media/radixtree.png> <./media/radix_tero_1.png>] [61] [62] [63] [64] [6
+5] [66
 
 ]
 LaTeX Font Info:    Font shape `T1/qhv/m/sc' will be
-(Font)              scaled to size 10.79993pt on input line 1313.
+(Font)              scaled to size 10.79993pt on input line 1632.
 Package microtype Info: Character `029' is missing
 (microtype)             in font `T1/qhv/m/sc/12'.
 (microtype)             Ignoring protrusion settings for this character.
- [57] [58] [59
+ [67] [68] [69
 
 
 ]
 Appendix A.
-[60
+[70
 
 ]
 
@@ -2741,7 +2821,7 @@ Package typearea Warning: \typearea used at group level 2.
 (typearea)                environments, math mode, boxes, etc. may result in
 (typearea)                many type setting problems.
 (typearea)                You should move the command \typearea
-(typearea)                outside all groups on input line 1318.
+(typearea)                outside all groups on input line 1637.
 
 
 Package typearea Warning: Bad type area settings!
@@ -2766,9 +2846,9 @@ Package typearea Info: These are the values describing the layout:
 (typearea)              \topskip        = 12.0pt
 (typearea)              \footskip       = 50.75pt
 (typearea)              \baselineskip   = 14.5pt
-(typearea)              on input line 1318.
+(typearea)              on input line 1637.
 Package typearea Info: Using dirty hack to recalculate internal output
-(typearea)             dimensions of LaTeX on input line 1318.
+(typearea)             dimensions of LaTeX on input line 1637.
 *geometry* verbose mode - [ newgeometry ] result:
 * driver: pdftex
 * paper: a4paper
@@ -2833,57 +2913,57 @@ Package typearea Info: Using dirty hack to recalculate internal output
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-<media/final_gantt_esp.png, id=926, 2240.37pt x 736.7525pt>
+<media/final_gantt_esp.png, id=1056, 2240.37pt x 736.7525pt>
 File: media/final_gantt_esp.png Graphic file (type png)
 <use media/final_gantt_esp.png>
-Package pdftex.def Info: media/final_gantt_esp.png  used on input line 1322.
+Package pdftex.def Info: media/final_gantt_esp.png  used on input line 1641.
 (pdftex.def)             Requested size: 672.1162pt x 221.02745pt.
-<media/gantt_gep.png, id=927, 2489.3pt x 570.13pt>
+<media/gantt_gep.png, id=1057, 2489.3pt x 570.13pt>
 File: media/gantt_gep.png Graphic file (type png)
 <use media/gantt_gep.png>
-Package pdftex.def Info: media/gantt_gep.png  used on input line 1329.
+Package pdftex.def Info: media/gantt_gep.png  used on input line 1648.
 (pdftex.def)             Requested size: 622.32349pt x 142.53215pt.
-[61
+[71
 
 
 
  <./media/final_gantt_esp.png>]
-<media/gantt_dev_esp.png, id=935, 2522.42375pt x 947.54pt>
+<media/gantt_dev_esp.png, id=1064, 2522.42375pt x 947.54pt>
 File: media/gantt_dev_esp.png Graphic file (type png)
 <use media/gantt_dev_esp.png>
-Package pdftex.def Info: media/gantt_dev_esp.png  used on input line 1336.
+Package pdftex.def Info: media/gantt_dev_esp.png  used on input line 1655.
 (pdftex.def)             Requested size: 630.6044pt x 236.88441pt.
- [62 <./media/gantt_gep.png>]
-<media/final_gantt_eng.png, id=942, 2488.29625pt x 736.7525pt>
+ [72 <./media/gantt_gep.png>]
+<media/final_gantt_eng.png, id=1071, 2488.29625pt x 736.7525pt>
 File: media/final_gantt_eng.png Graphic file (type png)
 <use media/final_gantt_eng.png>
-Package pdftex.def Info: media/final_gantt_eng.png  used on input line 1343.
+Package pdftex.def Info: media/final_gantt_eng.png  used on input line 1662.
 (pdftex.def)             Requested size: 746.49464pt x 221.02745pt.
 
-Overfull \hbox (72.16493pt too wide) in paragraph at lines 1343--1344
+Overfull \hbox (72.16493pt too wide) in paragraph at lines 1662--1663
  [][] 
  []
 
-[63 <./media/gantt_dev_esp.png>]
-<media/gantt_dev_eng_new.png, id=949, 2536.47626pt x 510.90875pt>
+[73 <./media/gantt_dev_esp.png>]
+<media/gantt_dev_eng_new.png, id=1079, 2536.47626pt x 510.90875pt>
 File: media/gantt_dev_eng_new.png Graphic file (type png)
 <use media/gantt_dev_eng_new.png>
-Package pdftex.def Info: media/gantt_dev_eng_new.png  used on input line 1350.
+Package pdftex.def Info: media/gantt_dev_eng_new.png  used on input line 1669.
 (pdftex.def)             Requested size: 634.11752pt x 127.72687pt.
- [64 <./media/final_gantt_eng.png>]
-<media/gantt_final_eng.png, id=956, 2569.6pt x 312.16624pt>
+ [74 <./media/final_gantt_eng.png>]
+<media/gantt_final_eng.png, id=1086, 2569.6pt x 312.16624pt>
 File: media/gantt_final_eng.png Graphic file (type png)
 <use media/gantt_final_eng.png>
-Package pdftex.def Info: media/gantt_final_eng.png  used on input line 1357.
+Package pdftex.def Info: media/gantt_final_eng.png  used on input line 1676.
 (pdftex.def)             Requested size: 642.39844pt x 78.04137pt.
- [65 <./media/gantt_dev_eng_new.png> <./media/gantt_final_eng.png>]
+ [75 <./media/gantt_dev_eng_new.png> <./media/gantt_final_eng.png>]
 
 Package typearea Warning: \typearea used at group level 2.
 (typearea)                Using \typearea inside any group, e.g.
 (typearea)                environments, math mode, boxes, etc. may result in
 (typearea)                many type setting problems.
 (typearea)                You should move the command \typearea
-(typearea)                outside all groups on input line 1362.
+(typearea)                outside all groups on input line 1681.
 
 
 Package typearea Warning: Bad type area settings!
@@ -2908,9 +2988,9 @@ Package typearea Info: These are the values describing the layout:
 (typearea)              \topskip        = 12.0pt
 (typearea)              \footskip       = 50.75pt
 (typearea)              \baselineskip   = 14.5pt
-(typearea)              on input line 1362.
+(typearea)              on input line 1681.
 Package typearea Info: Using dirty hack to recalculate internal output
-(typearea)             dimensions of LaTeX on input line 1362.
+(typearea)             dimensions of LaTeX on input line 1681.
 *geometry* verbose mode - [ newgeometry ] result:
 * driver: pdftex
 * paper: a4paper
@@ -2976,10 +3056,10 @@ Package typearea Info: Using dirty hack to recalculate internal output
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 (./main.lof
-Overfull \vbox (288.34215pt too high) has occurred while \output is active []
+Overfull \vbox (263.84215pt too high) has occurred while \output is active []
 
 
-[66
+[76
 
 
 
@@ -2993,59 +3073,52 @@ Overfull \vbox (288.34215pt too high) has occurred while \output is active []
 
  
 AED: lastpage setting LastPage
-[67]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1370.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1370.
+[77]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1689.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1689.
  (./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1370.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1370.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1689.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1689.
+
+Package rerunfilecheck Info: File `main.out' has not changed.
+(rerunfilecheck)             Checksum: F7CA66BD2F38B55722C9124523F83B89;3860.
 
 
-
-Package rerunfilecheck Warning: File `main.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `main.out':
-(rerunfilecheck)             Before: F5A3074FE29E19502138DA7B3B673FF8;3492
-(rerunfilecheck)             After:  52793D40C705C55F7BF24DBFC7664CBD;3492.
-
-LaTeX Warning: There were multiply-defined labels.
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 45520 strings out of 492982
- 841333 string characters out of 6134896
- 1292389 words of memory out of 5000000
- 47771 multiletter control sequences out of 15000+600000
- 626192 words of font info for 208 fonts, out of 8000000 for 9000
+ 45650 strings out of 492982
+ 843763 string characters out of 6134896
+ 1295389 words of memory out of 5000000
+ 47844 multiletter control sequences out of 15000+600000
+ 629408 words of font info for 210 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  85i,23n,109p,10465b,1974s stack positions out of 5000i,500n,10000p,200000b,80000s
-pdfTeX warning (dest): name{figure.caption.54} has been referenced but does n
-ot exist, replaced by a fixed one
-
-{/usr/share/texmf/fonts/enc/dvips/tex-gyre/q-ec-sc.enc}{/usr/share/texmf/fonts/
-enc/dvips/tex-gyre/q-ts1.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/bas
-e/8r.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/newtx/ntx-ot1-tlf.enc}{
-/usr/share/texmf/fonts/enc/dvips/tex-gyre/q-ec.enc}{/usr/share/texlive/texmf-di
-st/fonts/enc/dvips/newtx/ntx-ec-tlf.enc}</usr/share/texmf/fonts/type1/public/te
-x-gyre/qhvb.pfb></usr/share/texmf/fonts/type1/public/tex-gyre/qhvr.pfb></usr/sh
-are/texmf/fonts/type1/public/tex-gyre/qhvri.pfb></usr/share/texmf/fonts/type1/p
-ublic/tex-gyre/qtmr.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx
-/rntxmi.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx/rntxmi7.pfb
-></usr/share/texlive/texmf-dist/fonts/type1/public/txfonts/rtxmi.pfb></usr/shar
-e/texlive/texmf-dist/fonts/type1/public/txfonts/rtxr.pfb></usr/share/texlive/te
-xmf-dist/fonts/type1/public/newtx/txexs.pfb></usr/share/texlive/texmf-dist/font
-s/type1/public/txfonts/txmia.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
-lic/newtx/txsys.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr
-8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (67 pages, 7382027 bytes).
+{/usr/share/texmf/fonts/enc/dvips/tex-gyre/q-ec-sc.enc}{/usr/share/texmf/font
+s/enc/dvips/tex-gyre/q-ts1.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/b
+ase/8r.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/newtx/ntx-ot1-tlf.enc
+}{/usr/share/texmf/fonts/enc/dvips/tex-gyre/q-ec.enc}{/usr/share/texlive/texmf-
+dist/fonts/enc/dvips/newtx/ntx-ec-tlf.enc}</usr/share/texlive/texmf-dist/fonts/
+type1/public/newtx/ntxsyralt.pfb></usr/share/texmf/fonts/type1/public/tex-gyre/
+qhvb.pfb></usr/share/texmf/fonts/type1/public/tex-gyre/qhvr.pfb></usr/share/tex
+mf/fonts/type1/public/tex-gyre/qhvri.pfb></usr/share/texmf/fonts/type1/public/t
+ex-gyre/qtmr.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx/rntxmi
+.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx/rntxmi7.pfb></usr/
+share/texlive/texmf-dist/fonts/type1/public/txfonts/rtxmi.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/public/txfonts/rtxr.pfb></usr/share/texlive/texmf-dis
+t/fonts/type1/public/newtx/txexs.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/txfonts/txmia.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/txf
+onts/txsyb.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx/txsys.pf
+b></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share
+/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on main.pdf (77 pages, 13871619 bytes).
 PDF statistics:
- 1160 PDF objects out of 1200 (max. 8388607)
- 999 compressed objects within 10 object streams
- 374 named destinations out of 1000 (max. 500000)
- 25722 words of extra memory for PDF output out of 29859 (max. 10000000)
+ 1311 PDF objects out of 1440 (max. 8388607)
+ 1124 compressed objects within 12 object streams
+ 420 named destinations out of 1000 (max. 500000)
+ 26332 words of extra memory for PDF output out of 29859 (max. 10000000)
 
