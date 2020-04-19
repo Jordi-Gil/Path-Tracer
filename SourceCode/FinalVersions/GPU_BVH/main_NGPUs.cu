@@ -223,7 +223,7 @@ __device__ Vector3 color(const Ray& ray, Node *world, int depth, bool light, boo
   Vector3 cur_attenuation = Vector3::One();
   for(int i = 0; i < depth; i++){ 
     hit_record rec;
-    if( world->checkCollision(cur_ray, 0.001, FLT_MAX, rec) ) {
+    if( world->intersect(cur_ray, 0.001, FLT_MAX, rec) ) {
       Ray scattered;
       Vector3 attenuation;
       Vector3 emitted = rec.mat_ptr.emitted(rec.u, rec.v);

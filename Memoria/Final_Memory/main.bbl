@@ -61,8 +61,10 @@
   elicited by the stimulus (the percept) incorporates these features as a
   result of past experience.%
     }
+    \field{number}{9}
     \field{pages}{5245 \bibrangedash  5250}
     \field{title}{{Mach bands as empirically derived associations}}
+    \field{volume}{96}
     \field{journaltitle}{Proceedings of the National Academy of Sciences of the
   United States of America}
     \field{year}{1999}
@@ -70,16 +72,16 @@
 
   \entry{Henri1971}{article}{}
     \name{author}{1}{}{%
-      {{hash=HG}{%
-         family={Henri},
-         familyi={H\bibinitperiod},
-         given={Gouraud},
-         giveni={G\bibinitperiod},
+      {{hash=GH}{%
+         family={Gouraud},
+         familyi={G\bibinitperiod},
+         given={H.},
+         giveni={H\bibinitperiod},
       }}%
     }
     \keyw{Coons patches,curved surfaces,halftone,hidden-,line removal,shading}
-    \strng{namehash}{HG1}
-    \strng{fullhash}{HG1}
+    \strng{namehash}{GH1}
+    \strng{fullhash}{GH1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
     \field{labelyear}{1971}
@@ -93,9 +95,11 @@
   developed by Watkins is used which makes possible a hardware implementation
   of this algorithm.%
     }
-    \field{pages}{623 \bibrangedash  629}
+    \field{number}{6}
+    \field{pages}{623\bibrangedash 629}
     \field{title}{{Continuous Shading of Curved Surfaces}}
-    \field{journaltitle}{IEEE Transactions on Computers}
+    \field{volume}{20}
+    \field{journaltitle}{IEEE Trans. Comput.}
     \field{year}{1971}
   \endentry
 
@@ -131,7 +135,7 @@
     }
     \field{number}{6}
     \field{pages}{311\bibrangedash 317}
-    \field{title}{{Illumination for Computer Generated Pictures}}
+    \field{title}{{Illumination for computer generated pictures}}
     \field{volume}{18}
     \field{journaltitle}{Communications of the ACM}
     \field{year}{1975}
@@ -169,8 +173,10 @@
   integral part of the visibility calculations. Surfaces displayed include
   curved as well as polygonal surfaces.%
     }
+    \field{number}{6}
     \field{pages}{343\bibrangedash 349}
     \field{title}{{An Improved Illumination Model for Shaded Display}}
+    \field{volume}{23}
     \field{journaltitle}{Communications of the ACM}
     \field{year}{1980}
   \endentry
@@ -314,7 +320,7 @@
     \field{year}{1986}
   \endentry
 
-  \entry{Lafortune1993}{article}{}
+  \entry{Lafortune1993}{inproceedings}{}
     \name{author}{2}{}{%
       {{hash=LEP}{%
          family={Lafortune},
@@ -341,14 +347,14 @@
     In this paper we present a new Monte Carlo rendering algorithm that
   seamlessly integrates the ideas of%
     }
+    \field{booktitle}{Proceedings of Third International Conference on
+  Computational Graphics and Visualization Techniques (Compugraphics '93)}
     \field{pages}{145\bibrangedash 153}
     \field{title}{{Bi-Directional Path Tracing}}
-    \field{journaltitle}{Proceedings of Third International Conference on
-  Computational Graphics and Visualization Techniques (Compugraphics '93)}
     \field{year}{1993}
   \endentry
 
-  \entry{Jensen1996}{incollection}{}
+  \entry{Jensen1996}{inproceedings}{}
     \name{author}{1}{}{%
       {{hash=JHW}{%
          family={Jensen},
@@ -385,7 +391,8 @@
   surfaces with diffuse and glossy reflection models. The imple- mentation is
   also compared with the Radiance program.%
     }
-    \field{booktitle}{Rendering Techniques '96}
+    \field{booktitle}{Proceedings of the Eurographics Workshop on Rendering
+  Techniques '96}
     \field{pages}{21\bibrangedash 30}
     \field{title}{{Global Illumination using Photon Maps}}
     \field{year}{1996}
@@ -478,8 +485,8 @@
     \field{labeltitlesource}{title}
     \field{labelyear}{2004}
     \field{labeldatesource}{year}
-    \field{booktitle}{Proceedings GRAPHITE 2004 - 2nd International Conference
-  on Computer Graphics and Interactive Techniques in Australasia and Southeast
+    \field{booktitle}{Proceedings of the 2nd International Conference on
+  Computer Graphics and Interactive Techniques in Australasia and South East
   Asia}
     \field{pages}{23\bibrangedash 29}
     \field{title}{{Path tracing using the AR350 processor}}
@@ -570,7 +577,7 @@
     \field{labelyear}{2019}
     \field{extradate}{1}
     \field{labeldatesource}{year}
-    \field{pages}{50}
+    \field{pages}{1\bibrangedash 50}
     \field{title}{{Ray Tracing : The Next Week}}
     \verb{url}
     \verb https://github.com/petershirley/raytracingthenextweek
@@ -607,8 +614,9 @@
   contribution is an in-place algorithm for constructing binary radix trees,
   which we use as a building block for other types of trees.%
     }
-    \field{booktitle}{High-Performance Graphics 2012, HPG 2012 - ACM SIGGRAPH /
-  Eurographics Symposium Proceedings}
+    \field{booktitle}{Proceedings of the Fourth ACM SIGGRAPH / Eurographics
+  Conference on High-Performance Graphics}
+    \field{pages}{33\bibrangedash 37}
     \field{title}{{Maximizing parallelism in the construction of bvhs, octrees,
   and k-d trees}}
     \field{year}{2012}
@@ -724,8 +732,11 @@
   progressive rendering for interactive use and our adaptation of denoising
   techniques.%
     }
+    \field{number}{3}
+    \field{pages}{1 \bibrangedash  21}
     \field{title}{{RenderMan: An advanced path-tracing architecture for movie
   rendering}}
+    \field{volume}{37}
     \field{journaltitle}{ACM Transactions on Graphics}
     \field{year}{2018}
   \endentry
@@ -771,8 +782,10 @@
   GPU, kernel execution times, and end-to-end application execution times for
   both CUDA and OpenCL.%
     }
-    \field{pages}{10}
+    \field{number}{1}
+    \field{pages}{1\bibrangedash 12}
     \field{title}{{A Performance Comparison of CUDA and OpenCL}}
+    \field{volume}{abs/1005.2}
     \verb{file}
     \verb :home/jordi/Documents/Universidad/Computacio/TFG/Documents/cuda-ocl-k
     \verb dh.pdf:pdf
@@ -825,9 +838,8 @@
   fundamentally affect its performance, and OpenCL can be a good alternative to
   CUDA. ? 2011 IEEE.%
     }
-    \field{booktitle}{Proceedings of the International Conference on Parallel
-  Processing}
-    \field{pages}{216\bibrangedash 215}
+    \field{booktitle}{2011 International Conference on Parallel Processing}
+    \field{pages}{216\bibrangedash 225}
     \field{title}{{A comprehensive performance comparison of CUDA and OpenCL}}
     \field{year}{2011}
   \endentry
@@ -877,7 +889,8 @@
   be highly optimized for very fast execution.%
     }
     \field{booktitle}{Proceedings of the 7th Annual Conference on Computer
-  Graphics and Interactive Techniques, SIGGRAPH 1980}
+  Graphics and Interactive Techniques}
+    \field{pages}{110\bibrangedash 116}
     \field{title}{{A 3-dimensional representation for fast rendering of complex
   scenes}}
     \field{year}{1980}
@@ -920,7 +933,9 @@
   between 7 million and 60 billion rays per frame. This covers most interactive
   applications, product and architectural design, and even movie rendering.%
     }
-    \field{booktitle}{Proceedings - High-Performance Graphics 2013, HPG 2013}
+    \field{booktitle}{Proceedings of the 5th High-Performance Graphics
+  Conference}
+    \field{pages}{89\bibrangedash 99}
     \field{title}{{Fast parallel construction of high-quality bounding volume
   hierarchies}}
     \field{year}{2013}
@@ -1037,8 +1052,11 @@
   loaded java scripts. Please use this link to download a supplemented PDF
   version of the article.%
     }
+    \field{number}{1}
+    \field{pages}{1\bibrangedash 15}
     \field{title}{{An anisotropic BRDF model for fitting and Monte Carlo
   rendering}}
+    \field{volume}{44}
     \field{journaltitle}{ACM SIGGRAPH Computer Graphics}
     \field{year}{2010}
   \endentry
@@ -1086,7 +1104,7 @@
     \field{year}{2004}
   \endentry
 
-  \entry{Moller2005}{inproceedings}{}
+  \entry{Moller2005}{article}{}
     \name{author}{2}{}{%
       {{hash=MT}{%
          family={M{\"{o}}ller},
@@ -1107,7 +1125,7 @@
     \strng{fullhash}{MTTB1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
-    \field{labelyear}{2005}
+    \field{labelyear}{1997}
     \field{labeldatesource}{year}
     \field{abstract}{%
     We present a clean algorithm for determining whether a ray intersects a
@@ -1121,9 +1139,12 @@
   ray/triangle intersection routine for triangles which do not have precomputed
   plane equations.%
     }
-    \field{booktitle}{ACM SIGGRAPH 2005 Courses, SIGGRAPH 2005}
+    \field{number}{1}
+    \field{pages}{21\bibrangedash 28}
     \field{title}{{Fast, minimum storage ray/triangle intersection}}
-    \field{year}{2005}
+    \field{volume}{2}
+    \field{journaltitle}{Journal of Graphics Tools}
+    \field{year}{1997}
   \endentry
 
   \entry{Schlick1994}{article}{}
@@ -1157,7 +1178,10 @@
   formulation provides adequation to Monte‐Carlo rendering techniques and/or
   hardware implementations). {\textcopyright} 1994 Eurographics Association%
     }
+    \field{number}{3}
+    \field{pages}{233\bibrangedash 246}
     \field{title}{{An Inexpensive BRDF Model for Physically‐based Rendering}}
+    \field{volume}{13}
     \field{journaltitle}{Computer Graphics Forum}
     \field{year}{1994}
   \endentry
@@ -1211,8 +1235,10 @@
     \verb 10.1109/MCG.1986.276715
     \endverb
     \field{issn}{02721716}
+    \field{number}{1}
     \field{pages}{16\bibrangedash 26}
     \field{title}{{Arts: Accelerated Ray-Tracing System}}
+    \field{volume}{6}
     \field{journaltitle}{IEEE Computer Graphics and Applications}
     \field{year}{1986}
   \endentry
@@ -1259,14 +1285,16 @@
     \verb 10.1145/361002.361007
     \endverb
     \field{issn}{15577317}
+    \field{number}{9}
     \field{pages}{509\bibrangedash 517}
     \field{title}{{Multidimensional Binary Search Trees Used for Associative
   Searching}}
+    \field{volume}{18}
     \field{journaltitle}{Communications of the ACM}
     \field{year}{1975}
   \endentry
 
-  \entry{DonaldMeagher1982}{report}{}
+  \entry{DonaldMeagher1982}{article}{}
     \name{author}{1}{}{%
       {{hash=D}{%
          family={{Donald Meagher}},
@@ -1298,9 +1326,11 @@
   parallel. Real time analysis and manipulation of highly complex situations
   thus becomes possible.%
     }
-    \field{booktitle}{COMPUTER GRAPHICS AND IMAGE PROCESSING}
+    \field{number}{1}
+    \field{pages}{129\bibrangedash 147}
     \field{title}{{Geometric Modeling Using Octree Encoding}}
-    \field{type}{techreport}
+    \field{volume}{19}
+    \field{journaltitle}{Computer Graphics and Image Processing}
     \field{year}{1982}
   \endentry
 
@@ -1358,6 +1388,7 @@
     \verb 10.1109/RT.2007.4342598
     \endverb
     \field{isbn}{9781424416295}
+    \field{pages}{113\bibrangedash 118}
     \field{title}{{Realtime ray tracing on GPU with BVH-based packet
   traversal}}
     \field{year}{2007}
@@ -1425,8 +1456,10 @@
     \verb 10.1111/j.1467-8659.2009.01377.x
     \endverb
     \field{issn}{14678659}
+    \field{number}{2}
     \field{pages}{375\bibrangedash 384}
     \field{title}{{Fast BVH construction on GPUs}}
+    \field{volume}{28}
     \field{journaltitle}{Computer Graphics Forum}
     \field{year}{2009}
   \endentry
@@ -1449,6 +1482,262 @@
     \field{title}{A computer oriented geodetic data base and a new technique in
   file sequencing}
     \field{year}{1966}
+  \endentry
+
+  \entry{Lyra2011}{incollection}{}
+    \name{author}{3}{}{%
+      {{hash=LM}{%
+         family={Lyra},
+         familyi={L\bibinitperiod},
+         given={Maria},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=PA}{%
+         family={Ploussi},
+         familyi={P\bibinitperiod},
+         given={Agapi},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=GA}{%
+         family={Georgantzoglou},
+         familyi={G\bibinitperiod},
+         given={Antonios},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{LM+1}
+    \strng{fullhash}{LMPAGA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2011}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    A well-known statement says that the PID controller is the
+  {\^{a}}€oebread and butter{\^{a}}€ of the control engineer. This is
+  indeed true, from a scientific standpoint. However, nowadays, in the era of
+  computer science, when the paper and pencil have been replaced by the
+  keyboard and the display of computers, one may equally say that MATLAB is the
+  {\^{a}}€oebread{\^{a}}€ in the above statement. MATLAB has became a de
+  facto tool for the modern system engineer. This book is written for both
+  engineering students, as well as for practicing engineers. The wide range of
+  applications in which MATLAB is the working framework, shows that it is a
+  powerful, comprehensive and easy-to-use environment for performing technical
+  computations. The book includes various excellent applications in which
+  MATLAB is employed: from pure algebraic computations to data acquisition in
+  real-life experiments, from control strategies to image processing
+  algorithms, from graphical user interface design for educational purposes to
+  Simulink embedded systems.%
+    }
+    \field{booktitle}{MATLAB - A Ubiquitous Tool for the Practical Engineer}
+    \verb{doi}
+    \verb 10.5772/19999
+    \endverb
+    \field{pages}{478\bibrangedash 498}
+    \field{title}{{MATLAB as a Tool in Nuclear Medicine Image Processing}}
+    \field{year}{2011}
+  \endentry
+
+  \entry{Aurich1995}{incollection}{}
+    \name{author}{2}{}{%
+      {{hash=AV}{%
+         family={Aurich},
+         familyi={A\bibinitperiod},
+         given={Volker},
+         giveni={V\bibinitperiod},
+      }}%
+      {{hash=WJ}{%
+         family={Weule},
+         familyi={W\bibinitperiod},
+         given={J{\"{o}}rg},
+         giveni={J\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{AV+1}
+    \strng{fullhash}{AVWJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1995}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    This paper presents a new diffusion method for edge preserving smoothing of
+  images.%
+    }
+    \field{booktitle}{Mustererkennung}
+    \verb{doi}
+    \verb 10.1007/978-3-642-79980-8_63
+    \endverb
+    \field{pages}{538\bibrangedash 545}
+    \field{title}{{Non-Linear Gaussian Filters Performing Edge Preserving
+  Diffusion}}
+    \field{year}{1995}
+  \endentry
+
+  \entry{Tomasi1998}{inproceedings}{}
+    \name{author}{2}{}{%
+      {{hash=TC}{%
+         family={Tomasi},
+         familyi={T\bibinitperiod},
+         given={C.},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=MR}{%
+         family={Manduchi},
+         familyi={M\bibinitperiod},
+         given={R.},
+         giveni={R\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{TC+1}
+    \strng{fullhash}{TCMR1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1998}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    Bilateral filtering smooths images while preserving edges, by means of a
+  nonlinear combination of nearby image values. The method is noniterative,
+  local, and simple. It combines gray levels or colors based on both their
+  geometric closeness and their photometric similarity, and prefers near values
+  to distant values in both domain and range. In contrast with filters that
+  operate on the three bands of a color image separately, a bilateral filter
+  can enforce the perceptual metric underlying the CIE-Lab color space, and
+  smooth colors and preserve edges in a way that is tuned to human perception.
+  Also, in contrast with standard filtering, bilateral filtering produces no
+  phantom colors along edges in color images, and reduces phantom colors where
+  they appear in the original image.%
+    }
+    \field{booktitle}{Proceedings of the IEEE International Conference on
+  Computer Vision}
+    \verb{doi}
+    \verb 10.1109/iccv.1998.710815
+    \endverb
+    \field{pages}{839\bibrangedash 846}
+    \field{title}{{Bilateral filtering for gray and color images}}
+    \field{year}{1998}
+  \endentry
+
+  \entry{Paris2009}{article}{}
+    \name{author}{4}{}{%
+      {{hash=PS}{%
+         family={Paris},
+         familyi={P\bibinitperiod},
+         given={Sylvain},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=KP}{%
+         family={Kornprobst},
+         familyi={K\bibinitperiod},
+         given={Pierre},
+         giveni={P\bibinitperiod},
+      }}%
+      {{hash=TJ}{%
+         family={Tumblin},
+         familyi={T\bibinitperiod},
+         given={Jack},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=DF}{%
+         family={Durand},
+         familyi={D\bibinitperiod},
+         given={Fŕedo},
+         giveni={F\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{PS+1}
+    \strng{fullhash}{PSKPTJDF1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2009}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    The bilateral filter is a non-linear technique that can blur an image while
+  respecting strong edges. Its ability to decompose an image into different
+  scales without causing haloes after modification has made it ubiquitous in
+  computational photography applications such as tone mapping, style transfer,
+  relighting, and denoising. This text provides a graphical, intuitive
+  introduction to bilateral filtering, a practical guide for efficient
+  implementation and an overview of its numerous applications, as well as
+  mathematical analysis. {\textcopyright} 2009.%
+    }
+    \verb{doi}
+    \verb 10.1561/0600000020
+    \endverb
+    \field{issn}{15722740}
+    \field{number}{1}
+    \field{pages}{1\bibrangedash 73}
+    \field{title}{{Bilateral filtering: Theory and applications}}
+    \field{volume}{4}
+    \field{journaltitle}{Foundations and Trends in Computer Graphics and
+  Vision}
+    \field{year}{2009}
+  \endentry
+
+  \entry{Robertson1990}{article}{}
+    \name{author}{1}{}{%
+      {{hash=RAR}{%
+         family={Robertson},
+         familyi={R\bibinitperiod},
+         given={A.\bibnamedelima R.},
+         giveni={A\bibinitperiod\bibinitdelim R\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{RAR1}
+    \strng{fullhash}{RAR1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1990}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    In 1976 the CIE recommended two colour difference formulae, the CIELAB and
+  CIELUV formulae, to promote uniformity of practice pending the development of
+  a better formula. While some of the arguments in favour of the recommendation
+  were political, there were also sound technical reasons for choosing the two
+  formulae. The discussions leading to the recommendation and the reasons that
+  led the CIE to its decision are reviewed. In particular the reasons for the
+  modification of the 1964 (U*, V*, W*) formula to arrive at the CIELUV formula
+  are given, and the derivation of the constants (116, 16, 500 and 200) in the
+  CIELAB formula is explained. Most of the data presented are taken from CIE
+  Committee minutes and correspondence. Copyright {\textcopyright} 1990 Wiley
+  Periodicals, Inc., A Wiley Company%
+    }
+    \verb{doi}
+    \verb 10.1002/col.5080150308
+    \endverb
+    \field{issn}{15206378}
+    \field{number}{3}
+    \field{pages}{167\bibrangedash 170}
+    \field{title}{{Historical development of CIE recommended color difference
+  equations}}
+    \field{volume}{15}
+    \field{journaltitle}{Color Research {\&} Application}
+    \field{year}{1990}
+  \endentry
+
+  \entry{lindbloom_2017}{misc}{}
+    \name{author}{1}{}{%
+      {{hash=LBJ}{%
+         family={Lindbloom},
+         familyi={L\bibinitperiod},
+         given={Bruce\bibnamedelima Justin},
+         giveni={B\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Bruce Lindbloom}%
+    }
+    \strng{namehash}{LBJ1}
+    \strng{fullhash}{LBJ1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2017}
+    \field{labeldatesource}{year}
+    \field{title}{RGB/XYZ Matrices}
+    \verb{url}
+    \verb http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
+    \endverb
+    \field{journaltitle}{Welcome to Bruce Lindbloom's Web Site}
+    \field{year}{2017}
+    \warn{\item Invalid format of field 'month'}
   \endentry
 \enddatalist
 \endinput

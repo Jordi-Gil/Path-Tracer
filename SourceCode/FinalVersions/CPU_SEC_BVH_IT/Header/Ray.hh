@@ -5,6 +5,7 @@
 
 class Ray
 {
+
 public:
   Ray();
   Ray(const Vector3& a, const Vector3& b, float ti = 0.0);

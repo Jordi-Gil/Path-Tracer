@@ -9,7 +9,7 @@ public:
   
     HitableList();
     HitableList(Triangle *l, int n);
-    bool checkCollision(const Ray& r, float t_min, float t_max, hit_record& rec);
+    bool intersect(const Ray& r, float t_min, float t_max, hit_record& rec);
     int length();
     Triangle *getObjects();
 

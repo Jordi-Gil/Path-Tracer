@@ -24,7 +24,7 @@ class Obj {
 public:
     
   __host__  Obj() {}
-  __host__  Obj(int type, const std::string &filename, bool matB = false, Material m = Material() );
+  __host__  Obj(int type, const std::string &filename, bool matB = false, Material m = Material(), int textureIndex = -1);
   __host__  void loadFromTXT(const std::string &filename);
   __host__  void loadFromObj(const std::string &filename);
   
@@ -45,6 +45,7 @@ private:
   Vector3 min;
   bool materialB;
   Material material;
+  
 };
 
 __host__ __device__ inline void compare(Vector3 &max, Vector3 &min, Vector3 point) {

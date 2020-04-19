@@ -7,7 +7,7 @@ HitableList::HitableList(Triangle *l, int n){
     list_size = n;
 }
 
-bool HitableList::checkCollision(const Ray& r, float t_min, float t_max, hit_record &rec) {
+bool HitableList::intersect(const Ray& r, float t_min, float t_max, hit_record &rec) {
     
     hit_record temp_rec;
     bool hit_anything = false;

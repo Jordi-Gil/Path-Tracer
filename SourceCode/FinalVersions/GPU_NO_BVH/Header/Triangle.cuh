@@ -25,8 +25,8 @@ public:
 private:
   
   Vector3 vertex[3];
-  Vector3 centroid;
   Vector3 uv[3];
+  Vector3 centroid;
   Material mat_ptr;
   
 };

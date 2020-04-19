@@ -1,181 +1,215 @@
 \boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {1}Contextualization and Scope of the project}{4}{chapter.1}
+\contentsline {chapter}{\numberline {1}Contextualization and Scope of the project}{5}{chapter.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {1.1}Introduction}{4}{section.1.1}
+\contentsline {section}{\numberline {1.1}Introduction}{5}{section.1.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {1.2}Contextualization}{8}{section.1.2}
+\contentsline {section}{\numberline {1.2}Contextualization}{9}{section.1.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.2.1}Context}{8}{subsection.1.2.1}
+\contentsline {subsection}{\numberline {1.2.1}Context}{9}{subsection.1.2.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.2.2}Stakeholders}{11}{subsection.1.2.2}
+\contentsline {subsection}{\numberline {1.2.2}Stakeholders}{12}{subsection.1.2.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Developer}{11}{section*.8}
+\contentsline {subsubsection}{Developer}{12}{section*.8}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Project director}{11}{section*.9}
+\contentsline {subsubsection}{Project director}{12}{section*.9}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Benefited users}{12}{section*.10}
+\contentsline {subsubsection}{Benefited users}{13}{section*.10}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {1.3}Justification}{12}{section.1.3}
+\contentsline {section}{\numberline {1.3}Justification}{13}{section.1.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {1.4}Project Scope}{13}{section.1.4}
+\contentsline {section}{\numberline {1.4}Project Scope}{14}{section.1.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.4.1}Objectives}{14}{subsection.1.4.1}
+\contentsline {subsection}{\numberline {1.4.1}Objectives}{15}{subsection.1.4.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Main objectives}{14}{section*.11}
+\contentsline {subsubsection}{Main objectives}{15}{section*.11}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Secondary objectives}{14}{section*.12}
+\contentsline {subsubsection}{Secondary objectives}{15}{section*.12}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.4.2}Obstacles and risk}{14}{subsection.1.4.2}
+\contentsline {subsection}{\numberline {1.4.2}Obstacles and risk}{15}{subsection.1.4.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Main program}{15}{section*.13}
+\contentsline {subsubsection}{Main program}{16}{section*.13}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Algorithm}{15}{section*.14}
+\contentsline {subsubsection}{Algorithm}{16}{section*.14}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {1.5}Methodology and rigour}{15}{section.1.5}
+\contentsline {section}{\numberline {1.5}Methodology and rigour}{16}{section.1.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {1.5.1}Methodology}{15}{subsection.1.5.1}
+\contentsline {subsection}{\numberline {1.5.1}Methodology}{16}{subsection.1.5.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {1.6}Development tools}{15}{section.1.6}
+\contentsline {section}{\numberline {1.6}Development tools}{16}{section.1.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {1.7}Monitoring tools}{16}{section.1.7}
+\contentsline {section}{\numberline {1.7}Monitoring tools}{17}{section.1.7}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {2}Project Management}{17}{chapter.2}
+\contentsline {chapter}{\numberline {2}Project Management}{18}{chapter.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.1}Planning}{17}{section.2.1}
+\contentsline {section}{\numberline {2.1}Planning}{18}{section.2.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.2}Task description and resources used}{17}{section.2.2}
+\contentsline {section}{\numberline {2.2}Task description and resources used}{18}{section.2.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2.1}Task description}{17}{subsection.2.2.1}
+\contentsline {subsection}{\numberline {2.2.1}Task description}{18}{subsection.2.2.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Study of concepts}{17}{section*.16}
+\contentsline {subsubsection}{Study of concepts}{18}{section*.16}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{System configuration}{18}{section*.17}
+\contentsline {subsubsection}{System configuration}{19}{section*.17}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Project Planning}{18}{section*.18}
+\contentsline {subsubsection}{Project Planning}{19}{section*.18}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Development}{18}{section*.19}
+\contentsline {subsubsection}{Development}{19}{section*.19}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Final stage}{19}{section*.20}
+\contentsline {subsubsection}{Final stage}{20}{section*.20}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2.2}Summary table and estimation}{19}{subsection.2.2.2}
+\contentsline {subsection}{\numberline {2.2.2}Summary table and estimation}{20}{subsection.2.2.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2.3}Resources used}{19}{subsection.2.2.3}
+\contentsline {subsection}{\numberline {2.2.3}Resources used}{20}{subsection.2.2.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Software}{19}{section*.21}
+\contentsline {subsubsection}{Software}{20}{section*.21}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Hardware}{20}{section*.22}
+\contentsline {subsubsection}{Hardware}{21}{section*.22}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.3}Risk management: Alternative plans and obstacles}{20}{section.2.3}
+\contentsline {section}{\numberline {2.3}Risk management: Alternative plans and obstacles}{21}{section.2.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.4}Knowledge Integration}{20}{section.2.4}
+\contentsline {section}{\numberline {2.4}Knowledge Integration}{21}{section.2.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2.5}Identification of laws and regulations}{21}{section.2.5}
+\contentsline {section}{\numberline {2.5}Identification of laws and regulations}{22}{section.2.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {3}Budget and sustainability}{22}{chapter.3}
+\contentsline {chapter}{\numberline {3}Budget and sustainability}{23}{chapter.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.1}Budget}{22}{section.3.1}
+\contentsline {section}{\numberline {3.1}Budget}{23}{section.3.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.1.1}Direct costs}{22}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {3.1.1}Direct costs}{23}{subsection.3.1.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Software resources}{23}{section*.23}
+\contentsline {subsubsection}{Software resources}{24}{section*.23}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Hardware resources}{23}{section*.24}
+\contentsline {subsubsection}{Hardware resources}{24}{section*.24}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Human resources}{24}{section*.25}
+\contentsline {subsubsection}{Human resources}{25}{section*.25}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.1.2}Indirect costs}{25}{subsection.3.1.2}
+\contentsline {subsection}{\numberline {3.1.2}Indirect costs}{26}{subsection.3.1.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.1.3}Unexpected costs}{26}{subsection.3.1.3}
+\contentsline {subsection}{\numberline {3.1.3}Unexpected costs}{27}{subsection.3.1.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.1.4}Total budget}{26}{subsection.3.1.4}
+\contentsline {subsection}{\numberline {3.1.4}Total budget}{27}{subsection.3.1.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.2}Management and budgetary control}{26}{section.3.2}
+\contentsline {section}{\numberline {3.2}Management and budgetary control}{27}{section.3.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3.3}Sustainability}{27}{section.3.3}
+\contentsline {section}{\numberline {3.3}Sustainability}{28}{section.3.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.3.1}Self-assessment}{27}{subsection.3.3.1}
+\contentsline {subsection}{\numberline {3.3.1}Self-assessment}{28}{subsection.3.3.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.3.2}Environmental impact}{28}{subsection.3.3.2}
+\contentsline {subsection}{\numberline {3.3.2}Environmental impact}{29}{subsection.3.3.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.3.3}Economical impact}{28}{subsection.3.3.3}
+\contentsline {subsection}{\numberline {3.3.3}Economical impact}{29}{subsection.3.3.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.3.4}Social impact}{29}{subsection.3.3.4}
+\contentsline {subsection}{\numberline {3.3.4}Social impact}{30}{subsection.3.3.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {4}Design and Development}{30}{chapter.4}
+\contentsline {chapter}{\numberline {4}Design and Development}{31}{chapter.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.1}Introduction}{30}{section.4.1}
+\contentsline {section}{\numberline {4.1}Introduction}{31}{section.4.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.1.1}Supersampling}{32}{subsection.4.1.1}
+\contentsline {subsection}{\numberline {4.1.1}Supersampling}{33}{subsection.4.1.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.2}What is a ray?}{33}{section.4.2}
+\contentsline {section}{\numberline {4.2}What is a ray?}{34}{section.4.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.3}Camera}{34}{section.4.3}
+\contentsline {section}{\numberline {4.3}Camera}{35}{section.4.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Camera position - $\mathaccentV {vec}2AE{lookFrom}$}{35}{section*.32}
+\contentsline {subsubsection}{Camera position - $\mathaccentV {vec}2AE{lookFrom}$}{36}{section*.32}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Camera direction - $\mathaccentV {vec}2AE{w}$}{35}{section*.33}
+\contentsline {subsubsection}{Camera direction - $\mathaccentV {vec}2AE{w}$}{36}{section*.33}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Right axis - $\mathaccentV {vec}2AE{u}$}{35}{section*.34}
+\contentsline {subsubsection}{Right axis - $\mathaccentV {vec}2AE{u}$}{36}{section*.34}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Up axis - $\mathaccentV {vec}2AE{v}$}{36}{section*.35}
+\contentsline {subsubsection}{Up axis - $\mathaccentV {vec}2AE{v}$}{37}{section*.35}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Image plane}{36}{section*.36}
+\contentsline {subsubsection}{Image plane}{37}{section*.36}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Defocus blur}{37}{section*.38}
+\contentsline {subsubsection}{Defocus blur}{38}{section*.38}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.4}Triangles}{39}{section.4.4}
+\contentsline {section}{\numberline {4.4}Triangles}{40}{section.4.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.4.1}Collision detection}{39}{subsection.4.4.1}
+\contentsline {subsection}{\numberline {4.4.1}Collision detection}{40}{subsection.4.4.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.4.2}Axis-Aligned Bounding Box intersection algorithm}{40}{subsection.4.4.2}
+\contentsline {subsection}{\numberline {4.4.2}Axis-Aligned Bounding Box intersection algorithm}{41}{subsection.4.4.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.4.3}M\IeC {\"o}ller\IeC {\textendash }Trumbore intersection algorithm}{42}{subsection.4.4.3}
+\contentsline {subsection}{\numberline {4.4.3}M\IeC {\"o}ller\IeC {\textendash }Trumbore intersection algorithm}{43}{subsection.4.4.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.5}Geometric transforms}{44}{section.4.5}
+\contentsline {section}{\numberline {4.5}Geometric transforms}{45}{section.4.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.5.1}Translation}{44}{subsection.4.5.1}
+\contentsline {subsection}{\numberline {4.5.1}Translation}{45}{subsection.4.5.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.5.2}Scaling}{45}{subsection.4.5.2}
+\contentsline {subsection}{\numberline {4.5.2}Scaling}{46}{subsection.4.5.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.5.3}Rotation}{46}{subsection.4.5.3}
+\contentsline {subsection}{\numberline {4.5.3}Rotation}{47}{subsection.4.5.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.6}Materials}{47}{section.4.6}
+\contentsline {section}{\numberline {4.6}Materials}{48}{section.4.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.6.1}Diffuse}{47}{subsection.4.6.1}
+\contentsline {subsection}{\numberline {4.6.1}Diffuse}{48}{subsection.4.6.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.6.2}Metals}{49}{subsection.4.6.2}
+\contentsline {subsection}{\numberline {4.6.2}Metals}{50}{subsection.4.6.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.6.3}Dielectrics}{50}{subsection.4.6.3}
+\contentsline {subsection}{\numberline {4.6.3}Dielectrics}{51}{subsection.4.6.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Snell's Law of Refraction}{51}{section*.49}
+\contentsline {subsubsection}{Snell's Law of Refraction}{52}{section*.49}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Fresnel Equations}{54}{section*.52}
+\contentsline {subsubsection}{Fresnel Equations}{55}{section*.52}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.6.4}Textures}{55}{subsection.4.6.4}
+\contentsline {subsection}{\numberline {4.6.4}Diffuse light}{56}{subsection.4.6.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.6.5}Skybox}{56}{subsection.4.6.5}
+\contentsline {subsection}{\numberline {4.6.5}Textures}{56}{subsection.4.6.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.7}Acceleration Data Structures}{58}{section.4.7}
+\contentsline {subsection}{\numberline {4.6.6}Skybox}{57}{subsection.4.6.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.7.1}Bounding Volume Hierarchy}{58}{subsection.4.7.1}
+\contentsline {section}{\numberline {4.7}Acceleration Data Structures}{59}{section.4.7}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{BVH Construction}{59}{section*.58}
+\contentsline {subsection}{\numberline {4.7.1}Bounding Volume Hierarchy}{60}{subsection.4.7.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Bounding-box calculation CPU}{63}{section*.61}
+\contentsline {subsubsection}{BVH Construction}{60}{section*.58}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Bounding-box calculation GPU}{63}{section*.62}
+\contentsline {subsubsection}{Sequential CPU - BVH construction implementation}{64}{section*.61}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4.8}Scene manager}{63}{section.4.8}
+\contentsline {subsubsection}{Parallel CPU (OpenMP) - BVH construction implementation}{64}{section*.62}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Geometric vertices}{64}{section*.63}
+\contentsline {subsubsection}{Parallel GPU (CUDA) - BVH construction implementation}{65}{section*.63}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Texture vertices}{64}{section*.64}
+\contentsline {subsubsection}{Bounding-box calculation CPU}{67}{section*.65}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Vertex normal}{64}{section*.65}
+\contentsline {subsubsection}{Bounding-box calculation GPU}{67}{section*.66}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Polygon Faces}{65}{section*.66}
+\contentsline {section}{\numberline {4.8}Scene manager}{67}{section.4.8}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{Appendices}{69}{section*.67}
+\contentsline {subsubsection}{Geometric vertices}{68}{section*.67}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {A}Gantt Diagram}{70}{Appendix.1.A}
+\contentsline {subsubsection}{Texture vertices}{68}{section*.68}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Vertex normal}{68}{section*.69}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Polygon Faces}{68}{section*.70}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {4.9}Image Filters}{69}{section.4.9}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {4.9.1}Mean Filter}{69}{subsection.4.9.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {4.9.2}Median Filter}{70}{subsection.4.9.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {4.9.3}Bilateral Filter}{70}{subsection.4.9.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{CIE-L*a*b* space}{72}{section*.73}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {4.10}Main program}{74}{section.4.10}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {4.10.1}Applications parameters}{74}{subsection.4.10.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Common parameters}{74}{section*.74}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{CUDA parameters}{76}{section*.76}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {4.11}Renderer}{76}{section.4.11}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {4.11.1}Sequential CPU}{77}{subsection.4.11.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {4.11.2}Parallel CPU}{78}{subsection.4.11.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {4.11.3}Parallel GPU}{79}{subsection.4.11.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{Appendices}{84}{section*.78}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {A}Gantt Diagram}{85}{Appendix.a.A}

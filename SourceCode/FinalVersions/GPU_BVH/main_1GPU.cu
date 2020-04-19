@@ -81,12 +81,17 @@ void help(){
   
 }
 
-void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, int &dist, int &nthreads, std::string &image, std::string &filename, int &numGPUs, bool &light, bool &random, bool &filter, int &diameter, float &gs, float &gr, bool &skybox, bool &oneTex, const int count){
+void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, int &dist, std::string &image, std::string &filename, bool &light, bool &random, bool &filter, int &diameterBi, float &gs, float &gr, int &diameterMean, int &diameterMedian, bool &skybox, bool &oneTex, int &nthreads, int &numGPUs, const int count){
   
   if(argc <= 1) error("Error usage. Use [-h] [--help] to see the usage.");
   
-  nx = 1280; ny = 720; ns = 50; depth = 50; dist = 11; image = "random"; light = true; random = true;
-	filter = false; gs = 0; gr = 0; diameter = 11; skybox = false; oneTex = false;
+  nx = 1280; ny = 720; ns = 50; depth = 50; dist = 11; image = "image";
+  filter = false; gs = 0; gr = 0; diameterBi = 11; diameterMean = 3; diameterMedian = 3;
+  
+  skybox = false; oneTex = false;
+  light = true; random = true;
+  
+  bool imageName = false;
   
   nthreads = 32; numGPUs = 1;
   
@@ -121,32 +126,17 @@ void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, in
       depth = atoi(argv[i+1]);
       if(depth == 0) error("-depth value expected or cannot be 0");
     }
-    else if(std::string(argv[i]) == "-spheres"){
-      if((i+1) >= argc) error("-spheres value expected");
-      dist = atoi(argv[i+1]);
-      if(dist == 0) error("-spheres value expected or cannot be 0");
-    }
-    else if(std::string(argv[i]) == "-nthreads"){
-      if((i+1) >= argc) error("-nthreads value expected");
-      nthreads = atoi(argv[i+1]);
-      if(nthreads == 0) error("-nthreads value expected or cannot be 0");
-    }
     else if(std::string(argv[i]) == "-i" || std::string(argv[i]) == "--image"){
       if((i+1) >= argc) error("--image / -i file expected");
       filename = std::string(argv[i+1]);
+      imageName = true;
     }
     else if(std::string(argv[i]) == "-f" || std::string(argv[i]) == "--file"){
       if((i+1) >= argc) error("-name file expected");
       filename = std::string(argv[i+1]);
-      image = filename;
+      if(!imageName) image = filename;
       filename = filename+".txt";
       random = false;
-    }
-    else if(std::string(argv[i]) == "-nGPUs"){
-      if((i+1) >= argc) error("-nGPUs value expected");
-      numGPUs = atoi(argv[i+1]);
-      if(numGPUs == 0) error("-nGPUs value expected or cannot be 0");
-      numGPUs = std::min(numGPUs, count);
     }
     else if(std::string(argv[i]) == "-light") {
       if((i+1) >= argc) error("-light value expected");
@@ -155,10 +145,15 @@ void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, in
     }
     else if (std::string(argv[i]) == "-filter") {
       filter = true;
-      diameter = atoi(argv[i+1]);
+      diameterBi = atoi(argv[i+1]);
+      
       i += 2;
       gs = atof(argv[i]);
       gr = atof(argv[i+1]);
+      
+      i+=2;
+      diameterMean = atoi(argv[i]);
+      diameterMedian = atoi(argv[i+1]);
     }
     else if(std::string(argv[i]) == "-skybox") {
       if((i+1) >= argc) error("-skybox value expected");
@@ -169,6 +164,17 @@ void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, in
       if((i+1) >= argc) error("-oneTex value expected");
       if(std::string(argv[i+1]) == "ON") oneTex = true;
       else if(std::string(argv[i+1]) == "OFF") oneTex = false;
+    }
+    else if(std::string(argv[i]) == "-nGPUs"){
+      if((i+1) >= argc) error("-nGPUs value expected");
+      numGPUs = atoi(argv[i+1]);
+      if(numGPUs == 0) error("-nGPUs value expected or cannot be 0");
+      numGPUs = std::min(numGPUs, count);
+    }
+    else if(std::string(argv[i]) == "-nthreads"){
+      if((i+1) >= argc) error("-nthreads value expected");
+      nthreads = atoi(argv[i+1]);
+      if(nthreads == 0) error("-nthreads value expected or cannot be 0");
     }
     else if(std::string(argv[i]) == "-h" || std::string(argv[i]) == "--help" ){
       help();
@@ -220,17 +226,18 @@ void properties(){
   else std::cout << "GPU " << device << " (" << properties.name << ") does not support CUDA Dynamic Parallelism" << std::endl;
 }
 
-__device__ Vector3 color(const Ray& ray, Node *world, int depth, bool light, bool skybox, curandState *random, Skybox *sky){
+__device__ Vector3 color(const Ray& ray, Node *world, int depth, bool light, bool skybox, curandState *random, Skybox *sky, bool oneTex, unsigned char **d_textures){
   
   Ray cur_ray = ray;
   Vector3 cur_attenuation = Vector3::One();
   for(int i = 0; i < depth; i++){ 
     hit_record rec;
-    if( world->checkCollision(cur_ray, 0.001, FLT_MAX, rec) ) {
+    if( world->intersect(cur_ray, 0.00001, FLT_MAX, rec) ) {
       Ray scattered;
       Vector3 attenuation;
-      Vector3 emitted = rec.mat_ptr.emitted(rec.u, rec.v);
-      if(rec.mat_ptr.scatter(cur_ray, rec, attenuation, scattered, random)){
+      Vector3 emitted = rec.mat_ptr.emitted(rec.u, rec.v, oneTex, d_textures);
+      
+      if(rec.mat_ptr.scatter(cur_ray, rec, attenuation, scattered, random, oneTex, d_textures)){
         cur_attenuation *= attenuation;
         cur_attenuation += emitted;
         cur_ray = scattered;
@@ -239,7 +246,7 @@ __device__ Vector3 color(const Ray& ray, Node *world, int depth, bool light, boo
     }
     else {
       if(skybox && sky->hit(cur_ray, 0.00001, FLT_MAX, rec)){
-        return cur_attenuation * rec.mat_ptr.emitted(rec.u, rec.v);
+        return cur_attenuation * rec.mat_ptr.emitted(rec.u, rec.v, oneTex, d_textures);
       }
       else {
         if(light) {
@@ -365,49 +372,7 @@ __global__ void initLeafNodes(Node *leafNodes, int objs, Triangle *d_list) {
   
   leafNodes[idx].obj = &d_list[idx];
   leafNodes[idx].box = d_list[idx].getBox();
-	
-}
 
-__global__ void constructBVH(Node *d_internalNodes, Node *leafNodes, int objs, Triangle *d_list) {
-    
-  int idx = blockIdx.x*blockDim.x + threadIdx.x;
-    
-  if(idx >= objs) return;
-  
-  int2 range = determineRange(d_list, idx, objs+1);
-  
-  int first = range.x;
-  int last = range.y;
-  
-  int split = findSplit(d_list, first, last);
-  
-  if(split == -1){
-    split = (first+last) >> 1;
-    ++last;
-  }
-  
-  Node *current = d_internalNodes + idx;
-  
-  if(split == first) {
-    current->left = leafNodes + split;
-    current->left->isLeaf = true;
-    (leafNodes + split)->parent = current;
-  }
-  else{
-    current->left = d_internalNodes + split;
-    (d_internalNodes + split)->parent = current;
-  }
-  
-  if (split + 1 == last) {
-    current->right = leafNodes + split + 1;
-    current->right->isLeaf = true;
-    (leafNodes + split + 1)->parent = current;
-  }
-  else{
-    current->right = d_internalNodes + split + 1;
-    (d_internalNodes + split + 1)->parent = current;
-  }
-    
 }
 
 __global__ void boundingBoxBVH(Node *d_internalNodes, Node *d_leafNodes, int objs, int nodes, int *nodeCounter) {
@@ -443,7 +408,53 @@ __global__ void boundingBoxBVH(Node *d_internalNodes, Node *d_leafNodes, int obj
   }
 }
 
-__global__ void render(Vector3 *fb, int max_x, int max_y, int ns, Camera **cam, Node *world, curandState *d_rand_state, int depth, bool light, bool skybox, Skybox *sky) {
+__global__ void constructBVH(Node *d_internalNodes, Node *leafNodes, int objs, Triangle *d_list) {
+    
+  int idx = blockIdx.x*blockDim.x + threadIdx.x;
+    
+  if(idx >= objs) return;
+  
+  int2 range = determineRange(d_list, idx, objs+1);
+  
+  int first = range.x;
+  int last = range.y;
+  
+  int split = findSplit(d_list, first, last);
+  
+  if(split == -1){
+    split = (first+last) >> 1;
+    ++last;
+  }
+  
+  Node *current = d_internalNodes + idx;
+  
+  if(split == first) {
+    current->left = leafNodes + split;
+    current->left->isLeaf = true;
+    current->left->isLeft = true;
+    (leafNodes + split)->parent = current;
+  }
+  else{
+    current->left = d_internalNodes + split;
+    current->left->isLeft = true;
+    (d_internalNodes + split)->parent = current;
+  }
+  
+  if (split + 1 == last) {
+    current->right = leafNodes + split + 1;
+    current->right->isLeaf = true;
+    current->right->isRight = true;
+    (leafNodes + split + 1)->parent = current;
+  }
+  else{
+    current->right = d_internalNodes + split + 1;
+    current->right->isRight = true;
+    (d_internalNodes + split + 1)->parent = current;
+  }
+    
+}
+
+__global__ void render(Vector3 *fb, int max_x, int max_y, int ns, Camera **cam, Node *world, curandState *d_rand_state, int depth, bool light, bool skybox, Skybox *sky, bool oneTex, unsigned char ** d_textures) {
 
   int num = blockIdx.x*blockDim.x + threadIdx.x;
 
@@ -464,7 +475,7 @@ __global__ void render(Vector3 *fb, int max_x, int max_y, int ns, Camera **cam, 
     float v = float(j + cuRandom) / float(max_y);
       
     Ray r = (*cam)->get_ray(u, v, &local_random);
-    col += color(r, world, depth, light, skybox, &local_random, sky);
+    col += color(r, world, depth, light, skybox, &local_random, sky, oneTex, d_textures);
   }
     
   d_rand_state[pixel_index] = local_random;
@@ -510,7 +521,6 @@ __global__ void checkBVH(Node *d_internalNodes, Node *d_leaves, int objs){
   }
 }
 
-
 int main(int argc, char **argv) {
     
   cudaDeviceReset();
@@ -523,12 +533,12 @@ int main(int argc, char **argv) {
 
   float totalTime;
 
-  int nx, ny, ns, depth, dist, nthreads, numGPUs, diameter;
+  int nx, ny, ns, depth, dist, diameterBi, diameterMean, diameterMedian, nthreads, numGPUs;
   bool light, random, filter, skybox, oneTex;
-  float gs,gr;
+  float gs, gr;
   std::string filename, image;
 
-  parse_argv(argc, argv, nx, ny, ns, depth, dist, nthreads, image, filename, numGPUs, light, random, filter, diameter, gs, gr, skybox, oneTex, 1);
+  parse_argv(argc, argv, nx, ny, ns, depth, dist, image, filename, light, random, filter, diameterBi, gs, gr, diameterMean, diameterMedian, skybox, oneTex, nthreads, numGPUs, 1);
 
   /* Seed for CUDA cuRandom */
   unsigned long long int seed = 1000;
@@ -536,6 +546,7 @@ int main(int argc, char **argv) {
   /* #pixels of the image */
   int num_pixels = nx*ny;
   int size = 0;
+  int num_textures = 0;
 
   /* Host variables */
   float fb_size = num_pixels*sizeof(Vector3);
@@ -554,6 +565,14 @@ int main(int argc, char **argv) {
 	
 	Triangle *h_objects = scene.getObjects();
   Skybox *h_skybox = scene.getSkybox();
+  unsigned char **textures; 
+  unsigned char **h_textures;
+  Vector3 *textureSizes;
+  if(oneTex){
+    textures = scene.getTextures();
+    textureSizes = scene.getTextureSizes();
+    num_textures = scene.getNumTextures();
+  }
   
 	size = scene.getSize();
 	
@@ -578,6 +597,7 @@ int main(int argc, char **argv) {
   Node *d_leafNodes;
   int *d_nodeCounter;
   Skybox *d_skybox;
+  unsigned char **d_textures;
 
   float internal_size = (size-1)*sizeof(Node);
   float leaves_size = size*sizeof(Node);
@@ -598,11 +618,31 @@ int main(int argc, char **argv) {
   cudaMemset(d_nodeCounter, 0, sizeof(int)*size - 1);
   cudaMalloc((void **)&d_skybox, sizeof(Skybox));
 
-  for(int i = 0; i < size; i++){
-    h_objects[i].hostToDevice(0);
+  std::cout << "Binding textures" << std::endl;
+  if(num_textures > 0){
+    for(int i = 0; i < num_textures; i++){
+      std::cout << "Texture " << i << std::endl;
+      
+      Vector3 p = textureSizes[i];
+      unsigned char *image = textures[i];
+        
+      cudaMalloc((void**)&h_textures[i], sizeof(unsigned char)*p[0]*p[1]*p[2]);
+      cudaMemcpy(h_textures[i], image, sizeof(unsigned char)*p[0]*p[1]*p[2], cudaMemcpyHostToDevice);
+    }
+    
+    cudaMalloc(&d_textures, sizeof(unsigned char *) * num_textures);
+    cudaMemcpy(d_textures, h_textures, sizeof(unsigned char*) * num_textures, cudaMemcpyHostToDevice);
+  }
+
+  if(!oneTex){
+    for(int i = 0; i < size; i++){
+      h_objects[i].hostToDevice(0);
+    }
   }
   
   h_skybox->hostToDevice(0);
+  
+  std::cout << "Start" << std::endl;
   
   cudaEventRecord(E0,0);
   cudaEventSynchronize(E0);
@@ -626,15 +666,15 @@ int main(int argc, char **argv) {
   constructBVH<<<blocks2,threads>>>(d_internalNodes, d_leafNodes, size-1, d_objects);
   checkCudaErrors(cudaGetLastError());
   
-  checkBVH<<<1,1>>>(d_internalNodes, d_leafNodes, size);
-  checkCudaErrors(cudaGetLastError());
+//   checkBVH<<<1,1>>>(d_internalNodes, d_leafNodes, size);
+//   checkCudaErrors(cudaGetLastError());
   
   std::cout << "boundingBoxBVH..." << std::endl;
   boundingBoxBVH<<<blocks2,threads>>>(d_internalNodes, d_leafNodes, size, size*2-1, d_nodeCounter);
   checkCudaErrors(cudaGetLastError());
   
   std::cout << "Rendering..." << std::endl;
-  render<<<blocks, nthreads>>>(d_frameBuffer, nx, ny, ns, d_cam, d_internalNodes, d_rand_state, depth, light, skybox, d_skybox);
+  render<<<blocks, nthreads>>>(d_frameBuffer, nx, ny, ns, d_cam, d_internalNodes, d_rand_state, depth, light, skybox, d_skybox, oneTex, d_textures);
   checkCudaErrors(cudaGetLastError());
 
   /* Copiamos del Device al Host*/
@@ -672,20 +712,6 @@ int main(int argc, char **argv) {
     }
   }
   
-  image = "../Resources/Images/GPU_BVH_1_GPU/"+image;
-  
-  stbi_write_png(image.c_str(), nx, ny, 3, data, nx*3);
-	
-	if(filter){
-    std::cout << "Filtering image using bilateral filter with Gs = " << gs << " and Gr = " << gr << " and window of diameter " << diameter << std::endl;
-    std::string filenameFiltered = image.substr(0, image.length()-4) + "_Filtered.png";
-    int sx, sy, sc;
-    unsigned char *imageData = stbi_load(image.c_str(), &sx, &sy, &sc, 0);
-    unsigned char *imageFiltered = new unsigned char[sx*sy*3];;
-    bilateralFilter(diameter, sx, sy, imageData, imageFiltered, gs, gr);
-    stbi_write_png(filenameFiltered.c_str(), sx, sy, 3, imageFiltered, sx*3);
-  }
-  
   cudaFree(d_cam);
   cudaFree(d_objects);
   cudaFree(d_rand_state);
@@ -697,4 +723,30 @@ int main(int argc, char **argv) {
   cudaEventDestroy(E0);
   cudaEventDestroy(E1);
   
+  image = "../Resources/Images/GPU_BVH_1_GPU/"+image;
+  
+  stbi_write_png(image.c_str(), nx, ny, 3, data, nx*3);
+
+  if(filter){
+    std::cout << "Filtering image using bilateral filter with Gs = " << gs << " and Gr = " << gr << " and window of diameter " << diameterBi << std::endl;
+    std::string filenameFiltered = image.substr(0, image.length()-4) + "_bilateral_filter.png";
+    int sx, sy, sc;
+    unsigned char *imageData = stbi_load(image.c_str(), &sx, &sy, &sc, 0);
+    unsigned char *imageFiltered = new unsigned char[sx*sy*3];;
+    
+    bilateralFilter(diameterBi, sx, sy, imageData, imageFiltered, gs, gr);
+    stbi_write_png(filenameFiltered.c_str(), sx, sy, 3, imageFiltered, sx*3);
+    
+    std::cout << "Filtering image using median filter  with window of diameter " << diameterMedian << std::endl;
+    filenameFiltered = image.substr(0, image.length()-4) + "_median_filter.png";
+    
+    medianFilter(diameterMedian, sx, sy, imageData, imageFiltered);
+    stbi_write_png(filenameFiltered.c_str(), sx, sy, 3, imageFiltered, sx*3);
+    
+    std::cout << "Filtering image using mean filter with window of diameter " << diameterMean << std::endl;
+    filenameFiltered = image.substr(0, image.length()-4) + "_mean_filter.png";
+    
+    meanFilter(diameterMean,sx, sy, imageData, imageFiltered);
+    stbi_write_png(filenameFiltered.c_str(), sx, sy, 3, imageFiltered, sx*3);
+  }
 }

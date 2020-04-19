@@ -72,6 +72,7 @@ __host__  void Obj::loadFromTXT(const std::string &filename) {
   while(std::getline(file, line)) {
     std::stringstream ssin(line);
     std::string par;
+    
     ssin >> par;
     
     if(par[0] >= '0' and par[1] <= '9') {
@@ -98,10 +99,8 @@ __host__  void Obj::loadFromTXT(const std::string &filename) {
         triangles[count] = Triangle(tri[0],tri[1],tri[2],(materialB) ? material : mat);
         compare(max_l, min_l, tri[0]); compare(max_l, min_l, tri[1]); compare(max_l, min_l, tri[2]);
         ++count;
-        
       }
     }
-    
   }
   max = max_l;
   min = min_l;
@@ -119,7 +118,6 @@ __host__  void Obj::loadFromObj(const std::string &filename) {
   Vector3 min_l(INF);
   
   Material mat = (materialB) ? material : Material(LAMBERTIAN, Texture(CONSTANT, Vector3(0.4)));
-  
   
   std::vector<Vector3> vertexs;
   std::vector<Vector3> coordText;
@@ -145,7 +143,6 @@ __host__  void Obj::loadFromObj(const std::string &filename) {
       float u, v;
       ssin >> u >> v;
       coordText.push_back(Vector3(u,v,-1));
-      //std::cout << coordText[coordText.size()-1] << std::endl;
     }
     else if(par == "f") {
       
@@ -185,10 +182,11 @@ __host__  void Obj::loadFromObj(const std::string &filename) {
   
 }
 
-__host__  Obj::Obj(int type, const std::string &filename, bool mat, Material m) {
+__host__  Obj::Obj(int type, const std::string &filename, bool mat, Material m, int textureIndex) {
   
   materialB = mat;
   if(materialB) material = m;
+  
   if(type == TRIF) loadFromTXT(filename);
   else if(type == OBJF) loadFromObj(filename);
   else throw std::runtime_error("Invalid file type");

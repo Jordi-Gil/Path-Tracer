@@ -3,7 +3,9 @@
 #define STB_IMAGE_STATIC
 #include "stb_image.h"
 
-Camera loadCamera(const std::string &line, int nx, int ny) {
+#define Random (rand()/(RAND_MAX + 1.0))
+
+Camera Scene::loadCamera(const std::string &line, int nx, int ny) {
   
   char ch = ' ';
   size_t pos = line.find(ch);
@@ -24,21 +26,21 @@ Camera loadCamera(const std::string &line, int nx, int ny) {
     pos = line.find(ch, init);
     
     if(countV3 < 3 and count < 9) {
-      if(countIdx < 3) {
-        paramV3[countV3][countIdx] = stof(par);
-        ++countIdx;
-      }
-      else{
-        countIdx = 0;
-        ++countV3;
-        if(countV3 < 3) {
-          paramV3[countV3][countIdx] = stof(par);
-          ++countIdx;
-        }
-      }
-      ++count;
-    }
-    else if(countF < 3){
+			if(countIdx < 3) {
+				paramV3[countV3][countIdx] = stof(par);
+				++countIdx;
+			}
+			else{
+				countIdx = 0;
+				++countV3;
+				if(countV3 < 3) {
+					paramV3[countV3][countIdx] = stof(par);
+					++countIdx;
+				}
+			}
+			++count;
+		}
+		else if(countF < 3){
       paramF[countF] = stof(par);
       ++countF;
     }
@@ -51,7 +53,7 @@ Camera loadCamera(const std::string &line, int nx, int ny) {
   return Camera(paramV3[0], paramV3[1], paramV3[2], paramF[0], float(nx)/float(ny), paramF[1], paramF[2], 0.0, 1.0);
 }
 
-Material loadMaterial(const std::string &line,int type, int texType) {
+Material Scene::loadMaterial(const std::string &line,int type, int texType, bool oneTex) {
   
   std::stringstream ssin(line);  
   std::string par;
@@ -70,9 +72,10 @@ Material loadMaterial(const std::string &line,int type, int texType) {
       albedo[albedoCount] = stof(par);
       albedoCount++;
     } else {
-      if(texType == IMAGE) {
+      if(texType == IMAGE){
         imageFilename = "../Resources/Textures/"+par;
         loaded = true;
+        if(type == METAL) ssin >> par;
       }
       if(type == METAL){ fuzz = stof(par); loaded = true; }
       else if(type == DIELECTRIC) { ref_idx = stof(par); loaded = true; }
@@ -80,13 +83,21 @@ Material loadMaterial(const std::string &line,int type, int texType) {
     }
   }
   
-  if(texType == IMAGE) image = stbi_load(imageFilename.c_str(), &nx, &ny, &nc, 0);
+  int texIndex = -1;
+  if(texType == IMAGE){ 
+    image = stbi_load(imageFilename.c_str(), &nx, &ny, &nc, 0);
+    if(oneTex){
+      images.push_back(image);
+      textureSizes.push_back(Vector3(nx,ny,nc));
+      texIndex = images.size()-1;
+    }
+  }
   
-  if(texType == CONSTANT) return Material(type,Texture(texType, albedo),fuzz,ref_idx);
-  return Material(type, Texture(texType, Vector3::Zero(), image, nx, ny), fuzz, ref_idx);
+  if(texType == CONSTANT) return Material(type, Texture(texType, albedo), fuzz, ref_idx);
+  return Material(type, Texture(texType, Vector3::Zero(), image, nx, ny, texIndex), fuzz, ref_idx);
 }
 
-Triangle loadTriangle(const std::string &line) {
+Triangle Scene::loadTriangle(const std::string &line, int num) {
 
   std::stringstream ssin(line);
   std::string par;
@@ -141,7 +152,7 @@ void print(Triangle *tl, int n){
   }
 }
 
-mat4 getTransformMatrix(const std::vector<std::string> &transforms, const Vector3 &center) {
+mat4 Scene::getTransformMatrix(const std::vector<std::string> &transforms, const Vector3 &center) {
  
   mat4 transform = mat4::identity();
   
@@ -195,7 +206,7 @@ mat4 getTransformMatrix(const std::vector<std::string> &transforms, const Vector
   return transform;
 }
 
-Obj loadObj(const std::string &line) {
+Obj Scene::loadObj(const std::string &line, bool oneTex) {
   
   std::stringstream ssin(line);
   std::string par;
@@ -257,34 +268,34 @@ Obj loadObj(const std::string &line) {
       ssin >> par;
       if(par == "L") {
         ssin >> par;
-        if(par == "CONSTANT"){ 
+        if(par == "CONSTANT"){
           mat = loadMaterial(line.substr(line.find(par)+par.size()+1),LAMBERTIAN,CONSTANT);
           ssin >> par; ssin >> par; ssin >> par;
         }
         else if(par == "IMAGE"){
-          mat = loadMaterial(line.substr(line.find(par)+par.size()+1),LAMBERTIAN,IMAGE);
+          mat = loadMaterial(line.substr(line.find(par)+par.size()+1),LAMBERTIAN,IMAGE,oneTex);
           ssin >> par;
         }
       }
-      else if(par == "M") { 
+      else if(par == "M") {
         ssin >> par;
-        if(par == "CONSTANT"){
+        if(par == "CONSTANT") {
           mat = loadMaterial(line.substr(line.find(par)+par.size()+1),METAL,CONSTANT);
           ssin >> par; ssin >> par; ssin >> par; ssin >> par;
         }
-        else if(par == "IMAGE"){
-          mat = loadMaterial(line.substr(line.find(par)+par.size()+1),METAL,IMAGE);
+        else if(par == "IMAGE") {
+          mat = loadMaterial(line.substr(line.find(par)+par.size()+1),METAL,IMAGE,oneTex);
           ssin >> par; ssin >> par;
         }
       }
-      else if(par == "D") {
+      else if(par == "D") { 
         ssin >> par;
         if(par == "CONSTANT") {
           mat = loadMaterial(line.substr(line.find(par)+par.size()+1),DIELECTRIC,CONSTANT);
           ssin >> par; ssin >> par; ssin >> par; ssin >> par;
         }
         else if(par == "IMAGE") {
-          mat = loadMaterial(line.substr(line.find(par)+par.size()+1),DIELECTRIC,IMAGE);
+          mat = loadMaterial(line.substr(line.find(par)+par.size()+1),DIELECTRIC,IMAGE,oneTex);
           ssin >> par; ssin >> par;
         }
       }
@@ -295,7 +306,7 @@ Obj loadObj(const std::string &line) {
           ssin >> par; ssin >> par; ssin >> par;
         }
         if(par == "IMAGE") {
-          mat = loadMaterial(line.substr(line.find(par)+par.size()+1),DIFFUSE_LIGHT,IMAGE);
+          mat = loadMaterial(line.substr(line.find(par)+par.size()+1),DIFFUSE_LIGHT,IMAGE,oneTex);
           ssin >> par;
         }
       }
@@ -327,7 +338,7 @@ Obj loadObj(const std::string &line) {
   
 }
 
-Sphere loadSphere(const std::string &line) {
+Sphere Scene::loadSphere(const std::string &line) {
   
   std::stringstream ssin(line);
   std::string par;
@@ -359,7 +370,7 @@ Sphere loadSphere(const std::string &line) {
   return Sphere(center,radius,mat);
 }
 
-int *loadSizes(const std::string &line, int *s) {
+int *Scene::loadSizes(const std::string &line, int *s) {
 
   std::stringstream ssin(line);
   std::string par;
@@ -382,18 +393,18 @@ int *loadSizes(const std::string &line, int *s) {
   return s;
 }
 
-void Scene::loadScene(int loadType, const std::string &filename){
+void Scene::loadScene(int loadType, const std::string &filename, const bool oneTex){
   
   std::cout << "Loading scene...\n" << std::endl;
   
-  if(loadType == FFILE) sceneFromFile(filename);
+  if(loadType == FFILE) sceneFromFile(filename, oneTex);
   else if(loadType == RANDOM) sceneRandom();
   else if(loadType == TRIANGL) sceneTriangle();
   
   std::cout << "Scene loaded\n" << std::endl;
 }
 
-void Scene::sceneFromFile(const std::string &filename) {
+void Scene::sceneFromFile(const std::string &filename, const bool oneTex) {
   std::cout << "Scene file from " << filename << std::endl;
   
   std::ifstream file("../Resources/Scenes/Textures/"+filename);
@@ -436,14 +447,14 @@ void Scene::sceneFromFile(const std::string &filename) {
     }
     else if(aux == "2") {
       if(sizes != nullptr and num_tr < sizes[1]) {
-        list_1[num_tr] = loadTriangle(line.substr(2,line.size()));
+        list_1[num_tr] = loadTriangle(line.substr(2,line.size()), num_tr);
         ++num_tr;
       }
       else std::cout << "MAX size exceeded" << std::endl;
     }
     else if(aux == "3") {
       if(sizes != nullptr and num_ob < sizes[2]){
-        list_3[num_ob] = loadObj(line.substr(2,line.size()));
+        list_3[num_ob] = loadObj(line.substr(2,line.size()), oneTex);
         num_ob_tr += list_3[num_ob].getSize();
         num_ob++;
       }
@@ -504,23 +515,23 @@ void Scene::sceneRandom() {
   
   for(int a = -dist; a < dist; a++){
     for(int b = -dist; b < dist; b++){
-      float choose_mat = (rand()/(RAND_MAX + 1.0));
-      Vector3 center(a+0.9*(rand()/(RAND_MAX + 1.0)), 0.2, b+0.9*(rand()/(RAND_MAX + 1.0)));
+      float choose_mat = Random;
+      Vector3 center(a+0.9*Random, 0.2, b+0.9*Random);
       if((center-Vector3(0,0,0)).length() > 0.995){
         if(choose_mat < 0.8){ //diffuse
           
           list[objs] = Sphere(center, 0.2, Material(LAMBERTIAN, Texture(CONSTANT, Vector3(
-                                                            (rand()/(RAND_MAX + 1.0))*(rand()/(RAND_MAX + 1.0)), 
-                                                            (rand()/(RAND_MAX + 1.0))*(rand()/(RAND_MAX + 1.0)), 
-                                                            (rand()/(RAND_MAX + 1.0))))));
+                                                            Random*Random, 
+                                                            Random*Random, 
+                                                            Random))));
         }
         else if(choose_mat < 0.90){ //metal
             
           list[objs] = Sphere(center, 0.2, Material(METAL, Texture(CONSTANT, Vector3(
-                                                                0.5*(1+(rand()/(RAND_MAX + 1.0))),
-                                                                0.5*(1+(rand()/(RAND_MAX + 1.0))),
-                                                                0.5*(1+(rand()/(RAND_MAX + 1.0))))),
-                                                            0.5*(rand()/(RAND_MAX + 1.0))
+                                                                0.5*(1+Random),
+                                                                0.5*(1+Random),
+                                                                0.5*(1+Random))),
+                                                            0.5*Random
                                                           ));
         }
         else if(choose_mat < 0.95){
@@ -584,6 +595,18 @@ Camera Scene::getCamera() {
   return cam;
 }
 
-Skybox Scene::getSkybox(){
+Skybox Scene::getSkybox() {
   return sky;
+}
+
+unsigned char **Scene::getTextures() {
+  return images.data();
+}
+
+unsigned int Scene::getNumTextures(){
+  return images.size();
+}
+
+Vector3 *Scene::getTextureSizes(){
+  return textureSizes.data();
 }

@@ -935,34 +935,32 @@ If we stop here, we may have a problem in case the lightning has a negative dire
 
 \begin{equation} \label{slab_method_3}
 \begin{split}
-t_{smaller} & = min(t0, t1) \\
+t_{smaller} & = min(t_0, t_1) \\
 \\
-t_{bigger} & = max(t0, t1) \\
+t_{bigger} & = max(t_0, t_1) \\
 \end{split} 
 \end{equation}
 
 When we launch a primary ray, those that come out of the camera, the interval in which it moves is $[-\infty, \infty]$. To find out if the ray has hit the bounding box, we have to see that $t_{min} < t_{max}$, that means that the hit point is inside the bounding box. The value of $t_{min}$ can be obtained by taking the maximum value with the $t_{min}$ that receives the function, and $t_{xmin}$ and $t_{ymin}$. In the same way for $t_{max}$ but taking the minimum value. This is the implementation for the ray-AABB intersection test.
 
-\begin{lstlisting}
-bool hit(const Ray &r, float tmin, float tmax) {
-  	
-  	Vector3 invD = Vector3::One()/r.direction();
-    
-    Vector3 t0 = (min() - r.origin()) * invD;
-    Vector3 t1 = (max() - r.origin()) * invD;
-    
-    Vector3 tsmaller = fmin(t0, t1);
-    Vector3 tbigger = fmax(t0, t1);
-    
-    tmin = fmax(tmin, fmax(tsmaller[0], 
-    			fmax(tsmaller[1], tsmaller[2])));
-    tmax = fmin(tmax, fmin(tbigger[0] , 
-    			fmin(tbigger[1], tbigger[2])));
-    
-    return (tmin < tmax);
-    
-}
-\end{lstlisting}
+\begin{algorithm}[caption={collision}]
+input: Ray $r$, float tmin, float tmax
+output: boolean
+begin
+  $Vector_3 (i_x, i_y, i_z) = \frac{(1,1,1)}{(D_x, D_y, D_z)}$
+  
+  $Vector_3 t_0 = ((min_x, min_y, min_z) - (O_x, O_y, O_z)) (i_x, i_y, i_z)$
+  $Vector_3 t_1 = ((max_x, max_y, max_z) - (O_x, O_y, O_z)) (i_x, i_y, i_z)$
+
+  $Vector_3$ $t_{smaller}$ = min($t_0$, $t_1$)
+  $Vector_3$ $t_{bigger}$ = max($t_0$, $t_1$)
+  
+  tmin = max(tmin, max(${t_{smaller}}_x$, max(${t_{smaller}}_y$, ${t_{smaller}}_z$)))
+  tmax = min(tmax, min(${t_{bigger}}_x$, min(${t_{bigger}}_y$, ${t_{bigger}}_z$)))
+  
+  return tmin $<$ tmax
+end
+\end{algorithm}
 
 \subsection{Möller–Trumbore intersection algorithm}
 
@@ -1254,18 +1252,17 @@ Our diffuse material follows Lambert's Cosine Law, this is the BRDF that our pat
 
 The easiest way to get those points is by using a rejection method. In our cause, we will pick a random point in the unit cube where all coordinates are in range -1 to +1 and then reject this point if is outside the sphere. If a point S of cartesian coordinates $x_0, y_0, z_0$ is inside a sphere of radius R then 
 
-\begin{lstlisting}
-Vector3 random_on_unit_sphere(){
-  Vector3 s;
-  do{
-    s = Vector3( random_val(-1,1), 
-    		 random_val(-1,1), 
-    		 random_val(-1,1));
-  }
-  while(s.squared_length() >= 1.0);
-  return unit_vector(s);
-}
-\end{lstlisting}
+\begin{algorithm}[caption={random\_on\_unit\_sphere}]
+input: 
+output: $Vector_3$
+begin
+  $Vector_3$ s
+  do
+    s = (random[-1,1], random[-1,1], random[-1,1])
+  while $||s||^2 \geq 1$
+  return $\frac{s}{||s||}$
+end
+\end{algorithm}
 
 Once we have a random point, the new scattered ray is the one that goes from the hit point to this.
 
@@ -1413,6 +1410,10 @@ R_0 & = \left(\frac{\eta_1 - \eta_2}{\eta_1 + \eta_2}\right)^2
 	\label{dielectric1}
 \end{figure}
 
+\subsection{Diffuse light}
+
+These objects emit light and absorb the rays that reach them. For example, a primary ray that leaves the camera bounces off a diffuse or specular surface and hits a light source is totally absorbed and the path is cut off at that point.
+
 \subsection{Textures}
 
 We can use images to define the material of an object in the scene, these images are known as textures. The textures allow us to add more detail to our objects than using, for example, a triangle colouring. Texture mapping is the method in which we must map a 2D image to a 3D model.
@@ -1505,83 +1506,56 @@ We know that all codes belonging to $I_i$ share a common prefix that differs by 
 
 The other boundary can be find by searching for the largest $l$ that satisfy $\delta(i,i+ld) > \delta_{min}$. We can define an upper bound power of 2 and increasing the value until it no longer satisfy the inequality. Once we have this upper bound, we perform a binary search to find $l$ in the range $[0, l_{max}-1]$. The idea is set to one each bit of $l$ unless the new value would fail to satisfy the inequality $\delta(i, i + (l + t)d) > \delta_{min}$. Once we finish the search the other bound is given by $j = i + ld$. If $j < i$ we need to swap the values. We can see the implementation below, where the function $lcp$ represents $\delta(i,j)$.
 
-\begin{lstlisting}
-
-int2 determineRange(int idx, int num_objs) {
-
+\begin{algorithm}[caption={range}, label={range_alg}]
+input: int i
+output: $int_2$
+begin
+  $d = sgn(\delta(i, i+1) - \delta(i, i-1))$
+  $\delta_{min} = \delta(i, i-d)$
   
-    int d =  lcp(idx, idx + 1, num_objs) - 
-             lcp(idx, idx - 1, num_objs) >= 0 ? 1 : -1;
-    
-    int dmin = lcp(idx, idx - d, num_objs);
-    
-    int lmax = 2;
-    
-    while(lcp(idx, idx + lmax*d, num_objs) > dmin){
-      lmax <<=1;
-    }
-    
-    int l = 0;
-    int div = 2;
-    
-    for(int t = lmax/div; t >= 1; t >>= 1) {
-      if(lcp(idx, idx + (l + t) * d, num_objs) > dmin)
-      	l += t;
-    }
-    
-    int jdx = idx + l * d;
-        
-    if(jdx < idx) return make_int2(jdx,idx);
-    else return make_int2(idx,jdx);
-    
-}
-\end{lstlisting}
+  $l_{max} = 2$  
+  while $\delta(i, i+ld) > \delta_{min}$
+    $l_{max} = 2l_{max}$
+
+  $l = 0$
+  while $t = [1, ... , \lceil \frac{l_{max}}{4} \rceil, \lceil \frac{l_{max}}{2}] \rceil$
+    if $\delta(i, i + (l+t)d) > \delta_{min}$
+      $l += t$
+  
+  $j = i + ld$
+   
+  return $(i,j)$
+end
+\end{algorithm}
 
 Once we have obtained the range in which an internal node covers, we must find which split position $\gamma$ to choose. To do this, we will choose the largest bit that differs between two Morton codes within the given range. The most efficient way to perform this search is by performing a binary search, starting with the Morton code corresponding to the lower limit of the range, $k_i$, and moving forward by decreasing it exponentially. At each step, we will look to see if the new proposed position satisfies $\delta(i,\gamma) > \delta(i,j)$. If the new position satisfies the condition, we continue to move forward until we can no longer advance in the search. The function $_clz$ count the number of leading zero bits in a 32-bit integer. We can use it to find the split position of two Morton codes.
 
-\begin{lstlisting}
+\begin{algorithm}[caption={split}, label={split_alg}]
+input: int i, int j
+output: $int$
+begin
+  if $i == j$
+    return -1
 
-int findSplit(int first, int last) {
+  $prefix = \_clz(k_i \XOR k_j)$  
+  $split = i$
+  $step = j - i$
+  do
+    $step = \frac{step + 1}{2}$
+    $newSplit = split + step$
     
-    
-    if(first == last){
-      return -1;
-    }
-    
-    int firstCode = objects[first].getMorton();
-    int lastCode = objects[last].getMorton();
-    
-    int commonPrefix = __clz(firstCode ^ lastCode);
-    
-    int split = first;
-    int step = last - first;
-    
-    do {
-        step = (step + 1 ) >> 1;
-        int newSplit = split + step; 
-        
-        if(newSplit < last){
-      
-            int splitCode = objects[newSplit].getMorton();
-            
-            int splitPrefix = __clz(firstCode ^ splitCode);
-      
-            if(splitPrefix > commonPrefix){
-                
-                split = newSplit;
-            }
-        }
-        
-    } while (step > 1);
-    
-    return split;
-        
-}
-\end{lstlisting}
+    if $newSplit < j$
+      $splitPrefix = \_clz(k_i \XOR k_{newSplit})$
+      if $splitPrefix > prefix$
+        $split = newSplit$
+  while step $>$ 1
+  return $split$
+end
+\end{algorithm}
 
 Once we have obtained the split position and the range covered by the internal node, we can build the internal node $I_i$ by following these two rules:
 
-\begin{enumerate}
+\begin{enumerate}\label{child_assing}
 
 \item If $\gamma = i$, then the left child of the internal node $I_i$ belongs to a leaf node, therefore to a primitive otherwise, it belongs to the internal node $I_{\gamma}$.
 
@@ -1589,7 +1563,121 @@ Once we have obtained the split position and the range covered by the internal n
 
 \end{enumerate}
 
+\subsubsection{Sequential CPU - BVH construction implementation}
+
+The construction of the BVH in the sequential version is as simple as going through the set of intermediate nodes, $I$, and for each of them calculate the range it occupies and the separation point using the algorithms defined previously, \ref{range_alg} and \ref{split_alg}. Once we have the splitting point, we can assign the left and right child as defined in \ref{child_assing}. $L$ is the set of leaf nodes.
+
+\begin{algorithm}[caption={BVH construction CPU - sequential}, label={cpu_seq_bvh}]
+input: $I$, $L$
+output: Node
+begin
+  foreach $idx \in [0, |I|-1]$
+    $(i,j) = range(idx)$
+    $\gamma = split(i,j)$
+    
+    if $ \gamma == i $
+      $I_{idx} \leftarrow left = L_{\gamma}$
+    else 
+      $I_{idx} \leftarrow left = I_{\gamma}$
+    
+    if $ \gamma+1 == j $
+      $I_{idx} \leftarrow left = L_{\gamma+1}$
+    else 
+      $I_{idx} \leftarrow left = I_{\gamma+1}$
+  end
+  return $I_{0}$
+end
+\end{algorithm}
+
 Finally, once the tree is built, we only have to assign to each internal node the bounding box. The strategy varies according to the architecture on which we have programmed the application.
+
+\subsubsection{Parallel CPU (OpenMP) - BVH construction implementation}
+
+For the OpenMP version, the concept is the same. In OpenMP, we have the pragma omp\\
+(\lstinline|#pragma omp <directives>|) with a series of directives. This pragma is nothing more than a directive that tells the compiler to use pragmatic rules. The directive that we should use in this case is the \textbf{for} directive that allows us to split the number of iterations among the threads. We'll use the \textbf{schedule} clause that determines which loop iteration each thread executes. For our case we've decided to use a static schedule, meaning that before the loop iterations are executed they're already distributed to the threads, with a chunk size of 8. Each thread gets 8 consecutive iterations. The assignment of iterations to the threads is done through the Round-Robin algorithm. In \ref{cpu_par_bvh} we can see the pseudo-code of this version.
+
+\begin{algorithm}[caption={BVH construction CPU - parallel}, label={cpu_par_bvh}]
+input: $I$, $L$
+output: Node
+begin
+  #pragma omp for schedule(static, 8)
+  foreach $idx \in [0, |I|-1]$
+    $(i,j) = range(idx)$
+    $\gamma = split(i,j)$
+    
+    if $ \gamma == i $
+      $I_{idx} \leftarrow left = L_{\gamma}$
+    else 
+      $I_{idx} \leftarrow left = I_{\gamma}$
+    
+    if $ \gamma+1 == j $
+      $I_{idx} \leftarrow left = L_{\gamma+1}$
+    else 
+      $I_{idx} \leftarrow left = I_{\gamma+1}$
+  end
+  return $I_{0}$
+end
+\end{algorithm}
+
+The reason for using a static schedule is because of the low overhead. It also has a better location than dynamic or guided but in our case as each node is independent it doesn't affect us.
+
+\subsubsection{Parallel GPU (CUDA) - BVH construction implementation}
+
+On \texttt{CUDA}-compatible (NVIDIA) graphics cards we have a series of spindles called \textit{Multiprocessor Streaming} (SM). These, in turn, are composed of the \textit{Streaming Processors} that are responsible for executing the instructions.
+
+At CUDA we have the concepts of kernels. A kernel in the \texttt{CUDA} environment refers to a function executed by the GPU in N threads. Kernels are defined with the \lstinline|__global__| specifier. There are also other specifiers such as \lstinline|__host__| and \lstinline|__device__| that indicate which device can run it. These kernels are organized into a hierarchy grouped by blocks and can be distributed in a grid. All threads within a block are executed concurrently and when they are finished, the unit in charge of their distribution launches new blocks. Also, within a block, threads are distributed in groups of 32 forming warps. When a warp is executed, 32 threads execute the same instruction at the same time at the hardware scale.
+
+The syntax for calling a CUDA kernel varies from a traditional C or C++ function. To call a CUDA kernel we must first configure it properly, for this we have the following syntax \lstinline|<<<GS, BS, SM, S>>>|, e.g., \lstinline|cuda_kernel<<1.1>>|. The first two parameters are mandatory.
+
+\begin{itemize}
+
+\item \textbf{GS}: Specifies the size of grid. Three-dimensional value (x,y,z). We can work with 1D, 2D and 3D arrays. In our context, we only will work with 1D array.
+\item \textbf{BS}: Specifies the size of block. Three-dimensional value (x,y,z). We can work with 1D, 2D and 3D arrays. In our context, we only will work with 1D array.
+\item \textbf{SM}: Specifies the number of bytes in shared memory. When a kernel have shared memory, this needs to be dynamically allocated per block for this launch.
+\item \textbf{S}: Specifies the associated stream.
+
+\end{itemize}
+
+When we have an input set, in this case, the uninitialized intermediate nodes, and an output set, the initialized intermediate nodes, and both have the same size a common approach is to get a single thread responsible for one of the data in the set. On current GPUs, the maximum number of threads per block is 1024. If we decide to use $n$ threads per kernel launch, the block size in our case will be $n$. So, if the input array has size of $m$, we need at least $\frac{m}{n}$ blocks. The problem we may have here is when $m$ is not divisible by $n$ so we will throw more blocks than we need to cover all the space. Therefore, the distribution of the grid ($GS$) and the blocks ($BS$) will be as follows
+
+$$
+BS = n
+$$
+$$
+GS = \frac{m + n - 1}{n \#GPU}
+$$
+
+In the kernel to be able to index which position of our array is calculating each vector we can index it as we see in the Figure \ref{indexing}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.45]{media/cuda_indexing.png}
+	\caption{CUDA indexing example. Source: \textit{NVIDIA}}
+	\label{indexing}
+\end{figure}
+
+So the algorithm would look like this
+
+\begin{algorithm}[caption={BVH construction GPU - parallel}, label={gpu_par_bvh}]
+input: $I$, $L$, $\#OBJS$
+output:
+begin
+  $idx = blockIdx.x * blockDim.x + threadIdx.$ 
+  if $idx < \#OBJS$
+    $(i,j) = range(idx)$
+    $\gamma = split(i,j)$
+    
+    if $ \gamma == i $
+      $I_{idx} \leftarrow left = L_{\gamma}$
+    else 
+      $I_{idx} \leftarrow left = I_{\gamma}$
+    
+    if $ \gamma+1 == j $
+      $I_{idx} \leftarrow left = L_{\gamma+1}$
+    else 
+      $I_{idx} \leftarrow left = I_{\gamma+1}$
+end
+\end{algorithm}
 
 \subsubsection{Bounding-box calculation CPU}
 
@@ -1631,7 +1719,404 @@ This is the face. The format, in this case, is quite different. Here we are indi
 
 \section{Image Filters}
 
+In this section, we will talk about image filters. As we have commented on several occasions, the most important problem of our Monte Carlo Path Tracing is the noisy images that it generates. We should make infinite bounces to calculate the final colour of a pixel. This is not possible due to the limited computational resources and rendering time. That is the reason why we have to limit the depth of the paths of light traced by using a cut-off.
 
+ The noise it generates is known as salt-and-pepper noise. In the introduction of this chapter, we have talked about how to reduce the image noise by increasing the number of samples we use per pixel. It is easy to see that increasing the number of samples taken per pixel increases the image render time since more calculations have to be done for each given pixel. Due to this, we have considered that an effective way to reduce the noise of the image, without increasing considerably the number of samples per pixel, is to use denoising image filters.
+
+The filters that we have selected are Mean Filter, Median Filter and Bilateral Filter. For each rendered image we will apply the filters and at the end, we will determine which one works better for our scenarios.
+
+\subsection{Mean Filter}
+
+The mean filter is one of the simplest spatial filters we have. It consists of creating an $n \times n$ sliding-window centred on a pixel $(i,j)$ that moves around the image and replaces the pixel value $(i,j)$ with the window average. This window, also known as kernel, can have any kind of shape but usually, a square is used. The smoothing effect depends on the size of the kernel. The bigger it is, the more smoothing. Usually a $3 \times 3$ kernel filter size is used, an example of this is shown in Figure \ref{mean_filter}, but as we have said this kernel can be larger\footnote{A kernel filter where $n < 3$ would not be useful, since we would be going through all the pixels of image calculating the average with itself.} as needed.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.45]{media/mean_filter.jpg}
+	\caption{Filtering approach of mean filter with $3 \times 3$ sliding-window: \citep{Lyra2011}.}
+	\label{mean_filter}
+\end{figure}
+
+
+\subsection{Median Filter}
+
+The median filter follows the same concept as the one mentioned above. We define a slider window $n \times n$ centred on the pixel $(i,j)$, but in this algorithm instead of calculating the average of all the pixels that are part of the kernel, we sort the values and select the median. In Figure \ref{median_filter} we can see an example with a $3 \times 3$ window.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.45]{media/median_filter.jpg}
+	\caption{Filtering approach of median filter with $3 \times 3$ sliding-window: \citep{Lyra2011}.}
+	\label{median_filter}
+\end{figure}
+
+\subsection{Bilateral Filter}
+
+The bilateral filter is widely used in computer vision and image processing for edge-preserving smoothing. It is a non-linear filter for denoising and edge smoothing \citep[pp.~538--545]{Aurich1995}, \citep[pp.~839--846]{Tomasi1998} and \citep[pp.~1--73]{Paris2009}. In the field of image processing, edge smoothing is a technique that attempts to smooth noise while preserving the edges of objects. The bilateral filter replaces the intensity of each pixel with the weighted average of the surrounding pixels. These nearby pixels are defined through a window. This weight can be defined by a Gaussian function. The main purpose of the weighted function is to determine how closely are two points. The Gaussian functions arise from composing the exponential function with a quadratic concave function and are as follows.
+
+\begin{equation}\label{gaussian_function}
+f(x') = a e^{-\frac{(x'-b)^2}{2c^2}}
+\end{equation}
+
+We can define the bilateral filter as
+
+\begin{equation}
+I_{denoised}(x) = \eta^{-1} \sum_{y \in \Omega} G_{\sigma_s}(||y - x||) G_{\sigma_r}(|I(y) - I(x)|)I(y)
+\end{equation}
+
+and $\eta$ is defined ad
+
+\begin{equation}
+\eta = \sum_{y \in \Omega} g_s(||y - x||) g_r(|I(y) - I(x)|)
+\end{equation}
+
+where
+
+\begin{itemize}
+\item  $I_{denoised}$ is the output image.
+\item  $I$ is the input image.
+\item $x$ are the coordinates of the current pixel $(i,j)$ to be filtered.
+\item $\Omega$ is the window centred in $x$.
+\item $y$ are the coordinates from another pixel $(i', j')$ in windows $\Omega$.
+\item $G_{\sigma_s}$ is the spatial kernel for smoothing differences in coordinates (pixel coordinate).
+\item $G{\sigma_r}$ is the range kernel for smoothing differences in intensities (pixel colour).
+
+\end{itemize}
+
+For the range kernel and the space kernel we will use Gaussian functions. Following the definition of Gaussian function defined in \ref{gaussian_function} where $a = 1$, $(x' - b) = ||x - y||$ (Euclidean distance) and $c = \sigma^2$, then we have
+
+\begin{equation}
+G_{\sigma_s} = e^{- \frac{||y - x||}{2 \sigma_{s}^{2}}}
+\end{equation}
+
+and for $G_{\sigma_r}$ where $a = I(y)$, then we have
+
+\begin{equation}
+G_{\sigma_r} = e^{- \frac{|I(y) - I(x)|}{2 \sigma_{r}^{2}}} I(y)
+\end{equation}
+
+Finally we get
+
+\begin{equation}
+I_{denoised}(x) = \frac{\sum_{y \in \Omega} e^{- \frac{||y - x||}{2 \sigma_{s}^{2}}} e^{- \frac{|I(y) - I(x)|}{2 \sigma_{r}^{2}}} I(y)}{\sum_{y \in \Omega}e^{- \frac{||y - x||}{2 \sigma_{s}^{2}}} e^{- \frac{|I(y) - I(x)|}{2 \sigma_{r}^{2}}}}
+\end{equation}
+
+$\sigma_s$ and $\sigma_r$ represents the smoothing parameters.
+
+Due to the independence of the different channels in a multi-channel image (as is the case with our RGB images), the bilateral filter processes each channel separately. As a direct consequence, the filter produces colour artefacts on the sharp colour edges. \citep[pp.~839--846]{Tomasi1998} proposes a method to attack this problem and that is to convert the image from RGB space to CIE-L*a*b* space. 
+
+\subsubsection{CIE-L*a*b* space}
+
+The CIE 1976 $L*a*b*$ model proposed by CIE is based on the $XYZ$ CIE 1931 colour space and attempts to cover the entire visible spectrum of the human eye. The $L$ represents the luminance, expressed as a percentage from 0 to 100. And the $a$ and $b$ represent two ranges of colours, from seeing to red and from blue to yellow respectively, these values go from -120 to +120.
+
+Our images are defined under the RGB colour space so in order to apply our filter on a CIE $L*a*b*$ colour space we must find a way to convert RGB to CIE $L*a*b*$. As we have mentioned the CIE $L*a*b*$ model is based on the $XYZ$ CIE 1931 model, for this \citep[pp.~167--170]{Robertson1990} proposed a method of conversion from $XYZ$ to CIE $L*a*b*$.
+
+\begin{equation} 
+\begin{split}
+L* & = k_{L1} f \left( \frac{Y}{Y_n} \right) - k_{L2} \\
+a* & = k_a \left[ f \left( \frac{X}{X_n} \right) - f \left( \frac{Y}{Y_n} \right)  \right] \\
+b* & = k_b \left[ f \left( \frac{Y}{Y_n} \right) - f \left( \frac{Z}{Z_n} \right) \right] \\
+\end{split}
+\end{equation}
+
+where
+
+\begin{equation}
+\begin{split}
+f(t) & = 
+\begin{cases}
+	\sqrt[3]{t} &\quad if t > \delta^3\\
+	\frac{t}{3 \delta^2} + \frac{4}{29} & \quad otherwise
+\end{cases} \\
+\delta & = \frac{6}{29} \\
+\end{split}
+\end{equation}
+
+$X$, $Y$, $Z$ are CIE tristimulus value from $XYZ$ CIE 1931 colour space and $X_n$, $Y_n$, $Z_n$ are the tristimulus value of the reference white. $K_{L1}$, $K_{L2}$, $K_a$ and $K_b$ are constants that were calculated by a subcommittee of the CIE. From various proposals, the final value chosen was
+
+\[ k_{L1} = 116 \\ \]
+\[ k_{L2} = 16  \\ \]
+\[ k_{a} = 500  \\ \]
+\[ k_{b} = 200  \\ \]
+
+The reverse transformation, CIE $L*a*b*$ to CIE 1931 $XYZ$
+
+\begin{equation} 
+\begin{split}
+X & = X_n f^{-1} \left( \frac{L* + k_{L2}}{k_{L1}} + \frac{a*}{k_a} \right) \\
+Y & = Y_n f^{-1} \left( \frac{L* + k_{L2}}{k_{L1}} \right) \\
+Z & = Z_n f^{-1} \left( \frac{L* + k_{L2}}{k_{L1}} - \frac{b*}{k_b} \right) \\
+\end{split}
+\end{equation}
+
+where
+
+\begin{equation}
+\begin{split}
+f^{-1}(t) & = 
+\begin{cases}
+	t^3 &\quad if t > \delta\\
+	t^3 \delta^2 - \frac{4}{29} & \quad otherwise
+\end{cases} \\
+\delta & = \frac{6}{29} \\
+\end{split}
+\end{equation}
+
+The RGB colour is represented by a range of values from [0, 255]. Normally all applications use an sRGB space, denoted by $(R,G,B) \in V$, where the values are normalized between [0, 1]. The step from RGB to sRGB consists of just dividing each channel by 255. Once we have sRGB we must convert it to "linear-light RGB" (denoted by $(r,g,b) \in v$) , to do this we must undo the gamma encoding of the sRGB space. This process is known as inverse gamma companding.
+
+\begin{equation}
+v = V^\gamma
+\end{equation}
+
+Then
+
+\begin{equation}
+\forall V, v = \begin{cases} 
+\frac{V}{12.9} & \quad if V \leq 0.04045 \\
+\left( \frac{V + 0.055}{1.055} \right)^{2.4} & \quad otherwise
+\end{cases}
+\end{equation}
+
+Once we have the linear RGB, we can convert it to XYZ and then convert it to $L*a*b*$ as explained above. To do this we must multiply the linear RGB by a transformation matrix $M$. This transformation matrix is obtained from the chromaticities and reference whites of the different $RGB$ workspaces. Bruce Lindbloom has made a list of the transformation matrices of these $RGB$ workspaces \citep{lindbloom_2017}.
+
+\begin{equation}
+\begin{bmatrix}
+X \\ Y \\ Z\\ 
+\end{bmatrix}
+=
+M
+\begin{bmatrix}
+r \\ g \\ b \\
+\end{bmatrix}
+\end{equation}
+
+\section{Main program}
+
+First of all, in the main program, the input parameters are collected. We have tried to parameterise the application as much as possible to avoid having hard-coded parts.
+
+\subsection{Applications parameters}
+
+\subsubsection{Common parameters}
+
+Below are the common parameters between the three versions (sequential CPU, parallel CPU and GPU).
+
+\begin{itemize}
+
+\item \textbf{-sizeX $n$} and \textbf{-sizeX} $m$
+
+Optional parameter. Defines the size (nxm) of the image to render. The default values are 1280 and 720 respectively.
+
+\item \textbf{-AAit} $s$
+
+Optional parameter. Defines the number of samples per pixel. The default value is 50.
+
+\item \textbf{-depth} $d$
+
+Optional parameter. It is the cut-off value that defines the upper limit of bounces that a ray can do in order to determine the value of a pixel. The default value is 50.
+
+\item \textbf{-i} or \textbf{--image} "name"
+
+Optional parameter. Defines the name of output image. The default values is "image".
+
+\item \textbf{-f} or \textbf{--file} "scene\_file"
+
+Required parameter. Required parameter. Name of the text file, without extension, in which we have the scene defined that we want to render. The file provided must have a .txt extension.
+
+\item \textbf{-filter} $n_{bilateral}$, $\sigma_s$, $\sigma_r$, $n_{mean}$, $n_{median}$
+
+Optional parameter. Indicates if we want to apply the implemented filters to the rendered image. For each filter we will have an output image.
+
+\begin{itemize}
+\item $n_{bilateral}$: This number defines a $n_{bilateral} \times n_{bilateral}$ sliding-window for the bilateral filter.
+\item $n_{sigma_s}$: Smoothing parameter for spatial kernel.
+\item $n_{sigma_r}$: Smoothing parameter for range kernel.
+\item $n_{mean}$: This number defines a $n_{mean} \times n_{mean}$ sliding-window for the mean filter.
+\item $n_{median}$: This number defines a $n_{median} \times n_{median}$ sliding-window for the median filter.
+\end{itemize}
+
+\item \textbf{-skybox} ON/OFF
+
+Optional parameter. Define whether or not we use a skybox. If the value is ON, then the skybox has to be specified in the input file with the defined scene.
+
+\item \textbf{-light} ON/OFF
+
+Optional parameter. When we don't use a texture to set the background of the scene (skybox), we define the background with a blue to white gradient. This parameter determines if we want to use the gradient or instead, we want a dark background. This is useful to test how a scene looks like when it has an illumination that comes from all directions as if we were outdoors or how it looks when there is no light source beyond the defined objects.
+
+\begin{figure}[H]
+	\centering
+	\medskip
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.315]{media/bunny.png}
+		\caption{light ON.}
+		\label{light1}
+	\end{subfigure}
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.315]{media/bunny_noktem.png}
+		\caption{light OFF.}
+		\label{light2}
+	\end{subfigure}
+\end{figure}
+
+We can observe how in the scene where we have the light "on", Figure \ref{light1}, we can see with total clarity all the objects of the scene, instead of the image with the light "off", Figure \ref{light2}, the only object that emits light is the red cube. You can see how the points closest of the green plane to the light source can be seen, while the rest of the scene remains dark.
+
+\end{itemize}
+
+\subsubsection{GPU parameters}
+
+\begin{itemize}
+
+\item \textbf{-nthreads} $n$
+
+Optional parameter. It defines the number of threads we will use. The default value is 32.
+
+\item \textbf{-nGPUs} $n$
+
+Optional parameter. Sets the number of GPUs on which the application will run. The minimum value is 1 and the maximum is the maximum number of GPUs in our system. In the case of BOADA the range is $[1,4]$.
+
+
+\end{itemize}
+
+\section{Renderer}
+
+The renderer is the entity in charge of launching the rays from the camera for each pixel and calculating their colour using the defined parameters.
+
+The renderer varies a bit from the CPU and GPU versions because we can think as if the CPU has an infinite stack, but on the GPU we can't think this way. For this reason, the Algorithm \ref{color_alg} instead of being recursive must be iterative. Moreover, not only this algorithm varies in both versions but also the path of the BVH. As we explained, a BVH is a tree-type data structure. The most natural way to go through a tree that we can think of is by a recursive algorithm, but as in the GPU we'll have many threads lacing up at the same time we can't make a thread occupy the whole stack, the overhead that is created affects negatively in the application's performance. That's why we'll implement an iterative algorithm to calculate the beam/BVH intersection to reduce the overhead as much as possible. We will be able to compare how using a recursive algorithm to go through the tree in the GPU drastically affects the performance.
+
+\subsection{Sequential CPU}
+
+\begin{algorithm}[caption={renderer sequential}, label={renderer_alg}]
+input: int n, int m, int s, int d, Camera cam, Scene scene, bool light, bool sky, Skybox skybox
+output: Image
+begin
+  Image $I(n,m)$
+  foreach $(i,j) \in I$
+    Colour $c = 0$
+    foreach $s \in [1,s]$
+      $u = \frac{i + random[0,1]}{nx}$
+      $v = \frac{j + random[0,1]}{ny}$
+      Ray $r \gets $ cam.getRay($u$, $v$);      
+      $c += $ colour($r$, $d$, $0$, scene, light, sky, skybox)
+    end
+    $I(i,j) = \frac{c}{s}$
+  end
+  return $I$
+end
+\end{algorithm}
+
+As we can see in the Algorithm \ref{renderer_alg} each pixel $(i,j)$ of the image $I$ is calculated from the surrounding pixels using the anti-aliasing technique explained in the introduction. For each sub-pixel $(u,v)$ we launch the primary ray from the camera and the \textbf{colour} function is responsible for integrating the rendering equation. For this, you need the scene, the primary ray $r$ and the bounce limit to cut the recursion. Then we also have the input parameters of the program \textit{light} and \textit{skybox} that tell us what type of background we use. We need them to know what colour we have to return when a ray \textit{gets lost} in the infinite.
+
+The definition of the scene varies according to the type of representation we use. As we said, we have two versions one that represents the scene with a list of all the triangles of all the objects that compose the scene and another one in which we represent them with a BVH.
+
+\begin{algorithm}[caption={colour recursive}, label={color_alg_rec}]
+input: Ray r, int depth, int limit, Scene scene, bool light, bool sky, Skybox skybox
+output: Colour
+begin
+  hit_record rec
+  if collision(scene, $r$, rec)
+    Ray scattered
+    Colour attenuation
+    Colour emitted = rec.Material.emission(rec.$u$, rec.$v$)
+    if depth < limit and rec.Material.scatter($r$, rec, attenuation, scattered)
+      return emitted + attenuation*color(scattered, depth+1, limit, scene, light, sky, skybox)
+    else
+      return emitted //light absorbed by light source.
+  else
+    if sky and collision(skybox, $r$, rec)
+        return rec.Material.emission(rec.$u$, rec.$v$)
+    else
+      if light
+        return blend(blue, white)
+      else
+        return black
+end
+\end{algorithm}
+
+"hit\_record" is a data structure that allows us to store information regarding the point at which a lightning ray has collided. In it, we have, for example, the texture coordinates, the material of the impacted object, the new scattered ray, etc. This structure is initialized in the "collision" routine. This subroutine is the Möller-Trumbore algorithm, in the case of the version with BVH when we are in a leaf node, or the slab method in the case of an intermediate node in the version with BVH. The \textit{scatter} function represents the BRDF function.
+
+\subsection{Parallel CPU}
+
+For the parallel version of the renderer function, we have chosen a similar strategy to the construction of the BVH. Also, we will add the collapse directive to \textit{join} both loops, $i$ index loop and $j$ index loop, to distribute iterations to the threads. So, one thread has one $(i,j)$ iteration.
+
+\begin{algorithm}[caption={renderer sequential}, label={renderer_cpu_par_alg}]
+input: int n, int m, int s, int d, Camera cam, Scene scene, bool light, bool sky, Skybox skybox
+output: Image
+begin
+  Image $I(n,m)$
+  #pragma omp parallel for collapse(2) schedule(static,maxthreads)
+  foreach $(i,j) \in I$
+    Colour $c = 0$
+    foreach $k \in [1,s]$
+      $u = \frac{i + random[0,1]}{nx}$
+      $v = \frac{j + random[0,1]}{ny}$
+      Ray $r \gets $ cam.getRay($u$, $v$);      
+      $c += $ colour($r$, $d$, $0$, scene, light, sky, skybox)
+    end
+    $I(i,j) = \frac{c}{s}$
+  end
+  return $I$
+end
+\end{algorithm}
+
+
+\subsection{Parallel GPU}
+
+As we discussed in the GPU version, it's best to take an iterative approach so that each thread runs in the same loop as many times as necessary without overspending memory. So the previously recursive algorithm (\ref{color_alg_rec}) is now iterative.
+
+\begin{algorithm}[caption={colour recursive}, label={color_alg_it}]
+input: Ray r, int limit, Scene scene, bool light, bool sky, Skybox skybox
+output: Colour
+begin
+  Ray $current\_ray = r$ //first ray is the primary ray r
+  $Vector_3 current\_attenuation = (1,1,1)$
+  foreach $d \in [0,limit]$
+    hit_record rec
+    if collision(scene, $r$, rec)
+      Ray scattered
+      Colour attenuation
+      Colour emitted = rec.Material.emission(rec.$u$, rec.$v$)
+      
+      if rec.Material.scatter($current_ray$, rec, attenuation, scattered)
+        $current\_attenuation$ *= attenuation 
+        $current\_attenuation$ += emitted
+        $current\_ray = scattered$
+      else
+        return $current\_attenuation$ * emitted //light absorbed by light source
+    else
+      if sky and collision(skybox, $r$, rec)
+        return rec.Material.emission(rec.$u$, rec.$v$)
+      else
+        if light
+          return blend(blue, white)
+        else
+          return black      
+  end
+end
+\end{algorithm}
+
+For the configuration of the rendering kernel, we have followed the same strategy as for the construction of the BVH. In this case, if we have an $NX \times NY$ image we will store it in an array of an $NX \times NY$ size. This way the block distribution and indexing are simpler and more efficient. Therefore we will have:
+
+\begin{algorithm}[caption={kernel renderer GPU}, label={renderer_cpu_par_alg}]
+input:Image I,  int n, int m, int s, int d, Camera cam, Scene scene, bool light, bool sky, Skybox skybox
+output:
+begin
+  $idx = blockIdx.x * blockDim.x + threadIdx.$ 
+  
+  $i = idx \bmod n $
+  $j = \frac{idx}{n} $
+  
+  Colour c = 0
+  
+  foreach $k \in [0,s] $
+    $u = \frac{i + random[0,1]}{nx}$
+    $v = \frac{j + random[0,1]}{ny}$
+    Ray $r \gets $ cam.getRay($u$, $v$);      
+    $c += $ colour($r$, $d$, $0$, scene, light, sky, skybox)
+  end    
+
+   $I_{idx} = c/s$  
+  
+end
+\end{algorithm}
 
 \newpage
 

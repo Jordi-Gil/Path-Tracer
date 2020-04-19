@@ -8,7 +8,7 @@ Node::Node() {
   parent = NULL;
 }
 
-bool Node::checkCollision(const Ray& r, float tmin, float tmax, hit_record& rec) {
+bool Node::intersect(const Ray& r, float tmin, float tmax, hit_record& rec) {
   
   if(box.hit(r, tmin, tmax)) {
     hit_record left_rec, right_rec;
@@ -17,10 +17,10 @@ bool Node::checkCollision(const Ray& r, float tmin, float tmax, hit_record& rec)
     bool hit_right;
 
     if(left->obj) hit_left = left->obj->hit(r, tmin, tmax, left_rec);
-    else hit_left = left->checkCollision(r, tmin, tmax, left_rec);
+    else hit_left = left->intersect(r, tmin, tmax, left_rec);
     
     if(right->obj) hit_right = right->obj->hit(r, tmin, tmax, right_rec);
-    else hit_right = right->checkCollision(r, tmin, tmax, right_rec);
+    else hit_right = right->intersect(r, tmin, tmax, right_rec);
     
     if(hit_left && hit_right) {
 
@@ -41,7 +41,6 @@ bool Node::checkCollision(const Ray& r, float tmin, float tmax, hit_record& rec)
     else return false;
   }
   else {
-		//std::cout << "False" << std::endl;
 		return false;
 	}
 }

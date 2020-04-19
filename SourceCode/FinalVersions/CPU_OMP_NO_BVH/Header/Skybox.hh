@@ -105,9 +105,9 @@ public:
   void load(const std::string &dir);
   bool hit(const Ray& r, float t_min, float t_max, hit_record& rec);
   
+  Vector3 bottomLeft, topRight;
 private:
   
-  Vector3 bottomLeft, topRight;
   
   Rectangle list[6];
   

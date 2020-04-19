@@ -1,5 +1,11 @@
 #include "Vector3.cuh"
 
+struct Vector3eval {
+    __host__ __device__ inline bool operator()(const Vector3 &a, const Vector3 &b){
+      return (a[0] < b[0] && a[1] < b[1] && a[2] < b[2]);
+    }
+};
+
 int getColor255(unsigned char *image, int nx, int i, int j, int offset){
   return image[i*nx*3 + j*3 + offset];
 }
@@ -14,16 +20,18 @@ Vector3 lab2xyz(Vector3 color){
   float fx = (color[1]/500)+fy;
   float fz = fy - (color[2]/200);
   
+  float delta = (6.f/29.f)*(6.f/29.f);
+  
   float x,y,z;
   
-  if(pow(fx,3) > (216/24389)) x = pow(fx,3);
-  else x = ((116*fx)-16)/(24389/27);
+  if(fx > (6.f/29.f)) x = pow(fx,3);
+  else x = 3*delta*(fx - (4.f/29.f));
   
-  if(color[0] > (216/27)) y = pow(fy,3);
-  else y = color[0]/(24389/27);
+  if(fy > (6.f/29.f)) y = pow(fy,3);
+  else y = 3*delta*(fy - (4.f/29.f));
   
-  if(pow(fz,3) > (216/24389)) z = pow(fz,3);
-  else z = ((116*fz)-16)/(24389/27);
+  if(fz > (6.f/29.f)) z = pow(fz,3);
+  else z = 3*delta*(fz - (4.f/29.f));
   
   x *= refX;
   y *= refY;
@@ -91,7 +99,6 @@ Vector3 rgb2xyz(Vector3 color){
 Vector3 rgb2lab(Vector3 color){
   
   Vector3 xyzColor = rgb2xyz(color);
-  //std::cout << "XYZ: " << xyzColor << std::endl;
   
   float refX = 95.047f;
   float refY = 100.000f;
@@ -101,18 +108,22 @@ Vector3 rgb2lab(Vector3 color){
   float y = xyzColor[1] / refY;
   float z = xyzColor[2] / refZ;
   
-  if(x > (216/24389)) 
+  float delta = (6.f/29.f)*(6.f/29.f);
+  
+  if(x > (delta * (6.f/29.f))) 
     x = std::cbrt(x);
   else
-    x = (((24389/27)*x) + 16)/116; //(7.787 * x) + (16/116);
+    x = (x / (3*delta)) + (4.f/29.f);
   
-  if(y > (216/24389))
+  if(y > (delta * (6.f/29.f))) 
     y = std::cbrt(y);
-  else y = (((24389/27)*y) + 16)/116; //(7.787 * y) + (16/116);
+  else 
+    y = (y / (3*delta)) + (4.f/29.f);
   
-  if(z > (216/24389))
+  if(z > (delta * (6.f/29.f))) 
     z = std::cbrt(z);
-  else z = (((24389/27)*z) + 16)/116; //(7.787 * z) + (16/116);
+  else 
+    z = (z / (3*delta)) + (4.f/29.f);
   
   float a = 500 * (x-y);
   float l = (116 * y) - 16;
@@ -122,23 +133,21 @@ Vector3 rgb2lab(Vector3 color){
   
 }
 
-float distance(Vector3 a, Vector3 b){
+float distance(int i, int j, int k, int l){
   
-  return float( (a[0] - b[0])*(a[0] - b[0]) +
-                (a[1] - b[1])*(a[1] - b[1]) +
-                (a[2] - b[2])*(a[2] - b[2])
-  );
+  int x2 = (k-i)*(k-i);
+  int y2 = (l-j)*(l-j);
   
+  return sqrt( x2 + y2 );
 }
 
-float gaussian(int i, int j, int k, int l, float dist, float gd, float gr){
-  float a = (i-k)*(i-k);
-  float b = (j-l)*(j-l);
-  float c = a + b;
-  return std::exp(-(c/gd) - (dist/gr));
+float gaussian(float dist, float sigma){
+  float a = dist*dist;
+  float b = sigma*sigma;
+  return std::exp(-a/(2*b));
 }
 
-Vector3 applyFilter(int i, int j, Vector3 color, int diameter, float gd, float gr, int nx, int ny, unsigned char *image){
+Vector3 bilateralConvolution(int i, int j, Vector3 color, int diameter, float sigmaD, float sigmaR, int nx, int ny, unsigned char *image){
   
   int half = diameter/2;
   Vector3 clabColor = rgb2lab(color);
@@ -150,11 +159,16 @@ Vector3 applyFilter(int i, int j, Vector3 color, int diameter, float gd, float g
     for(int k = 0; k < diameter; k++){
       int neighbour_x = i - (half - l);
       int neighbour_y = j - (half - k);
+      
       if(neighbour_x >= 0 && neighbour_y >= 0 && neighbour_x < ny && neighbour_y < nx) {
+        
         Vector3 colorN = rgb2lab(Vector3(getColor255(image, nx, neighbour_x, neighbour_y, 0),getColor255(image, nx, neighbour_x, neighbour_y, 1),getColor255(image, nx, neighbour_x, neighbour_y, 2)));
-        float g = gaussian(i,j,neighbour_x,neighbour_y,distance(clabColor, colorN),2*(gd*gd),2*(gr*gr));
-        norm += g;
-        wp += (colorN*g);
+        
+        float gd = gaussian(distance(i,j, neighbour_x, neighbour_y), sigmaD);
+        float gr = gaussian((colorN - clabColor).length(), sigmaR);
+        
+        norm += (gd*gr);
+        wp += (gd*gr)*colorN;
       }
     }
   }
@@ -171,9 +185,88 @@ void bilateralFilter(int diameter, int nx, int ny, unsigned char *image, unsigne
     for(int j = 0; j < nx; j++){
 
       
-      Vector3 color = applyFilter(i, j, Vector3(getColor255(image, nx, i, j, 0),getColor255(image, nx, i, j, 1),getColor255(image, nx, i, j, 2)), diameter, sd, sr, nx, ny, image);
+      Vector3 color = bilateralConvolution(i, j, Vector3(getColor255(image, nx, i, j, 0),getColor255(image, nx, i, j, 1),getColor255(image, nx, i, j, 2)), diameter, sd, sr, nx, ny, image);
       
       imageFiltered[i*nx*3 + j*3 + 0] = color[0]; 
+      imageFiltered[i*nx*3 + j*3 + 1] = color[1];
+      imageFiltered[i*nx*3 + j*3 + 2] = color[2];
+      
+    }
+  }
+}
+
+Vector3 *medianConvolution(int diameter, int i, int j, int nx, int ny, unsigned char *image){
+  
+  int half = diameter/2;
+  Vector3 *color = new Vector3[diameter*diameter];
+  
+  int count = 0;
+  
+  for(int k = 0; k < diameter; k++) {
+    for(int l = 0; l < diameter; l++) {
+      
+      int neighbour_x = i - (half - l);
+      int neighbour_y = j - (half - k);
+
+      color[count++] = Vector3(getColor255(image, nx, neighbour_x, neighbour_y, 0),getColor255(image, nx, neighbour_x, neighbour_y, 1),getColor255(image, nx, neighbour_x, neighbour_y, 2));
+      
+    }
+  }
+  
+  std::sort(color, color+(diameter*diameter), Vector3eval());
+  
+  return color;
+}
+
+void medianFilter(int diameter, int nx, int ny, unsigned char *image, unsigned char *imageFiltered){
+  
+  int half = diameter/2;
+  
+  for(int i = half; i < ny-half; ++i){
+    for(int j = half; j < nx-half; ++j){
+      
+      Vector3 *window = medianConvolution(diameter, i, j, nx, ny, image);
+      
+      Vector3 color = window[(diameter*diameter)/2];
+      delete window;
+      
+      imageFiltered[i*nx*3 + j*3 + 0] = color[0]; 
+      imageFiltered[i*nx*3 + j*3 + 1] = color[1];
+      imageFiltered[i*nx*3 + j*3 + 2] = color[2];
+      
+    }
+  }
+}
+
+Vector3 meanConvolution(int diameter, int i, int j, int nx, int ny, unsigned char *image){
+  
+  int half = diameter/2;
+  Vector3 color = Vector3::Zero();
+  
+  for(int k = 0; k < diameter; k++) {
+    for(int l = 0; l < diameter; l++) {
+      
+      int neighbour_x = i - (half - l);
+      int neighbour_y = j - (half - k);
+      
+      if(neighbour_x >= 0 && neighbour_y >= 0 && neighbour_x < ny && neighbour_y < nx) 
+        color += Vector3(getColor255(image, nx, i, j, 0),getColor255(image, nx, i, j, 1),getColor255(image, nx, i, j, 2));
+      
+    }
+  }
+  return color/(diameter*diameter);
+}
+
+void meanFilter(int diameter, int nx, int ny, unsigned char *image, unsigned char *imageFiltered){
+  
+  int half = diameter/2;
+  
+  for(int i = half; i < ny-half; ++i){
+    for(int j = half; j < nx-half; ++j){
+      
+      Vector3 color = meanConvolution(diameter, i, j, nx, ny, image);
+      
+      imageFiltered[i*nx*3 + j*3 + 0] = color[0];
       imageFiltered[i*nx*3 + j*3 + 1] = color[1];
       imageFiltered[i*nx*3 + j*3 + 2] = color[2];
       

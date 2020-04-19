@@ -3,9 +3,9 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-Material loadMat(const std::string &line,int type, int texType) {
-  
-  std::stringstream ssin(line); 
+Material loadMat(const std::string &line, int type, int texType) {
+
+  std::stringstream ssin(line);  
   std::string par;
   
   int albedoCount = 0;
@@ -17,18 +17,17 @@ Material loadMat(const std::string &line,int type, int texType) {
   int nx, ny, nc;
   unsigned char *image;
   
-  
   while(ssin >> par and !loaded) {
-    
+  
     if(albedoCount < 3 and texType == CONSTANT){
       albedo[albedoCount] = stof(par);
       albedoCount++;
     } else {
-      if(texType == IMAGE) {
+      if(texType == IMAGE){
         imageFilename = "../Resources/Textures/"+par;
         loaded = true;
       }
-      if(type == METAL){ fuzz = stof(par); loaded = true; }
+      if(type == METAL) { fuzz = stof(par); loaded = true; }
       else if(type == DIELECTRIC) { ref_idx = stof(par); loaded = true; }
       else if(albedoCount == 3) loaded = true;
     }
@@ -36,8 +35,9 @@ Material loadMat(const std::string &line,int type, int texType) {
   
   if(texType == IMAGE) image = stbi_load(imageFilename.c_str(), &nx, &ny, &nc, 0);
   
-  if(texType == CONSTANT) return Material(type,Texture(texType, albedo),fuzz,ref_idx);
-  return Material(type, Texture(texType, Vector3::Zero(), image, nx, ny), fuzz, ref_idx);
+  if(texType == CONSTANT) return Material(type,Texture(texType, albedo), fuzz, ref_idx);
+  
+  return Material(type,Texture(texType, Vector3::Zero(), image, nx, ny), fuzz, ref_idx);
 }
 
 Vector3 loadVector3(const std::string &line){
@@ -90,10 +90,10 @@ void Obj::loadFromTXT(const std::string &filename) {
         std::string par2;
         ssin >> par2;
         int type = (par2 == "CONSTANT") ? CONSTANT : IMAGE;
-        if(par == "L") mat = loadMat(line.substr(line.find(par2)+par2.size()),LAMBERTIAN,type);
-        else if(par == "M") mat = loadMat(line.substr(line.find(par2)+par2.size()),METAL,type);
-        else if(par == "D") mat = loadMat(line.substr(line.find(par2)+par2.size()),DIELECTRIC,type);
-        else if(par == "DL") mat = loadMat(line.substr(line.find(par2)+par2.size()),DIFFUSE_LIGHT,type);
+        if(par == "L") mat = loadMat(line.substr(line.find(par2)+par2.size()),LAMBERTIAN, type);
+        else if(par == "M") mat = loadMat(line.substr(line.find(par2)+par2.size()),METAL, type);
+        else if(par == "D") mat = loadMat(line.substr(line.find(par2)+par2.size()),DIELECTRIC, type);
+        else if(par == "DL") mat = loadMat(line.substr(line.find(par2)+par2.size()),DIFFUSE_LIGHT, type);
         
         cTri = 0;
         triangles[count] = Triangle(tri[0],tri[1],tri[2],(materialB) ? material : mat);
@@ -124,6 +124,7 @@ void Obj::loadFromObj(const std::string &filename) {
   std::vector<Triangle> aux;
   
   while(std::getline(file,line)){
+    
     std::istringstream ssin(line);
     std::string par;
     
@@ -157,6 +158,7 @@ void Obj::loadFromObj(const std::string &filename) {
         int v = (v_str != "") ? stoi(v_str) : -1;
         int vt = (vt_str != "") ? stoi(vt_str) : -1;
         int vn = (vn_str != "") ? stoi(vn_str) : -1;
+        
         face.push_back(Vector3(v,vt,vn));
       }
       
@@ -180,7 +182,7 @@ void Obj::loadFromObj(const std::string &filename) {
   
 }
 
-Obj::Obj(int type, const std::string &filename, bool mat, Material m) {
+Obj::Obj(int type, const std::string &filename, bool mat, Material m, int textureIndex) {
   
   materialB = mat;
   if(materialB) material = m;
@@ -189,6 +191,7 @@ Obj::Obj(int type, const std::string &filename, bool mat, Material m) {
   else if(type == OBJF) loadFromObj(filename);
   else throw std::runtime_error("Invalid file type");
   
+  std::cout << filename << " Center: " << center << std::endl;
 }
   
 Triangle *Obj::getTriangles(){

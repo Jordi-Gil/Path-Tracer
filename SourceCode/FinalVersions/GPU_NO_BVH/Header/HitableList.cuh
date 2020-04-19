@@ -9,7 +9,7 @@ public:
   
     __device__ HitableList();
     __device__ HitableList(Triangle *l, int n);
-    __device__ bool checkCollision(const Ray& r, float t_min, float t_max, hit_record& rec);
+    __device__ bool intersect(const Ray& r, float t_min, float t_max, hit_record& rec);
     __device__ int length();
     __device__ Triangle *getObjects();
 

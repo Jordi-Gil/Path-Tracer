@@ -18,15 +18,17 @@ class Node {
 public:
   Node();
 
-  bool checkCollision(const Ray& r, float tmin, float tmax, hit_record& rec);
+  bool intersect(const Ray& r, float tmin, float tmax, hit_record& rec);
   
   Node *left;   // Left child
   Node *right;  // Right child
   Node *parent; // Parent
-
-  //Sphere *obj; //Null if is an internal node, Object if is a Leaf
-  Triangle *obj; //Null if is an internal node, Object if is a Leaf
+  
+  Triangle *obj;
   aabb box;
+  bool isLeaf = false;
+  bool isRight = false;
+  bool isLeft = false;
   
 };
 

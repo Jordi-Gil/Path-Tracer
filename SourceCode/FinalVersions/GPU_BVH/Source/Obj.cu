@@ -35,9 +35,9 @@ __host__ Material loadMat(const std::string &line, int type, int texType) {
   
   if(texType == IMAGE) image = stbi_load(imageFilename.c_str(), &nx, &ny, &nc, 0);
   
-  if(texType == CONSTANT) return Material(type,Texture(texType, albedo), fuzz,ref_idx);
+  if(texType == CONSTANT) return Material(type,Texture(texType, albedo), fuzz, ref_idx);
   
-  return Material(type,Texture(texType, Vector3::Zero(), image, nx, ny), fuzz,ref_idx);
+  return Material(type,Texture(texType, Vector3::Zero(), image, nx, ny), fuzz, ref_idx);
 }
 
 __host__  Vector3 loadVector3(const std::string &line){
@@ -182,7 +182,7 @@ __host__  void Obj::loadFromObj(const std::string &filename) {
   
 }
 
-__host__  Obj::Obj(int type, const std::string &filename, bool mat, Material m) {
+__host__  Obj::Obj(int type, const std::string &filename, bool mat, Material m, int textureIndex) {
   
   materialB = mat;
   if(materialB) material = m;

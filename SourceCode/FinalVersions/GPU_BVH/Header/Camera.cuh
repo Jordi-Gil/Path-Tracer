@@ -23,6 +23,8 @@ public:
   __host__ __device__ float getAperture(){return aperture;}
   __host__ __device__ float getFocus(){return focus_dist;}
 
+private:
+    
   Vector3 origin;
   Vector3 lower_left_corner;
   Vector3 horizontal;
@@ -30,8 +32,6 @@ public:
   Vector3 w,u,v;
   float time0, time1;
   float lens_radius;
-
-private:
 
   Vector3 lookfrom, lookat, vup;
   float vfov, aspect, aperture, focus_dist;

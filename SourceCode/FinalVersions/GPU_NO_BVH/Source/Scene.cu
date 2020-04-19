@@ -5,7 +5,7 @@
 
 #define Random (rand()/(RAND_MAX + 1.0))
 
-Camera loadCamera(const std::string &line, int nx, int ny) {
+Camera Scene::loadCamera(const std::string &line, int nx, int ny) {
   
   char ch = ' ';
   size_t pos = line.find(ch);
@@ -53,7 +53,7 @@ Camera loadCamera(const std::string &line, int nx, int ny) {
   return Camera(paramV3[0], paramV3[1], paramV3[2], paramF[0], float(nx)/float(ny), paramF[1], paramF[2], 0.0, 1.0);
 }
 
-Material loadMaterial(const std::string &line,int type, int texType) {
+Material Scene::loadMaterial(const std::string &line,int type, int texType, bool oneTex) {
   
   std::stringstream ssin(line);  
   std::string par;
@@ -75,6 +75,7 @@ Material loadMaterial(const std::string &line,int type, int texType) {
       if(texType == IMAGE){
         imageFilename = "../Resources/Textures/"+par;
         loaded = true;
+        if(type == METAL) ssin >> par;
       }
       if(type == METAL){ fuzz = stof(par); loaded = true; }
       else if(type == DIELECTRIC) { ref_idx = stof(par); loaded = true; }
@@ -82,13 +83,21 @@ Material loadMaterial(const std::string &line,int type, int texType) {
     }
   }
   
-  if(texType == IMAGE) image = stbi_load(imageFilename.c_str(), &nx, &ny, &nc, 0);
+  int texIndex = -1;
+  if(texType == IMAGE){ 
+    image = stbi_load(imageFilename.c_str(), &nx, &ny, &nc, 0);
+    if(oneTex){
+      images.push_back(image);
+      textureSizes.push_back(Vector3(nx,ny,nc));
+      texIndex = images.size()-1;
+    }
+  }
   
   if(texType == CONSTANT) return Material(type, Texture(texType, albedo), fuzz, ref_idx);
-  return Material(type, Texture(texType, Vector3::Zero(), image, nx, ny), fuzz, ref_idx);
+  return Material(type, Texture(texType, Vector3::Zero(), image, nx, ny, texIndex), fuzz, ref_idx);
 }
 
-Triangle loadTriangle(const std::string &line, int num) {
+Triangle Scene::loadTriangle(const std::string &line, int num) {
 
   std::stringstream ssin(line);
   std::string par;
@@ -132,18 +141,7 @@ Triangle loadTriangle(const std::string &line, int num) {
   return Triangle(position[0],position[1],position[2], mat);
 }
 
-void print(Triangle *tl, int n){
-  std::cout << "print Size " << n << std::endl;
-  for(int i = 0; i < n; i++){
-    std::cout << "Triangle " << i << std::endl;
-    for (int j = 0; j < 3; j++) {
-      std::cout << tl[i][j] << std::endl;
-    }
-    std::cout << std::endl;
-  }
-}
-
-mat4 getTransformMatrix(const std::vector<std::string> &transforms, const Vector3 &center) {
+mat4 Scene::getTransformMatrix(const std::vector<std::string> &transforms, const Vector3 &center) {
  
   mat4 transform = mat4::identity();
   
@@ -197,7 +195,7 @@ mat4 getTransformMatrix(const std::vector<std::string> &transforms, const Vector
   return transform;
 }
 
-Obj loadObj(const std::string &line) {
+Obj Scene::loadObj(const std::string &line, bool oneTex) {
   
   std::stringstream ssin(line);
   std::string par;
@@ -264,7 +262,7 @@ Obj loadObj(const std::string &line) {
           ssin >> par; ssin >> par; ssin >> par;
         }
         else if(par == "IMAGE"){
-          mat = loadMaterial(line.substr(line.find(par)+par.size()+1),LAMBERTIAN,IMAGE);
+          mat = loadMaterial(line.substr(line.find(par)+par.size()+1),LAMBERTIAN,IMAGE,oneTex);
           ssin >> par;
         }
       }
@@ -275,7 +273,7 @@ Obj loadObj(const std::string &line) {
           ssin >> par; ssin >> par; ssin >> par; ssin >> par;
         }
         else if(par == "IMAGE") {
-          mat = loadMaterial(line.substr(line.find(par)+par.size()+1),METAL,IMAGE);
+          mat = loadMaterial(line.substr(line.find(par)+par.size()+1),METAL,IMAGE,oneTex);
           ssin >> par; ssin >> par;
         }
       }
@@ -286,7 +284,7 @@ Obj loadObj(const std::string &line) {
           ssin >> par; ssin >> par; ssin >> par; ssin >> par;
         }
         else if(par == "IMAGE") {
-          mat = loadMaterial(line.substr(line.find(par)+par.size()+1),DIELECTRIC,IMAGE);
+          mat = loadMaterial(line.substr(line.find(par)+par.size()+1),DIELECTRIC,IMAGE,oneTex);
           ssin >> par; ssin >> par;
         }
       }
@@ -297,7 +295,7 @@ Obj loadObj(const std::string &line) {
           ssin >> par; ssin >> par; ssin >> par;
         }
         if(par == "IMAGE") {
-          mat = loadMaterial(line.substr(line.find(par)+par.size()+1),DIFFUSE_LIGHT,IMAGE);
+          mat = loadMaterial(line.substr(line.find(par)+par.size()+1),DIFFUSE_LIGHT,IMAGE,oneTex);
           ssin >> par;
         }
       }
@@ -329,7 +327,7 @@ Obj loadObj(const std::string &line) {
   
 }
 
-Sphere loadSphere(const std::string &line) {
+Sphere Scene::loadSphere(const std::string &line) {
   
   std::stringstream ssin(line);
   std::string par;
@@ -361,7 +359,7 @@ Sphere loadSphere(const std::string &line) {
   return Sphere(center,radius,mat);
 }
 
-int *loadSizes(const std::string &line, int *s) {
+int *Scene::loadSizes(const std::string &line, int *s) {
 
   std::stringstream ssin(line);
   std::string par;
@@ -384,18 +382,18 @@ int *loadSizes(const std::string &line, int *s) {
   return s;
 }
 
-void Scene::loadScene(int loadType, const std::string &filename){
+void Scene::loadScene(int loadType, const std::string &filename, const bool oneTex){
   
   std::cout << "Loading scene...\n" << std::endl;
   
-  if(loadType == FFILE) sceneFromFile(filename);
+  if(loadType == FFILE) sceneFromFile(filename, oneTex);
   else if(loadType == RANDOM) sceneRandom();
   else if(loadType == TRIANGL) sceneTriangle();
   
   std::cout << "Scene loaded\n" << std::endl;
 }
 
-void Scene::sceneFromFile(const std::string &filename) {
+void Scene::sceneFromFile(const std::string &filename, const bool oneTex) {
   std::cout << "Scene file from " << filename << std::endl;
   
   std::ifstream file("../Resources/Scenes/Textures/"+filename);
@@ -455,7 +453,7 @@ void Scene::sceneFromFile(const std::string &filename) {
     }
     else if(aux == "3") {
       if(sizes != nullptr and num_ob < sizes[2]){
-        list_3[num_ob] = loadObj(line.substr(2,line.size()));
+        list_3[num_ob] = loadObj(line.substr(2,line.size()), oneTex);
         max_list[num_ob] = list_3[num_ob].getMax();
         min_list[num_ob] = list_3[num_ob].getMin();
         num_ob_tr += list_3[num_ob].getSize();
@@ -518,6 +516,7 @@ void Scene::sceneRandom() {
   int objs = 0;
   
   list[objs] = Sphere(Vector3(0,-1000,0),1000, Material(LAMBERTIAN, Texture(CONSTANT, Vector3(0.5,0.5,0.5))));
+  compare(max, min, list[objs].getCenter());
   objs++;
   
   for(int a = -dist; a < dist; a++){
@@ -547,22 +546,29 @@ void Scene::sceneRandom() {
         else {
           list[objs] = Sphere(center, 0.2, Material(DIFFUSE_LIGHT, Texture(CONSTANT, Vector3::One())));
         }
+        compare(max, min, list[objs].getCenter());
         objs++;
       }
     }
   }
   
   list[objs] = Sphere(Vector3(0,1,0), 1.0, Material(DIELECTRIC,Texture(CONSTANT,Vector3::One()),-1,1.5));
-  objs++;
+  compare(max, min, list[objs].getCenter()); objs++;
   
   list[objs] = Sphere(Vector3(-4,1,0),1.0, Material(LAMBERTIAN,Texture(CONSTANT,Vector3(0.4,0.2,0.1))));
-  objs++;
+  compare(max, min, list[objs].getCenter()); objs++;
   
   list[objs] = Sphere(Vector3(4,1,0),1.0, Material(METAL,Texture(CONSTANT,Vector3(0.7,0.6,0.5)),0.0));
-  objs++;
+  compare(max, min, list[objs].getCenter()); objs++;
   
   list[objs] = Sphere(Vector3(4,1,5), 1.0, Material(METAL,Texture(CONSTANT,Vector3(0.9, 0.2, 0.2)),0.0));
-  objs++;
+  compare(max, min, list[objs].getCenter()); objs++;
+  
+  std::cout << "Real size " << objs << std::endl;
+  std::cout << "Max " <<  max << " Min " << min << std::endl;
+  
+  float max_x = max[0]; float max_y = max[1]; float max_z = max[2];
+  float min_x = min[0]; float min_y = min[1]; float min_z = min[2];
   
   spheres = new Sphere[objs];
   std::copy(list, list + objs, spheres);
@@ -583,11 +589,14 @@ void Scene::sceneTriangle() {
 	int objs = 0;
   
   objects[objs] = Triangle(Vector3(-4.0,0.0,0.0), Vector3(-2.0,0.0,0.5), Vector3(-3.0,-1.0,0.0), Material(LAMBERTIAN, Texture(CONSTANT,Vector3(1.0,0.0,0.0))));
-	objs++;
+	compare(max, min, objects[0].getCentroid()); objs++;
 	
 	objects[objs] = Triangle(Vector3(0.0,0.0,0.0), Vector3(2.0,0.0,0.0), Vector3(1.0,-1.0,0.0) ,Material(METAL, Texture(CONSTANT,Vector3(1.0,0.0,0.0))));
-  objs++;
-
+  compare(max, min, objects[1].getCentroid()); objs++;
+  
+  float max_x = max[0]; float max_y = max[1]; float max_z = max[2];
+  float min_x = min[0]; float min_y = min[1]; float min_z = min[2];
+  
   size = 2;
 }
 
@@ -605,4 +614,16 @@ Camera Scene::getCamera() {
 
 Skybox *Scene::getSkybox() {
   return &sky;
+}
+
+unsigned char **Scene::getTextures() {
+  return images.data();
+}
+
+unsigned int Scene::getNumTextures(){
+  return images.size();
+}
+
+Vector3 *Scene::getTextureSizes(){
+  return textureSizes.data();
 }

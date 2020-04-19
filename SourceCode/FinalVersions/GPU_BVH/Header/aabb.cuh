@@ -6,6 +6,8 @@
 __host__  __device__ inline float ffmin(float a, float b) {return a < b ? a : b;}
 __host__  __device__ inline float ffmax(float a, float b) {return a > b ? a : b;}
 
+__host__ __device__ inline void swap(float &a, float &b){float t = a; a = b; b = t;}
+
 class aabb {
 
 public:
@@ -18,17 +20,13 @@ public:
 
   
   __device__ inline bool hit(const Ray& r, float tmin, float tmax) const {
+    
     for (int i = 0; i < 3; i++) {
     
       float invD = 1.0f / r.direction()[i];
       float t0 = (min()[i] - r.origin()[i]) * invD;
       float t1 = (max()[i] - r.origin()[i]) * invD;
-      if(invD < 0.0f){
-        //std::swap(t0,t1);
-        float tmp = t0;
-        t0 = t1;
-        t1 = tmp;
-      }
+      if(invD < 0.0f) swap(t0,t1);
       tmin = t0 > tmin ? t0 : tmin;
       tmax = t1 < tmax ? t1 : tmax;
       if(tmax <= tmin) return false;
@@ -37,6 +35,7 @@ public:
     return true;
   }
 
+private:
   
   Vector3 _min;
   Vector3 _max;

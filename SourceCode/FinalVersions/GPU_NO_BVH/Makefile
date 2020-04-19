@@ -1,5 +1,5 @@
-#CUDA_HOME = /usr/local/cuda-10.1
-CUDA_HOME = /Soft/cuda/9.0.176
+CUDA_HOME = /usr/local/cuda-10.1
+#CUDA_HOME = /Soft/cuda/9.0.176
 HOST_COMPILER = g++
 NVCC = $(CUDA_HOME)/bin/nvcc -ccbin $(HOST_COMPILER)
 NVCC_DBG = -g -G
@@ -12,7 +12,7 @@ HEADERDIR = Header
 SOURCEDIR = Source
 
 # Gencode arguments
-SMS ?= 35
+SMS ?= 70
 
 ifeq ($(SMS),)
 $(info >>> WARNING - no SM architectures have been specified - waiving sample <<<)
@@ -35,7 +35,7 @@ OBJS_1 = $(OBJ) $(OBJDIR)/$(1GPUDIR)/main_1GPU.o
 OBJS_2 = $(OBJ) $(OBJDIR)/$(NGPUDIR)/main_NGPUs.o
 
 
-all: $(OBJDIR) $(OBJDIR)/$(1GPUDIR) $(OBJDIR)/$(NGPUDIR) $(OBJDIR)/$(NGPUDYNDIR) path_tracing_1GPU path_tracing_NGPUs
+all: $(OBJDIR) $(OBJDIR)/$(1GPUDIR) $(OBJDIR)/$(NGPUDIR) $(OBJDIR)/$(NGPUDYNDIR) path_tracing_1GPU #path_tracing_NGPUs
 
 $(OBJDIR):
 	mkdir $(OBJDIR)

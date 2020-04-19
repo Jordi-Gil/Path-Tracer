@@ -28,61 +28,72 @@ Vector3 random_in_unit_sphere(){
   do{
     p = 2.0*Vector3((rand()/(RAND_MAX + 1.0)), (rand()/(RAND_MAX + 1.0)), (rand()/(RAND_MAX + 1.0))) - Vector3::One();
   }
-  while(dot(p,p) >= 1.0);
+  while(p.squared_length() >= 1.0);
   return p;
 }
 
+Vector3 random_on_unit_sphere(){
+  Vector3 p;
+  do{
+    p = 2.0*Vector3((rand()/(RAND_MAX + 1.0)), (rand()/(RAND_MAX + 1.0)), (rand()/(RAND_MAX + 1.0))) - Vector3::One();
+  }
+  while(p.squared_length() >= 1.0);
+  return normalize(p);
+}
+
 Material::Material(int t, const Texture a, float f, float ri) {
+  
   type = t;
   albedo = a;
   fuzz = f;
   ref_idx = ri;
+  
 }
 
-bool Material::scatter(const Ray& r_in, const hit_record &rec, Vector3 &attenuation, Ray &scattered) {
+bool Material::scatter(const Ray& r_in, const hit_record &rec, Vector3 &attenuation, Ray &scattered, bool oneTex, unsigned char **textures) {
   
-  if(type == LAMBERTIAN) return Lambertian(r_in, rec, attenuation, scattered);
-  else if(type == METAL) return Metal(r_in, rec, attenuation, scattered);
-  else if(type == DIELECTRIC) return Dielectric(r_in, rec, attenuation, scattered);
+  if(type == LAMBERTIAN) return Lambertian(r_in, rec, attenuation, scattered, oneTex, textures);
+  else if(type == METAL) return Metal(r_in, rec, attenuation, scattered, oneTex, textures);
+  else if(type == DIELECTRIC) return Dielectric(r_in, rec, attenuation, scattered, oneTex, textures);
   else if(type == DIFFUSE_LIGHT) return false;
   else return false;
   
 }
 
-Vector3 Material::emitted(float u, float v) {
-  if(type == DIFFUSE_LIGHT) return albedo.value(u, v);
-  else if (type == SKYBOX) return albedo.value(u, v);
+Vector3 Material::emitted(float u, float v, bool oneTex, unsigned char **textures) {
+  if(type == DIFFUSE_LIGHT) return albedo.value(u, v, oneTex, textures);
+  else if (type == SKYBOX) return albedo.value(u, v, oneTex, textures);
   else return Vector3::Zero();
 }
 
-bool Material::Lambertian(const Ray& r_in, const hit_record &rec, Vector3 &attenuation, Ray& scattered) {
+bool Material::Lambertian(const Ray& r_in, const hit_record &rec, Vector3 &attenuation, Ray& scattered, bool oneTex, unsigned char **textures) {
     
     Vector3 target = rec.point + rec.normal + random_in_unit_sphere();
     
     scattered = Ray(rec.point, target-rec.point,r_in.time());
-    attenuation = albedo.value(rec.u, rec.v);
+    attenuation = albedo.value(rec.u, rec.v, oneTex, textures);
     
     return true;
 }
 
-bool Material::Metal(const Ray& r_in, const hit_record& rec, Vector3& attenuation, Ray& scattered) {
+bool Material::Metal(const Ray& r_in, const hit_record& rec, Vector3& attenuation, Ray& scattered, bool oneTex, unsigned char **textures) {
     
   Vector3 reflected = reflect( unit_vector( r_in.direction()), rec.normal);
     
-  scattered = Ray(rec.point, reflected + fuzz*random_in_unit_sphere(),r_in.time());
-  attenuation = albedo.value(rec.u, rec.v);
+  scattered = Ray(rec.point, reflected + fuzz*random_in_unit_sphere(), r_in.time());
+  attenuation = albedo.value(rec.u, rec.v, oneTex, textures);
     
   return (dot(scattered.direction(), rec.normal) > 0);
     
 }
 
-bool Material::Dielectric(const Ray& r_in, const hit_record& rec, Vector3& attenuation, Ray& scattered) {
+bool Material::Dielectric(const Ray& r_in, const hit_record& rec, Vector3& attenuation, Ray& scattered, bool oneTex, unsigned char **textures) {
     
     Vector3 outward_normal;
     Vector3 reflected = reflect(r_in.direction(), rec.normal);
     
     float ni_over_nt;
-    attenuation = albedo.value(rec.u, rec.v);
+    attenuation = albedo.value(rec.u, rec.v, oneTex, textures);
     Vector3 refracted;
     float reflect_prob;
     float cosine;

@@ -16,21 +16,21 @@ Camera::Camera(Vector3 lookfrom, Vector3 lookat, Vector3 vup, float vfov, float 
   this->aspect = aspect;
   this->aperture = aperture;
   this->focus_dist = focus_dist;
+  this->time0 = time0;
+  this->time1 = time1;
   
-    this->time0 = time0;
-    this->time1 = time1;
-    lens_radius = aperture / 2;
-    float theta = vfov*M_PI/180.0;
-    float half_height = tan(theta/2);
-    float half_width = aspect * half_height;
-    origin = lookfrom;
-    w = unit_vector(lookfrom - lookat);
-    u = unit_vector(cross(vup, w));
-    v = cross(w, u);
+  lens_radius = aperture / 2;
+  float theta = vfov*M_PI/180.0;
+  float half_height = tan(theta/2);
+  float half_width = aspect * half_height;
+  origin = lookfrom;
+  w = normalize(lookfrom - lookat);
+  u = normalize(cross(vup, w));
+  v = cross(w, u);
     
-    lower_left_corner = origin - half_width*focus_dist*u - half_height*focus_dist*v - focus_dist*w;
-    horizontal = 2*half_width*focus_dist*u;
-    vertical = 2*half_height*focus_dist*v;
+  lower_left_corner = origin - half_width*focus_dist*u - half_height*focus_dist*v - focus_dist*w;
+  horizontal = 2*half_width*focus_dist*u;
+  vertical = 2*half_height*focus_dist*v;
 }
 
 Ray Camera::get_ray(float s, float t){

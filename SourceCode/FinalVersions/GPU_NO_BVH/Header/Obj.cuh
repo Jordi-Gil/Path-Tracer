@@ -24,7 +24,7 @@ class Obj {
 public:
     
   __host__  Obj() {}
-  __host__  Obj(int type, const std::string &filename, bool matB = false, Material m = Material());
+  __host__  Obj(int type, const std::string &filename, bool matB = false, Material m = Material(), int textureIndex = -1);
   __host__  void loadFromTXT(const std::string &filename);
   __host__  void loadFromObj(const std::string &filename);
   

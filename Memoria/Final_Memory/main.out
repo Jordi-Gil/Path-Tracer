@@ -49,10 +49,21 @@
 \BOOKMARK [2][-]{subsection.4.6.1}{Diffuse}{section.4.6}% 49
 \BOOKMARK [2][-]{subsection.4.6.2}{Metals}{section.4.6}% 50
 \BOOKMARK [2][-]{subsection.4.6.3}{Dielectrics}{section.4.6}% 51
-\BOOKMARK [2][-]{subsection.4.6.4}{Textures}{section.4.6}% 52
-\BOOKMARK [2][-]{subsection.4.6.5}{Skybox}{section.4.6}% 53
-\BOOKMARK [1][-]{section.4.7}{Acceleration Data Structures}{chapter.4}% 54
-\BOOKMARK [2][-]{subsection.4.7.1}{Bounding Volume Hierarchy}{section.4.7}% 55
-\BOOKMARK [1][-]{section.4.8}{Scene manager}{chapter.4}% 56
-\BOOKMARK [0][-]{section*.67}{Appendices}{}% 57
-\BOOKMARK [0][-]{Appendix.1.A}{Gantt Diagram}{}% 58
+\BOOKMARK [2][-]{subsection.4.6.4}{Diffuse light}{section.4.6}% 52
+\BOOKMARK [2][-]{subsection.4.6.5}{Textures}{section.4.6}% 53
+\BOOKMARK [2][-]{subsection.4.6.6}{Skybox}{section.4.6}% 54
+\BOOKMARK [1][-]{section.4.7}{Acceleration Data Structures}{chapter.4}% 55
+\BOOKMARK [2][-]{subsection.4.7.1}{Bounding Volume Hierarchy}{section.4.7}% 56
+\BOOKMARK [1][-]{section.4.8}{Scene manager}{chapter.4}% 57
+\BOOKMARK [1][-]{section.4.9}{Image Filters}{chapter.4}% 58
+\BOOKMARK [2][-]{subsection.4.9.1}{Mean Filter}{section.4.9}% 59
+\BOOKMARK [2][-]{subsection.4.9.2}{Median Filter}{section.4.9}% 60
+\BOOKMARK [2][-]{subsection.4.9.3}{Bilateral Filter}{section.4.9}% 61
+\BOOKMARK [1][-]{section.4.10}{Main program}{chapter.4}% 62
+\BOOKMARK [2][-]{subsection.4.10.1}{Applications parameters}{section.4.10}% 63
+\BOOKMARK [1][-]{section.4.11}{Renderer}{chapter.4}% 64
+\BOOKMARK [2][-]{subsection.4.11.1}{Sequential CPU}{section.4.11}% 65
+\BOOKMARK [2][-]{subsection.4.11.2}{Parallel CPU}{section.4.11}% 66
+\BOOKMARK [2][-]{subsection.4.11.3}{Parallel GPU}{section.4.11}% 67
+\BOOKMARK [0][-]{section*.78}{Appendices}{}% 68
+\BOOKMARK [0][-]{Appendix.a.A}{Gantt Diagram}{}% 69

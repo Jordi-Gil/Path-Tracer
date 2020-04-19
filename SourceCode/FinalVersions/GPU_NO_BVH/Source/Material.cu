@@ -1,20 +1,19 @@
 #include "Material.cuh"
 
 __host__ __device__ float schlick(float cosine, float ref_idx){
-  float r0 = (1-ref_idx) / (1+ref_idx);
-  r0 = r0*r0;
-  return r0 + (1-r0) * pow((1-cosine), 5);
+    float r0 = (1-ref_idx) / (1+ref_idx);
+    r0 = r0*r0;
+    return r0 + (1-r0) * pow((1-cosine), 5);
 }
 
 __host__ __device__ bool refract(const Vector3 &v, const Vector3 &n, float ni_over_nt, Vector3 &refracted) {
   
-  Vector3 uv = unit_vector(v);
+  Vector3 uv = normalize(v);
   float dt = dot(uv, n);
   float discriminant = 1.0 - ni_over_nt*ni_over_nt*(1-dt*dt);
 
   if(discriminant > 0){
     refracted = ni_over_nt*(uv - n*dt) - n*sqrt(discriminant);
-    
     return true;
   }
   else return false;
@@ -27,16 +26,22 @@ __host__ __device__ Vector3 reflect(const Vector3& v, const Vector3& n){
 __device__ Vector3 random_in_unit_sphere(curandState *random){
   Vector3 p;
   do{
-    p = 2.0*Vector3(curand_uniform(random), 
-                    curand_uniform(random),
-                    curand_uniform(random)
-                   ) - Vector3::One();
+    p = 2.0*Vector3(curand_uniform(random), curand_uniform(random), curand_uniform(random)) - Vector3::One();
   }
   while(p.squared_length() >= 1.0);
   return p;
 }
 
-__host__ __device__ Material::Material(int t, const Texture a, float f, float ri) {
+__device__ Vector3 random_on_unit_sphere(curandState *random){
+  Vector3 p;
+  do{
+    p = 2.0*Vector3(curand_uniform(random), curand_uniform(random), curand_uniform(random)) - Vector3::One();
+  }
+  while(p.squared_length() >= 1.0);
+  return normalize(p);
+}
+
+__host__ __device__ Material::Material(int t, Texture a, float f, float ri) {
   
   type = t;
   albedo = a;
@@ -45,49 +50,49 @@ __host__ __device__ Material::Material(int t, const Texture a, float f, float ri
   
 }
 
-__device__ bool Material::scatter(const Ray& r_in, const hit_record &rec, Vector3 &attenuation, Ray& scattered, curandState *random) {
+__device__ bool Material::scatter(const Ray& r_in, const hit_record &rec, Vector3 &attenuation, Ray& scattered, curandState *random, bool oneTex, unsigned char **d_textures) {
     
-  if(type == LAMBERTIAN) return Lambertian(rec, attenuation, scattered, random);
-  else if (type == METAL) return Metal(r_in, rec, attenuation, scattered, random);
-  else if (type == DIELECTRIC) return Dielectric(r_in, rec, attenuation, scattered, random);
+  if(type == LAMBERTIAN) return Lambertian(r_in, rec, attenuation, scattered, random, oneTex, d_textures);
+  else if (type == METAL) return Metal(r_in, rec, attenuation, scattered, random,oneTex, d_textures);
+  else if (type == DIELECTRIC) return Dielectric(r_in, rec, attenuation, scattered, random,oneTex, d_textures);
   else if(type == DIFFUSE_LIGHT) return false;
   else return false;
   
 }
 
-__device__ Vector3 Material::emitted(float u, float v){
-  if(type == DIFFUSE_LIGHT || type == SKYBOX) return albedo.value(u, v);
+__device__ Vector3 Material::emitted(float u, float v, bool oneTex, unsigned char **d_textures) {
+  if(type == DIFFUSE_LIGHT || type == SKYBOX) return albedo.value(u, v, oneTex, d_textures);
   else return Vector3::Zero();
 }
 
-__device__ bool Material::Lambertian(const hit_record &rec, Vector3 &attenuation, Ray &scattered, curandState *random) {
+__device__ bool Material::Lambertian(const Ray& r_in, const hit_record &rec, Vector3 &attenuation, Ray &scattered, curandState *random, bool oneTex, unsigned char **d_textures) {
 
   Vector3 target = rec.point + rec.normal + random_in_unit_sphere(random);
-
-  scattered = Ray(rec.point, target-rec.point);
-  attenuation = albedo.value(rec.u, rec.v);
-
+  
+  scattered = Ray(rec.point, target-rec.point, r_in.time());
+  attenuation = albedo.value(rec.u, rec.v, oneTex, d_textures);
+  
   return true;
 }
 
-__device__  bool Material::Metal(const Ray& r_in, const hit_record& rec, Vector3& attenuation, Ray& scattered, curandState *random) {
+__device__  bool Material::Metal(const Ray& r_in, const hit_record& rec, Vector3& attenuation, Ray& scattered, curandState *random, bool oneTex, unsigned char **d_textures) {
 
-  Vector3 reflected = reflect( unit_vector( r_in.direction()), rec.normal);
+  Vector3 reflected = reflect( normalize( r_in.direction()), rec.normal);
 
-  scattered = Ray(rec.point, reflected + fuzz*random_in_unit_sphere(random));
-  attenuation = albedo.value(rec.u, rec.v);
+  scattered = Ray(rec.point, reflected + fuzz*random_in_unit_sphere(random), r_in.time());
+  attenuation = albedo.value(rec.u, rec.v, oneTex, d_textures);
 
   return (dot(scattered.direction(), rec.normal) > 0);
     
 }
 
-__device__ bool Material::Dielectric(const Ray& r_in, const hit_record& rec, Vector3& attenuation, Ray& scattered, curandState *random) {
+__device__ bool Material::Dielectric(const Ray& r_in, const hit_record& rec, Vector3& attenuation, Ray& scattered, curandState *random, bool oneTex, unsigned char **d_textures) {
 
   Vector3 outward_normal;
   Vector3 reflected = reflect(r_in.direction(), rec.normal);
   
   float ni_over_nt;
-  attenuation = albedo.value(rec.u, rec.v);
+  attenuation = albedo.value(rec.u, rec.v, oneTex, d_textures);
   Vector3 refracted;
   float reflect_prob;
   float cosine;
@@ -127,8 +132,4 @@ __host__ __device__ const char *Material::getName(){
   else if (type == DIFFUSE_LIGHT) return "Diffuse Light";
   else return "none";
   
-}
-
-__host__ __device__ Texture Material::getTexture(){
-  return albedo;
 }

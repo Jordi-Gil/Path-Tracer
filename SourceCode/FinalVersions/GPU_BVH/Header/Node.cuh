@@ -11,7 +11,7 @@ public:
 
   __host__ __device__ Node();
   
-  __device__ bool checkCollision(const Ray& r, float tmin, float tmax, hit_record& rec);
+  __device__ bool intersect(const Ray& r, float tmin, float tmax, hit_record& rec);
 
   Node *left;   // Left child
   Node *right;  // Right child
@@ -20,6 +20,8 @@ public:
   Triangle *obj;
   aabb box;
   bool isLeaf = false;
+  bool isRight = false;
+  bool isLeft = false;
 
 };
 

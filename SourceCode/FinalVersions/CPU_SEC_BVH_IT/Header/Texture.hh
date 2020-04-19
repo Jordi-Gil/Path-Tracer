@@ -12,12 +12,12 @@ class Texture {
 public:
     
   Texture() {}
-  Texture(int t, const Vector3 &a = Vector3::One(), unsigned char *data = 0, int sx = -1, int sy = -1, bool _fH = false, bool _fV = false, bool _flipUV = false);
+  Texture(int t, const Vector3 &a = Vector3::One(), unsigned char *data = 0, int sx = -1, int sy = -1, int _textureIndex = -1, bool _fH = false, bool _fV = false, bool _flipUV = false);
   
-  Vector3 value(float u, float v);
-  Vector3 imValue(float u, float v);
+  Vector3 value(float u, float v, bool oneTex = false, unsigned char **d_textures = 0);
+  Vector3 imValue(float u, float v, bool oneTex, unsigned char **d_textures);
   
-private:  
+private:
   
   int type;
   Vector3 albedo;
@@ -25,7 +25,7 @@ private:
   int nx;
   int ny;
   bool flipHorizontal, flipVertical, flipUV;
+  int textureIndex;
 };
-
 
 #endif /* _TEXTURE_HH_INCLUDE */

@@ -15,8 +15,8 @@ public:
   __host__ __device__ void bounding_box(aabb& box);
   __host__ __device__ void setMorton(long long code);
   
-  __host__ __device__ Vector3 getCenter();
   __host__ __device__ float getRadius();
+  __host__ __device__ Vector3 getCenter();
   __host__ __device__ Material getMaterial();
   __host__ __device__ long long getMorton();
   __host__ __device__ aabb getBox();
