@@ -618,8 +618,16 @@ int main(int argc, char **argv) {
   cudaMemset(d_nodeCounter, 0, sizeof(int)*size - 1);
   cudaMalloc((void **)&d_skybox, sizeof(Skybox));
   
-  std::cout << "Binding textures" << std::endl;
   if(num_textures > 0){
+    int count = 0;
+    for(int i = 0; i < num_textures; i++){
+      Vector3 p = textureSizes[i];
+      count += (p[0]*p[1]*p[2]);
+    }
+    
+    h_textures = (unsigned char **) malloc(sizeof(unsigned char)*count);
+    
+    std::cout << "Binding textures" << std::endl;
     for(int i = 0; i < num_textures; i++){
       std::cout << "Texture " << i << std::endl;
       
@@ -632,12 +640,6 @@ int main(int argc, char **argv) {
     
     cudaMalloc(&d_textures, sizeof(unsigned char *) * num_textures);
     cudaMemcpy(d_textures, h_textures, sizeof(unsigned char*) * num_textures, cudaMemcpyHostToDevice);
-  }
-
-  if(!oneTex){
-    for(int i = 0; i < size; i++){
-      h_objects[i].hostToDevice(0);
-    }
   }
   
   h_skybox->hostToDevice(0);
@@ -718,7 +720,7 @@ int main(int argc, char **argv) {
   cudaEventDestroy(E0);
   cudaEventDestroy(E1);
   
-  image = "../Resources/Images/GPU_BVH_IT_1_GPU/"+image;
+  image = "../Resources/Images/GPU_BVH_IT/"+image;
   
   stbi_write_png(image.c_str(), nx, ny, 3, data, nx*3);
 

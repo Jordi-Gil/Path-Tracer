@@ -184,7 +184,6 @@ void bilateralFilter(int diameter, int nx, int ny, unsigned char *image, unsigne
   for(int i = 0; i < ny; i++){
     for(int j = 0; j < nx; j++){
 
-      
       Vector3 color = bilateralConvolution(i, j, Vector3(getColor255(image, nx, i, j, 0),getColor255(image, nx, i, j, 1),getColor255(image, nx, i, j, 2)), diameter, sd, sr, nx, ny, image);
       
       imageFiltered[i*nx*3 + j*3 + 0] = color[0]; 

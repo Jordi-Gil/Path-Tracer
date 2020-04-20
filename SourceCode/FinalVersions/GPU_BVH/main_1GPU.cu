@@ -205,7 +205,7 @@ void properties(){
   cudaGetDevice(&device);
 
   cudaDeviceProp properties;
-  //checkCudaErrors( cudaDeviceSetLimit( cudaLimitMallocHeapSize, 67108864 ) );
+  checkCudaErrors( cudaDeviceSetLimit( cudaLimitMallocHeapSize, 67108864 ) );
   checkCudaErrors( cudaDeviceSetLimit( cudaLimitStackSize, 131072 ) );
   checkCudaErrors( cudaGetDeviceProperties( &properties, device ) );
 
@@ -375,7 +375,7 @@ __global__ void initLeafNodes(Node *leafNodes, int objs, Triangle *d_list) {
 
 }
 
-__global__ void boundingBoxBVH(Node *d_internalNodes, Node *d_leafNodes, int objs, int nodes, int *nodeCounter) {
+__global__ void boundingBoxBVH(Node *d_internalNodes, Node *d_leafNodes, int objs, int *nodeCounter) {
     
   int idx = blockIdx.x*blockDim.x + threadIdx.x;
   
@@ -553,15 +553,13 @@ int main(int argc, char **argv) {
   float drand_size = num_pixels*sizeof(curandState);
   float cam_size = sizeof(Camera*);
   Vector3 *h_frameBuffer;
-  Node *h_internalNodes;
-  int *h_nodeCounter;
 
   int blocks = (nx * ny)/(numGPUs * nthreads);
 
   /* Create world */
   Scene scene(dist, nx, ny);
   if(random) scene.loadScene(TRIANGL);
-  else scene.loadScene(FFILE,filename);
+  else scene.loadScene(FFILE,filename,oneTex);
 	
 	Triangle *h_objects = scene.getObjects();
   Skybox *h_skybox = scene.getSkybox();
@@ -574,8 +572,7 @@ int main(int argc, char **argv) {
     num_textures = scene.getNumTextures();
   }
   
-	size = scene.getSize();
-	
+  size = scene.getSize();
   float ob_size = size*sizeof(Triangle);
 
   int threads = nthreads;
@@ -604,8 +601,6 @@ int main(int argc, char **argv) {
   
   /* Allocate Memory Host */
   cudaMallocHost((Vector3**)&h_frameBuffer, fb_size);
-  cudaMallocHost((Node **)&h_internalNodes, internal_size);
-  cudaMallocHost((int **) &h_nodeCounter, sizeof(int)*size);
 
   /* Allocate memory on Device */
   cudaMallocManaged((void **)&d_frameBuffer, fb_size);
@@ -618,8 +613,16 @@ int main(int argc, char **argv) {
   cudaMemset(d_nodeCounter, 0, sizeof(int)*size - 1);
   cudaMalloc((void **)&d_skybox, sizeof(Skybox));
 
-  std::cout << "Binding textures" << std::endl;
   if(num_textures > 0){
+    int count = 0;
+    for(int i = 0; i < num_textures; i++){
+      Vector3 p = textureSizes[i];
+      count += (p[0]*p[1]*p[2]);
+    }
+    
+    h_textures = (unsigned char **) malloc(sizeof(unsigned char)*count);
+    
+    std::cout << "Binding textures" << std::endl;
     for(int i = 0; i < num_textures; i++){
       std::cout << "Texture " << i << std::endl;
       
@@ -670,7 +673,7 @@ int main(int argc, char **argv) {
 //   checkCudaErrors(cudaGetLastError());
   
   std::cout << "boundingBoxBVH..." << std::endl;
-  boundingBoxBVH<<<blocks2,threads>>>(d_internalNodes, d_leafNodes, size, size*2-1, d_nodeCounter);
+  boundingBoxBVH<<<blocks2,threads>>>(d_internalNodes, d_leafNodes, size, d_nodeCounter);
   checkCudaErrors(cudaGetLastError());
   
   std::cout << "Rendering..." << std::endl;
@@ -723,7 +726,7 @@ int main(int argc, char **argv) {
   cudaEventDestroy(E0);
   cudaEventDestroy(E1);
   
-  image = "../Resources/Images/GPU_BVH_1_GPU/"+image;
+  image = "../Resources/Images/GPU_BVH/"+image;
   
   stbi_write_png(image.c_str(), nx, ny, 3, data, nx*3);
 
@@ -732,7 +735,7 @@ int main(int argc, char **argv) {
     std::string filenameFiltered = image.substr(0, image.length()-4) + "_bilateral_filter.png";
     int sx, sy, sc;
     unsigned char *imageData = stbi_load(image.c_str(), &sx, &sy, &sc, 0);
-    unsigned char *imageFiltered = new unsigned char[sx*sy*3];;
+    unsigned char *imageFiltered = new unsigned char[sx*sy*3];
     
     bilateralFilter(diameterBi, sx, sy, imageData, imageFiltered, gs, gr);
     stbi_write_png(filenameFiltered.c_str(), sx, sy, 3, imageFiltered, sx*3);

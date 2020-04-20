@@ -13,7 +13,7 @@ HEADERDIR = Header
 SOURCEDIR = Source
 
 # Gencode arguments
-SMS ?= 35
+SMS ?= 75
 
 ifeq ($(SMS),)
 $(info >>> WARNING - no SM architectures have been specified - waiving sample <<<)

@@ -408,6 +408,15 @@ int main(int argc, char **argv) {
   
   std::cout << "Binding textures" << std::endl;
   if(num_textures > 0){
+    int count = 0;
+    for(int i = 0; i < num_textures; i++){
+      Vector3 p = textureSizes[i];
+      count += (p[0]*p[1]*p[2]);
+    }
+    
+    h_textures = (unsigned char **) malloc(sizeof(unsigned char)*count);
+    
+    std::cout << "Binding textures" << std::endl;
     for(int i = 0; i < num_textures; i++){
       std::cout << "Texture " << i << std::endl;
       
@@ -485,6 +494,7 @@ int main(int argc, char **argv) {
   cudaFree(d_objects);
   cudaFree(d_rand_state);
   cudaFree(d_frameBuffer);
+  cudaFree(d_textures);
   
   cudaEventDestroy(E0);
   cudaEventDestroy(E1);
