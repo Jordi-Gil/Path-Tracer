@@ -1739,5 +1739,98 @@
     \field{year}{2017}
     \warn{\item Invalid format of field 'month'}
   \endentry
+
+  \entry{Ashikhmin2000}{article}{}
+    \name{author}{2}{}{%
+      {{hash=AM}{%
+         family={Ashikhmin},
+         familyi={A\bibinitperiod},
+         given={Michael},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=SP}{%
+         family={Shirley},
+         familyi={S\bibinitperiod},
+         given={Peter},
+         giveni={P\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{AM+1}
+    \strng{fullhash}{AMSP1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2000}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    We present a BRDF model that combines several advantages of the various
+  empirical models currently in use. In particular, it has intuitive
+  parameters, is anisotropic, conserves energy, is reciprocal, has an
+  appropriate non-Lambertian diffuse term, and is well-suited for use in Monte
+  Carlo renderers.%
+    }
+    \verb{doi}
+    \verb 10.1080/10867651.2000.10487522
+    \endverb
+    \field{issn}{1086-7651}
+    \field{number}{2}
+    \field{pages}{25\bibrangedash 32}
+    \field{title}{{An Anisotropic Phong BRDF Model}}
+    \field{volume}{5}
+    \field{journaltitle}{Journal of Graphics Tools}
+    \field{year}{2000}
+  \endentry
+
+  \entry{Oren1994}{inproceedings}{}
+    \name{author}{2}{}{%
+      {{hash=OM}{%
+         family={Oren},
+         familyi={O\bibinitperiod},
+         given={Michael},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=NSK}{%
+         family={Nayar},
+         familyi={N\bibinitperiod},
+         given={Shree\bibnamedelima K.},
+         giveni={S\bibinitperiod\bibinitdelim K\bibinitperiod},
+      }}%
+    }
+    \keyw{BRDF,Lambert's model,Moon reflectance,Reflection models,Rough
+  surfaces}
+    \strng{namehash}{OM+1}
+    \strng{fullhash}{OMNSK1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1994}
+    \field{labeldatesource}{year}
+    \field{abstract}{%
+    Lambert's model for body reflection is widely used in computer graphics. It
+  is used extensively by rendering techniques such as radiosity and ray
+  tracing. For several real-world objects, however, Lambert's model can prove
+  to be a very inaccurate approximation to the body reflectance. While the
+  brightness of a Lambertian surface is independent of viewing direction, that
+  of a rough surface increases as the viewing direction approaches the light
+  source direction. In this paper, a comprehensive model is developed that
+  predicts body reflectance from rough surfaces. The surface is modeled as a
+  collection of Lambertian facets. It is shown that such a surface is
+  inherently non-Lambertian due to the foreshortening of the surface facets.
+  Further, the model accounts for complex geometric and radiometric phenomena
+  such as masking, shadowing, and interreflections between facets. Several
+  experiments have been conducted on samples of rough diffuse surfaces, such
+  as, plaster, sand, clay, and cloth. All these surfaces demonstrate
+  significant deviation from Lambertian behavior. The reflectance measurements
+  obtained are in strong agreement with the reflectance predicted by the
+  model.%
+    }
+    \field{booktitle}{Proceedings of the 21st Annual Conference on Computer
+  Graphics and Interactive Techniques, SIGGRAPH 1994}
+    \verb{doi}
+    \verb 10.1145/192161.192213
+    \endverb
+    \field{isbn}{0897916670}
+    \field{pages}{239\bibrangedash 246}
+    \field{title}{{Generalization of Lambert's reflectance model}}
+    \field{year}{1994}
+  \endentry
 \enddatalist
 \endinput

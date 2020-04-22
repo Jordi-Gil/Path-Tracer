@@ -196,19 +196,24 @@ void check_cuda(cudaError_t result, char const *const func, const char *const fi
   }
 }
 
-void properties(){
+void properties(int numGPUs){
     
   std::cout << "GPU Info " << std::endl;
-
-  cudaSetDevice(0);
   int device;
-  cudaGetDevice(&device);
+	for(int i = 0; i < numGPUs; i++){
+		cudaSetDevice(i);
 
-  cudaDeviceProp properties;
-  checkCudaErrors( cudaDeviceSetLimit( cudaLimitMallocHeapSize, 67108864 ) );
-  checkCudaErrors( cudaDeviceSetLimit( cudaLimitStackSize, 131072 ) );
-  checkCudaErrors( cudaGetDeviceProperties( &properties, device ) );
-
+		checkCudaErrors( cudaDeviceSetLimit( cudaLimitMallocHeapSize, 67108864 ) );
+		checkCudaErrors( cudaDeviceSetLimit( cudaLimitStackSize, 131072 ) );
+		
+	}
+	cudaSetDevice(0);
+	cudaGetDevice(&device);
+	cudaDeviceProp properties;
+	checkCudaErrors( cudaGetDeviceProperties( &properties, device ) );
+	
+	cudaGetDevice(&device);
+	
   size_t limit1;
   checkCudaErrors( cudaDeviceGetLimit( &limit1, cudaLimitMallocHeapSize ) );
   size_t limit2;
@@ -524,8 +529,6 @@ __global__ void checkBVH(Node *d_internalNodes, Node *d_leaves, int objs){
 int main(int argc, char **argv) {
     
   cudaDeviceReset();
-  
-  properties();
 
   float totalTime;
 
@@ -533,10 +536,13 @@ int main(int argc, char **argv) {
   bool light, random, filter, skybox, oneTex;
   float gs, gr;
   std::string filename, image;
+  
   int countG;
   checkCudaErrors(cudaGetDeviceCount(&countG));
 
   parse_argv(argc, argv, nx, ny, ns, depth, dist, image, filename, light, random, filter, diameterBi, gs, gr, diameterMean, diameterMedian, skybox, oneTex, nthreads, numGPUs, countG);
+
+	properties(numGPUs);
 
   /* Seed for CUDA cuRandom */
   unsigned long long int seed = 1000;
@@ -577,7 +583,7 @@ int main(int argc, char **argv) {
   
   int threads = nthreads;
   while(size < threads) threads /= 2;
-  int blocks2 = (size+threads-1)/(numGPUs * threads);
+  int blocks2 = (size+threads-1)/(threads);
   
   std::cout << "Creating " << image << " with (" << nx << "," << ny << ") pixels with " << nthreads << " threads, using " << numGPUs << " GPUs." << std::endl;
   std::cout << "With " << ns << " iterations for AntiAliasing and depth of " << depth << "." << std::endl;
@@ -620,42 +626,31 @@ int main(int argc, char **argv) {
       Vector3 p = textureSizes[i];
       count += (p[0]*p[1]*p[2]);
     }
+    for(int j = 0; j < numGPUs; j++){
+			cudaSetDevice(j);
+			h_textures = (unsigned char **) malloc(sizeof(unsigned char)*count);
     
-    h_textures = (unsigned char **) malloc(sizeof(unsigned char)*count);
-    
-    std::cout << "Binding textures" << std::endl;
-    for(int i = 0; i < num_textures; i++){
-      std::cout << "Texture " << i << std::endl;
+			std::cout << "Binding textures" << std::endl;
+			for(int i = 0; i < num_textures; i++){
+				std::cout << "Texture " << i << std::endl;
       
-      Vector3 p = textureSizes[i];
-      unsigned char *image = textures[i];
+				Vector3 p = textureSizes[i];
+				unsigned char *image = textures[i];
         
-      cudaMalloc((void**)&h_textures[i], sizeof(unsigned char)*p[0]*p[1]*p[2]);
-      cudaMemcpy(h_textures[i], image, sizeof(unsigned char)*p[0]*p[1]*p[2], cudaMemcpyHostToDevice);
-      checkCudaErrors(cudaGetLastError());
+				cudaMalloc((void**)&h_textures[i], sizeof(unsigned char)*p[0]*p[1]*p[2]);
+				cudaMemcpy(h_textures[i], image, sizeof(unsigned char)*p[0]*p[1]*p[2], cudaMemcpyHostToDevice);
+			}
+    
+			cudaMalloc(&d_textures[j], sizeof(unsigned char *) * num_textures);
+			cudaMemcpy(d_textures[j], h_textures, sizeof(unsigned char*) * num_textures, cudaMemcpyHostToDevice);
+			checkCudaErrors(cudaGetLastError());
     }
     
-    cudaMalloc((void **)&d_textures[0], sizeof(unsigned char *) * num_textures);
-    cudaMemcpy(d_textures[0], h_textures, sizeof(unsigned char*) * num_textures, cudaMemcpyHostToDevice);
-    checkCudaErrors(cudaGetLastError());
-    
-    for(int i = 1; i < numGPUs; i++){
-      cudaSetDevice(i);
-      
-      unsigned char **texturesD;
-      
-      cudaMalloc((void **)&texturesD, sizeof(unsigned char *) * num_textures);
-      
-      d_textures[i] = texturesD;
-      
-      cudaMemcpy(d_textures[i], d_textures[0], sizeof(unsigned char*) * num_textures, cudaMemcpyDeviceToDevice);
-      checkCudaErrors(cudaGetLastError());
-    }
   }
 
   if(!oneTex){
     for(int i = 0; i < size; i++){
-      h_objects[i].hostToDevice(0);
+      h_objects[i].hostToDevice(i);
     }
   }
   
@@ -699,7 +694,7 @@ int main(int argc, char **argv) {
 
     cudaSetDevice(i);
   
-    h_skybox->hostToDevice(0);
+    h_skybox->hostToDevice(i);
   
     cudaMemcpy(d_objectsGPUs[i], h_objects, ob_size, cudaMemcpyHostToDevice);
     checkCudaErrors(cudaGetLastError());
@@ -719,14 +714,17 @@ int main(int argc, char **argv) {
     render_init<<<blocks, nthreads>>>(nx, ny, d_randstates[i], seed, i*(ny/numGPUs), (i+1)*(ny/numGPUs));
     checkCudaErrors(cudaGetLastError());
     
-    initLeafNodes<<<blocks2, nthreads>>>(d_leafNodes[i], size, d_objectsGPUs[i]);
+    initLeafNodes<<<blocks2, threads>>>(d_leafNodes[i], size, d_objectsGPUs[i]);
     checkCudaErrors(cudaGetLastError());
     
-    constructBVH<<<blocks2, nthreads>>>(d_internalNodes[i], d_leafNodes[i], size-1, d_objectsGPUs[i]);
+    constructBVH<<<blocks2, threads>>>(d_internalNodes[i], d_leafNodes[i], size-1, d_objectsGPUs[i]);
     checkCudaErrors(cudaGetLastError());
     
-    boundingBoxBVH<<<blocks2, nthreads>>>(d_internalNodes[i], d_leafNodes[i], size, d_nodeCounters[i]);
+    boundingBoxBVH<<<blocks2, threads>>>(d_internalNodes[i], d_leafNodes[i], size, d_nodeCounters[i]);
     checkCudaErrors(cudaGetLastError());
+    
+		//checkBVH<<<1,1>>>(d_internalNodes[i], d_leafNodes[i], size);
+		//checkCudaErrors(cudaGetLastError());
     
     render<<<blocks, nthreads>>>(d_frames[i], nx, ny, ns, d_cameras[i], d_internalNodes[i], d_randstates[i], depth, light, skybox, d_skyboxes[i], oneTex, d_textures[i], i*(ny/numGPUs), (i+1)*(ny/numGPUs));
     checkCudaErrors(cudaGetLastError());
@@ -736,7 +734,6 @@ int main(int argc, char **argv) {
   /* Copiamos del Device al Host*/
   
   for(int i = 0; i < numGPUs; i++) {
-    
     cudaSetDevice(i);
     
     cudaMemcpyAsync(&h_frameBuffer[elementsToJump*i], d_frames[i], bytesToJump, cudaMemcpyDeviceToHost);
@@ -750,7 +747,8 @@ int main(int argc, char **argv) {
     cudaDeviceSynchronize();
     
   }
-
+ 
+  
   cudaSetDevice(0);
   
   cudaEventRecord(E1,0);
@@ -786,8 +784,8 @@ int main(int argc, char **argv) {
       data[count++] = ib;
     }
   }
-    
-  for(int i = 0; i < numGPUs; i++) {
+  
+	for(int i = 0; i < numGPUs; i++) {
     cudaSetDevice(i);
 
     cudaFree(d_cameras[i]);
@@ -797,8 +795,6 @@ int main(int argc, char **argv) {
     cudaFree(d_skyboxes[i]);
     cudaFree(d_leafNodes[i]);
     cudaFree(d_internalNodes[i]);
-    cudaFree(d_textures[i]);
-
   }
   
   image = "../Resources/Images/GPU_BVH_IT_"+std::to_string(numGPUs)+"_GPU/"+image;

@@ -1,0 +1,26 @@
+Loading scene...
+
+Scene file from cornell_normal.txt
+plane.obj Center: 0 0 0
+plane.obj Center: 0 0 0
+plane.obj Center: 0 0 0
+plane.obj Center: 0 0 0
+plane.obj Center: 0 0 0
+plane.obj Center: 0 0 0
+untitled.obj Center: 0 0 4.76837e-07
+untitled.obj Center: 0 0 4.76837e-07
+untitled.obj Center: 0 0 4.76837e-07
+Real size 48
+Max 1 1 1 Min -1 -1 -1
+Scene loaded
+
+BVH created in 0.001625 seconds
+Creating cornell_normal.png with (850,480) pixels.
+With 1 iterations for AntiAliasing and depth of 30.
+The world have 48 objects.
+Ambient light ON
+Creating image...
+Image created in 9.01196 seconds
+Filtering image using bilateral filter with Gs = 15 and Gr = 6 and window of diameter 11
+Filtering image using median filter  with window of diameter 3
+Filtering image using mean filter with window of diameter 3

@@ -1,16 +1,10 @@
 #!/bin/bash
-export PATH=/Soft/cuda/8.0.61/bin:$PATH
 
-### Directivas para el gestor de colas
-# Asegurar que el job se ejecuta en el directorio actual
-#$ -cwd
-# Asegurar que el job mantiene las variables de entorno del shell lamador
-#$ -V
-# Cambiar el nombre del job
-#$ -N PathTracing_1GPU 
-# Cambiar el shell
-#$ -S /bin/bash
+for i in 200
+do
+  
+  echo "$i sample(s)"
+  
+./path_tracing_1GPU -filter 11 15 6 3 3 -f cornell_deer_textures -depth 30 -light ON -sizeX 850 -sizeY 480 -skybox ON -oneTex ON -AAit $i > "time_"$i"_32_cornell_deer_textures.txt" 2> "error.txt"
 
-
-./path_tracing_1GPU -filter 11 15 6 -f cornell2 -depth 10 -light ON -sizeX 640 -sizeY 360 -skybox OFF
-./path_tracing_1GPU -filter 11 15 6 -f little -depth 10 -light ON -sizeX 640 -sizeY 360 -skybox ON
+done

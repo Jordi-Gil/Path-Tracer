@@ -1,0 +1,26 @@
+Loading scene...
+
+Scene file from cornell_deer_textures.txt
+plane.obj Center: 0 0 0
+plane.obj Center: 0 0 0
+plane.obj Center: 0 0 0
+plane.obj Center: 0 0 0
+plane.obj Center: 0 0 0
+plane.obj Center: 0 0 0
+untitled.obj Center: 0 0 4.76837e-07
+deer.obj Center: -46.8914 730.037 0.525864
+deer.obj Center: -46.8914 730.037 0.525864
+Real size 3040
+Max 568.287 1453.48 369.518 Min -662.07 -1 -368.466
+Scene loaded
+
+BVH created in 0.004091 seconds
+Creating cornell_deer_textures.png with (850,480) pixels.
+With 100 iterations for AntiAliasing and depth of 30.
+The world have 3040 objects.
+Ambient light ON
+Creating image...
+Image created in 1406.53 seconds
+Filtering image using bilateral filter with Gs = 15 and Gr = 6 and window of diameter 11
+Filtering image using median filter  with window of diameter 3
+Filtering image using mean filter with window of diameter 3

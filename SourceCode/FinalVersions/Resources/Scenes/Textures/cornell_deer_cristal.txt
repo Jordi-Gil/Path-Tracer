@@ -14,5 +14,5 @@ ns            0 nt           0 no      10
 3 1 m D CONSTANT 1 1 1 1.7 square t center t 6 0 0 s u 4
 
 3 0 m DL CONSTANT 1 1 1 untitled t center s nu 1 1 2 t 4 4.5 0
-3 0 m D CONSTANT 0.831372549 0.686274509 0.215686274 1.5 deer t center t -44 726 -1 s u 0.0035
+3 0 m D CONSTANT 0.8275 0.8275 0.8275 1.5 deer t center t -44 726 -1 s u 0.0035
 3 0 m L CONSTANT 0.831372549 0.686274509 0.215686274 deer t center t -44 726 2 s u 0.0035

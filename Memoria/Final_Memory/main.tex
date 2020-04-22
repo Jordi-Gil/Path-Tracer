@@ -7,9 +7,51 @@
 \iftrue
 \input{./includes/title.tex}
 \newpage
+\thispagestyle{empty}
+\section*{Acknowledgement}
+
+First of all I would like to deeply thank Antonio Chica, my project director, for accompanying me in this wonderful and stressful adventure that is the Final Degree Project. When we first talked about doing the FDP together was open to many proposals and it was thanks to their recommendation of Peter Shirley's books and their completion of the Graphics Cards and Accelerators (TGA) course that we were able to define the project.  Secondly, I would like to thank Professor Agustín Fernández, my TGA teacher and member of the "Departament d'Arquitectura de Computadors". Without having any responsibility he moved to get me access to the BOADA cluster. Also, for showing me the way when I was stuck in the CUDA version. To both of you I want to thank you very much for all the patience and enthusiasm you have dedicated to me over the last year.
+
+Finally, I would like to thank all my family and friends for their patience and moral support during the hardest times. I would also like to thank Dawn McRobbie for helping me prepare this project in English.
+
+
+\selectlanguage{english}
+\begin{abstract}
+The field of realistic rendering has been investigated for many years. We have different methods capable of creating images with a high degree of realism, such as Ray Tracing, Path Tracing, Photon Mapping or Metropolis Light Transport. Except for Ray Tracing, the rest of the cited methods try to solve the Rendering Equation by approximations (it is impossible to calculate it completely because we would need time and infinite computing power). Thanks to being able to approximate this equation, effects can be achieved naturally, without needing any post-processing, such as motion blur, depth of field, caustics, etc.
+
+The method that we will implement and study is Path Tracing. We will make several versions of this method with which we will explore which architecture (GPU or CPU) gives us a greater advantage in terms of performance for our algorithm. For this, we will have different machines, one with the last generation hardware, one with cheaper hardware and the last machine with hardware thought for a professional environment.
+
+It is very usual that the applications that implement this method are assisted by accelerating structures that allow improving in a very notable way the performance of this one.  For this same reason, we will implement a Bounding Volume Hierarchy, a tree-type structure, to represent our scene and thus increase performance. We will study how to go through it in two different ways, one recursive much more natural in this type of structure and another iterative, to see how it affects the performance of the application on the GPU. It's well known that the GPU is not optimal for recursive functions.
+
+Finally, we'll implement a set of denoising filters. Path tracing produces very noisy images when using a few samples per pixel, so the use of denoising filters is very common. This will also help us find a balance between the number of samples per pixel and the need for post-filtering of the output image.
+\end{abstract}
+
+\selectlanguage{catalan}
+\begin{abstract}
+Fa molts anys que es realitza recerca al camp de la renderització realista. Tenim diversos mètodes capaços d’aconseguir imatges amb un gran grau de realisme, com pot ser Ray Tracing, Path Tracing, Photon Mapping o Metropolis Light Transport. A excepció del Ray Tracing, la resta de mètodes tracten de resoldre l'Equació de Renderitzat mitjançant aproximacions (és impossible calcular-la íntegrament, ja que necessitaríem temps i potència de càlcul infinita). Gràcies a poder aproximar aquesta equació es poden aconseguir efectes de forma natural, sense necessitat d’un postprocessat, com motion blur, depth of field, càustiques, etc.
+
+El mètode que implementarem i estudiarem és el Path Tracing. Realitzarem diverses versions d’aquest mètode amb les quals podrem explorar quina arquitectura (GPU o CPU) ens ofereix una major avantatge pel que fa al rendiment per al nostre algoritme. Per això comptarem amb diverses màquines, una amb un hardware d’última generació, una amb un hardware més econòmic i una última màquina pensada per un entorn professional.
+
+És molt usual que les aplicacions que implementen aquest mètode s’utilitzen d’estructures de dades que permeten millorar de forma molt notable el rendiment d’aquesta. Per aquesta raó, implementarem una Bounding Volume Hierarchy, un estructura de tipus arbre, per a la representació de l'escena i així augmentar el rendiment. Estudiarem com recorre-la de dues formes diferents, una recursiva molt més natural en aquest tipus d'estructures i un altre iterativa, per veure com afecta al rendiment de l’aplicació en la GPU. És ben sabut que les funcions recursives no són gens òptimes a la GPU.
+
+Per últim, implementarem un seguit de filtres d’eliminació de soroll. El mètode de Path Tracing produeix imatges molt sorolloses si s’utilitzen poques mostres per píxel, per això l’ús de filtres d’eliminació de soroll és molt comú. Això ens permetrà trobar un equilibri entre el nombre de mostres per píxel i la necessitat d’un postfiltratge de la imatge resultant.
+
+\end{abstract}
+
+\selectlanguage{spanish}
+\begin{abstract}
+Desde hace muchos años se lleva investigando el campo de renderización realista. Tenemos diferentes métodos capaces de conseguir imágenes con un gran grado de realismo, como por ejemplo Ray Tracing, Path Tracing, Photon Mapping o Metropolis Light Transport. A excepción del Ray Tracing, el resto de métodos mencionados tratan de resolver la Ecuación de Renderizado mediante aproximaciones (es imposible calcularla íntegramente, debido a que necesitaríamos tiempo y potencia de cálculo infinita). Gracias a poder aproximar esta ecuación se pueden conseguir efectos de forma natural, sin necesidad de post-procesado, como motion blur, depth of field, cáusticas, etc.
+
+El método que implementaremos y estudiaremos es el Path Tracing. Realizaremos varias versiones de este método con las que exploraremos que arquitectura (GPU o CPU) nos proporciona una mayor ventaja en cuanto a rendimiento para nuestro algoritmo. Para ello contaremos con diferentes maquinas, una con un hardware de última generación, una con un hardware más económico y la última maquina con hardware pensado para un entorno profesional.
+
+Es muy usual que las aplicaciones que implementan este método se utilizan de estructuras aceleradoras que permiten mejorar de forma muy notable el rendimiento de esta. Por esto mismo, implementaremos una Bounding Volume Hierarchy, una estructura de tipo árbol, para representar nuestra escena y aumentar así el rendimiento. Estudiaremos como recorrerla de dos formas diferentes, una recursiva mucho más natural en este tipo de estructuras y otra iterativa, para ver como afecta al rendimiento de la aplicación en la GPU. Es bien sabido que en la GPU las funciones recursivas no son óptimas.
+
+Por último, implementaremos una serie de filtros de eliminación de ruido. El método de Path Tracing produce imágenes muy ruidosas si se utilizan pocas muestras por píxel, por lo que el uso de filtros de eliminación de ruido es muy común. Esto también nos ayudará a encontrar un equilibrio entre el número de muestras por píxel y la necesidad de un post-filtrado de la imagen resultante.
+
+\end{abstract}
+\selectlanguage{english}
 \tableofcontents*
 \fi
-
 \newpage
 
 \chapter{Contextualization and Scope of the project}
@@ -18,7 +60,7 @@
 
 Nowadays, the images generated by computers are very present in both a work and entertainment environment. The creation of realistic images through computer programs has become a necessity. Industries like the film or video games need algorithms capable of representing the real world in a virtual one and, whenever possible, in the shortest possible time.
 
-The study about methods that allow rendering realistic images is not new. Between the early and mid 70s, the first papers about the simulation of light and colours over the surface of three-dimensional models began to be published. To understand how these methods work, we have to keep in mind the common representation of 3D models.
+The study about methods that allow rendering realistic images is not new. Between the early and mid-70s, the first papers about the simulation of light and colours over the surface of three-dimensional models began to be published. To understand how these methods work, we have to keep in mind the common representation of 3D models.
 
 To represent a 3D model it uses a ''polygon mesh'', commonly known as a triangle mesh because, the triangle, is the most used polygon. This mesh consists of a set of vertices connected through edges and creating faces.  For all face, we can define an orthogonal normal vector. In Figure \ref{dolphin} we can see an example of a 3D model represented by a triangle mesh.
 
@@ -29,7 +71,7 @@ To represent a 3D model it uses a ''polygon mesh'', commonly known as a triangle
 	\label{dolphin}
 \end{figure}
 
-Returning to lighting calculation methods, the simplest is the \textit{Flat Shading}. This method only uses one of all the vertices that make it up and her normal to determine the colour of each face of our mesh. In a mesh represented by triangles, it's commonly using the centroid of the triangle. The colour it's interpolated for each vertex. Every face is computed independently and this produces a visual difference result between continuous faces. In Figure \ref{flat:shading} we can see an object rendered using this method. We might think that adding more vertices improve the results, but is not the solution because when more vertices have our meshes, more memory is required and the problem would not be solved. If we zoomed in at the 3D model, we would see the same effect (known as Mach bands) \citep[pp.~5245--5250]{Lotto1999}.
+Returning to lighting calculation methods, the simplest is the \textit{Flat Shading}. This method only uses one of all the vertices that make it up and her normal to determine the colour of each face of our mesh. In a mesh represented by triangles, it's commonly using the centroid of the triangle. The colour it's interpolated for each vertex. Every face is computed independently, and this produces a visual difference result between continuous faces. In Figure \ref{flat:shading}, we can see an object rendered using this method. We might think that adding more vertices improve the results, but is not the solution because when more vertices have our meshes, more memory is required and the problem would not be solved. Also, if we zoomed in at the 3D model, we would see the same effect (known as Mach bands) \citep[pp.~5245--5250]{Lotto1999}.
 
 \begin{figure}[H]
 	\centering
@@ -38,8 +80,7 @@ Returning to lighting calculation methods, the simplest is the \textit{Flat Shad
 	\label{flat:shading}
 \end{figure}
 
-In the smooth shading methods, the colour change between pixels instead of faces. The result is a smooth transition of colour between adjacent faces.
-In 1971 Henri Gouraud presents us in his paper \textit{Continuous Shading of Curved Surfaces} \citep[pp.~623--629]{Henri1971} the Gouraud Shading. With this method, we can add more continuity to the shading, unlike the Flat Shading. The great improvement concerning the method presented above is that it does not require a high-density mesh to simulate greater continuity. For each pixel it's intensity is determined by interpolation of the intensities defined at the vertex of each polygon.
+In the smooth shading methods, the colour change between pixels instead of faces. The result is a smooth transition of colour between adjacent faces. In 1971 Henri Gouraud presents us in his paper \textit{Continuous Shading of Curved Surfaces} \citep[pp.~623--629]{Henri1971} the Gouraud Shading. With this method, we can add more continuity to the shading, unlike the Flat Shading. The great improvement concerning the method presented above is that it does not require a high-density mesh to simulate greater continuity. For each pixel it's intensity is determined by interpolation of the intensities defined at the vertex of each polygon.
 
 \begin{itemize}
 	\item For each vertex, a normal is defined as the average of the normals of the polygons to which said vertex belongs.
@@ -66,7 +107,7 @@ Phong mention in his paper published by the ACM \citep[p.~311]{Phong1975} that h
 
 Even though these methods represented, as far as realism is concerned, an advance, they do not pretend to simulate reality. Furthermore, these only take into account ambient, diffuse and specular light. They do not take into account the indirect lighting of the scene, an important factor in creating images that produce realistic effects such as reflections.
 
-It was not until the 80s that the first methods capable of rendering realistic images appeared. At the sixth annual conference on \textit{Computer graphics and interactive techniques (SIGGRAPH)}, Turner White presents the Ray Tracing method \citep[pp.~343--349]{Whitted1980}. This method is based on the Ray Casting algorithm, presented by \citep[pp.~37--45]{Appel1968}, consists of trace rays from the observer to all pixels, on for each one, to determine the closest object. Also, once the ray hits on a surface, based on the properties of the materials defined and the light properties, the colour is computed. In addition, using texture maps we can simulate shadows.
+It was not until the 80s that the first methods capable of rendering realistic images appeared. At the sixth annual conference on \textit{Computer graphics and interactive techniques (SIGGRAPH)}, Turner White presents the Ray Tracing method \citep[pp.~343--349]{Whitted1980}. This method is based on the Ray Casting algorithm, presented by \citep[pp.~37--45]{Appel1968}, which consists of tracing rays from the observer to all pixels, on for each one, to determine the closest object. Also, once the ray hits on a surface, based on the properties of the materials defined and the light properties, the colour is computed. Also, using texture maps we can simulate shadows.
 
 In 1986, David Immel et al. and James T. Kajiya, researchers from Cornell University and California Institute of Technology (Caltech) respectively, at the thirteenth annual conference on \textit{Computer graphics and interactive techniques (SIGGRAPH)} they introduced the \textit{Rendering Equation} \citep[pp.~143--150, pp.~133--142]{Kajiya1986, Immel1986}. This integral equation tries to summarize in one formula how the light interacts with a surface when a ray of light hits her using a bidirectional reflectance distribution function (BRDF). This formula takes into account the number of photons from the source, the incident angle, etcetera.
 
@@ -78,9 +119,9 @@ Exist other methods that can generate realistic images by approximating the RE: 
 
 \subsection{Context}
 
-During the degree studies, there are several subjects dedicated to computer graphics. In these subjects, we are introduced to realistic rendering methods, but beyond the theoretical introduction to these, they are never put in practice. From here comes the idea of realizing the present project, to be able to go deeper into the subject of realistic rendering and thus create an application based on what has been learned during the studies. Other aspects of computer science seen will also put into practice, such as the creation of parallel applications on both CPUs and GPUs.
+During the degree studies, there are some subjects dedicated to computer graphics. In these subjects, we are introduced to realistic rendering methods, but beyond the theoretical introduction to these, they are never put in practice. From here comes the idea of realizing the present project, to be able to go deeper into the subject of realistic rendering and thus create an application based on what has been learned during the studies. Other aspects of computer science seen will also put into practice, such as the creation of parallel applications on both CPUs and GPUs.
 
-As we have pointed out in the last section, rendering true-to-life images is an area of great interests in computer graphics. One of the principal goals is to be able to render images that are indistinguishable from photographs. Following this idea, being able to replicate the behaviour of light in a virtual environment is an important task. It's essential to keep in mind the global illumination of our scene to achieve that realism. The global illumination is compounded by \begin{enumerate*}[label=\roman*)] \item direct illumination \label{item:dl} and \item indirect (global) illumination \label{item:il} \end{enumerate*}. In Figure \ref{globalil}, we can observe a graphic representation of both types of lighting.
+As we have pointed out in the last section, rendering true-to-life images is an area of great enthusiasms in computer graphics. One of the principal goals is to be able to render images that are indistinguishable from photos. Following this idea, being able to simulate the behaviour of light in a virtual environment is an important task. It's essential to keep in mind the global illumination of our scene to achieve that realism. The global illumination is compounded by \begin{enumerate*}[label=\roman*)] \item direct illumination \label{item:dl} and \item indirect (global) illumination \label{item:il} \end{enumerate*}. In Figure \ref{globalil}, we can observe a visual description of both types of lighting.
 
 \begin{figure}[!ht]
 	\centering
@@ -92,14 +133,11 @@ As we have pointed out in the last section, rendering true-to-life images is an 
 \ref{item:dl} Direct illumination is that which strikes a point from the light source.\\
 \ref{item:il} Indirect illumination is that which hits one point from the light bouncing off other points in the scene.
 
-Retrieving what was said in the introduction, the first method capable to render realistic images was the Ray Tracing, based on Ray Casting algorithm, a technique that consists in trace rays from the eye or camera to all pixels of an image. The great novelty concerning the algorithm presented by Appel is the recursivity. The Ray Tracing algorithm emits a ray from the virtual camera across the scene to a light source. When a ray hits some surface can produce three new types of rays: \begin{enumerate*}[label=\roman*)] \item
- reflection ray \label{ray:reflected}, \item
- refraction ray and \item
- shadow ray\end{enumerate*}. From this point, a new ray is projected until hits one of the light sources in the scene. When tracing new rays, we can obtain effects like reflections, shadows, caustics, etcetera. If the ray hits a transparent material like glass, the ray is projected through this to simulate the refraction rays. The principal disadvantage is the dependency on the number of polygons in the scene. The more polygons the scene will have, the more inefficient will be the algorithm.
+Retrieving what was said in the introduction, the first method capable to render realistic images was the Ray Tracing, based on Ray Casting algorithm, a technique that consists in trace rays from the eye or camera to all the pixels of an image. The great innovation concerning the algorithm presented by Appel is the recursivity. The Ray Tracing algorithm emits a ray from the virtual camera across the scene to a light source. When a ray hits some surface can produce three new types of rays: \begin{enumerate*}[label=\roman*)] \item reflection ray\label{ray:reflected}, \item refraction ray and \item shadow ray\end{enumerate*}. From this point, a new ray is projected until hits one of the light sources in the scene. When tracing new rays, we can obtain effects like reflections, shadows, caustics, etcetera. If the ray hits a transparent material like glass, then the ray is projected through this to simulate the refraction rays. The principal disadvantage is the dependency on the number of polygons in the scene. The more polygons the scene will have, the more inefficient will be the algorithm.
 
-The results obtained are not necessarily photo-realistic despite offering a high degree of realism by being able to accurately treat optical effects such as refraction or reflection. It's mandatory to do some post-processing to be able to simulate effects such as soft shadows or caustics. Rendering photo-realistic images is mandatory approximating the RE. The Path Tracing algorithm, presented by \citep[pp. ~143--150]{Kajiya1986}, is a good example of that.
+The results obtained are not necessarily photo-realistic despite offering a high degree of realism by being able to accurately treat optical effects such as refraction or reflection. It's mandatory to do some post-processing to be able to simulate effects such as soft shadows or caustics. To render photo-realistic images is mandatory approximating the RE. The Path Tracing algorithm, presented by \citep[pp. ~143--150]{Kajiya1986}, is a good precedent.
 
-The Path Tracing algorithm came up as an improvement of the Ray Tracing with the purpose to give a resolution of the rendering equation by the Monte Carlo integration. It is for this reason that the algorithm is inherently able to simulate effects such as motion blur, ambient occlusion and global illumination without any post-processing. Unlike Ray Tracing, in the Path Tracing when a ray is emitted by the virtual camera, this is traced through the scene bouncing in the objects until reaching one light source or sky or run out a limit. The significant difference between the algorithm presented by White is that the algorithm introduced by Kajiya, for each pixel, we keep in mind not only one ray but dozens, hundreds or even thousands. The random sampling is a significant aspect, this means that when a  ray hits a surface, it generates a new ray in a random direction. Once a ray reaches a limit or it is absorbed by a light source, the colour is computed according to the material properties of the objects it has bounced off. This colour is added to compute the average between all rays emitted for each pixel. This random sampling produces a noisy result. The more sampling we use, the smoother it becomes.
+The Path Tracing algorithm came up as an improvement of the Ray Tracing with the purpose to give a solution of the rendering equation by the Monte Carlo integration. It is for this reason that the algorithm is inherently able to simulate effects such as motion blur, ambient occlusion and global illumination without any post-processing. Unlike Ray Tracing, in the Path Tracing when a ray is emitted by the virtual camera, this is traced through the scene bouncing in the objects until reaching one light source, sky or run out a limit. The significant difference between the algorithm presented by White is that in the algorithm introduced by Kajiya, for each pixel we keep in mind not only one ray but dozens, hundreds or even thousands. The random sampling is an important aspect, this implies that when a  ray hits a surface, it generates a new ray in a random direction. Once a ray reaches a limit or it is absorbed by a light source, the colour is calculated according to the material properties of the objects it has bounced off. This colour is added to compute the average between all rays emitted for each pixel. This random sampling produces a noisy result. The more sampling we use, the smoother it becomes the output image.
 
 \begin{figure}[!ht]
 	\centering
@@ -115,9 +153,9 @@ The Path Tracing algorithm came up as an improvement of the Ray Tracing with the
 	\label{PT_traced}
 \end{figure}
 
-In Figure \ref{RT_traced} it can be observed what is mentioned in the previous paragraph. In the Ray Tracing, the colour calculation in one pixel depends only from the primary ray and his bounces until reach a light source. However, in Figure 5 it can be observed that for each bounced, multiple rays are traced. This occurs because when a ray hits a diffuse surface, the photons are scattered in all directions. 
+In Figure \ref{RT_traced} it can be observed what is mentioned in the previous paragraph. In the Ray Tracing, the colour calculation in one pixel depends only on the primary ray and his bounces until reach a light source. However, in Figure 5 it can be observed that for each bounced, multiple rays are traced. This occurs because when a ray hits a diffuse surface, the photons are scattered in all directions. 
 
-The number of polygons in a scene is irrelevant for Path Tracing, the scene complexity does not affect proportionally the algorithm's performance. How we mentioned above, in the first method only one ray is traced for each polygon. However, in Kajiya's method, the ray is traced per pixel. Because each pixel is independent of each other, we can exploit the concurrency provided by CPUs and GPUs.
+The number of polygons in a scene is less important for Path Tracing. The scene complexity does not affect proportionally to the algorithm's performance. How we mentioned above, in the first method only one ray is traced for each polygon. However, in Kajiya's method, the ray is traced per pixel. We can exploit the concurrency provided by CPUs and GPUs because each pixel is independent of each other.
 
 \begin{figure}[H]
 	\centering
@@ -144,13 +182,13 @@ The number of polygons in a scene is irrelevant for Path Tracing, the scene comp
 
 We can observe how the Path Tracing, in Figure \ref{RT}, produces soft shadows compared to Ray Tracing, Figure \ref{PT}. Also, we can see the noisy effect produced by the random sampling of Path Tracing if the number of samples is poor.
 
-In that present project, we are going to create an application that implements the Path Tracing method trying to generate images that looks realistic. This application it's going to compute each pixel of an image given some scene. There will be three versions. The first one is the sequential version, where one pixel is computed at once and it's the base for all other versions. The other two versions are the CPU and GPU parallel versions. The reason to develop all of these versions is to be able to do a performance analysis about our algorithm both in GPU and CPU and decide which architecture is bringing more performance.
+In the present project, we are going to create an application that implements the Path Tracing method attempting to generate images that looks realistic. This application it's going to compute each pixel of an image given some scene. There will be three versions. The first one is the sequential version where one pixel is computed at once, and it's the base for all other versions. The other two versions are the CPU and GPU parallel versions. The reason to develop all of these versions is to be able to do a performance analysis of our algorithm both in GPU and CPU and decide which architecture is bringing more performance.
 
-The implementation proposed by Peter Shirley in his books about Ray Tracing  \citep{ShirleyRTA, ShirleyRTB, ShirleyRTC} is going to be the base to develop our Path Tracer. The main intention is to develop three applications (sequential in CPU, parallel in CPU and GPU) to analyze how is the performance in both architectures CPU and GPU.
+The implementation proposed by Peter Shirley in his books about Ray Tracing  \citep{ShirleyRTA, ShirleyRTB, ShirleyRTC} is going to be the base to develop our Path Tracer. The main intention is to develop three applications (sequential in CPU, parallel in CPU and GPU) to analyse how is the performance in both architectures CPU and GPU.
 
 We will not only focus on the rendering section, although this is the central thread of this project, but we will also study which acceleration techniques are commonly used to try to improve our algorithm as much as possible. That is why we will also study which is the best way to represent internally the scene we want to render following the idea presented by \citep{Karras2012} in his paper.
 
-The way we represent our scene will have a great impact on how we compute the colour of the final image. As we have mentioned above, the basis of the method is to trace rays through the scene to compute the colour of each pixel. If our representation of the scene consists of storing all the objects in a data structure such as a list or vector, ordered by order of creation, when calculating a point of the image in the worst case we will be going through the whole set of polygons of the scene to determine the final colour. Trying to render a scene that, very possibly, is composed of millions of polygons can translate into hours and hours of processing. That's why we'll make use of an accelerating data structure that allows us to represent the scene in a more clever way, so that when determining if a ray hits or not a polygon is determined in the fastest way possible.
+The way we represent our scene will have a great impact on how we compute the colour of the final image. As we have mentioned above, the basis of the method is to trace rays through the scene to compute the colour of each pixel. If our representation of the scene consists of storing all the objects in a data structure such as a list or vector ordered by creation when calculating a point of the image in the worst case we will be going through the whole set of polygons of the scene to determine the final colour. Trying to render a scene that, very possibly, is composed of thousands of polygons can translate into hours and hours of processing. That's why we'll make use of an accelerating data structure that allows us to represent the scene in a more clever way, so that when determining if a ray hits or not a polygon is determined in the fastest way possible.
 
 \subsection{Stakeholders}
 
@@ -158,7 +196,7 @@ In this section, we are going to describe the different actors involved in a pro
 
 \subsubsection{Developer}
 
-This actor is in charge of planning, information search, documentation, development of the necessary software, solution of possible obstacles and problems that may arise throughout the development, and performance and analysis of the experiments. He needs to work in coordination with the director, and co-director if it exists and is the last person in charge of fulfilling the established terms.
+This actor is in charge of planning, information search, documentation, development of the required software, solution of possible obstacles and difficulties that may arise throughout the development, and performance and analysis of the experiments. He needs to work in coordination with the director, and co-director if it exists. Also, is the last person in charge of fulfilling the established terms.
 
 \subsubsection{Project director}
 
@@ -170,16 +208,16 @@ Despite this project has not the intention to create a product on its own, it do
 
 \section{Justification}
 
-As we have already pointed in the above section, we will start from the Peter Sherly books and Tero Karras paper about Bounding Volume Hierarchies. In this project, we expect to study how we can exploit at maximum the different architectures that we have in our computers (CPU and GPU) and decide how's more efficient. We cannot compare our application with an existing one. Because the professional applications that implement the Path Tracing algorithm are made by experts with plenty of experience and knowledge that will allow increasing the performance significantly, and the author of this project does not have. Moreover, in the field of realism, it's hard to compare because a professional application includes plenty of features such as subsurface scattering or tessellation. In this project, it's impossible to reach an application with similar characteristics. First of all, the lack of knowledge and experience in the field of realistic off-line rendering.
-Finally, the time. Usually, a project with this scope involves plenty of specialists and need months or years to realise. A professional example of Path Tracer is RenderMan, developed by Pixar Animation Studios \citep{Christensen2018}.
+As we have already pointed in the above section, we will start from the Peter Sherly books and Tero Karras paper about Bounding Volume Hierarchies. In this project, we expect to study how we can exploit at maximum the different architectures that we have in our computers (CPU and GPU) and decide how's more efficient. We cannot compare our application with an existing one. Because the professional applications that implement the Path Tracing algorithm are made by experts with plenty of experience and knowledge that will allow increasing the performance significantly, and the author of this project does not have. Moreover, in the field of realism, it's hard to compare because a professional application includes plenty of features such as subsurface scattering or tessellation and for this project, it's impossible to reach an application with similar characteristics. First, the lack of knowledge and experience in the field of realistic off-line rendering.
+Finally, the time. Usually, a project with this scope involves plenty of specialists and need months or years to realize. A professional example of Path Tracer is RenderMan, developed by Pixar Animation Studios \citep{Christensen2018}.
 
-For this reason, in this project, we will develop three versions of the same algorithm: \begin{enumerate*}[label=\roman*)] \item sequential version, \item parallel version in CPU and \item parallel version in GPU \end{enumerate*}. Therefore, we will analyze the versions with each other and decide the best architecture and version for our implementation.
+For this reason, in this project, we will develop three versions of the same algorithm: \begin{enumerate*}[label=\roman*)] \item sequential version, \item parallel version in CPU and \item parallel version in GPU \end{enumerate*}. Therefore, we will analyse the versions with each other and decide the best architecture and version for our implementation.
 
 Currently, there are plenty of libraries oriented to GPU programming. Libraries such as \texttt{OpenCL} and \texttt{OpenACC} provides us with portability between graphics cards from different manufacturers like \texttt{AMD} and \texttt{NVIDIA}. For this project, we decided to choose the CUDA environment developed by \texttt{NVIDIA}. \texttt{CUDA} is a parallel computing platform and API created for its graphics card and accelerators. The reason we chose this API is that being proprietary software it is more optimized for \texttt{NVIDIA} graphics cards, as indicated by \citep{Karimi2010} and \citep[pp.~216--215]{Fang2011} in their respective papers.
 
-It is possible that citing the \texttt{NVIDIA} graphics cards and accelerators and, keeping in mind the project's focus on rendering realistic graphics, to the lector of this Final Degree Project comes to mind the new brand of RTX cards designed by \texttt{NVIDIA}. In the beginning, the idea was to orient the project to use RTX graphics cards because they have been designed specifically for the use of Ray Tracing in real-time. But, this idea was immediately rejected because of the high price of these. The price range varies between 350€ to 2000€ or 6000€ (for HPC). Finally, even the author of this project bought an RTX 2080 Super it was decided not to focus the project only in the new RTX technology. Exploring all the new features that these include such as RT Cores, Tensor Cores and Mesh Shaders would have meant starting the job all over again and losing a huge amount of time spent. Because it would have been necessary to learn all the necessary knowledge to develop the project. That does not imply that the graphics card should not be used. As a high-end graphics card, the number of cores it has compared to the GTX1050 (mid-range) will allow us to analyse how much better it is and whether or not it is worthwhile, in terms of cost/power ratio, to use it in applications of this type.
+It is possible that citing the \texttt{NVIDIA} graphics cards and accelerators and, keeping in mind the project's focus on rendering realistic graphics, to the lector of this Final Degree Project comes to mind the new brand of RTX cards designed by \texttt{NVIDIA}. In the beginning, the idea was to orient the project to use RTX graphics cards because they have been designed specifically for the use of Ray Tracing in real-time. But, this idea was immediately rejected because of the high price of these. The price range varies between €350 to €2000 or €6000 (for HPC). Finally, even the author of this project bought an RTX 2080 Super it was decided not to focus the project only in the new RTX technology. Exploring all the new features that these include such as RT Cores, Tensor Cores and Mesh Shaders would have meant starting the job all over again and losing a huge amount of time spent. Because it, would have been necessary to learn all the necessary knowledge to develop the project. That does not imply that the graphics card should not be used. As a high-end graphics card, the number of cores it has compared to the GTX1050 (mid-range) will allow us to analyse how much better it is and whether it is worthwhile, in terms of cost/power ratio, to use it in applications of this type.
 
-As we mentioned at the beginning of this section,  \texttt{CUDA} is an API very optimized for \texttt{NVIDIA} hardware. This gives us an advantage because all the environments that we will use in this project have NVIDIA technology
+As we mentioned at the beginning of this section,  \texttt{CUDA} is an API very optimized for \texttt{NVIDIA} hardware. This gives us an advantage because all the environments that we will use in this project have NVIDIA technology.
 
 \begin{enumerate}
 	\item Laptop - Lenovo Legion Y520 with an Nvidia GTX1050 Mobile - 4GB.
@@ -191,9 +229,9 @@ The use of graphics cards in different environments will allow us to analyse how
 
 \section{Project Scope}
 
-To solve the problem presented in our project, we need an application that can render realistic-look images. As well we notice a few sections back, \citep{ShirleyRTA, ShirleyRTB, ShirleyRTC} presents the principles to create a Ray Tracing. We are going to use this to develop our main parallel application on CPU and GPU.
+To solve the problem presented in our project, we need an application that can render realistic-look images. As we notice a few sections back, \citep{ShirleyRTA, ShirleyRTB, ShirleyRTC} presents the principles to create a Ray Tracing. We are going to use this to develop our main parallel application on CPU and GPU.
 
-Furthermore, as we said in the context section, the use of acceleration structures is a significant factor in this type of applications, and they have been studying for many years by the science community, e. g.\citep{Rubin1980}. In this project, we will use the \textit{
+Furthermore, as we said in the context section, the use of acceleration structures is a significant factor in this type of applications, and they have been studying for many years by the science community, e.g. \citep{Rubin1980}. In this project, we will use the \textit{
 Bounding Volume Hierarchy} (BVH), a tree structure (binary or n-ary) where each leaf represents the bounding box of each primitive; and each internal node the bounding box of his children.
 
 There are many ways to build a BVH, but we decided to develop the version proposed by \citep{Karras2012, Karras2013}. We can build each internal node independently using the concurrence provided by the GPU and CPU.
@@ -202,7 +240,7 @@ There are many ways to build a BVH, but we decided to develop the version propos
 
 \subsubsection{Main objectives}
 
-There are several main objectives that we propose in the project. The first one is to develop three applications (sequential, CPU parallel and GPU parallel) in which given a scene will render it using the \textit{Path Tracing} method, and we will analyze the performance given by all versions developed to determine who have a better performance.
+There are several main objectives that we propose in the project. The first one is to develop three applications (sequential, CPU parallel and GPU parallel) in which given a scene will render it using the \textit{Path Tracing} method, and we will analyse the performance given by all versions developed to determine who have a better performance.
 
 A second main objective is studying and implementing what are the best practices about memory management in a parallel application. We identified it as one of the main goals because inadequate management of it can be a serious obstacle in the development of the project.
 
@@ -218,7 +256,7 @@ The secondary objectives, but no less important, are the following:
 	\item \label{GLUT} Develop an interactive application.
 \end{enumerate}
 
-The secondary objectives \ref{3D} and \ref{GLUT} will be realised according to the time remaining for the completion of the project.
+The secondary objectives \ref{3D} and \ref{GLUT} will be realized according to the time remaining for the completion of the project.
 
 \subsection{Obstacles and risk}
 
@@ -253,7 +291,7 @@ The programming language that we will use to develop our project is English usin
 
 \texttt{OpenMP} is an API design to add concurrence to programs written in \texttt{C}, \texttt{C++} and \texttt{Fortran}. The main advantage against others with similar characteristics is the portability between different Operating Systems.
 
-\texttt{CUDA} is a parallel computing platform and \texttt{API} developed by \texttt{NVIDIA} that allows us access to a set of instructions and compute elements inside the graphics cards and accelerators to create parallel applications.
+\texttt{CUDA} is a parallel computing platform and \texttt{API} developed by \texttt{NVIDIA} that allows us to access to a set of instructions and compute elements inside the graphics cards and accelerators to create parallel applications.
 
 \section{Monitoring tools}
 
@@ -263,7 +301,7 @@ To monitor the development of this project, we will use git to track all version
 
 \section{Planning}
 
-This chapter deals with project planning and describes the tasks performed, through an action plan, to meet the deadlines relating to the delivery of the project. We will also present the resources used and analyze the possible obstacles that could modify the planning.
+This chapter deals with project planning and describes the tasks performed, through an action plan, to meet the deadlines relating to the delivery of the project. We will also present the resources used and analyse the possible obstacles that could modify the planning.
 
 The project began in early July 2019 with a deadline on 13 January 2020. Finally, the delivery was postponed to April of the same year.
 
@@ -610,7 +648,7 @@ According to Generalitat de Catalunya \citep{gene}, in 2018 the emission of $CO_
 
 Finally, It is worth mentioning that this project doesn't offer any environmental improvement. The environmental impact that may involve power consumption depends exclusively on the company. Because the same the use of renewable energy is not the same as the use of fossil fuels.
 
-\subsection{Economical impact}
+\subsection{Economic impact}
 
 In the last section, we have detailed all costs relatives to the project, both humans and software and hardware. Despite all the roles defined, only one person will carry on all functions (except the position of "Project Director"). The human resources cost is reduced to only two persons.
 
@@ -647,7 +685,7 @@ Ray tracing uses this mechanism to recursively accumulate the light contribution
 	\begin{subfigure}{.48\textwidth}
 		\centering
 		\includegraphics[scale=0.315]{media/mirrors_rect/cornell_mirrors_2.png}
-		\caption{2 bounce per ray}
+		\caption{2 bounces per ray}
 		\label{mr_rect_2}
 	\end{subfigure}
 	
@@ -655,13 +693,13 @@ Ray tracing uses this mechanism to recursively accumulate the light contribution
 	\begin{subfigure}{.48\textwidth}
 		\centering
 		\includegraphics[scale=0.315]{media/mirrors_rect/cornell_mirrors_3.png}	
-		\caption{3 bounce per ray}
+		\caption{3 bounces per ray}
 		\label{mr_rect_3}
 	\end{subfigure}		
 	\begin{subfigure}{.48\textwidth}
 		\centering
 		\includegraphics[scale=0.315]{media/mirrors_rect/cornell_mirrors_4.png}
-		\caption{4 bounce per ray}
+		\caption{4 bounces per ray}
 		\label{mr_rect_4}
 	\end{subfigure}
 	
@@ -682,7 +720,7 @@ Ray tracing uses this mechanism to recursively accumulate the light contribution
 	\label{bounces}
 \end{figure}
 
-To simulate the global illumination of a scene we have to consider how the light interacts through the scene. To do this we must solve the equation of light transport, described by Kajiya \citep[pp.~143--150]{Kajiya1986}. This function approximates the radiance of a given pixel by simulating the paths of light through the sum of self-emitted radiance and reflected radiance. This result is distributed according to the \textit{bidirectional reflectance distribution function} (BRDF) defined in the material, as we will see later. This BRDF varies according to the type of material because light does not behave the same way when it hits a diffuse material as it does when it hits a mirror or glass type material.
+To simulate the global illumination of a scene we have to consider how the light interacts through the scene. To do this we must solve the equation of light transport, described by Kajiya \citep[pp.~143--150]{Kajiya1986}. This function approximates the radiance of a given pixel by simulating the paths of light through the sum of self-emitted radiance and reflected radiance. This result is distributed according to the \textit{bidirectional reflectance distribution function} (BRDF) defined in the material, as we will see later. That BRDF varies according to the type of material because light does not behave the same way when it hits a diffuse material as it does when it hits a mirror or glass type material.
 
 \begin{figure}[!ht]
 	\centering
@@ -764,7 +802,7 @@ The up vector can have another direction, but it will make us see the scene rota
 
 \subsubsection{Camera position - $\vec{lookFrom}$}
 
-The position of the camera is defined by a vector, $\vec{lookFrom}$, in world space that points to the camera position. The position of the camera is defined by a vector in world space that points to the camera position.The scene in Figure \ref{cameraup}, for example, has the position set to $(12 0.05 0.05)$.
+The position of the camera is defined by a vector, $\vec{lookFrom}$, in world space that points to the camera position. The position of the camera is defined by a vector in world space that points to the camera position. The scene in Figure \ref{cameraup}, for example, has the position set to $(12 0.05 0.05)$.
 
 \subsubsection{Camera direction - $\vec{w}$}
 
@@ -792,7 +830,7 @@ To get this vector, we only need to do the cross product between $\vec{w}$ and $
 
 \subsubsection{Image plane}
 
-Once we have all the vectors we can calculate the lower left corner to obtain the image plane (canvas). We will use this value to move through the frustum to throw the rays.
+Once we have all the vectors, we can calculate the lower left corner to obtain the image plane (canvas). We will use this value to move through the frustum to throw the rays.
 
 The set of vectors $e_1 = (1,0,0)$, $e_2 = (0,1,0)$ and $e_3 = (0,0,1)$ form between them an orthogonal basis of $\mathbb{R}^3$. So all the vectors $(x,y,z)$ in $\mathbb{R}^3$ can be expressed as the sum of the base vectors:
 
@@ -815,7 +853,7 @@ lfc = origin - half\_width e_1 - half\_heigth e_2 - e_3
 
 Looking the Figure \ref{camegeom2}, if the open angle of camera lens is $\theta$, then $half\_height = tan(\frac{\theta}{2})$. The theta angle is given by the camera's field of view (FOV). By convention the FOV is stipulated in degrees, but to perform the calculations we must make a conversion to radians, so $\theta = \frac{FOV \pi}{180}$.
 
-The vectors u,v and w are a projection of the x,y and z axes respectively, so we can use them as a basis for the calculation of the lower left corner. Then, the equation to find it would look like this:
+The vectors u,v and w are a projection of the $x$, $y$ and $z$-axes respectively, so we can use them as a basis for the calculation of the lower left corner. Then, the equation to find it would look like this:
 
 \begin{equation}
 lfc = origin - half\_width v - half\_heigth v - w
@@ -832,7 +870,7 @@ Defocus Blur, commonly called Depth of Field, is an effect caused by cameras in 
 	\label{camegeom3}
 \end{figure}
 
-To add this effect we must multiply $half\_height$ by the focal length. Also when we generate a ray we will add an offset calculated from the radius of the lens (half of the aperture) and the circle of confusion. If we have no blur, all ray are originated at the disk center($\vec{lookFrom}$).
+To add this effect we must multiply $half\_height$ by the focal length. Also, when we generate a ray we will add an offset calculated from the radius of the lens (half of the aperture) and the circle of confusion. If we have no blur, all ray are originated at the disk center($\vec{lookFrom}$).
 
 By experimenting with the aperture value and the focal length, we can obtain results like those shown in Figure \ref{dof}. Also, we can see how the aperture affects at the total illumination captured by the camera.
 
@@ -966,7 +1004,7 @@ end
 
 In order to calculate the intersection of a ray and triangle, we will use the Möller–Trumbore algorithm. We choose this algorithm because, as the authors say in their publication \citep{Moller2005}, uses minimal storage. We only have to know the vertices $(V_0,V_1,V_2)$ to test the intersection.
 
-Previous algorithms have solved this intersection test by solving first the intersection between the plane where the triangle lies and then test if the ray is inside the triangle. In Möller–Trumbore, a transformation is applied to the ray and we avoid the intersection ray/plane.
+Previous algorithms have solved this intersection test by solving first the intersection between the plane where the triangle lies and then test if the ray is inside the triangle. In Möller–Trumbore, a transformation is applied to the ray, and we avoid the intersection ray/plane.
 
 A point, $T(u,v)$, on a triangle, where $(u,v)$ are the barycentric coordinates and $u,v \geq 0$ and $u+v \leq 1$, is given by:
 
@@ -1062,7 +1100,7 @@ v & = \frac{1}{P \cdot E_1} \left(Q \cdot D \right) \\
 
 \section{Geometric transforms}
 
-To be able to place an object in the position of the scene we want, it is necessary to apply a series of basic geometric transformations that allow us to do it. In addition, it is possible that many models have a different coordinate system from ours. Therefore we must accurately handle them to be able to visualize them. That's why for each of the models we must calculate the centre of it, in order to bring it to the centre of the coordinate system of the scene and thus be able to manage it properly.
+To be able to place an object in the position of the scene we want, it is necessary to apply a series of basic geometric transformations that allow us to do it. In addition, it is possible that many models have a different coordinate system from ours. Therefore, we must accurately handle them to be able to visualize them. That's why for each of the models we must calculate the centre of it, in order to bring it to the centre of the coordinate system of the scene and thus be able to manage it properly.
 
 The geometric transformations we can make to the models are translation, rotation and scaling. For all of them, we will use a homogeneous coordinate system to represent them by means of a space vector multiplied by the appropriate matrix. If we want to apply some transformation $T$ to a  vector $p = (p_x, p_y, p_z)$, we rewrite $p$ using four homogeneous coordinates as $p = (p_x, p_y, p_z, 1)$.
 
@@ -1165,7 +1203,7 @@ v_z s_z \\
 
 \subsection{Rotation}
 
-In the rotation, we have three axes in which we can rotate the object, the $x$, $y$ and $z$-axis. The most basic rotation only uses one of these axes so we can define a rotation matrix for each of the axes. The following matrices rotate a vector $v$ by an angle $\theta$ in the $x$, $y$ and $z$-axes using the right-hand rule (all matrices represent a clockwise rotation).
+In the rotation, we have three axes in which we can rotate the object, the $x$, $y$ and $z$-axis. The most basic rotation only uses one of these axes, so we can define a rotation matrix for each of the axes. The following matrices rotate a vector $v$ by an angle $\theta$ in the $x$, $y$ and $z$-axes using the right-hand rule (all matrices represent a clockwise rotation).
 
 \begin{equation}\label{rotx}
 R_x = 
@@ -1250,7 +1288,7 @@ Our diffuse material follows Lambert's Cosine Law, this is the BRDF that our pat
 	\label{diff2}
 \end{figure}
 
-The easiest way to get those points is by using a rejection method. In our cause, we will pick a random point in the unit cube where all coordinates are in range -1 to +1 and then reject this point if is outside the sphere. If a point S of cartesian coordinates $x_0, y_0, z_0$ is inside a sphere of radius R then 
+The easiest way to get those points is by using a rejection method. In our case, we will pick a random point in the unit cube where all coordinates are in range -1 to +1 and then reject this point if is outside the sphere. If a point S of cartesian coordinates $x_0, y_0, z_0$ is inside a sphere of radius R then 
 
 \begin{algorithm}[caption={random\_on\_unit\_sphere}]
 input: 
@@ -1292,7 +1330,7 @@ Given an incident direction $\vec{P}$, from camera or scattered from other objec
 
 Once we have the reflected point, the new scattered ray is the one that goes from the hit point to this.
 
-Right now, we have mirror-like metals that perfectly reflect the incident rays. But as we know, not all metals are 100\% glossy, so we will add a roughness parameter to the material, a value in the range of 0 to 1. A metal object with roughness 0 will be smoothly polished. What this roughness parameter does is randomly disturb the point for the reflected beam, keeping the direction.
+Right now, we have mirror-like metals that perfectly reflect the incident rays. But as we know, not all metals are 100\% glossy, so we will add a roughness parameter to the material, a value in the range of 0 to 1. A metal object with roughness 0 will be smoothly polished. What this roughness parameter does is randomly disturbed the point for the reflected beam, keeping the direction.
 
 \begin{figure}[H]
 	\centering
@@ -1476,7 +1514,7 @@ A Bounding Volume Hierarchy is a tree-type data structure in which each node rep
 
 There are many ways to build the BVH and the way we do it can affect to a greater or lesser extent the performance of it since it is a structure that we must go through millions of times and the way it has been built will make us go through the tree more or fewer times.
 
-The simplest way to build our tree is to do it while reading the primitives of the scene.  This is a very naive solution because we can be putting two primitives with the same father node and they can be very far away from each other. This can eventually affect performance, as we will need to go through the tree more exhaustively. Even so, it's quite a better solution than going through a list. For this reason, we must find a more reasonable way to build this tree that allows us to go through it as few as possible.
+The simplest way to build our tree is to do it while reading the primitives of the scene.  This is a very naive solution because we can be putting two primitives with the same father node, and they can be very far away from each other. This can eventually affect performance, as we will need to go through the tree more exhaustively. Even so, it's quite a better solution than going through a list. For this reason, we must find a more reasonable way to build this tree that allows us to go through it as few as possible.
 
 \citep[p.~375--384]{Lauterbach2009} were the first to present a parallel method of building BVHs by ordering the primitives in the scene along a space-filling curve. The main idea proposed by \citep[p.~375--384]{Lauterbach2009} is to assign a \textit{Morton code} (space-filling curve) to each of the primitives and then order them. Once sorted, we build the tree where each intermediate node corresponds to a range within all the generated Morton codes being the root the range between $[0, n-1]$.
 
@@ -1500,11 +1538,11 @@ For each internal node, we must find the range $[i,j]$ that it represents and on
 	\label{radix_tero}
 \end{figure}
 
-As we have already indicated, we must first find the range [i,j] in which the internal node Ii covers. To do this we will define i as one of the limits of this range. First of all we must determine the direction $d$ (that can be 1 or -1) we should go, for it we will take the code $k_i$ and we will compare the length of the longest common prefix, denoted by $\delta(i,j)$, with its two surroundings $k_{i-1}$ and $k_{i+1}$. Since we know that each internal node has exactly two children, we know that $k_i$ and $K_{i+d}$ belongs to the internal node $I_i$. 
+As we have already indicated, we must first find the range [i,j] in which the internal node Ii covers. To do this we will define i as one of the limits of this range. First of all we must determine the direction $d$ (that can be 1 or -1) we should go, for it, we will take the code $k_i$, and we will compare the length of the longest common prefix, denoted by $\delta(i,j)$, with its two surroundings $k_{i-1}$ and $k_{i+1}$. Since we know that each internal node has exactly two children, we know that $k_i$ and $K_{i+d}$ belongs to the internal node $I_i$. 
 
 We know that all codes belonging to $I_i$ share a common prefix that differs by one bit from its brother, by definition. Therefore, this implies that the length of the lower boundary is given by $\delta_{min} = \delta(i,i-d)$, so $\delta(i,j) > d_{min}$ for all $k_j$ belonging to $I_i$. We can satisfy this condition by comparing $\delta(i,i+1)$ with $\delta(i,i-1))$ and choosing $d$ as the largest one.
 
-The other boundary can be find by searching for the largest $l$ that satisfy $\delta(i,i+ld) > \delta_{min}$. We can define an upper bound power of 2 and increasing the value until it no longer satisfy the inequality. Once we have this upper bound, we perform a binary search to find $l$ in the range $[0, l_{max}-1]$. The idea is set to one each bit of $l$ unless the new value would fail to satisfy the inequality $\delta(i, i + (l + t)d) > \delta_{min}$. Once we finish the search the other bound is given by $j = i + ld$. If $j < i$ we need to swap the values. We can see the implementation below, where the function $lcp$ represents $\delta(i,j)$.
+The other boundary can be found by searching for the largest $l$ that satisfy $\delta(i,i+ld) > \delta_{min}$. We can define an upper bound power of 2 and increasing the value until it no longer satisfy the inequality. Once we have this upper bound, we perform a binary search to find $l$ in the range $[0, l_{max}-1]$. The idea is set to one each bit of $l$ unless the new value would fail to satisfy the inequality $\delta(i, i + (l + t)d) > \delta_{min}$. Once we finish, the search the other bound is given by $j = i + ld$. If $j < i$, we need to swap the values. We can see the implementation below, where the function $lcp$ represents $\delta(i,j)$.
 
 \begin{algorithm}[caption={range}, label={range_alg}]
 input: int i
@@ -1619,13 +1657,13 @@ begin
 end
 \end{algorithm}
 
-The reason for using a static schedule is because of the low overhead. It also has a better location than dynamic or guided but in our case as each node is independent it doesn't affect us.
+The reason for using a static schedule is the reason of the low overhead. It also has a better location than dynamic or guided but in our case as each node is independent it doesn't affect us.
 
 \subsubsection{Parallel GPU (CUDA) - BVH construction implementation}
 
 On \texttt{CUDA}-compatible (NVIDIA) graphics cards we have a series of spindles called \textit{Multiprocessor Streaming} (SM). These, in turn, are composed of the \textit{Streaming Processors} that are responsible for executing the instructions.
 
-At CUDA we have the concepts of kernels. A kernel in the \texttt{CUDA} environment refers to a function executed by the GPU in N threads. Kernels are defined with the \lstinline|__global__| specifier. There are also other specifiers such as \lstinline|__host__| and \lstinline|__device__| that indicate which device can run it. These kernels are organized into a hierarchy grouped by blocks and can be distributed in a grid. All threads within a block are executed concurrently and when they are finished, the unit in charge of their distribution launches new blocks. Also, within a block, threads are distributed in groups of 32 forming warps. When a warp is executed, 32 threads execute the same instruction at the same time at the hardware scale.
+At CUDA we have the concepts of kernels. A kernel in the \texttt{CUDA} environment refers to a function executed by the GPU in N threads. Kernels are defined with the \lstinline|__global__| specifier. There are other specifiers such as \lstinline|__host__| and \lstinline|__device__| that indicate which device can run it. These kernels are organized into a hierarchy grouped by blocks and can be distributed in a grid. All threads within a block are executed concurrently and when they are finished, the unit in charge of their distribution launches new blocks. Also, within a block, threads are distributed in groups of 32 forming warps. When a warp is executed, 32 threads execute the same instruction at the same time at the hardware scale.
 
 The syntax for calling a CUDA kernel varies from a traditional C or C++ function. To call a CUDA kernel we must first configure it properly, for this we have the following syntax \lstinline|<<<GS, BS, SM, S>>>|, e.g., \lstinline|cuda_kernel<<1.1>>|. The first two parameters are mandatory.
 
@@ -1638,13 +1676,13 @@ The syntax for calling a CUDA kernel varies from a traditional C or C++ function
 
 \end{itemize}
 
-When we have an input set, in this case, the uninitialized intermediate nodes, and an output set, the initialized intermediate nodes, and both have the same size a common approach is to get a single thread responsible for one of the data in the set. On current GPUs, the maximum number of threads per block is 1024. If we decide to use $n$ threads per kernel launch, the block size in our case will be $n$. So, if the input array has size of $m$, we need at least $\frac{m}{n}$ blocks. The problem we may have here is when $m$ is not divisible by $n$ so we will throw more blocks than we need to cover all the space. Therefore, the distribution of the grid ($GS$) and the blocks ($BS$) will be as follows
+When we have an input set, in this case, the uninitialized intermediate nodes, and an output set, the initialized intermediate nodes, and both have the same size a common approach is to get a single thread responsible for one of the data in the set. On current GPUs, the maximum number of threads per block is 1024. If we decide to use $n$ threads per kernel launch, the block size in our case will be $n$. So, if the input array has size of $m$, we need at least $\frac{m}{n}$ blocks. The problem we may have here is when $m$ is not divisible by $n$, so we will throw more blocks than we need to cover all the space. Therefore, the distribution of the grid ($GS$) and the blocks ($BS$) will be as follows
 
 $$
 BS = n
 $$
 $$
-GS = \frac{m + n - 1}{n \#GPU}
+GS = \frac{m + n - 1}{n}
 $$
 
 In the kernel to be able to index which position of our array is calculating each vector we can index it as we see in the Figure \ref{indexing}.
@@ -1685,19 +1723,19 @@ For the CPU version, we go through the tree in post-order to calculate the bound
 
 \subsubsection{Bounding-box calculation GPU}
 
-For the GPU version, we take advantage of the parallel calculation of all the bounding boxes. To do this, we assign a leaf node to each thread. We'll need to use an atomic counter to mark those nodes we've already visited. So that two threads don't access the same node at the same time and cause a memory error. For each internal node $I_j$, the first thread that accesses it will be responsible of calculating the bounding box by joining the AABB of the children of the internal node $I_j$.
+For the GPU version, we take advantage of the parallel calculation of all the bounding boxes. To do this, we assign a leaf node to each thread. We'll need to use an atomic counter to mark those nodes we've already visited. So that two threads don't access the same node at the same time and cause a memory error. For each internal node $I_j$, the first thread that accesses it will be in charge of calculating the bounding box by joining the AABB of the children of the internal node $I_j$.
 
 \section{Scene manager}
 
-To avoid having to hard-coded the scenes in the application's code, we decided to create a class, Scene.hh, that would handle the scene. This class is in charge of reading a text file with a specific format in which the scene we want to render is defined. In this input file, we can specify different entities of the scene: the camera, the 3D models and the skybox. For the 3D models, we can define a material from the ones explained above or if we want a texture. Also, we can specify a series of geometric transformations to be able to manipulate it.
+To avoid having to hard-code the scenes in the application's code, we decided to create a class, Scene.hh, that would handle the scene. This class is in charge of reading a text file with a specific format in which the scene we want to render is defined. In this input file, we can specify different entities of the scene: the camera, the 3D models and the skybox. For the 3D models, we can define a material from the ones explained above or if we want a texture. Also, we can specify a series of geometric transformations to be able to manipulate it.
 
-As we discussed a section further back, we decided to use triangles because in this way we could render 3D models that were defined by meshes of triangles. This allowed us to describe more complex scenes and study the performance of our application in more profundity. To be able to read these triangle patterns, a very simple parser has been developed that allows us to load .obj files into the application, one of the standards in terms of 3D model definition. In a .obj file, we have different elements that we must know how to recognise.
+As we discussed a section further back, we decided to use triangles because in this way we could render 3D models that were defined by meshes of triangles. This allowed us to describe more complex scenes and study the performance of our application in more profundity. To be able to read these triangle patterns, a very simple parser has been developed that allows us to load .obj files into the application, one of the standards in terms of 3D model definition. In a .obj file, we have different elements that we must know how to recognize.
 
 \subsubsection{Geometric vertices}
 
 \textbf{v x y z}
 
-This describes a geometric vertex. The parameters $x$,$y$,$z$ represents their coordinates. Sometimes, another parameter $w$ can appear to define the weight. That can happen when specifies rational curves and surfaces. The coordinates $(x,y,z)$ are floating-point numbers that define the position of the vertex in three dimensions.
+This describes a geometric vertex. The parameters $x$, $y$, $z$ represents their coordinates. Sometimes, another parameter $w$ can appear to define the weight. That can happen when specifies rational curves and surfaces. The coordinates $(x,y,z)$ are floating-point numbers that define the position of the vertex in three dimensions.
 
 \subsubsection{Texture vertices}
 
@@ -1771,8 +1809,8 @@ and $\eta$ is defined ad
 where
 
 \begin{itemize}
-\item  $I_{denoised}$ is the output image.
-\item  $I$ is the input image.
+\item $I_{denoised}$ is the output image.
+\item $I$ is the input image.
 \item $x$ are the coordinates of the current pixel $(i,j)$ to be filtered.
 \item $\Omega$ is the window centred in $x$.
 \item $y$ are the coordinates from another pixel $(i', j')$ in windows $\Omega$.
@@ -1890,7 +1928,7 @@ r \\ g \\ b \\
 
 \section{Main program}
 
-First of all, in the main program, the input parameters are collected. We have tried to parameterise the application as much as possible to avoid having hard-coded parts.
+First, in the main program, the input parameters are collected. We have tried to parameterize the application as much as possible to avoid having hard-coded parts.
 
 \subsection{Applications parameters}
 
@@ -1934,7 +1972,7 @@ Optional parameter. Indicates if we want to apply the implemented filters to the
 
 \item \textbf{-skybox} ON/OFF
 
-Optional parameter. Define whether or not we use a skybox. If the value is ON, then the skybox has to be specified in the input file with the defined scene.
+Optional parameter. Define whether we use a skybox. If the value is ON, then the skybox has to be specified in the input file with the defined scene.
 
 \item \textbf{-light} ON/OFF
 
@@ -1980,7 +2018,7 @@ Optional parameter. Sets the number of GPUs on which the application will run. T
 
 The renderer is the entity in charge of launching the rays from the camera for each pixel and calculating their colour using the defined parameters.
 
-The renderer varies a bit from the CPU and GPU versions because we can think as if the CPU has an infinite stack, but on the GPU we can't think this way. For this reason, the Algorithm \ref{color_alg} instead of being recursive must be iterative. Moreover, not only this algorithm varies in both versions but also the path of the BVH. As we explained, a BVH is a tree-type data structure. The most natural way to go through a tree that we can think of is by a recursive algorithm, but as in the GPU we'll have many threads lacing up at the same time we can't make a thread occupy the whole stack, the overhead that is created affects negatively in the application's performance. That's why we'll implement an iterative algorithm to calculate the beam/BVH intersection to reduce the overhead as much as possible. We will be able to compare how using a recursive algorithm to go through the tree in the GPU drastically affects the performance.
+The renderer varies a bit from the CPU and GPU versions because we can think as if the CPU has an infinite stack, but on the GPU we can't think this way. For this reason, the Algorithm \ref{color_alg_rec} instead of being recursive must be iterative. Moreover, not only this algorithm varies in both versions but also the path of the BVH. As we explained, a BVH is a tree-type data structure. The most natural way to go through a tree that we can think of is by a recursive algorithm, but as in the GPU we'll have many threads lacing up at the same time we can't make a thread occupy the whole stack, the overhead that is created affects negatively in the application's performance. That's why we'll implement an iterative algorithm to calculate the beam/BVH intersection to reduce the overhead as much as possible. We will be able to compare how using a recursive algorithm to go through the tree in the GPU drastically affects the performance.
 
 \subsection{Sequential CPU}
 
@@ -2093,9 +2131,16 @@ begin
 end
 \end{algorithm}
 
-For the configuration of the rendering kernel, we have followed the same strategy as for the construction of the BVH. In this case, if we have an $NX \times NY$ image we will store it in an array of an $NX \times NY$ size. This way the block distribution and indexing are simpler and more efficient. Therefore we will have:
+For the configuration of the rendering kernel, we have followed the same strategy as for the construction of the BVH. In this case, if we have an $NX \times NY$ image we will store it in an array of an $NX \times NY$ size. This way the block distribution and indexing are simpler and more efficient. Therefore, we will have:
 
-\begin{algorithm}[caption={kernel renderer GPU}, label={renderer_cpu_par_alg}]
+$$
+BS = n
+$$
+$$
+GS = \frac{(NX \times NY) + n - 1}{n}
+$$
+
+\begin{algorithm}[caption={kernel renderer GPU}, label={renderer_gpu_par_alg}]
 input:Image I,  int n, int m, int s, int d, Camera cam, Scene scene, bool light, bool sky, Skybox skybox
 output:
 begin
@@ -2117,6 +2162,327 @@ begin
   
 end
 \end{algorithm}
+
+For the version where we can use \textit{n} GPUs, we have decided to distribute the image calculator by distributing it by blocks of rows. That is, each GPU will process a block of rows in an equitable ratio. If we think the image as an array instead of a matrix, we would be splitting it into \textit{n} equal pieces.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.50]{media/divideAndConquer.png}
+	\caption{figure}{Image distribution for 4 GPUs.}
+	\label{distribution}
+\end{figure}
+
+\chapter{Performance Experiments}
+
+To test our application and determine which version is more efficient we will create three different scenes with certain characteristics. The first scene, Figure \ref{sc1}, is distinguished by having a low amount of polygons (72 triangles in the whole scene). The second scene, Figure [6], is characterized by a higher number of polygons than the first one (3040). And the last scene contains a much higher number of triangles than the two previous ones. A big difference between the first two and the third one is that the first ones are inside an enclosure, so most of the rays will exhaust the bounce limit established, except for those that reach a light source before. On the other hand, in the third one, we are outdoors, so it is much more probable that a ray escapes to the sky in fewer bounces than the limit established.
+
+\section{Scene One}
+
+As we can see in the image, this scene is composed of 4 cuboids. The one that makes up Cornell's box, the two central cubes and the light source. This is a scene with little geometry and hermetically sealed. There is only one light source, we don't have a sky where the rays can ''get lost'' so the probability of making all the imposed bounces is higher. One of the cubes, the tallest one, has a metal type material with a roughness index of 0, and the other cube has a diffuse material.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.50]{media/cornell_normal.png}
+	\caption{figure}{Scene one. 200 samples pler pixel.}
+	\label{sc1}
+\end{figure}
+
+If we look closely at the results table \ref{sc1}, we can see how the CUDA version is by far superior to the \texttt{OpenMP} version. While, it is true that with the \texttt{OpenMP} version we realize a great increase in performance, with \texttt{CUDA} we can improve it by up to 10 in some case. A significant highlight is the high potential of the new RTX cards. In the case of this scene, if we look at the column of 100 samples per pixel, we can see how the version that implements the ray/BVH intersection test in iterative matches (or improves) in time that making use of three BOADA GPUs.
+
+If we look at the times of the \texttt{OpenMP} version, we see that the time difference in the different versions of the BVH does not affect it in the same way as it did in \texttt{CUDA}. 
+
+The desktop version is superior in all versions with the experiments we have been able to perform. With respect to GPUs, it is the one with the best hardware. Regarding the CPU, it would have been interesting to try \texttt{OpenMP} in BOADA which has 32 threads against the 8 threads we can get in the CPU of the rest of the machines.
+
+\subsection{Results}
+
+\begin{table}[H]
+    \centering
+    \begin{adjustbox}{max width=\textwidth}
+    \begin{tabular}{*{9}{|c}|}
+         \hline
+         \multicolumn{3}{|c|}{\multirow{2}{*}{Version}} & \multirow{2}{*}{Machine} & \multicolumn{5}{|c|}{Scene one} \\
+         \multicolumn{3}{|c|}{} &  & \multicolumn{5}{|c|}{Time (\textit{seconds})}  \\ \hline
+         & & & & 1 sample(s) & 10 sample(s) & 50 sample(s) & 100 sample(s) & 200 sample(s) \\ \hline
+         \multirow{12}*{CPU} & \multirow{6}*{Seq.}  & 
+         	\multirow{2}*{List} & 
+         		Lenovo 	& 15,50 & 154,14 & 774,44 & 1542,36 & 3095,65 \\ \cline{4-9}
+         	& & &
+         		Desktop & 14,12 & 139,79 & 742,83 & 1445,64 & 2809,16 \\ \cline{3-9}
+		 & &        	
+         	\multirow{2}*{BVH It.} &
+         		Lenovo 	& 30,85 & 300,05 & 1493,99 & 3045,05 & 6081,05 \\ \cline{4-9}
+         	& & &
+         		Desktop & 27,51 & 273,01 & 1369,04 & 2729,36 & 5462,02 \\ \cline{3-9}
+         & &        	
+         	\multirow{2}*{BVH Rec.} &
+         		Lenovo 	& 28,22 & 282,373 & 1407,27 & 2815,23 & 5632,42 \\ \cline{4-9}
+         	& & &
+         		Desktop & 26,06 & 258,99 & 1285,07 & 2568,13 & 5156,55  \\ \cline{2-9}
+         		
+         & \multirow{6}*{\texttt{OpenMP}}  &
+         	\multirow{2}*{List} & 
+         		Lenovo 	& 9,54 & 94,16 & 480,20 & 982,87 & 1929,72 \\ \cline{4-9}
+         	& & &
+         		Desktop & 8,79 & 88,81 & 460,89 & 877,24 & 1859,07 \\ \cline{3-9}
+		 & &        	
+         	\multirow{2}*{BVH It.} &
+         		Lenovo 	&  10,08 & 102,17 & 525,59 & 1194,84 & 2159,8\\ \cline{4-9}
+         	& & &
+         		Desktop & 9,01 & 90,48 & 451,49 & 916,96 & 1801,08\\ \cline{3-9}
+         & &        	
+         	\multirow{2}*{BVH Rec.} &
+         		Lenovo 			& 11,40 & 122,50 	& 601,731 	& 1169,89 	& 2033,67  \\ \cline{4-9}
+         	& & &
+         		Desktop 		& 9,24 	& 88,62 	& 449,78 	& 896,47 	& 1762,38  \\ \cline{1-9}
+         		
+         \multirow{18}*{GPU} & \multirow{18}*{\texttt{CUDA}} &
+         	\multirow{6}*{List} & 
+         		Lenovo 			& 2,58 	& 25,76 & 128,43 	& 257,42	& 513,87	\\ \cline{4-9}
+         	& & &
+         		Desktop 		& 0,93 	& 9,38 	& 46,57 	& 91,85 	& 187,2    	\\ \cline{4-9}
+         	& & &
+         		BOADA - 1 GPU(s) 	& 3,13  & 27,53 & 135,83  	& 271,39 	& -   		\\ \cline{4-9}
+         	& & &
+         		BOADA - 2 GPU(s) 	& 2,07 	& 14,88 & 71,67 	& 142,867 	& 285,18   	\\ \cline{4-9}
+         	& & &
+         		BOADA - 3 GPU(s) 	& 1,87 	& 10,58 & 49,32 	& 97,80 	& 194,22   	\\ \cline{4-9}
+         	& & &
+         		BOADA - 4 GPU(s) 	& 1,83 	& 8,45 	& 37,77 	& 74,38 	& 147,36 	\\ \cline{3-9} % 220,256 & 293,77
+		 & &        	
+         	\multirow{6}*{BVH It.} &
+         		Lenovo 	& 5,68 & 56,58 & 285,36 &  1138,34  & 1703,40  \\ \cline{4-9}
+         	& & &
+         		Desktop & 1,495 & 15,11 & 75,14 & 149,00 & 300,13 \\ \cline{4-9}
+         	& & &
+         		BOADA - 1 GPU(s) & 4,46 & 45,66 & 226,37 &  452,18 & -   \\ \cline{4-9}
+         	& & &
+         		BOADA - 2 GPU(s) & 3,05 & 24,26 & 118,67 &  236,20 &  - \\ \cline{4-9}
+         	& & &
+         		BOADA - 3 GPU(s) & 2,53 & 16,66 & 79,75 & 158,22 & 316,99 \\ \cline{4-9}
+         	& & &
+         		BOADA - 4 GPU(s) & 2,40 & 13,17  & 61,34 & 120,84  & 240,43 \\ \cline{3-9}
+         & &        	
+         	\multirow{6}*{BVH Rec.} &
+         		Lenovo 	& 6,09 & 60,79 & 304,07 & 608,53 & 1216,93  \\ \cline{4-9}
+         	& & &
+         		Desktop &  9,09 & 108,15 & 557,74 & 1092,76 & -   \\ \cline{4-9}
+         	& & &
+         		BOADA - 1 GPU(s) & 21,64 & 212,176 & - &  - & -   \\ \cline{4-9}
+         	& & &
+         		BOADA - 2 GPU(s) & 11,83 & 111,84 & 555,42 & - & - \\ \cline{4-9}
+         	& & &
+         		BOADA - 3 GPU(s) & 8,51 & 75,54 & 375,68 & - & - \\ \cline{4-9}
+         	& & &
+         		BOADA - 4 GPU(s) & 6,99 & 57,98 & 284,42 & - & - \\ \cline{1-9}
+         	
+    \end{tabular}
+    \end{adjustbox}
+    \caption{Scene one time table}
+    \label{tab:scene1}
+\end{table}
+
+\section{Scene Two}
+
+The next scene follows the same concept as the previous one, but now instead of having two cubes we have two 3D models of a reindeer. One of them is defined with a diffuse material, and the other one is made of glass. Also, the floor of the room is mirror-like. Now the complexity of the scene lies in the number of polygons.
+
+If we look carefully at the table of results \ref{sc2}, we can see how now the BVH has the effect we were looking for. Boost the performance of the application. If we compare the iterative version of the BVH against the representation version using a list, we see that the first one is up to ten times faster than the second option. For a scene with more than a thousand triangles, not using any parallelization tool is a waste of time. We can wait for hours to finish rendering the output image.
+
+\subsection{Results}
+
+\begin{table}[H]
+    \centering
+    \begin{adjustbox}{max width=\textwidth}
+    \begin{tabular}{*{9}{|c}|}
+         \hline
+         \multicolumn{3}{|c|}{\multirow{2}{*}{Version}} & \multirow{2}{*}{Machine} & \multicolumn{5}{|c|}{Scene one} \\
+         \multicolumn{3}{|c|}{} &  & \multicolumn{5}{|c|}{Time (\textit{seconds})}  \\ \hline
+         & & & & 1 sample(s) & 10 sample(s) & 50 sample(s) & 100 sample(s) & 200 sample(s) \\ \hline
+         \multirow{12}*{CPU} & \multirow{6}*{Seq.}  & 
+         	\multirow{2}*{List} & 
+         		Lenovo 			& & & & &  \\ \cline{4-9}
+         	& & &
+         		Desktop 		& & & & &  \\ \cline{3-9}
+		 & &        	
+         	\multirow{2}*{BVH It.} &
+         		Lenovo 			& & & & & \\ \cline{4-9}
+         	& & &
+         		Desktop		 	& & & & &  \\ \cline{3-9}
+         & &        	
+         	\multirow{2}*{BVH Rec.} &
+         		Lenovo 			& & & & &   \\ \cline{4-9}
+         	& & &
+         		Desktop 		& & & & &  \\ \cline{2-9}
+         		
+         & \multirow{6}*{\texttt{OpenMP}}  &
+         	\multirow{2}*{List} & 
+         		Lenovo 			& & & & & \\ \cline{4-9}
+         	& & &
+         		Desktop 		& & & & & \\ \cline{3-9}
+		 & &        	
+         	\multirow{2}*{BVH It.} &
+         		Lenovo 			& & & & &	\\ \cline{4-9}
+         	& & &
+         		Desktop 		& & & & &	\\ \cline{3-9}
+         & &        	
+         	\multirow{2}*{BVH Rec.} &
+         		Lenovo 			& & & & &  \\ \cline{4-9}
+         	& & &
+         		Desktop 		& & & & & 	\\ \cline{1-9}
+         		
+         \multirow{18}*{GPU} & \multirow{18}*{\texttt{CUDA}} &
+         	\multirow{6}*{List} & 
+         		Lenovo 			& 107,52 & 1075,6 & & & \\ \cline{4-9}
+         	& & &
+         		Desktop 		& 28,19 & 297,74 & 1473,80 & 2928,41 &   	\\ \cline{4-9}
+         	& & &
+         		BOADA - 1 GPU(s) 	& 89,72 & - & - & - & -		\\ \cline{4-9}
+         	& & &
+         		BOADA - 2 GPU(s) 	& 47,12 & 466,79 & - & - & - 	\\ \cline{4-9}
+         	& & &
+         		BOADA - 3 GPU(s) 	& 32,19 & 313,57 & - & - & -  	\\ \cline{4-9}
+         	& & &
+         		BOADA - 4 GPU(s) 	& 24,86 & 236,67 & - & - & -  \\ \cline{3-9} % 220,256 & 293,77
+		 & &        	
+         	\multirow{6}*{BVH It.} &
+         		Lenovo 			& 21,05 & 206,84 & 1031,70 & 2076,09 &  \\ \cline{4-9}
+         	& & &
+         		Desktop 		& 2,88 & 28,578 & 145,64 & 281,75 & 561,86	\\ \cline{4-9}
+         	& & &
+         		BOADA - 1 GPU(s) 	& 13,82 & 131,13 & 650,972 & - & - 	\\ \cline{4-9}
+         	& & &
+         		BOADA - 2 GPU(s) 	& 7,49 & 69,67 & 344,18 & - & - 	\\ \cline{4-9}
+         	& & &
+         		BOADA - 3 GPU(s) 	& 5,56 & 46,65 & 228,36 & 456,21 & - 	\\ \cline{4-9}
+         	& & &
+         		BOADA - 4 GPU(s) 	& 4,83 & 36,34 & 178,22 & 353,11 & - 	\\ \cline{3-9}
+         & &        	
+         	\multirow{6}*{BVH Rec.} &
+         		Lenovo 			& 42,59 & 425,59 & 2123,99 & 4253,62 & 8512,77 	\\ \cline{4-9}
+         	& & &
+         		Desktop 		& 20,70 & 236,11 & 1252,08 & 2736,14 & -   \\ \cline{4-9}
+         	& & &
+         		BOADA - 1 GPU(s) 	& 40,82 & 402,58 & - & - & -   \\ \cline{4-9}
+         	& & &
+         		BOADA - 2 GPU(s) 	& 21,92 & 214,38 & - & - & - \\ \cline{4-9}
+         	& & &
+         		BOADA - 3 GPU(s) 	& 15,09 & 142,44 & - & - & -	\\ \cline{4-9}
+         	& & &
+         		BOADA - 4 GPU(s) 	& 10,23 & 120,35 & - & - & - 	\\ \cline{1-9}
+         	
+    \end{tabular}
+    \end{adjustbox}
+    \caption{Scene two time table}
+    \label{sc2}
+\end{table}
+
+\section{Scene three}
+
+\subsection{Results}
+
+\begin{table}[H]
+    \centering
+    \begin{adjustbox}{max width=\textwidth}
+    \begin{tabular}{*{9}{|c}|}
+         \hline
+         \multicolumn{3}{|c|}{\multirow{2}{*}{Version}} & \multirow{2}{*}{Machine} & \multicolumn{5}{|c|}{Scene one} \\
+         \multicolumn{3}{|c|}{} &  & \multicolumn{5}{|c|}{Time (\textit{seconds})}  \\ \hline
+         & & & & 1 sample(s) & 10 sample(s) & 50 sample(s) & 100 sample(s) & 200 sample(s) \\ \hline
+         \multirow{12}*{CPU} & \multirow{6}*{Seq.}  & 
+         	\multirow{2}*{List} & 
+         		Lenovo 			& & & - & - & -  \\ \cline{4-9}
+         	& & &
+         		Desktop 		& & & - & - & -  \\ \cline{3-9}
+		 & &        	
+         	\multirow{2}*{BVH It.} &
+         		Lenovo 			& & & - & - & - \\ \cline{4-9}
+         	& & &
+         		Desktop		 	& & & - & - & -  \\ \cline{3-9}
+         & &        	
+         	\multirow{2}*{BVH Rec.} &
+         		Lenovo 			& & & - & - & -   \\ \cline{4-9}
+         	& & &
+         		Desktop 		& & & - & - & - \\ \cline{2-9}
+         		
+         & \multirow{6}*{\texttt{OpenMP}}  &
+         	\multirow{2}*{List} & 
+         		Lenovo 			& & & - & - & - \\ \cline{4-9}
+         	& & &
+         		Desktop 		& & & - & - & - \\ \cline{3-9}
+		 & &        	
+         	\multirow{2}*{BVH It.} &
+         		Lenovo 			& & & & - & -	\\ \cline{4-9}
+         	& & &
+         		Desktop 		& & & & - & -	\\ \cline{3-9}
+         & &        	
+         	\multirow{2}*{BVH Rec.} &
+         		Lenovo 			& & & & - & -  \\ \cline{4-9}
+         	& & &
+         		Desktop 		& & & & - & - 	\\ \cline{1-9}
+         		
+         \multirow{18}*{GPU} & \multirow{18}*{\texttt{CUDA}} &
+         	\multirow{6}*{List} & 
+         		Lenovo 			& 144,05 &  &  & - & - \\ \cline{4-9}
+         	& & &
+         		Desktop 		& 121,31 & 1320,21 & 6472,71 & - & -  	\\ \cline{4-9}
+         	& & &
+         		BOADA - 1 GPU(s) 	& 402,82 & - & - & - & -	\\ \cline{4-9}
+         	& & &
+         		BOADA - 2 GPU(s) 	& 221,20 & - & - & - & - 	\\ \cline{4-9}
+         	& & &
+         		BOADA - 3 GPU(s) 	& 185,33 & - & - & - & - 	\\ \cline{4-9}
+         	& & &
+         		BOADA - 4 GPU(s) 	& 144,05 & - & - & - & -  \\ \cline{3-9} % 220,256 & 293,77
+		 & &        	
+         	\multirow{6}*{BVH It.} &
+         		Lenovo 				& 1,55 & 15,43 & 76,68 & 153,65 & 307,55 \\ \cline{4-9}
+         	& & &
+         		Desktop 			& 0,27 & 2,38 & 11,93 & 23,6 & 45,94 \\ \cline{4-9}
+         	& & &
+         		BOADA - 1 GPU(s) 	& 2,25 & 17,46 & 85,99 & 169,99 & 339,61 	\\ \cline{4-9}
+         	& & &
+         		BOADA - 2 GPU(s) 	& 1,88 & 9,46 & 45,72 & 90,15 & 178,83\\ \cline{4-9}
+         	& & &
+         		BOADA - 3 GPU(s) 	& 2,04 & 9,42 & 41,60 & 82,52 & 168,632 	\\ \cline{4-9}
+         	& & &
+         		BOADA - 4 GPU(s) 	& 2,29 & 7,98 & 33,77 & 65,64 & 128,26	\\ \cline{3-9}
+         & &        	
+         	\multirow{6}*{BVH Rec.} &
+         		Lenovo 				& 4,42 & 39,62 & 198,03 & 398,34 & 793,71	\\ \cline{4-9}
+         	& & &
+         		Desktop 			& 2,51 & 26,99 & 137,24 & 284,24 &  567,90 \\ \cline{4-9}
+         	& & &
+         		BOADA - 1 GPU(s) 	& 6,99 & 63,56 & 316,55 & - & -  \\ \cline{4-9}
+         	& & &
+         		BOADA - 2 GPU(s) 	& 4,29 & 34,10 & 164,44 & 330,92 & - \\ \cline{4-9}
+         	& & &
+         		BOADA - 3 GPU(s) 	& 4,347 & 32,79 & 158,46 & 317,07 & -	\\ \cline{4-9}
+         	& & &
+         		BOADA - 4 GPU(s) 	& 3,93 & 25,69 & 123,68 & 243,43 & - 	\\ \cline{1-9}
+         	
+    \end{tabular}
+    \end{adjustbox}
+    \caption{Scene three time table}
+    \label{sc3}
+\end{table}
+
+\section{Conclusion and Future Work}
+
+First of all, I would like to comment on the limitation that the environment of BOADA has given us for the phase of experimentation and testing of the applications. At the beginning, the intention was to test the four GPUs that BOADA offers us, but due to the fact that it is a teaching and research cluster, we do not have its resources infinitely as it is the case of our personal computers. The processes that are launched to the execution queue have a limited life limit so the more samples per pixel we add to our render, the more expensive it is and in the end, the system rejects it. In the case of Scene 2, you can see how this limitation has impacted the results, especially in the version without the optimization of the BVH.
+
+Undoubtedly we see how for relatively small scenes (<500~1000 triangles) the BVH introduces a huge expense for all versions. So for these cases it would be better not to use this data structure. Instead, for scenes with a large geometry, the use of these data structures is crucial for the performance of the application.
+
+Another observation to emphasize is that indeed the recursion affects negatively to the performance of the program as we have commented previously. The most affected GPU has been undoubtedly the Tesla K40c from BOADA, where a single GPU for a sample per pixel has taken 21 seconds, more than double than the RTX 2080 Super and triple than the GTX 1050 M. The RTX 2080 proved to be superior among all GPUs, matching or even improving the time of the version using three Tesla K40c.
+
+As expected, the slowest version is the sequential one. There's no reason to not take the advantage of the parallel capability that our computers offer us today.  And without a doubt, GPUs are the best option of all, offering us between 7 and 10 times more performance than using only the CPU.
+
+In conclusion, GPUs are the most suitable tool for applications where we require great computing power. Today, with the new RTXs we can perform real-time Ray Tracing thanks to a pipeline-graphic hybrid between Ray Tracing and traditional rasterization.
+
+\section{Future Work}
+
+I still have a lot of work to do in this wonderful branch of computer graphics such as offline rendering and realistic rendering. My intention is to continue progressing and expanding my knowledge in order to improve this application by adding new lighting models such as \citep[pp.~25--32]{Ashikhmin2000} or \citep[pp.~239--246]{Oren1994}, particle system, subsurface scattering, and a long list of other features. 
+
+Perhaps in the future we will be able to render photo-realistic images in real time without the need for filtering and hybrid systems.
+
 
 \newpage
 

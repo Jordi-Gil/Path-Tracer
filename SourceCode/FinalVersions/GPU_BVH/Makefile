@@ -3,7 +3,7 @@ CUDA_HOME = /usr/local/cuda-10.1
 HOST_COMPILER = g++
 NVCC = $(CUDA_HOME)/bin/nvcc -ccbin $(HOST_COMPILER)
 NVCC_DBG = -g -G
-NVCC_FLAGS = -m64 -rdc=true -lcudadevrt -I Header/ -std=c++11 
+NVCC_FLAGS = -I Header/ -std=c++11 
 #$(NVCC_DBG)
 
 OBJDIR = Object
@@ -13,7 +13,7 @@ HEADERDIR = Header
 SOURCEDIR = Source
 
 # Gencode arguments
-SMS ?= 75
+SMS ?= 61
 
 ifeq ($(SMS),)
 $(info >>> WARNING - no SM architectures have been specified - waiving sample <<<)
@@ -36,7 +36,7 @@ OBJS_1 = $(OBJ) $(OBJDIR)/$(1GPUDIR)/main_1GPU.o
 OBJS_2 = $(OBJ) $(OBJDIR)/$(NGPUDIR)/main_NGPUs.o
 
 
-all: $(OBJDIR) $(OBJDIR)/$(1GPUDIR) $(OBJDIR)/$(NGPUDIR) $(OBJDIR)/$(NGPUDYNDIR) path_tracing_1GPU path_tracing_NGPUs
+all: $(OBJDIR) $(OBJDIR)/$(1GPUDIR) $(OBJDIR)/$(NGPUDIR) path_tracing_1GPU path_tracing_NGPUs
 
 $(OBJDIR):
 	mkdir $(OBJDIR)
@@ -48,20 +48,19 @@ $(OBJDIR)/$(NGPUDIR):
 	mkdir $(OBJDIR)/$(NGPUDIR)
 
 path_tracing_1GPU: $(OBJS_1)
-	$(NVCC) $(NVCC_FLAGS) $(GENCODE_FLAGS) -o $@ $(OBJS_1)
+	$(NVCC) -rdc=true $(NVCC_FLAGS) $(GENCODE_FLAGS) -o $@ $(OBJS_1) -lcudadevrt
 
 path_tracing_NGPUs: $(OBJS_2)
-	$(NVCC) $(NVCC_FLAGS) $(GENCODE_FLAGS) -o $@ $(OBJS_2)
+	$(NVCC) -rdc=true $(NVCC_FLAGS) $(GENCODE_FLAGS) -o $@ $(OBJS_2) -lcudadevrt
 
-	
 $(OBJDIR)/$(1GPUDIR)/%.o: %.cu
-	$(NVCC) $(NVCC_FLAGS) $(GENCODE_FLAGS) -o $@ -c $<
+	$(NVCC) $(NVCC_FLAGS) $(GENCODE_FLAGS) -o $@ -dc $<
 	
 $(OBJDIR)/$(NGPUDIR)/%.o: %.cu
-	$(NVCC) $(NVCC_FLAGS) $(GENCODE_FLAGS) -o $@ -c $<
+	$(NVCC) $(NVCC_FLAGS) $(GENCODE_FLAGS) -o $@ -dc $<
 	
 $(OBJDIR)/%.o: Source/%.cu Header/%.cuh
-	$(NVCC) $(NVCC_FLAGS) $(GENCODE_FLAGS) -o $@ -c $<
+	$(NVCC) $(NVCC_FLAGS) $(GENCODE_FLAGS) -o $@ -dc $<
 
 projecte.tar:
 	tar -cvf $@ *.cu Source/*.cu Header/*.cuh Makefile *.sh

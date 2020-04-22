@@ -250,11 +250,11 @@ Vector3 meanConvolution(int diameter, int i, int j, int nx, int ny, unsigned cha
       int neighbour_y = j - (half - k);
       
       if(neighbour_x >= 0 && neighbour_y >= 0 && neighbour_x < ny && neighbour_y < nx) 
-        color += Vector3(getColor255(image, nx, i, j, 0),getColor255(image, nx, i, j, 1),getColor255(image, nx, i, j, 2));
+        color += Vector3(getColor255(image, nx, neighbour_x, neighbour_y, 0),getColor255(image, nx, neighbour_x, neighbour_y, 1),getColor255(image, nx, neighbour_x, neighbour_y, 2));
       
     }
   }
-  return color/(diameter*diameter);
+  return (color/(diameter*diameter));
 }
 
 void meanFilter(int diameter, int nx, int ny, unsigned char *image, unsigned char *imageFiltered){
