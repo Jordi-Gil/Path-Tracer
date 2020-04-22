@@ -93,16 +93,124 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {figure}{\numberline {5.1}{\ignorespaces figure\relax }}{81}{figure.caption.79}
 \defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.2}{\ignorespaces figure\relax }}{83}{figure.caption.80}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.3}{\ignorespaces figure\relax }}{85}{figure.caption.81}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Scene one with 10 SPP.\relax }}{87}{figure.caption.83}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.5}{\ignorespaces Scene one with 50 SPP.\relax }}{88}{figure.caption.85}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Scene one with 10 SPP.\relax }}{89}{figure.caption.87}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Scene one with 50 SPP.\relax }}{90}{figure.caption.89}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.8}{\ignorespaces Scene on filtered with 10 SPP, $\delta _s = 5$ and $\delta _r = 10, 20, 40, 60$ respectively.\relax }}{91}{figure.caption.91}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.9}{\ignorespaces Scene on filtered with 10 SPP, $\delta _s = 10$ and $\delta _r = 10, 20, 40, 60$ respectively.\relax }}{91}{figure.caption.92}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.10}{\ignorespaces Scene on filtered with 10 SPP, $\delta _s = 15$ and $\delta _r = 10, 20, 40, 60$ respectively.\relax }}{92}{figure.caption.93}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.11}{\ignorespaces Scene on filtered with 50 SPP, $\delta _s = 5$ and $\delta _r = 10, 20, 40, 60$ respectively.\relax }}{92}{figure.caption.95}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.12}{\ignorespaces Scene on filtered with 50 SPP, $\delta _s = 10$ and $\delta _r = 10, 20, 40, 60$ respectively.\relax }}{93}{figure.caption.96}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.13}{\ignorespaces Scene on filtered with 50 SPP, $\delta _s = 15$ and $\delta _r = 10, 20, 40, 60$ respectively.\relax }}{93}{figure.caption.97}
+\defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {A.1}{\ignorespaces Complete Gantt Chart.\relax }}{91}{figure.caption.82}
+\addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {A.2}{\ignorespaces GEP Stage.\relax }}{92}{figure.caption.83}
+\contentsline {figure}{\numberline {A.1}{\ignorespaces Complete Gantt Chart.\relax }}{105}{figure.caption.100}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {A.3}{\ignorespaces Development Stage.\relax }}{93}{figure.caption.84}
+\contentsline {figure}{\numberline {A.2}{\ignorespaces GEP Stage.\relax }}{106}{figure.caption.101}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {A.4}{\ignorespaces Complete Gantt Chart.\relax }}{94}{figure.caption.85}
+\contentsline {figure}{\numberline {A.3}{\ignorespaces Development Stage.\relax }}{107}{figure.caption.102}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {A.5}{\ignorespaces Development Stage new tasks.\relax }}{95}{figure.caption.86}
+\contentsline {figure}{\numberline {A.4}{\ignorespaces Complete Gantt Chart.\relax }}{108}{figure.caption.103}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {A.6}{\ignorespaces Final Stage.\relax }}{95}{figure.caption.87}
+\contentsline {figure}{\numberline {A.5}{\ignorespaces Development Stage new tasks.\relax }}{109}{figure.caption.104}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {A.6}{\ignorespaces Final Stage.\relax }}{109}{figure.caption.105}
+\defcounter {refsection}{0}\relax 
+\addvspace {10\p@ }
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.1}{\ignorespaces Original image. 10 SPP\relax }}{110}{figure.caption.106}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.2}{\ignorespaces Image filtered with window size $[11 \times 11]$. 10 SPP\relax }}{111}{figure.caption.107}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.3}{\ignorespaces Image filtered with window size $[17 \times 17]$. 10 SPP\relax }}{111}{figure.caption.108}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.4}{\ignorespaces Image filtered with window size $[21 \times 21]$. 10 SPP\relax }}{112}{figure.caption.109}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.5}{\ignorespaces Original image. 50 SPP\relax }}{112}{figure.caption.110}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.6}{\ignorespaces Image filtered with window size $[11 \times 11]$. 50 SPP\relax }}{113}{figure.caption.111}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.7}{\ignorespaces Image filtered with window size $[17 \times 17]$. 50 SPP\relax }}{113}{figure.caption.112}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.8}{\ignorespaces Image filtered with window size $[21 \times 21]$. 50 SPP\relax }}{114}{figure.caption.113}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.9}{\ignorespaces Original image. 10 SPP\relax }}{115}{figure.caption.114}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.10}{\ignorespaces Image filtered with window size $[11 \times 11]$. 10 SPP\relax }}{116}{figure.caption.115}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.11}{\ignorespaces Image filtered with window size $[17 \times 17]$. 10 SPP\relax }}{116}{figure.caption.116}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.12}{\ignorespaces Image filtered with window size $[21 \times 21]$. 10 SPP\relax }}{117}{figure.caption.117}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.13}{\ignorespaces Original image. 50 SPP\relax }}{117}{figure.caption.118}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.14}{\ignorespaces Image filtered with window size $[11 \times 11]$. 50 SPP\relax }}{118}{figure.caption.119}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.15}{\ignorespaces Image filtered with window size $[17 \times 17]$. 50 SPP\relax }}{118}{figure.caption.120}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.16}{\ignorespaces Image filtered with window size $[21 \times 21]$. 50 SPP\relax }}{119}{figure.caption.121}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.17}{\ignorespaces Image filtered with window size $[21 \times 21]$, $\delta _s = 5$ and $\delta _r = 10$. 10 SPP\relax }}{120}{figure.caption.122}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.18}{\ignorespaces Image filtered with window size $[21 \times 21]$, $\delta _s = 5$ and $\delta _r = 20$. 10 SPP\relax }}{121}{figure.caption.123}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.19}{\ignorespaces Image filtered with window size $[21 \times 21]$, $\delta _s = 5$ and $\delta _r = 40$. 10 SPP\relax }}{121}{figure.caption.124}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.20}{\ignorespaces Image filtered with window size $[21 \times 21]$, $\delta _s = 5$ and $\delta _r = 60$. 10 SPP\relax }}{122}{figure.caption.125}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.21}{\ignorespaces Image filtered with window size $[21 \times 21]$, $\delta _s = 10$ and $\delta _r = 10$. 10 SPP\relax }}{122}{figure.caption.126}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.22}{\ignorespaces Image filtered with window size $[21 \times 21]$, $\delta _s = 10$ and $\delta _r = 20$. 10 SPP\relax }}{123}{figure.caption.127}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.23}{\ignorespaces Image filtered with window size $[21 \times 21]$, $\delta _s = 10$ and $\delta _r = 40$. 10 SPP\relax }}{123}{figure.caption.128}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.24}{\ignorespaces Image filtered with window size $[21 \times 21]$, $\delta _s = 10$ and $\delta _r = 60$. 10 SPP\relax }}{124}{figure.caption.129}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.25}{\ignorespaces Image filtered with window size $[21 \times 21]$, $\delta _s = 15$ and $\delta _r = 10$. 10 SPP\relax }}{124}{figure.caption.130}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.26}{\ignorespaces Image filtered with window size $[21 \times 21]$, $\delta _s = 15$ and $\delta _r = 20$. 10 SPP\relax }}{125}{figure.caption.131}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.27}{\ignorespaces Image filtered with window size $[21 \times 21]$, $\delta _s = 15$ and $\delta _r = 40$. 10 SPP\relax }}{125}{figure.caption.132}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.28}{\ignorespaces Image filtered with window size $[21 \times 21]$, $\delta _s = 15$ and $\delta _r = 60$. 10 SPP\relax }}{126}{figure.caption.133}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.29}{\ignorespaces Image filtered with window size $[21 \times 21]$, $\delta _s = 5$ and $\delta _r = 10$. 50 SPP\relax }}{126}{figure.caption.134}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.30}{\ignorespaces Image filtered with window size $[21 \times 21]$, $\delta _s = 5$ and $\delta _r = 20$. 50 SPP\relax }}{127}{figure.caption.135}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.31}{\ignorespaces Image filtered with window size $[21 \times 21]$, $\delta _s = 5$ and $\delta _r = 40$. 50 SPP\relax }}{127}{figure.caption.136}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.32}{\ignorespaces Image filtered with window size $[21 \times 21]$, $\delta _s = 5$ and $\delta _r = 60$. 50 SPP\relax }}{128}{figure.caption.137}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.33}{\ignorespaces Image filtered with window size $[21 \times 21]$, $\delta _s = 10$ and $\delta _r = 10$. 50 SPP\relax }}{128}{figure.caption.138}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.34}{\ignorespaces Image filtered with window size $[21 \times 21]$, $\delta _s = 10$ and $\delta _r = 20$. 50 SPP\relax }}{129}{figure.caption.139}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.35}{\ignorespaces Image filtered with window size $[21 \times 21]$, $\delta _s = 10$ and $\delta _r = 40$. 50 SPP\relax }}{129}{figure.caption.140}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.36}{\ignorespaces Image filtered with window size $[21 \times 21]$, $\delta _s = 10$ and $\delta _r = 60$. 50 SPP\relax }}{130}{figure.caption.141}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.37}{\ignorespaces Image filtered with window size $[21 \times 21]$, $\delta _s = 15$ and $\delta _r = 10$. 50 SPP\relax }}{130}{figure.caption.142}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.38}{\ignorespaces Image filtered with window size $[21 \times 21]$, $\delta _s = 15$ and $\delta _r = 20$. 50 SPP\relax }}{131}{figure.caption.143}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.39}{\ignorespaces Image filtered with window size $[21 \times 21]$, $\delta _s = 15$ and $\delta _r = 40$. 50 SPP\relax }}{131}{figure.caption.144}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {B.40}{\ignorespaces Image filtered with window size $[21 \times 21]$, $\delta _s = 15$ and $\delta _r = 60$. 50 SPP\relax }}{132}{figure.caption.145}

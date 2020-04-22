@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.9.20)  21 APR 2020 23:56
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.9.20)  22 APR 2020 21:37
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2189,6 +2189,9 @@ Package: tabularx 2016/02/03 v2.11 `tabularx' package (DPC)
 \TX@cols=\count493
 \TX@ftn=\toks52
 )
+(/usr/share/texlive/texmf-dist/tex/latex/shipunov/boldline.sty
+Package: boldline 2008/02/04 v0.2 Adjust line width in tables
+)
 \@float@every@table=\toks53
 
 
@@ -2455,7 +2458,7 @@ LaTeX Font Info:    Font shape `T1/qhv/bx/n' in size <17.28> not available
 (Font)              Font shape `T1/qhv/b/n' tried instead on input line 13.
 LaTeX Font Info:    Font shape `T1/qhv/b/n' will be
 (Font)              scaled to size 15.55188pt on input line 13.
-<media/FIB_UPC.png, id=320, 597.23125pt x 223.83624pt>
+<media/FIB_UPC.png, id=380, 597.23125pt x 223.83624pt>
 File: media/FIB_UPC.png Graphic file (type png)
 <use media/FIB_UPC.png>
 Package pdftex.def Info: media/FIB_UPC.png  used on input line 16.
@@ -2588,7 +2591,7 @@ File: t1ntxtlf.fd 2015/01/17 v1.0 font definition file for T1/ntx/tlf
 )
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
 (Font)              scaled to size 17.28pt on input line 57.
-<media/Dolphin_triangle_mesh.png, id=435, 636.3775pt x 392.46625pt>
+<media/Dolphin_triangle_mesh.png, id=511, 636.3775pt x 392.46625pt>
 File: media/Dolphin_triangle_mesh.png Graphic file (type png)
 <use media/Dolphin_triangle_mesh.png>
 Package pdftex.def Info: media/Dolphin_triangle_mesh.png  used on input line 69
@@ -2599,7 +2602,7 @@ LaTeX Font Info:    Font shape `T1/qhv/m/it' will be
  [4
 
  <./media/Dolphin_triangle_mesh.png (PNG copy)>]
-<media/Flat-shading-sample.png, id=444, 186.6975pt x 194.7275pt>
+<media/Flat-shading-sample.png, id=520, 186.6975pt x 194.7275pt>
 File: media/Flat-shading-sample.png Graphic file (type png)
 <use media/Flat-shading-sample.png>
 Package pdftex.def Info: media/Flat-shading-sample.png  used on input line 78.
@@ -2614,7 +2617,7 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `qhv' (encoding: TS1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-<media/Gouraudshading00.png, id=447, 762.85pt x 461.725pt>
+<media/Gouraudshading00.png, id=523, 762.85pt x 461.725pt>
 File: media/Gouraudshading00.png Graphic file (type png)
 <use media/Gouraudshading00.png>
 Package pdftex.def Info: media/Gouraudshading00.png  used on input line 95.
@@ -2625,36 +2628,36 @@ LaTeX Font Info:    Font shape `T1/qhv/bx/n' in size <14.4> not available
 (Font)              Font shape `T1/qhv/b/n' tried instead on input line 120.
 LaTeX Font Info:    Font shape `T1/qhv/b/n' will be
 (Font)              scaled to size 12.9599pt on input line 120.
-<media/shad2-globalillum3.png, id=485, 504.38437pt x 211.54031pt>
+<media/shad2-globalillum3.png, id=561, 504.38437pt x 211.54031pt>
 File: media/shad2-globalillum3.png Graphic file (type png)
 <use media/shad2-globalillum3.png>
 Package pdftex.def Info: media/shad2-globalillum3.png  used on input line 128.
 (pdftex.def)             Requested size: 226.97086pt x 95.19225pt.
  [8 <./media/shad2-globalillum3.png>]
-<media/lightPathRT.png, id=502, 632.3625pt x 298.11375pt>
+<media/lightPathRT.png, id=577, 632.3625pt x 298.11375pt>
 File: media/lightPathRT.png Graphic file (type png)
 <use media/lightPathRT.png>
 Package pdftex.def Info: media/lightPathRT.png  used on input line 144.
 (pdftex.def)             Requested size: 284.5605pt x 134.14995pt.
-<media/lightPathPT.png, id=503, 632.3625pt x 302.12875pt>
+<media/lightPathPT.png, id=578, 632.3625pt x 302.12875pt>
 File: media/lightPathPT.png Graphic file (type png)
 <use media/lightPathPT.png>
 Package pdftex.def Info: media/lightPathPT.png  used on input line 151.
 (pdftex.def)             Requested size: 284.5605pt x 135.95668pt.
  [9 <./media/lightPathRT.png>]
-<media/RayTracing.png, id=511, 441.65pt x 416.55624pt>
+<media/RayTracing.png, id=586, 441.65pt x 416.55624pt>
 File: media/RayTracing.png Graphic file (type png)
 <use media/RayTracing.png>
 Package pdftex.def Info: media/RayTracing.png  used on input line 164.
 (pdftex.def)             Requested size: 102.4312pt x 96.60678pt.
 LaTeX Font Info:    Font shape `T1/qhv/m/it' will be
 (Font)              scaled to size 9.85492pt on input line 165.
-<media/PathTracing.png, id=512, 441.65pt x 416.55624pt>
+<media/PathTracing.png, id=587, 441.65pt x 416.55624pt>
 File: media/PathTracing.png Graphic file (type png)
 <use media/PathTracing.png>
 Package pdftex.def Info: media/PathTracing.png  used on input line 170.
 (pdftex.def)             Requested size: 102.4312pt x 96.60678pt.
-<media/PathTracingMD.png, id=513, 441.65pt x 416.55624pt>
+<media/PathTracingMD.png, id=588, 441.65pt x 416.55624pt>
 File: media/PathTracingMD.png Graphic file (type png)
 <use media/PathTracingMD.png>
 Package pdftex.def Info: media/PathTracingMD.png  used on input line 176.
@@ -2675,7 +2678,7 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             See the microtype manual for details.
  [12]
 [13] [14]
-<media/agile.png, id=585, 1204.5pt x 602.25pt>
+<media/agile.png, id=661, 1204.5pt x 602.25pt>
 File: media/agile.png Graphic file (type png)
 <use media/agile.png>
 Package pdftex.def Info: media/agile.png  used on input line 283.
@@ -2698,7 +2701,7 @@ LaTeX Font Info:    Font shape `TS1/qhv/b/n' will be
 (Font)              scaled to size 10.79993pt on input line 508.
  [24] [25] [26] [27] [28] [29]
 Chapter 4.
-<media/Ray_trace_diagram.png, id=704, 702.625pt x 467.346pt>
+<media/Ray_trace_diagram.png, id=780, 702.625pt x 467.346pt>
 File: media/Ray_trace_diagram.png Graphic file (type png)
 <use media/Ray_trace_diagram.png>
 Package pdftex.def Info: media/Ray_trace_diagram.png  used on input line 669.
@@ -2706,37 +2709,37 @@ Package pdftex.def Info: media/Ray_trace_diagram.png  used on input line 669.
 [30
 
  <./media/Ray_trace_diagram.png>]
-<media/mirrors_rect/cornell_mirrors_1.png, id=712, 642.4pt x 361.35pt>
+<media/mirrors_rect/cornell_mirrors_1.png, id=788, 642.4pt x 361.35pt>
 File: media/mirrors_rect/cornell_mirrors_1.png Graphic file (type png)
 <use media/mirrors_rect/cornell_mirrors_1.png>
 Package pdftex.def Info: media/mirrors_rect/cornell_mirrors_1.png  used on inpu
 t line 681.
 (pdftex.def)             Requested size: 202.35707pt x 113.82585pt.
-<media/mirrors_rect/cornell_mirrors_2.png, id=713, 642.4pt x 361.35pt>
+<media/mirrors_rect/cornell_mirrors_2.png, id=789, 642.4pt x 361.35pt>
 File: media/mirrors_rect/cornell_mirrors_2.png Graphic file (type png)
 <use media/mirrors_rect/cornell_mirrors_2.png>
 Package pdftex.def Info: media/mirrors_rect/cornell_mirrors_2.png  used on inpu
 t line 687.
 (pdftex.def)             Requested size: 202.35707pt x 113.82585pt.
-<media/mirrors_rect/cornell_mirrors_3.png, id=714, 642.4pt x 361.35pt>
+<media/mirrors_rect/cornell_mirrors_3.png, id=790, 642.4pt x 361.35pt>
 File: media/mirrors_rect/cornell_mirrors_3.png Graphic file (type png)
 <use media/mirrors_rect/cornell_mirrors_3.png>
 Package pdftex.def Info: media/mirrors_rect/cornell_mirrors_3.png  used on inpu
 t line 695.
 (pdftex.def)             Requested size: 202.35707pt x 113.82585pt.
-<media/mirrors_rect/cornell_mirrors_4.png, id=715, 642.4pt x 361.35pt>
+<media/mirrors_rect/cornell_mirrors_4.png, id=791, 642.4pt x 361.35pt>
 File: media/mirrors_rect/cornell_mirrors_4.png Graphic file (type png)
 <use media/mirrors_rect/cornell_mirrors_4.png>
 Package pdftex.def Info: media/mirrors_rect/cornell_mirrors_4.png  used on inpu
 t line 701.
 (pdftex.def)             Requested size: 202.35707pt x 113.82585pt.
-<media/mirrors_rect/cornell_mirrors_5.png, id=716, 642.4pt x 361.35pt>
+<media/mirrors_rect/cornell_mirrors_5.png, id=792, 642.4pt x 361.35pt>
 File: media/mirrors_rect/cornell_mirrors_5.png Graphic file (type png)
 <use media/mirrors_rect/cornell_mirrors_5.png>
 Package pdftex.def Info: media/mirrors_rect/cornell_mirrors_5.png  used on inpu
 t line 709.
 (pdftex.def)             Requested size: 202.35707pt x 113.82585pt.
-<media/mirrors_rect/cornell_mirrors_20.png, id=717, 642.4pt x 361.35pt>
+<media/mirrors_rect/cornell_mirrors_20.png, id=793, 642.4pt x 361.35pt>
 File: media/mirrors_rect/cornell_mirrors_20.png Graphic file (type png)
 <use media/mirrors_rect/cornell_mirrors_20.png>
 Package pdftex.def Info: media/mirrors_rect/cornell_mirrors_20.png  used on inp
@@ -2747,24 +2750,24 @@ ect/cornell_mirrors_2.png (PNG copy)> <./media/mirrors_rect/cornell_mirrors_3.p
 ng (PNG copy)> <./media/mirrors_rect/cornell_mirrors_4.png (PNG copy)> <./media
 /mirrors_rect/cornell_mirrors_5.png (PNG copy)> <./media/mirrors_rect/cornell_m
 irrors_20.png (PNG copy)>]
-<media/Rendering_eq.png, id=724, 619.31375pt x 423.5825pt>
+<media/Rendering_eq.png, id=800, 619.31375pt x 423.5825pt>
 File: media/Rendering_eq.png Graphic file (type png)
 <use media/Rendering_eq.png>
 Package pdftex.def Info: media/Rendering_eq.png  used on input line 727.
 (pdftex.def)             Requested size: 216.76306pt x 148.25609pt.
  [32 <./media/Rendering_eq.png>]
-<media/Supersampling.png, id=738, 1284.8pt x 692.5875pt>
+<media/Supersampling.png, id=814, 1284.8pt x 692.5875pt>
 File: media/Supersampling.png Graphic file (type png)
 <use media/Supersampling.png>
 Package pdftex.def Info: media/Supersampling.png  used on input line 751.
 (pdftex.def)             Requested size: 256.95544pt x 138.51505pt.
  [33 <./media/Supersampling.png>]
-<media/camera.png, id=751, 1141.26375pt x 998.73125pt>
+<media/camera.png, id=826, 1141.26375pt x 998.73125pt>
 File: media/camera.png Graphic file (type png)
 <use media/camera.png>
 Package pdftex.def Info: media/camera.png  used on input line 778.
 (pdftex.def)             Requested size: 399.4483pt x 349.56117pt.
-<media/cornell_bunny.png, id=753, 642.4pt x 361.35pt>
+<media/cornell_bunny.png, id=828, 642.4pt x 361.35pt>
 File: media/cornell_bunny.png Graphic file (type png)
 <use media/cornell_bunny.png>
 Package pdftex.def Info: media/cornell_bunny.png  used on input line 790.
@@ -2774,7 +2777,7 @@ Overfull \hbox (19.98564pt too wide) in paragraph at lines 790--792
  [][] 
  []
 
-<media/cornell_bunny_z_1.png, id=754, 642.4pt x 361.35pt>
+<media/cornell_bunny_z_1.png, id=829, 642.4pt x 361.35pt>
 File: media/cornell_bunny_z_1.png Graphic file (type png)
 <use media/cornell_bunny_z_1.png>
 Package pdftex.def Info: media/cornell_bunny_z_1.png  used on input line 795.
@@ -2788,32 +2791,32 @@ Overfull \hbox (19.98564pt too wide) in paragraph at lines 795--797
 ornell_bunny_z_1.png (PNG copy)>]
 LaTeX Font Info:    Font shape `T1/qhv/m/n' will be
 (Font)              scaled to size 5.93996pt on input line 844.
-<media/camera-model-summary-0.jpg, id=772, 462.528pt x 260.172pt>
+<media/camera-model-summary-0.jpg, id=847, 462.528pt x 260.172pt>
 File: media/camera-model-summary-0.jpg Graphic file (type jpg)
 <use media/camera-model-summary-0.jpg>
 Package pdftex.def Info: media/camera-model-summary-0.jpg  used on input line 8
 49.
 (pdftex.def)             Requested size: 300.63962pt x 169.10977pt.
  [36 <./media/camera-model-summary-0.jpg>]
-<media/camera-model-summary-2.jpg, id=785, 462.528pt x 260.172pt>
+<media/camera-model-summary-2.jpg, id=860, 462.528pt x 260.172pt>
 File: media/camera-model-summary-2.jpg Graphic file (type jpg)
 <use media/camera-model-summary-2.jpg>
 Package pdftex.def Info: media/camera-model-summary-2.jpg  used on input line 8
 68.
 (pdftex.def)             Requested size: 300.63962pt x 169.10977pt.
-<media/cornell_textures_dof_1.png, id=787, 642.4pt x 361.35pt>
+<media/cornell_textures_dof_1.png, id=862, 642.4pt x 361.35pt>
 File: media/cornell_textures_dof_1.png Graphic file (type png)
 <use media/cornell_textures_dof_1.png>
 Package pdftex.def Info: media/cornell_textures_dof_1.png  used on input line 8
 82.
 (pdftex.def)             Requested size: 202.35707pt x 113.82585pt.
-<media/cornell_textures_dof_2.png, id=788, 642.4pt x 361.35pt>
+<media/cornell_textures_dof_2.png, id=863, 642.4pt x 361.35pt>
 File: media/cornell_textures_dof_2.png Graphic file (type png)
 <use media/cornell_textures_dof_2.png>
 Package pdftex.def Info: media/cornell_textures_dof_2.png  used on input line 8
 88.
 (pdftex.def)             Requested size: 202.35707pt x 113.82585pt.
-<media/cornell_textures_dof_3.png, id=789, 642.4pt x 361.35pt>
+<media/cornell_textures_dof_3.png, id=864, 642.4pt x 361.35pt>
 File: media/cornell_textures_dof_3.png Graphic file (type png)
 <use media/cornell_textures_dof_3.png>
 Package pdftex.def Info: media/cornell_textures_dof_3.png  used on input line 8
@@ -2823,18 +2826,18 @@ Package pdftex.def Info: media/cornell_textures_dof_3.png  used on input line 8
 [37 <./media/camera-model-summary-2.jpg>] [38 <./media/cornell_textures_dof_1.p
 ng (PNG copy)> <./media/cornell_textures_dof_2.png (PNG copy)> <./media/cornell
 _textures_dof_3.png (PNG copy)>]
-<media/volumes.jpg, id=808, 215.1293pt x 81.6819pt>
+<media/volumes.jpg, id=883, 215.1293pt x 81.6819pt>
 File: media/volumes.jpg Graphic file (type jpg)
 <use media/volumes.jpg>
 Package pdftex.def Info: media/volumes.jpg  used on input line 920.
 (pdftex.def)             Requested size: 268.91095pt x 102.1021pt.
  [39 <./media/volumes.jpg>]
-<media/slab_1.png, id=817, 557.08125pt x 164.615pt>
+<media/slab_1.png, id=893, 557.08125pt x 164.615pt>
 File: media/slab_1.png Graphic file (type png)
 <use media/slab_1.png>
 Package pdftex.def Info: media/slab_1.png  used on input line 936.
 (pdftex.def)             Requested size: 278.53995pt x 82.3073pt.
-<media/slab_2.png, id=818, 605.26125pt x 462.72874pt>
+<media/slab_2.png, id=894, 605.26125pt x 462.72874pt>
 File: media/slab_2.png Graphic file (type png)
 <use media/slab_2.png>
 Package pdftex.def Info: media/slab_2.png  used on input line 945.
@@ -2862,26 +2865,26 @@ Overfull \hbox (6.10066pt too wide) detected at line 1248
  []
 
 [46]
-<media/Diffuse_Reflection.png, id=905, 443.6575pt x 244.915pt>
+<media/Diffuse_Reflection.png, id=980, 443.6575pt x 244.915pt>
 File: media/Diffuse_Reflection.png Graphic file (type png)
 <use media/Diffuse_Reflection.png>
 Package pdftex.def Info: media/Diffuse_Reflection.png  used on input line 1277.
 
 (pdftex.def)             Requested size: 155.28244pt x 85.72153pt.
-<media/random_ray.png, id=906, 553.06625pt x 580.1675pt>
+<media/random_ray.png, id=981, 553.06625pt x 580.1675pt>
 File: media/random_ray.png Graphic file (type png)
 <use media/random_ray.png>
 Package pdftex.def Info: media/random_ray.png  used on input line 1286.
 (pdftex.def)             Requested size: 193.57608pt x 203.06166pt.
  [47 <./media/Diffuse_Reflection.png>]
-<media/cornell_normal_test.png, id=914, 642.4pt x 361.35pt>
+<media/cornell_normal_test.png, id=989, 642.4pt x 361.35pt>
 File: media/cornell_normal_test.png Graphic file (type png)
 <use media/cornell_normal_test.png>
 Package pdftex.def Info: media/cornell_normal_test.png  used on input line 1309
 .
 (pdftex.def)             Requested size: 417.55505pt x 234.87471pt.
  [48 <./media/random_ray.png>]
-<media/Reflection_angles.png, id=931, 170.6375pt x 204.765pt>
+<media/Reflection_angles.png, id=1006, 170.6375pt x 204.765pt>
 File: media/Reflection_angles.png Graphic file (type png)
 <use media/Reflection_angles.png>
 Package pdftex.def Info: media/Reflection_angles.png  used on input line 1320.
@@ -2889,62 +2892,62 @@ Package pdftex.def Info: media/Reflection_angles.png  used on input line 1320.
 
 [49 <./media/cornell_normal_test.png (PNG copy)> <./media/Reflection_angles.png
 >]
-<media/example_metals.png, id=939, 642.4pt x 361.35pt>
+<media/example_metals.png, id=1015, 642.4pt x 361.35pt>
 File: media/example_metals.png Graphic file (type png)
 <use media/example_metals.png>
 Package pdftex.def Info: media/example_metals.png  used on input line 1337.
 (pdftex.def)             Requested size: 417.55505pt x 234.87471pt.
  [50 <./media/example_metals.png (PNG copy)>]
-<media/refraction.png, id=947, 501.875pt x 501.875pt>
+<media/refraction.png, id=1023, 501.875pt x 501.875pt>
 File: media/refraction.png Graphic file (type png)
 <use media/refraction.png>
 Package pdftex.def Info: media/refraction.png  used on input line 1362.
 (pdftex.def)             Requested size: 225.84166pt x 225.84166pt.
  [51 <./media/refraction.png (PNG copy)>]
-<media/refraction_unit_sphere.png, id=955, 551.05875pt x 560.0925pt>
+<media/refraction_unit_sphere.png, id=1031, 551.05875pt x 560.0925pt>
 File: media/refraction_unit_sphere.png Graphic file (type png)
 <use media/refraction_unit_sphere.png>
 Package pdftex.def Info: media/refraction_unit_sphere.png  used on input line 1
 405.
 (pdftex.def)             Requested size: 247.97414pt x 252.03929pt.
  [52] [53 <./media/refraction_unit_sphere.png>]
-<media/CapeHill_cristal_bunny.png, id=974, 642.4pt x 361.35pt>
+<media/CapeHill_cristal_bunny.png, id=1050, 642.4pt x 361.35pt>
 File: media/CapeHill_cristal_bunny.png Graphic file (type png)
 <use media/CapeHill_cristal_bunny.png>
 Package pdftex.def Info: media/CapeHill_cristal_bunny.png  used on input line 1
 446.
 (pdftex.def)             Requested size: 417.55505pt x 234.87471pt.
  [54] [55 <./media/CapeHill_cristal_bunny.png (PNG copy)>]
-<media/cornell_textures.png, id=989, 642.4pt x 361.35pt>
+<media/cornell_textures.png, id=1065, 642.4pt x 361.35pt>
 File: media/cornell_textures.png Graphic file (type png)
 <use media/cornell_textures.png>
 Package pdftex.def Info: media/cornell_textures.png  used on input line 1469.
 (pdftex.def)             Requested size: 417.55505pt x 234.87471pt.
  [56 <./media/cornell_textures.png (PNG copy)>]
-<media/skybox.png, id=998, 1927.2pt x 1084.05pt>
+<media/skybox.png, id=1073, 1927.2pt x 1084.05pt>
 File: media/skybox.png Graphic file (type png)
 <use media/skybox.png>
 Package pdftex.def Info: media/skybox.png  used on input line 1480.
 (pdftex.def)             Requested size: 385.43318pt x 216.80615pt.
-<media/cubemaps_skybox.png, id=1000, 702.625pt x 526.96875pt>
+<media/cubemaps_skybox.png, id=1075, 702.625pt x 526.96875pt>
 File: media/cubemaps_skybox.png Graphic file (type png)
 <use media/cubemaps_skybox.png>
 Package pdftex.def Info: media/cubemaps_skybox.png  used on input line 1489.
 (pdftex.def)             Requested size: 316.17833pt x 237.13374pt.
  [57 <./media/skybox.png (PNG copy)>] [58 <./media/cubemaps_skybox.png>]
-<media/BVH_example.png, id=1020, 501.875pt x 156.585pt>
+<media/BVH_example.png, id=1095, 501.875pt x 156.585pt>
 File: media/BVH_example.png Graphic file (type png)
 <use media/BVH_example.png>
 Package pdftex.def Info: media/BVH_example.png  used on input line 1508.
 (pdftex.def)             Requested size: 326.21487pt x 101.77904pt.
 
 [59 <./media/BVH_example.png>]
-<media/radixtree.png, id=1034, 762.85pt x 429.605pt>
+<media/radixtree.png, id=1109, 762.85pt x 429.605pt>
 File: media/radixtree.png Graphic file (type png)
 <use media/radixtree.png>
 Package pdftex.def Info: media/radixtree.png  used on input line 1527.
 (pdftex.def)             Requested size: 343.27933pt x 193.32045pt.
-<media/radix_tero_1.png, id=1035, 382.42876pt x 234.8775pt>
+<media/radix_tero_1.png, id=1110, 382.42876pt x 234.8775pt>
 File: media/radix_tero_1.png Graphic file (type png)
 <use media/radix_tero_1.png>
 Package pdftex.def Info: media/radix_tero_1.png  used on input line 1536.
@@ -2955,7 +2958,7 @@ LaTeX Font Info:    Font shape `T1/qhv/m/n' will be
 LaTeX Font Info:    Font shape `T1/qhv/m/n' will be
 (Font)              scaled to size 4.94997pt on input line 1578.
  [62] [63] [64]
-<media/cuda_indexing.png, id=1162, 685.56125pt x 310.15875pt>
+<media/cuda_indexing.png, id=1237, 685.56125pt x 310.15875pt>
 File: media/cuda_indexing.png Graphic file (type png)
 <use media/cuda_indexing.png>
 Package pdftex.def Info: media/cuda_indexing.png  used on input line 1692.
@@ -3059,24 +3062,24 @@ LaTeX Font Info:    Font shape `OT1/ntxtlf/m/n' will be
 (Font)              scaled to size 10.0pt on input line 1768.
 LaTeX Font Info:    Font shape `OT1/ntxtlf/m/n' will be
 (Font)              scaled to size 7.3pt on input line 1768.
-<media/mean_filter.jpg, id=1205, 642.4pt x 103.38625pt>
+<media/mean_filter.jpg, id=1281, 642.4pt x 103.38625pt>
 File: media/mean_filter.jpg Graphic file (type jpg)
 <use media/mean_filter.jpg>
 Package pdftex.def Info: media/mean_filter.jpg  used on input line 1772.
 (pdftex.def)             Requested size: 289.07733pt x 46.52338pt.
  [68]
-<media/median_filter.jpg, id=1217, 613.29124pt x 132.495pt>
+<media/median_filter.jpg, id=1293, 613.29124pt x 132.495pt>
 File: media/median_filter.jpg Graphic file (type jpg)
 <use media/median_filter.jpg>
 Package pdftex.def Info: media/median_filter.jpg  used on input line 1784.
 (pdftex.def)             Requested size: 275.9785pt x 59.6222pt.
  [69 <./media/mean_filter.jpg> <./media/median_filter.jpg>] [70] [71] [72] [73]
-<media/bunny.png, id=1270, 642.4pt x 361.35pt>
+<media/bunny.png, id=1345, 642.4pt x 361.35pt>
 File: media/bunny.png Graphic file (type png)
 <use media/bunny.png>
 Package pdftex.def Info: media/bunny.png  used on input line 1986.
 (pdftex.def)             Requested size: 202.35707pt x 113.82585pt.
-<media/bunny_noktem.png, id=1271, 642.4pt x 361.35pt>
+<media/bunny_noktem.png, id=1346, 642.4pt x 361.35pt>
 File: media/bunny_noktem.png Graphic file (type png)
 <use media/bunny_noktem.png>
 Package pdftex.def Info: media/bunny_noktem.png  used on input line 1992.
@@ -3106,49 +3109,419 @@ Overfull \hbox (39.55878pt too wide) in paragraph at lines 2144--2145
  []
 
 [78]
-<media/divideAndConquer.png, id=1398, 529.98pt x 553.06625pt>
+<media/divideAndConquer.png, id=1474, 529.98pt x 553.06625pt>
 File: media/divideAndConquer.png Graphic file (type png)
 <use media/divideAndConquer.png>
 Package pdftex.def Info: media/divideAndConquer.png  used on input line 2170.
 (pdftex.def)             Requested size: 264.98933pt x 276.53244pt.
  [79 <./media/divideAndConquer.png>]
 Chapter 5.
-<media/cornell_normal.png, id=1421, 853.1875pt x 481.8pt>
+<media/cornell_normal.png, id=1497, 853.1875pt x 481.8pt>
 File: media/cornell_normal.png Graphic file (type png)
 <use media/cornell_normal.png>
 Package pdftex.def Info: media/cornell_normal.png  used on input line 2185.
 (pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
 [80
 
-] [81 <./media/cornell_normal.png (PNG copy)>] [82] [83] [84] [85] [86
+] [81 <./media/cornell_normal.png (PNG copy)>]
+<media/cornell_deer_textures.png, id=1510, 853.1875pt x 481.8pt>
+File: media/cornell_deer_textures.png Graphic file (type png)
+<use media/cornell_deer_textures.png>
+Package pdftex.def Info: media/cornell_deer_textures.png  used on input line 22
+90.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+ [82] [83 <./media/cornell_deer_textures.png (PNG copy)>]
+<media/CapeHill_cristal_bunny_2.png, id=1521, 853.1875pt x 481.8pt>
+File: media/CapeHill_cristal_bunny_2.png Graphic file (type png)
+<use media/CapeHill_cristal_bunny_2.png>
+Package pdftex.def Info: media/CapeHill_cristal_bunny_2.png  used on input line
+ 2392.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+ [84] [85 <./media/CapeHill_cristal_bunny_2.png (PNG copy)>] [86]
+<media/cornell_normal_10.png, id=1546, 853.1875pt x 481.8pt>
+File: media/cornell_normal_10.png Graphic file (type png)
+<use media/cornell_normal_10.png>
+Package pdftex.def Info: media/cornell_normal_10.png  used on input line 2503.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/mean/cornell_normal_10_mean_filter_11.png, id=1547, 853.1875pt x 481.8pt
+>
+File: media/mean/cornell_normal_10_mean_filter_11.png Graphic file (type png)
+<use media/mean/cornell_normal_10_mean_filter_11.png>
+Package pdftex.def Info: media/mean/cornell_normal_10_mean_filter_11.png  used 
+on input line 2509.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/mean/cornell_normal_10_mean_filter_17.png, id=1548, 853.1875pt x 481.8pt
+>
+File: media/mean/cornell_normal_10_mean_filter_17.png Graphic file (type png)
+<use media/mean/cornell_normal_10_mean_filter_17.png>
+Package pdftex.def Info: media/mean/cornell_normal_10_mean_filter_17.png  used 
+on input line 2516.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/mean/cornell_normal_10_mean_filter_21.png, id=1549, 853.1875pt x 481.8pt
+>
+File: media/mean/cornell_normal_10_mean_filter_21.png Graphic file (type png)
+<use media/mean/cornell_normal_10_mean_filter_21.png>
+Package pdftex.def Info: media/mean/cornell_normal_10_mean_filter_21.png  used 
+on input line 2522.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+ [87 <./media/cornell_normal_10.png (PNG copy)> <./media/mean/cornell_normal_10
+_mean_filter_11.png (PNG copy)> <./media/mean/cornell_normal_10_mean_filter_17.
+png (PNG copy)> <./media/mean/cornell_normal_10_mean_filter_21.png (PNG copy)>]
+<media/cornell_normal_50.png, id=1561, 853.1875pt x 481.8pt>
+File: media/cornell_normal_50.png Graphic file (type png)
+<use media/cornell_normal_50.png>
+Package pdftex.def Info: media/cornell_normal_50.png  used on input line 2539.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/mean/cornell_normal_50_mean_filter_11.png, id=1562, 853.1875pt x 481.8pt
+>
+File: media/mean/cornell_normal_50_mean_filter_11.png Graphic file (type png)
+<use media/mean/cornell_normal_50_mean_filter_11.png>
+Package pdftex.def Info: media/mean/cornell_normal_50_mean_filter_11.png  used 
+on input line 2545.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/mean/cornell_normal_50_mean_filter_17.png, id=1563, 853.1875pt x 481.8pt
+>
+File: media/mean/cornell_normal_50_mean_filter_17.png Graphic file (type png)
+<use media/mean/cornell_normal_50_mean_filter_17.png>
+Package pdftex.def Info: media/mean/cornell_normal_50_mean_filter_17.png  used 
+on input line 2552.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/mean/cornell_normal_50_mean_filter_21.png, id=1564, 853.1875pt x 481.8pt
+>
+File: media/mean/cornell_normal_50_mean_filter_21.png Graphic file (type png)
+<use media/mean/cornell_normal_50_mean_filter_21.png>
+Package pdftex.def Info: media/mean/cornell_normal_50_mean_filter_21.png  used 
+on input line 2558.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+ [88 <./media/cornell_normal_50.png (PNG copy)> <./media/mean/cornell_normal_50
+_mean_filter_11.png (PNG copy)> <./media/mean/cornell_normal_50_mean_filter_17.
+png (PNG copy)> <./media/mean/cornell_normal_50_mean_filter_21.png (PNG copy)>]
+File: media/cornell_normal_10.png Graphic file (type png)
+<use media/cornell_normal_10.png>
+Package pdftex.def Info: media/cornell_normal_10.png  used on input line 2581.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/median/cornell_normal_10_median_filter_11.png, id=1577, 853.1875pt x 481
+.8pt>
+File: media/median/cornell_normal_10_median_filter_11.png Graphic file (type pn
+g)
+<use media/median/cornell_normal_10_median_filter_11.png>
+Package pdftex.def Info: media/median/cornell_normal_10_median_filter_11.png  u
+sed on input line 2587.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/median/cornell_normal_10_median_filter_17.png, id=1578, 853.1875pt x 481
+.8pt>
+File: media/median/cornell_normal_10_median_filter_17.png Graphic file (type pn
+g)
+<use media/median/cornell_normal_10_median_filter_17.png>
+Package pdftex.def Info: media/median/cornell_normal_10_median_filter_17.png  u
+sed on input line 2594.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/median/cornell_normal_10_median_filter_21.png, id=1579, 853.1875pt x 481
+.8pt>
+File: media/median/cornell_normal_10_median_filter_21.png Graphic file (type pn
+g)
+<use media/median/cornell_normal_10_median_filter_21.png>
+Package pdftex.def Info: media/median/cornell_normal_10_median_filter_21.png  u
+sed on input line 2600.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+File: media/cornell_normal_50.png Graphic file (type png)
+<use media/cornell_normal_50.png>
+Package pdftex.def Info: media/cornell_normal_50.png  used on input line 2620.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/median/cornell_normal_50_median_filter_11.png, id=1581, 853.1875pt x 481
+.8pt>
+File: media/median/cornell_normal_50_median_filter_11.png Graphic file (type pn
+g)
+<use media/median/cornell_normal_50_median_filter_11.png>
+Package pdftex.def Info: media/median/cornell_normal_50_median_filter_11.png  u
+sed on input line 2626.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/median/cornell_normal_50_median_filter_17.png, id=1582, 853.1875pt x 481
+.8pt>
+File: media/median/cornell_normal_50_median_filter_17.png Graphic file (type pn
+g)
+<use media/median/cornell_normal_50_median_filter_17.png>
+Package pdftex.def Info: media/median/cornell_normal_50_median_filter_17.png  u
+sed on input line 2633.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/median/cornell_normal_50_median_filter_21.png, id=1583, 853.1875pt x 481
+.8pt>
+File: media/median/cornell_normal_50_median_filter_21.png Graphic file (type pn
+g)
+<use media/median/cornell_normal_50_median_filter_21.png>
+Package pdftex.def Info: media/median/cornell_normal_50_median_filter_21.png  u
+sed on input line 2639.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+ [89 <./media/median/cornell_normal_10_median_filter_11.png (PNG copy)> <./medi
+a/median/cornell_normal_10_median_filter_17.png (PNG copy)> <./media/median/cor
+nell_normal_10_median_filter_21.png (PNG copy)>]
+<media/bilateral/cornell_normal_10_bilateral_filter_21_5_10.png, id=1590, 853.1
+875pt x 481.8pt>
+File: media/bilateral/cornell_normal_10_bilateral_filter_21_5_10.png Graphic fi
+le (type png)
+<use media/bilateral/cornell_normal_10_bilateral_filter_21_5_10.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_10_bilateral_filter_21_
+5_10.png  used on input line 2660.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/bilateral/cornell_normal_10_bilateral_filter_21_5_20.png, id=1591, 853.1
+875pt x 481.8pt>
+File: media/bilateral/cornell_normal_10_bilateral_filter_21_5_20.png Graphic fi
+le (type png)
+<use media/bilateral/cornell_normal_10_bilateral_filter_21_5_20.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_10_bilateral_filter_21_
+5_20.png  used on input line 2665.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/bilateral/cornell_normal_10_bilateral_filter_21_5_40.png, id=1592, 853.1
+875pt x 481.8pt>
+File: media/bilateral/cornell_normal_10_bilateral_filter_21_5_40.png Graphic fi
+le (type png)
+<use media/bilateral/cornell_normal_10_bilateral_filter_21_5_40.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_10_bilateral_filter_21_
+5_40.png  used on input line 2671.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/bilateral/cornell_normal_10_bilateral_filter_21_5_60.png, id=1593, 853.1
+875pt x 481.8pt>
+File: media/bilateral/cornell_normal_10_bilateral_filter_21_5_60.png Graphic fi
+le (type png)
+<use media/bilateral/cornell_normal_10_bilateral_filter_21_5_60.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_10_bilateral_filter_21_
+5_60.png  used on input line 2676.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+ [90 <./media/median/cornell_normal_50_median_filter_11.png (PNG copy)> <./medi
+a/median/cornell_normal_50_median_filter_17.png (PNG copy)> <./media/median/cor
+nell_normal_50_median_filter_21.png (PNG copy)>]
+<media/bilateral/cornell_normal_10_bilateral_filter_21_10_10.png, id=1600, 853.
+1875pt x 481.8pt>
+File: media/bilateral/cornell_normal_10_bilateral_filter_21_10_10.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_10_bilateral_filter_21_10_10.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_10_bilateral_filter_21_
+10_10.png  used on input line 2688.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/bilateral/cornell_normal_10_bilateral_filter_21_10_20.png, id=1601, 853.
+1875pt x 481.8pt>
+File: media/bilateral/cornell_normal_10_bilateral_filter_21_10_20.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_10_bilateral_filter_21_10_20.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_10_bilateral_filter_21_
+10_20.png  used on input line 2693.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/bilateral/cornell_normal_10_bilateral_filter_21_10_40.png, id=1602, 853.
+1875pt x 481.8pt>
+File: media/bilateral/cornell_normal_10_bilateral_filter_21_10_40.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_10_bilateral_filter_21_10_40.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_10_bilateral_filter_21_
+10_40.png  used on input line 2699.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/bilateral/cornell_normal_10_bilateral_filter_21_10_60.png, id=1603, 853.
+1875pt x 481.8pt>
+File: media/bilateral/cornell_normal_10_bilateral_filter_21_10_60.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_10_bilateral_filter_21_10_60.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_10_bilateral_filter_21_
+10_60.png  used on input line 2704.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/bilateral/cornell_normal_10_bilateral_filter_21_15_10.png, id=1604, 853.
+1875pt x 481.8pt>
+File: media/bilateral/cornell_normal_10_bilateral_filter_21_15_10.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_10_bilateral_filter_21_15_10.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_10_bilateral_filter_21_
+15_10.png  used on input line 2715.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/bilateral/cornell_normal_10_bilateral_filter_21_15_20.png, id=1605, 853.
+1875pt x 481.8pt>
+File: media/bilateral/cornell_normal_10_bilateral_filter_21_15_20.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_10_bilateral_filter_21_15_20.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_10_bilateral_filter_21_
+15_20.png  used on input line 2720.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/bilateral/cornell_normal_10_bilateral_filter_21_15_40.png, id=1606, 853.
+1875pt x 481.8pt>
+File: media/bilateral/cornell_normal_10_bilateral_filter_21_15_40.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_10_bilateral_filter_21_15_40.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_10_bilateral_filter_21_
+15_40.png  used on input line 2726.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/bilateral/cornell_normal_10_bilateral_filter_21_15_60.png, id=1607, 853.
+1875pt x 481.8pt>
+File: media/bilateral/cornell_normal_10_bilateral_filter_21_15_60.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_10_bilateral_filter_21_15_60.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_10_bilateral_filter_21_
+15_60.png  used on input line 2731.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+ [91 <./media/bilateral/cornell_normal_10_bilateral_filter_21_5_10.png (PNG cop
+y)> <./media/bilateral/cornell_normal_10_bilateral_filter_21_5_20.png (PNG copy
+)> <./media/bilateral/cornell_normal_10_bilateral_filter_21_5_40.png (PNG copy)
+> <./media/bilateral/cornell_normal_10_bilateral_filter_21_5_60.png (PNG copy)>
+ <./media/bilateral/cornell_normal_10_bilateral_filter_21_10_10.png (PNG copy)>
+ <./media/bilateral/cornell_normal_10_bilateral_filter_21_10_20.png (PNG copy)>
+ <./media/bilateral/cornell_normal_10_bilateral_filter_21_10_40.png (PNG copy)>
+ <./media/bilateral/cornell_normal_10_bilateral_filter_21_10_60.png (PNG copy)>
+]
+<media/bilateral/cornell_normal_50_bilateral_filter_21_5_10.png, id=1614, 853.1
+875pt x 481.8pt>
+File: media/bilateral/cornell_normal_50_bilateral_filter_21_5_10.png Graphic fi
+le (type png)
+<use media/bilateral/cornell_normal_50_bilateral_filter_21_5_10.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_50_bilateral_filter_21_
+5_10.png  used on input line 2747.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/bilateral/cornell_normal_50_bilateral_filter_21_5_20.png, id=1615, 853.1
+875pt x 481.8pt>
+File: media/bilateral/cornell_normal_50_bilateral_filter_21_5_20.png Graphic fi
+le (type png)
+<use media/bilateral/cornell_normal_50_bilateral_filter_21_5_20.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_50_bilateral_filter_21_
+5_20.png  used on input line 2752.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/bilateral/cornell_normal_50_bilateral_filter_21_5_40.png, id=1616, 853.1
+875pt x 481.8pt>
+File: media/bilateral/cornell_normal_50_bilateral_filter_21_5_40.png Graphic fi
+le (type png)
+<use media/bilateral/cornell_normal_50_bilateral_filter_21_5_40.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_50_bilateral_filter_21_
+5_40.png  used on input line 2758.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/bilateral/cornell_normal_50_bilateral_filter_21_5_60.png, id=1617, 853.1
+875pt x 481.8pt>
+File: media/bilateral/cornell_normal_50_bilateral_filter_21_5_60.png Graphic fi
+le (type png)
+<use media/bilateral/cornell_normal_50_bilateral_filter_21_5_60.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_50_bilateral_filter_21_
+5_60.png  used on input line 2763.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/bilateral/cornell_normal_50_bilateral_filter_21_10_10.png, id=1618, 853.
+1875pt x 481.8pt>
+File: media/bilateral/cornell_normal_50_bilateral_filter_21_10_10.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_50_bilateral_filter_21_10_10.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_50_bilateral_filter_21_
+10_10.png  used on input line 2774.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/bilateral/cornell_normal_50_bilateral_filter_21_10_20.png, id=1619, 853.
+1875pt x 481.8pt>
+File: media/bilateral/cornell_normal_50_bilateral_filter_21_10_20.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_50_bilateral_filter_21_10_20.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_50_bilateral_filter_21_
+10_20.png  used on input line 2779.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/bilateral/cornell_normal_50_bilateral_filter_21_10_40.png, id=1620, 853.
+1875pt x 481.8pt>
+File: media/bilateral/cornell_normal_50_bilateral_filter_21_10_40.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_50_bilateral_filter_21_10_40.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_50_bilateral_filter_21_
+10_40.png  used on input line 2785.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/bilateral/cornell_normal_50_bilateral_filter_21_10_60.png, id=1621, 853.
+1875pt x 481.8pt>
+File: media/bilateral/cornell_normal_50_bilateral_filter_21_10_60.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_50_bilateral_filter_21_10_60.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_50_bilateral_filter_21_
+10_60.png  used on input line 2790.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+ [92 <./media/bilateral/cornell_normal_10_bilateral_filter_21_15_10.png (PNG co
+py)> <./media/bilateral/cornell_normal_10_bilateral_filter_21_15_20.png (PNG co
+py)> <./media/bilateral/cornell_normal_10_bilateral_filter_21_15_40.png (PNG co
+py)> <./media/bilateral/cornell_normal_10_bilateral_filter_21_15_60.png (PNG co
+py)> <./media/bilateral/cornell_normal_50_bilateral_filter_21_5_10.png (PNG cop
+y)> <./media/bilateral/cornell_normal_50_bilateral_filter_21_5_20.png (PNG copy
+)> <./media/bilateral/cornell_normal_50_bilateral_filter_21_5_40.png (PNG copy)
+> <./media/bilateral/cornell_normal_50_bilateral_filter_21_5_60.png (PNG copy)>
+]
+<media/bilateral/cornell_normal_50_bilateral_filter_21_15_10.png, id=1630, 853.
+1875pt x 481.8pt>
+File: media/bilateral/cornell_normal_50_bilateral_filter_21_15_10.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_50_bilateral_filter_21_15_10.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_50_bilateral_filter_21_
+15_10.png  used on input line 2801.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/bilateral/cornell_normal_50_bilateral_filter_21_15_20.png, id=1631, 853.
+1875pt x 481.8pt>
+File: media/bilateral/cornell_normal_50_bilateral_filter_21_15_20.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_50_bilateral_filter_21_15_20.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_50_bilateral_filter_21_
+15_20.png  used on input line 2806.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/bilateral/cornell_normal_50_bilateral_filter_21_15_40.png, id=1632, 853.
+1875pt x 481.8pt>
+File: media/bilateral/cornell_normal_50_bilateral_filter_21_15_40.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_50_bilateral_filter_21_15_40.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_50_bilateral_filter_21_
+15_40.png  used on input line 2812.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+<media/bilateral/cornell_normal_50_bilateral_filter_21_15_60.png, id=1633, 853.
+1875pt x 481.8pt>
+File: media/bilateral/cornell_normal_50_bilateral_filter_21_15_60.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_50_bilateral_filter_21_15_60.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_50_bilateral_filter_21_
+15_60.png  used on input line 2817.
+(pdftex.def)             Requested size: 170.63448pt x 96.35829pt.
+ [93 <./media/bilateral/cornell_normal_50_bilateral_filter_21_10_10.png (PNG co
+py)> <./media/bilateral/cornell_normal_50_bilateral_filter_21_10_20.png (PNG co
+py)> <./media/bilateral/cornell_normal_50_bilateral_filter_21_10_40.png (PNG co
+py)> <./media/bilateral/cornell_normal_50_bilateral_filter_21_10_60.png (PNG co
+py)> <./media/bilateral/cornell_normal_50_bilateral_filter_21_15_10.png (PNG co
+py)> <./media/bilateral/cornell_normal_50_bilateral_filter_21_15_20.png (PNG co
+py)> <./media/bilateral/cornell_normal_50_bilateral_filter_21_15_40.png (PNG co
+py)> <./media/bilateral/cornell_normal_50_bilateral_filter_21_15_60.png (PNG co
+py)>]
+Chapter 6.
+[94
+
+] [95] [96
 
 ]
 LaTeX Font Info:    Font shape `T1/qhv/m/sc' will be
-(Font)              scaled to size 10.79993pt on input line 2489.
+(Font)              scaled to size 10.79993pt on input line 2847.
 Package microtype Info: Character `029' is missing
 (microtype)             in font `T1/qhv/m/sc/12'.
 (microtype)             Ignoring protrusion settings for this character.
-
-[87]
-Overfull \hbox (0.97702pt too wide) in paragraph at lines 2490--2490
+ [97]
+Overfull \hbox (0.97702pt too wide) in paragraph at lines 2848--2848
 \T1/qhv/m/n/12 (-20) Search-ing^^Q. In: \T1/qhv/m/it/12 (-20) Com-mu-ni-ca-tion
 s of the ACM \T1/qhv/m/n/12 (-20) 18.9 (1975), pp. 509^^U517. \T1/qhv/m/sc/12 (
 -20) issn\T1/qhv/m/n/12 (-20) : 15577317. 
  []
 
 
-Overfull \hbox (42.35707pt too wide) in paragraph at lines 2490--2490
+Overfull \hbox (42.35707pt too wide) in paragraph at lines 2848--2848
 []\T1/qhv/m/n/12 (-20) Bruce Justin Lind-bloom. \T1/qhv/m/it/12 (-20) RG-B/XYZ 
 Ma-tri-ces\T1/qhv/m/n/12 (-20) . 2017. \T1/qhv/m/sc/12 (-20) url\T1/qhv/m/n/12 
 (-20) : []$\T1/pcrs/m/n/12 http : / / www . brucelindbloom .
  []
 
-[88] [89
+(./main.lof
+LaTeX Info: Redefining \. on input line 5.
+LaTeX Info: Redefining \% on input line 5.
+ [98] [99] [100])
+\tf@lof=\write8
+\openout8 = `main.lof'.
+
+ (./main.lot
+LaTeX Info: Redefining \. on input line 5.
+LaTeX Info: Redefining \% on input line 5.
+ [101])
+\tf@lot=\write9
+\openout9 = `main.lot'.
+
+ [102] [103
 
 
 ]
 Appendix A.
-[90
+[104
 
 ]
 
@@ -3157,7 +3530,7 @@ Package typearea Warning: \typearea used at group level 2.
 (typearea)                environments, math mode, boxes, etc. may result in
 (typearea)                many type setting problems.
 (typearea)                You should move the command \typearea
-(typearea)                outside all groups on input line 2494.
+(typearea)                outside all groups on input line 2857.
 
 
 Package typearea Warning: Bad type area settings!
@@ -3182,9 +3555,9 @@ Package typearea Info: These are the values describing the layout:
 (typearea)              \topskip        = 12.0pt
 (typearea)              \footskip       = 50.75pt
 (typearea)              \baselineskip   = 14.5pt
-(typearea)              on input line 2494.
+(typearea)              on input line 2857.
 Package typearea Info: Using dirty hack to recalculate internal output
-(typearea)             dimensions of LaTeX on input line 2494.
+(typearea)             dimensions of LaTeX on input line 2857.
 *geometry* verbose mode - [ newgeometry ] result:
 * driver: pdftex
 * paper: a4paper
@@ -3249,57 +3622,57 @@ Package typearea Info: Using dirty hack to recalculate internal output
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-<media/final_gantt_esp.png, id=1492, 2240.37pt x 736.7525pt>
+<media/final_gantt_esp.png, id=1871, 2240.37pt x 736.7525pt>
 File: media/final_gantt_esp.png Graphic file (type png)
 <use media/final_gantt_esp.png>
-Package pdftex.def Info: media/final_gantt_esp.png  used on input line 2498.
+Package pdftex.def Info: media/final_gantt_esp.png  used on input line 2889.
 (pdftex.def)             Requested size: 672.1162pt x 221.02745pt.
-<media/gantt_gep.png, id=1493, 2489.3pt x 570.13pt>
+<media/gantt_gep.png, id=1872, 2489.3pt x 570.13pt>
 File: media/gantt_gep.png Graphic file (type png)
 <use media/gantt_gep.png>
-Package pdftex.def Info: media/gantt_gep.png  used on input line 2505.
+Package pdftex.def Info: media/gantt_gep.png  used on input line 2896.
 (pdftex.def)             Requested size: 622.32349pt x 142.53215pt.
-[91
+[105
 
 
 
  <./media/final_gantt_esp.png>]
-<media/gantt_dev_esp.png, id=1500, 2522.42375pt x 947.54pt>
+<media/gantt_dev_esp.png, id=1878, 2522.42375pt x 947.54pt>
 File: media/gantt_dev_esp.png Graphic file (type png)
 <use media/gantt_dev_esp.png>
-Package pdftex.def Info: media/gantt_dev_esp.png  used on input line 2512.
+Package pdftex.def Info: media/gantt_dev_esp.png  used on input line 2903.
 (pdftex.def)             Requested size: 630.6044pt x 236.88441pt.
- [92 <./media/gantt_gep.png>]
-<media/final_gantt_eng.png, id=1508, 2488.29625pt x 736.7525pt>
+ [106 <./media/gantt_gep.png>]
+<media/final_gantt_eng.png, id=1884, 2488.29625pt x 736.7525pt>
 File: media/final_gantt_eng.png Graphic file (type png)
 <use media/final_gantt_eng.png>
-Package pdftex.def Info: media/final_gantt_eng.png  used on input line 2519.
+Package pdftex.def Info: media/final_gantt_eng.png  used on input line 2910.
 (pdftex.def)             Requested size: 746.49464pt x 221.02745pt.
 
-Overfull \hbox (72.16493pt too wide) in paragraph at lines 2519--2520
+Overfull \hbox (72.16493pt too wide) in paragraph at lines 2910--2911
  [][] 
  []
 
-[93 <./media/gantt_dev_esp.png>]
-<media/gantt_dev_eng_new.png, id=1515, 2536.47626pt x 510.90875pt>
+[107 <./media/gantt_dev_esp.png>]
+<media/gantt_dev_eng_new.png, id=1890, 2536.47626pt x 510.90875pt>
 File: media/gantt_dev_eng_new.png Graphic file (type png)
 <use media/gantt_dev_eng_new.png>
-Package pdftex.def Info: media/gantt_dev_eng_new.png  used on input line 2526.
+Package pdftex.def Info: media/gantt_dev_eng_new.png  used on input line 2917.
 (pdftex.def)             Requested size: 634.11752pt x 127.72687pt.
- [94 <./media/final_gantt_eng.png>]
-<media/gantt_final_eng.png, id=1522, 2569.6pt x 312.16624pt>
+ [108 <./media/final_gantt_eng.png>]
+<media/gantt_final_eng.png, id=1896, 2569.6pt x 312.16624pt>
 File: media/gantt_final_eng.png Graphic file (type png)
 <use media/gantt_final_eng.png>
-Package pdftex.def Info: media/gantt_final_eng.png  used on input line 2533.
+Package pdftex.def Info: media/gantt_final_eng.png  used on input line 2924.
 (pdftex.def)             Requested size: 642.39844pt x 78.04137pt.
- [95 <./media/gantt_dev_eng_new.png> <./media/gantt_final_eng.png>]
+ [109 <./media/gantt_dev_eng_new.png> <./media/gantt_final_eng.png>]
 
 Package typearea Warning: \typearea used at group level 2.
 (typearea)                Using \typearea inside any group, e.g.
 (typearea)                environments, math mode, boxes, etc. may result in
 (typearea)                many type setting problems.
 (typearea)                You should move the command \typearea
-(typearea)                outside all groups on input line 2538.
+(typearea)                outside all groups on input line 2929.
 
 
 Package typearea Warning: Bad type area settings!
@@ -3324,9 +3697,9 @@ Package typearea Info: These are the values describing the layout:
 (typearea)              \topskip        = 12.0pt
 (typearea)              \footskip       = 50.75pt
 (typearea)              \baselineskip   = 14.5pt
-(typearea)              on input line 2538.
+(typearea)              on input line 2929.
 Package typearea Info: Using dirty hack to recalculate internal output
-(typearea)             dimensions of LaTeX on input line 2538.
+(typearea)             dimensions of LaTeX on input line 2929.
 *geometry* verbose mode - [ newgeometry ] result:
 * driver: pdftex
 * paper: a4paper
@@ -3391,54 +3764,287 @@ Package typearea Info: Using dirty hack to recalculate internal output
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-(./main.lof
-LaTeX Info: Redefining \. on input line 5.
-LaTeX Info: Redefining \% on input line 5.
+Appendix B.
+File: media/cornell_normal_10.png Graphic file (type png)
+<use media/cornell_normal_10.png>
+Package pdftex.def Info: media/cornell_normal_10.png  used on input line 2939.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+File: media/mean/cornell_normal_10_mean_filter_11.png Graphic file (type png)
+<use media/mean/cornell_normal_10_mean_filter_11.png>
+Package pdftex.def Info: media/mean/cornell_normal_10_mean_filter_11.png  used 
+on input line 2946.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+[110
 
-Overfull \vbox (263.84215pt too high) has occurred while \output is active []
-
-
-[96
 
 
 
-])
-\tf@lof=\write8
-\openout8 = `main.lof'.
+]
+File: media/mean/cornell_normal_10_mean_filter_17.png Graphic file (type png)
+<use media/mean/cornell_normal_10_mean_filter_17.png>
+Package pdftex.def Info: media/mean/cornell_normal_10_mean_filter_17.png  used 
+on input line 2953.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+File: media/mean/cornell_normal_10_mean_filter_21.png Graphic file (type png)
+<use media/mean/cornell_normal_10_mean_filter_21.png>
+Package pdftex.def Info: media/mean/cornell_normal_10_mean_filter_21.png  used 
+on input line 2960.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+ [111]
+File: media/cornell_normal_50.png Graphic file (type png)
+<use media/cornell_normal_50.png>
+Package pdftex.def Info: media/cornell_normal_50.png  used on input line 2969.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+File: media/mean/cornell_normal_50_mean_filter_11.png Graphic file (type png)
+<use media/mean/cornell_normal_50_mean_filter_11.png>
+Package pdftex.def Info: media/mean/cornell_normal_50_mean_filter_11.png  used 
+on input line 2976.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+ [112]
+File: media/mean/cornell_normal_50_mean_filter_17.png Graphic file (type png)
+<use media/mean/cornell_normal_50_mean_filter_17.png>
+Package pdftex.def Info: media/mean/cornell_normal_50_mean_filter_17.png  used 
+on input line 2983.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+File: media/mean/cornell_normal_50_mean_filter_21.png Graphic file (type png)
+<use media/mean/cornell_normal_50_mean_filter_21.png>
+Package pdftex.def Info: media/mean/cornell_normal_50_mean_filter_21.png  used 
+on input line 2990.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+ [113]
+File: media/cornell_normal_10.png Graphic file (type png)
+<use media/cornell_normal_10.png>
+Package pdftex.def Info: media/cornell_normal_10.png  used on input line 3002.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+ [114]
+File: media/median/cornell_normal_10_median_filter_11.png Graphic file (type pn
+g)
+<use media/median/cornell_normal_10_median_filter_11.png>
+Package pdftex.def Info: media/median/cornell_normal_10_median_filter_11.png  u
+sed on input line 3009.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+ [115]
+File: media/median/cornell_normal_10_median_filter_17.png Graphic file (type pn
+g)
+<use media/median/cornell_normal_10_median_filter_17.png>
+Package pdftex.def Info: media/median/cornell_normal_10_median_filter_17.png  u
+sed on input line 3016.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+File: media/median/cornell_normal_10_median_filter_21.png Graphic file (type pn
+g)
+<use media/median/cornell_normal_10_median_filter_21.png>
+Package pdftex.def Info: media/median/cornell_normal_10_median_filter_21.png  u
+sed on input line 3023.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+ [116]
+File: media/cornell_normal_50.png Graphic file (type png)
+<use media/cornell_normal_50.png>
+Package pdftex.def Info: media/cornell_normal_50.png  used on input line 3032.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+File: media/median/cornell_normal_50_median_filter_11.png Graphic file (type pn
+g)
+<use media/median/cornell_normal_50_median_filter_11.png>
+Package pdftex.def Info: media/median/cornell_normal_50_median_filter_11.png  u
+sed on input line 3039.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+ [117]
+File: media/median/cornell_normal_50_median_filter_17.png Graphic file (type pn
+g)
+<use media/median/cornell_normal_50_median_filter_17.png>
+Package pdftex.def Info: media/median/cornell_normal_50_median_filter_17.png  u
+sed on input line 3046.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+File: media/median/cornell_normal_50_median_filter_21.png Graphic file (type pn
+g)
+<use media/median/cornell_normal_50_median_filter_21.png>
+Package pdftex.def Info: media/median/cornell_normal_50_median_filter_21.png  u
+sed on input line 3053.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+ [118]
+File: media/bilateral/cornell_normal_10_bilateral_filter_21_5_10.png Graphic fi
+le (type png)
+<use media/bilateral/cornell_normal_10_bilateral_filter_21_5_10.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_10_bilateral_filter_21_
+5_10.png  used on input line 3065.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+ [119]
+File: media/bilateral/cornell_normal_10_bilateral_filter_21_5_20.png Graphic fi
+le (type png)
+<use media/bilateral/cornell_normal_10_bilateral_filter_21_5_20.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_10_bilateral_filter_21_
+5_20.png  used on input line 3072.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+ [120]
+File: media/bilateral/cornell_normal_10_bilateral_filter_21_5_40.png Graphic fi
+le (type png)
+<use media/bilateral/cornell_normal_10_bilateral_filter_21_5_40.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_10_bilateral_filter_21_
+5_40.png  used on input line 3079.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+File: media/bilateral/cornell_normal_10_bilateral_filter_21_5_60.png Graphic fi
+le (type png)
+<use media/bilateral/cornell_normal_10_bilateral_filter_21_5_60.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_10_bilateral_filter_21_
+5_60.png  used on input line 3086.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+ [121]
+File: media/bilateral/cornell_normal_10_bilateral_filter_21_10_10.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_10_bilateral_filter_21_10_10.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_10_bilateral_filter_21_
+10_10.png  used on input line 3093.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+File: media/bilateral/cornell_normal_10_bilateral_filter_21_10_20.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_10_bilateral_filter_21_10_20.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_10_bilateral_filter_21_
+10_20.png  used on input line 3100.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
 
- (./main.lot
-LaTeX Info: Redefining \. on input line 5.
-LaTeX Info: Redefining \% on input line 5.
-)
-\tf@lot=\write9
-\openout9 = `main.lot'.
+[122]
+File: media/bilateral/cornell_normal_10_bilateral_filter_21_10_40.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_10_bilateral_filter_21_10_40.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_10_bilateral_filter_21_
+10_40.png  used on input line 3107.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+File: media/bilateral/cornell_normal_10_bilateral_filter_21_10_60.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_10_bilateral_filter_21_10_60.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_10_bilateral_filter_21_
+10_60.png  used on input line 3114.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+ [123]
+File: media/bilateral/cornell_normal_10_bilateral_filter_21_15_10.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_10_bilateral_filter_21_15_10.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_10_bilateral_filter_21_
+15_10.png  used on input line 3121.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+File: media/bilateral/cornell_normal_10_bilateral_filter_21_15_20.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_10_bilateral_filter_21_15_20.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_10_bilateral_filter_21_
+15_20.png  used on input line 3128.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+ [124]
+File: media/bilateral/cornell_normal_10_bilateral_filter_21_15_40.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_10_bilateral_filter_21_15_40.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_10_bilateral_filter_21_
+15_40.png  used on input line 3135.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+File: media/bilateral/cornell_normal_10_bilateral_filter_21_15_60.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_10_bilateral_filter_21_15_60.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_10_bilateral_filter_21_
+15_60.png  used on input line 3142.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+ [125]
+File: media/bilateral/cornell_normal_50_bilateral_filter_21_5_10.png Graphic fi
+le (type png)
+<use media/bilateral/cornell_normal_50_bilateral_filter_21_5_10.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_50_bilateral_filter_21_
+5_10.png  used on input line 3151.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+File: media/bilateral/cornell_normal_50_bilateral_filter_21_5_20.png Graphic fi
+le (type png)
+<use media/bilateral/cornell_normal_50_bilateral_filter_21_5_20.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_50_bilateral_filter_21_
+5_20.png  used on input line 3158.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+ [126]
+File: media/bilateral/cornell_normal_50_bilateral_filter_21_5_40.png Graphic fi
+le (type png)
+<use media/bilateral/cornell_normal_50_bilateral_filter_21_5_40.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_50_bilateral_filter_21_
+5_40.png  used on input line 3165.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+File: media/bilateral/cornell_normal_50_bilateral_filter_21_5_60.png Graphic fi
+le (type png)
+<use media/bilateral/cornell_normal_50_bilateral_filter_21_5_60.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_50_bilateral_filter_21_
+5_60.png  used on input line 3172.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+ [127]
+File: media/bilateral/cornell_normal_50_bilateral_filter_21_10_10.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_50_bilateral_filter_21_10_10.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_50_bilateral_filter_21_
+10_10.png  used on input line 3179.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+File: media/bilateral/cornell_normal_50_bilateral_filter_21_10_20.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_50_bilateral_filter_21_10_20.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_50_bilateral_filter_21_
+10_20.png  used on input line 3186.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+ [128]
+File: media/bilateral/cornell_normal_50_bilateral_filter_21_10_40.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_50_bilateral_filter_21_10_40.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_50_bilateral_filter_21_
+10_40.png  used on input line 3193.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+File: media/bilateral/cornell_normal_50_bilateral_filter_21_10_60.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_50_bilateral_filter_21_10_60.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_50_bilateral_filter_21_
+10_60.png  used on input line 3200.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+ [129]
+File: media/bilateral/cornell_normal_50_bilateral_filter_21_15_10.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_50_bilateral_filter_21_15_10.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_50_bilateral_filter_21_
+15_10.png  used on input line 3207.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+File: media/bilateral/cornell_normal_50_bilateral_filter_21_15_20.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_50_bilateral_filter_21_15_20.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_50_bilateral_filter_21_
+15_20.png  used on input line 3214.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+ [130]
+File: media/bilateral/cornell_normal_50_bilateral_filter_21_15_40.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_50_bilateral_filter_21_15_40.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_50_bilateral_filter_21_
+15_40.png  used on input line 3221.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+File: media/bilateral/cornell_normal_50_bilateral_filter_21_15_60.png Graphic f
+ile (type png)
+<use media/bilateral/cornell_normal_50_bilateral_filter_21_15_60.png>
+Package pdftex.def Info: media/bilateral/cornell_normal_50_bilateral_filter_21_
+15_60.png  used on input line 3228.
+(pdftex.def)             Requested size: 426.59271pt x 240.8994pt.
+ [131]
 
- 
 AED: lastpage setting LastPage
-[97]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2546.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 2546.
+[132]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 3236.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 3236.
  (./main.aux
 LaTeX Info: Redefining \. on input line 36.
 LaTeX Info: Redefining \% on input line 36.
 )
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 2546.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 2546.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 3236.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 3236.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 4E6D5B78979F074512D79E18F6BE8F90;5131.
+(rerunfilecheck)             Checksum: 615263F927D8060829D9F9A508F5C7B3;6097.
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 47231 strings out of 492982
- 867429 string characters out of 6134896
- 1424973 words of memory out of 5000000
- 49082 multiletter control sequences out of 15000+600000
- 682871 words of font info for 306 fonts, out of 8000000 for 9000
+ 47734 strings out of 492982
+ 883346 string characters out of 6134896
+ 1405159 words of memory out of 5000000
+ 49418 multiletter control sequences out of 15000+600000
+ 683711 words of font info for 312 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 85i,25n,109p,10465b,3655s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 85i,25n,109p,10465b,3657s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/tex-gyre/q-ec-sc.enc}{/usr/share/texlive/te
 xmf-dist/fonts/enc/dvips/base/ec.enc}{/usr/share/texmf/fonts/enc/dvips/tex-gyre
 /q-ec.enc}{/usr/share/texmf/fonts/enc/dvips/tex-gyre/q-ts1.enc}{/usr/share/texl
@@ -3461,10 +4067,10 @@ ublic/txfonts/txmia.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/txfon
 ts/txsyb.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/newtx/txsys.pfb>
 </usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/t
 exlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (102 pages, 15148705 bytes).
+Output written on main.pdf (137 pages, 45623357 bytes).
 PDF statistics:
- 1819 PDF objects out of 2073 (max. 8388607)
- 1587 compressed objects within 16 object streams
- 648 named destinations out of 1000 (max. 500000)
- 37279 words of extra memory for PDF output out of 42996 (max. 10000000)
+ 2238 PDF objects out of 2487 (max. 8388607)
+ 1927 compressed objects within 20 object streams
+ 758 named destinations out of 1000 (max. 500000)
+ 37599 words of extra memory for PDF output out of 42996 (max. 10000000)
 

@@ -2183,11 +2183,11 @@ As we can see in the image, this scene is composed of 4 cuboids. The one that ma
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.50]{media/cornell_normal.png}
-	\caption{figure}{Scene one. 200 samples pler pixel.}
+	\caption{figure}{Scene one. 200 samples per pixel.}
 	\label{sc1}
 \end{figure}
 
-If we look closely at the results table \ref{sc1}, we can see how the CUDA version is by far superior to the \texttt{OpenMP} version. While, it is true that with the \texttt{OpenMP} version we realize a great increase in performance, with \texttt{CUDA} we can improve it by up to 10 in some case. A significant highlight is the high potential of the new RTX cards. In the case of this scene, if we look at the column of 100 samples per pixel, we can see how the version that implements the ray/BVH intersection test in iterative matches (or improves) in time that making use of three BOADA GPUs.
+If we look closely at the results table \ref{tab:scene1}, we can see how the CUDA version is by far superior to the \texttt{OpenMP} version. While, it is true that with the \texttt{OpenMP} version we realize a great increase in performance, with \texttt{CUDA} we can improve it by up to 10 in some case. A significant highlight is the high potential of the new RTX cards. In the case of this scene, if we look at the column of 100 samples per pixel, we can see how the version that implements the ray/BVH intersection test in iterative matches (or improves) in time that making use of three BOADA GPUs.
 
 If we look at the times of the \texttt{OpenMP} version, we see that the time difference in the different versions of the BVH does not affect it in the same way as it did in \texttt{CUDA}. 
 
@@ -2202,38 +2202,38 @@ The desktop version is superior in all versions with the experiments we have bee
          \hline
          \multicolumn{3}{|c|}{\multirow{2}{*}{Version}} & \multirow{2}{*}{Machine} & \multicolumn{5}{|c|}{Scene one} \\
          \multicolumn{3}{|c|}{} &  & \multicolumn{5}{|c|}{Time (\textit{seconds})}  \\ \hline
-         & & & & 1 sample(s) & 10 sample(s) & 50 sample(s) & 100 sample(s) & 200 sample(s) \\ \hline
+         & & & & 1 sample(s) & 10 sample(s) & 50 sample(s) & 100 sample(s) & 200 sample(s) \\ \hlineB{3.5}
          \multirow{12}*{CPU} & \multirow{6}*{Seq.}  & 
          	\multirow{2}*{List} & 
          		Lenovo 	& 15,50 & 154,14 & 774,44 & 1542,36 & 3095,65 \\ \cline{4-9}
          	& & &
-         		Desktop & 14,12 & 139,79 & 742,83 & 1445,64 & 2809,16 \\ \cline{3-9}
+         		Desktop & 14,12 & 139,79 & 742,83 & 1445,64 & 2809,16 \\ \clineB{3-9}{3.5}
 		 & &        	
          	\multirow{2}*{BVH It.} &
          		Lenovo 	& 30,85 & 300,05 & 1493,99 & 3045,05 & 6081,05 \\ \cline{4-9}
          	& & &
-         		Desktop & 27,51 & 273,01 & 1369,04 & 2729,36 & 5462,02 \\ \cline{3-9}
+         		Desktop & 27,51 & 273,01 & 1369,04 & 2729,36 & 5462,02 \\ \clineB{3-9}{3.5}
          & &        	
          	\multirow{2}*{BVH Rec.} &
          		Lenovo 	& 28,22 & 282,373 & 1407,27 & 2815,23 & 5632,42 \\ \cline{4-9}
          	& & &
-         		Desktop & 26,06 & 258,99 & 1285,07 & 2568,13 & 5156,55  \\ \cline{2-9}
+         		Desktop & 26,06 & 258,99 & 1285,07 & 2568,13 & 5156,55  \\ \clineB{2-9}{3.5}
          		
          & \multirow{6}*{\texttt{OpenMP}}  &
          	\multirow{2}*{List} & 
          		Lenovo 	& 9,54 & 94,16 & 480,20 & 982,87 & 1929,72 \\ \cline{4-9}
          	& & &
-         		Desktop & 8,79 & 88,81 & 460,89 & 877,24 & 1859,07 \\ \cline{3-9}
+         		Desktop & 8,79 & 88,81 & 460,89 & 877,24 & 1859,07 \\ \clineB{3-9}{3.5}
 		 & &        	
          	\multirow{2}*{BVH It.} &
          		Lenovo 	&  10,08 & 102,17 & 525,59 & 1194,84 & 2159,8\\ \cline{4-9}
          	& & &
-         		Desktop & 9,01 & 90,48 & 451,49 & 916,96 & 1801,08\\ \cline{3-9}
+         		Desktop & 9,01 & 90,48 & 451,49 & 916,96 & 1801,08\\ \clineB{3-9}{3.5}
          & &        	
          	\multirow{2}*{BVH Rec.} &
          		Lenovo 			& 11,40 & 122,50 	& 601,731 	& 1169,89 	& 2033,67  \\ \cline{4-9}
          	& & &
-         		Desktop 		& 9,24 	& 88,62 	& 449,78 	& 896,47 	& 1762,38  \\ \cline{1-9}
+         		Desktop 		& 9,24 	& 88,62 	& 449,78 	& 896,47 	& 1762,38  \\ \clineB{1-9}{3.5}
          		
          \multirow{18}*{GPU} & \multirow{18}*{\texttt{CUDA}} &
          	\multirow{6}*{List} & 
@@ -2247,7 +2247,7 @@ The desktop version is superior in all versions with the experiments we have bee
          	& & &
          		BOADA - 3 GPU(s) 	& 1,87 	& 10,58 & 49,32 	& 97,80 	& 194,22   	\\ \cline{4-9}
          	& & &
-         		BOADA - 4 GPU(s) 	& 1,83 	& 8,45 	& 37,77 	& 74,38 	& 147,36 	\\ \cline{3-9} % 220,256 & 293,77
+         		BOADA - 4 GPU(s) 	& 1,83 	& 8,45 	& 37,77 	& 74,38 	& 147,36 	\\ \clineB{3-9}{3.5}
 		 & &        	
          	\multirow{6}*{BVH It.} &
          		Lenovo 	& 5,68 & 56,58 & 285,36 &  1138,34  & 1703,40  \\ \cline{4-9}
@@ -2260,7 +2260,7 @@ The desktop version is superior in all versions with the experiments we have bee
          	& & &
          		BOADA - 3 GPU(s) & 2,53 & 16,66 & 79,75 & 158,22 & 316,99 \\ \cline{4-9}
          	& & &
-         		BOADA - 4 GPU(s) & 2,40 & 13,17  & 61,34 & 120,84  & 240,43 \\ \cline{3-9}
+         		BOADA - 4 GPU(s) & 2,40 & 13,17  & 61,34 & 120,84  & 240,43 \\ \clineB{3-9}{3.5}
          & &        	
          	\multirow{6}*{BVH Rec.} &
          		Lenovo 	& 6,09 & 60,79 & 304,07 & 608,53 & 1216,93  \\ \cline{4-9}
@@ -2273,7 +2273,7 @@ The desktop version is superior in all versions with the experiments we have bee
          	& & &
          		BOADA - 3 GPU(s) & 8,51 & 75,54 & 375,68 & - & - \\ \cline{4-9}
          	& & &
-         		BOADA - 4 GPU(s) & 6,99 & 57,98 & 284,42 & - & - \\ \cline{1-9}
+         		BOADA - 4 GPU(s) & 6,99 & 57,98 & 284,42 & - & - \\ \clineB{1-9}{5}
          	
     \end{tabular}
     \end{adjustbox}
@@ -2285,7 +2285,14 @@ The desktop version is superior in all versions with the experiments we have bee
 
 The next scene follows the same concept as the previous one, but now instead of having two cubes we have two 3D models of a reindeer. One of them is defined with a diffuse material, and the other one is made of glass. Also, the floor of the room is mirror-like. Now the complexity of the scene lies in the number of polygons.
 
-If we look carefully at the table of results \ref{sc2}, we can see how now the BVH has the effect we were looking for. Boost the performance of the application. If we compare the iterative version of the BVH against the representation version using a list, we see that the first one is up to ten times faster than the second option. For a scene with more than a thousand triangles, not using any parallelization tool is a waste of time. We can wait for hours to finish rendering the output image.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.50]{media/cornell_deer_textures.png}
+	\caption{figure}{Scene two. 200 samples per pixel.}
+	\label{sc2}
+\end{figure}
+
+If we look carefully at the table of results \ref{tab:scene1}, we can see how now the BVH has the effect we were looking for. Boost the performance of the application. If we compare the iterative version of the BVH against the representation version using a list, we see that the first one is up to ten times faster than the second option. For a scene with more than a thousand triangles, not using any parallelization tool is a waste of time. We can wait for hours to finish rendering the output image. An example is the sequential version without BVH. Where for 10 samples per pixel, we have times of 8947 seconds (2.5 hours approx.). For this reason, we have had to limit the time for the sequential and non-BVH versions.
 
 \subsection{Results}
 
@@ -2294,46 +2301,46 @@ If we look carefully at the table of results \ref{sc2}, we can see how now the B
     \begin{adjustbox}{max width=\textwidth}
     \begin{tabular}{*{9}{|c}|}
          \hline
-         \multicolumn{3}{|c|}{\multirow{2}{*}{Version}} & \multirow{2}{*}{Machine} & \multicolumn{5}{|c|}{Scene one} \\
+         \multicolumn{3}{|c|}{\multirow{2}{*}{Version}} & \multirow{2}{*}{Machine} & \multicolumn{5}{|c|}{Scene two} \\
          \multicolumn{3}{|c|}{} &  & \multicolumn{5}{|c|}{Time (\textit{seconds})}  \\ \hline
-         & & & & 1 sample(s) & 10 sample(s) & 50 sample(s) & 100 sample(s) & 200 sample(s) \\ \hline
+         & & & & 1 sample(s) & 10 sample(s) & 50 sample(s) & 100 sample(s) & 200 sample(s) \\ \hlineB{3.5}
          \multirow{12}*{CPU} & \multirow{6}*{Seq.}  & 
          	\multirow{2}*{List} & 
-         		Lenovo 			& & & & &  \\ \cline{4-9}
+         		Lenovo 			& 997,50 & 9945,55 & - & - & -  \\ \cline{4-9}
          	& & &
-         		Desktop 		& & & & &  \\ \cline{3-9}
+         		Desktop 		& 895,25 & 8947,03 & - & - & - \\ \clineB{3-9}{3.5}
 		 & &        	
          	\multirow{2}*{BVH It.} &
-         		Lenovo 			& & & & & \\ \cline{4-9}
+         		Lenovo 			& 63,40 & & & & \\ \cline{4-9}
          	& & &
-         		Desktop		 	& & & & &  \\ \cline{3-9}
+         		Desktop		 	& 54,94 & 549,40 & 2752,72 & - & - \\ \clineB{3-9}{3.5}
          & &        	
          	\multirow{2}*{BVH Rec.} &
-         		Lenovo 			& & & & &   \\ \cline{4-9}
+         		Lenovo 			& 61,14 & 574,35 & 2879,1 & - & -   \\ \cline{4-9}
          	& & &
-         		Desktop 		& & & & &  \\ \cline{2-9}
+         		Desktop 		& 52,63 & 517,39 & 2590,70 & - & - \\ \clineB{2-9}{3.5}
          		
          & \multirow{6}*{\texttt{OpenMP}}  &
          	\multirow{2}*{List} & 
-         		Lenovo 			& & & & & \\ \cline{4-9}
+         		Lenovo 			& 200,01 & 2049,1 & - & - & -  \\ \cline{4-9}
          	& & &
-         		Desktop 		& & & & & \\ \cline{3-9}
+         		Desktop 		& 162,58 & 1628,67 & - & - & - \\ \clineB{3-9}{3.5}
 		 & &        	
          	\multirow{2}*{BVH It.} &
-         		Lenovo 			& & & & &	\\ \cline{4-9}
+         		Lenovo 			& 15,98 & 186,40 & 830,45 & 1603,2 & 3725,69	\\ \cline{4-9}
          	& & &
-         		Desktop 		& & & & &	\\ \cline{3-9}
+         		Desktop 		& 13,72 & 134,73 & 683,68 & 1046,53 & 2684,10	\\ \clineB{3-9}{3.5}
          & &        	
          	\multirow{2}*{BVH Rec.} &
-         		Lenovo 			& & & & &  \\ \cline{4-9}
+         		Lenovo 			& 17,99 & 155,20 & 774,82 & 1508,78 & 3045,93  \\ \cline{4-9}
          	& & &
-         		Desktop 		& & & & & 	\\ \cline{1-9}
+         		Desktop 		& 12,42 & 127,13 & 642,18 & 1303,50 & 2590,35 	\\ \clineB{1-9}{3.5}
          		
          \multirow{18}*{GPU} & \multirow{18}*{\texttt{CUDA}} &
          	\multirow{6}*{List} & 
-         		Lenovo 			& 107,52 & 1075,6 & & & \\ \cline{4-9}
+         		Lenovo 			& 107,52 & 1075,6 & 5370,88 & - & - \\ \cline{4-9}
          	& & &
-         		Desktop 		& 28,19 & 297,74 & 1473,80 & 2928,41 &   	\\ \cline{4-9}
+         		Desktop 		& 28,19 & 297,74 & 1473,80 & 2928,41 &  6178,08 \\ \cline{4-9}
          	& & &
          		BOADA - 1 GPU(s) 	& 89,72 & - & - & - & -		\\ \cline{4-9}
          	& & &
@@ -2341,10 +2348,10 @@ If we look carefully at the table of results \ref{sc2}, we can see how now the B
          	& & &
          		BOADA - 3 GPU(s) 	& 32,19 & 313,57 & - & - & -  	\\ \cline{4-9}
          	& & &
-         		BOADA - 4 GPU(s) 	& 24,86 & 236,67 & - & - & -  \\ \cline{3-9} % 220,256 & 293,77
+         		BOADA - 4 GPU(s) 	& 24,86 & 236,67 & - & - & -  \\ \clineB{3-9}{3.5}
 		 & &        	
          	\multirow{6}*{BVH It.} &
-         		Lenovo 			& 21,05 & 206,84 & 1031,70 & 2076,09 &  \\ \cline{4-9}
+         		Lenovo 			& 21,05 & 206,84 & 1031,70 & 2076,09 & - \\ \cline{4-9}
          	& & &
          		Desktop 		& 2,88 & 28,578 & 145,64 & 281,75 & 561,86	\\ \cline{4-9}
          	& & &
@@ -2354,7 +2361,7 @@ If we look carefully at the table of results \ref{sc2}, we can see how now the B
          	& & &
          		BOADA - 3 GPU(s) 	& 5,56 & 46,65 & 228,36 & 456,21 & - 	\\ \cline{4-9}
          	& & &
-         		BOADA - 4 GPU(s) 	& 4,83 & 36,34 & 178,22 & 353,11 & - 	\\ \cline{3-9}
+         		BOADA - 4 GPU(s) 	& 4,83 & 36,34 & 178,22 & 353,11 & - 	\\ \clineB{3-9}{3.5}
          & &        	
          	\multirow{6}*{BVH Rec.} &
          		Lenovo 			& 42,59 & 425,59 & 2123,99 & 4253,62 & 8512,77 	\\ \cline{4-9}
@@ -2367,15 +2374,27 @@ If we look carefully at the table of results \ref{sc2}, we can see how now the B
          	& & &
          		BOADA - 3 GPU(s) 	& 15,09 & 142,44 & - & - & -	\\ \cline{4-9}
          	& & &
-         		BOADA - 4 GPU(s) 	& 10,23 & 120,35 & - & - & - 	\\ \cline{1-9}
+         		BOADA - 4 GPU(s) 	& 10,23 & 120,35 & - & - & - 	\\ \clineB{1-9}{5}
          	
     \end{tabular}
     \end{adjustbox}
     \caption{Scene two time table}
-    \label{sc2}
+    \label{tab:scene2}
 \end{table}
 
 \section{Scene three}
+
+The third scene is quite different from the previous two. In this case we have a much larger geometry than the previous ones, but instead of having the main model that composes the scene inside a cabin, we have it outdoors. This will have a great influence on the execution time, since in this case the probability of reaching the imposed bounce limit is much lower than the previous cases. As we don't have any more objects around the rabbit, many rays will stop its trace when reaching the skybox in a few steps.
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.50]{media/CapeHill_cristal_bunny_2.png}
+	\caption{figure}{Scene three. 200 SPP.}
+	\label{sc3}
+\end{figure}
+
+If we look at the results table carefully we see that in this case the version without BVH is much lower than the previous scenes, this is because the number of polygons present in the scene is much higher. Going through a list with more than 100k polygons "s" times for each pixel is very expensive. However, if we look at the BVH version, we get much better results than the previous scenes. For example, in the case of the \texttt{CUDA} version with the ray/BVH intersection test for the RTX 2080 in the third scene with 200 SPP we have a rendering time of ~46s. However, for the first and second scene with much lower geometries we have times of ~300s and ~562s respectively. We can determine that skyboxes are very effective to add a great level of detail to our scenes without affecting the performance.
 
 \subsection{Results}
 
@@ -2384,44 +2403,44 @@ If we look carefully at the table of results \ref{sc2}, we can see how now the B
     \begin{adjustbox}{max width=\textwidth}
     \begin{tabular}{*{9}{|c}|}
          \hline
-         \multicolumn{3}{|c|}{\multirow{2}{*}{Version}} & \multirow{2}{*}{Machine} & \multicolumn{5}{|c|}{Scene one} \\
+         \multicolumn{3}{|c|}{\multirow{2}{*}{Version}} & \multirow{2}{*}{Machine} & \multicolumn{5}{|c|}{Scene three} \\
          \multicolumn{3}{|c|}{} &  & \multicolumn{5}{|c|}{Time (\textit{seconds})}  \\ \hline
          & & & & 1 sample(s) & 10 sample(s) & 50 sample(s) & 100 sample(s) & 200 sample(s) \\ \hline
          \multirow{12}*{CPU} & \multirow{6}*{Seq.}  & 
          	\multirow{2}*{List} & 
-         		Lenovo 			& & & - & - & -  \\ \cline{4-9}
+         		Lenovo 			& 1656,54 & 16501,10 & - & - & -  \\ \cline{4-9}
          	& & &
-         		Desktop 		& & & - & - & -  \\ \cline{3-9}
+         		Desktop 		& 1520,31 & 15442,7 & - & - & -  \\ \clineB{3-9}{3.5}
 		 & &        	
          	\multirow{2}*{BVH It.} &
-         		Lenovo 			& & & - & - & - \\ \cline{4-9}
+         		Lenovo 			& 2,81 & 27,89 & - & - & - \\ \cline{4-9}
          	& & &
-         		Desktop		 	& & & - & - & -  \\ \cline{3-9}
+         		Desktop		 	& 3,17 & 30,65 & - & - & -  \\ \clineB{3-9}{3.5}
          & &        	
          	\multirow{2}*{BVH Rec.} &
-         		Lenovo 			& & & - & - & -   \\ \cline{4-9}
+         		Lenovo 			& 2,90 & 27,94 & - & - & -   \\ \cline{4-9}
          	& & &
-         		Desktop 		& & & - & - & - \\ \cline{2-9}
+         		Desktop 		& 3,25 & 31,74 & - & - & - \\ \clineB{2-9}{3.5}
          		
          & \multirow{6}*{\texttt{OpenMP}}  &
          	\multirow{2}*{List} & 
-         		Lenovo 			& & & - & - & - \\ \cline{4-9}
+         		Lenovo 			& 367,03 & 3665,89 & - & - & - \\ \cline{4-9}
          	& & &
-         		Desktop 		& & & - & - & - \\ \cline{3-9}
+         		Desktop 		& 325,6 & 3154,44 & - & - & - \\ \clineB{3-9}{3.5}
 		 & &        	
          	\multirow{2}*{BVH It.} &
-         		Lenovo 			& & & & - & -	\\ \cline{4-9}
+         		Lenovo 			& 0,77 & 7,92 & 40,46 & 1603,2 & 3725,69 \\ \cline{4-9}
          	& & &
-         		Desktop 		& & & & - & -	\\ \cline{3-9}
+         		Desktop 		& 0,80 & 8,12 & 40,41 & - & -	\\ \clineB{3-9}{3.5}
          & &        	
          	\multirow{2}*{BVH Rec.} &
-         		Lenovo 			& & & & - & -  \\ \cline{4-9}
+         		Lenovo 			& 0,79 & 8,1 & 40,52 & 1059,78 & 3045,93  \\ \cline{4-9}
          	& & &
-         		Desktop 		& & & & - & - 	\\ \cline{1-9}
+         		Desktop 		& 0,98 & 8,94 & 40,71 & - & - 	\\ \cline{1-9}
          		
          \multirow{18}*{GPU} & \multirow{18}*{\texttt{CUDA}} &
          	\multirow{6}*{List} & 
-         		Lenovo 			& 144,05 &  &  & - & - \\ \cline{4-9}
+         		Lenovo 			& 303,90 & 3073,21 & -  & - & - \\ \cline{4-9}
          	& & &
          		Desktop 		& 121,31 & 1320,21 & 6472,71 & - & -  	\\ \cline{4-9}
          	& & &
@@ -2431,7 +2450,7 @@ If we look carefully at the table of results \ref{sc2}, we can see how now the B
          	& & &
          		BOADA - 3 GPU(s) 	& 185,33 & - & - & - & - 	\\ \cline{4-9}
          	& & &
-         		BOADA - 4 GPU(s) 	& 144,05 & - & - & - & -  \\ \cline{3-9} % 220,256 & 293,77
+         		BOADA - 4 GPU(s) 	& 144,05 & - & - & - & -  \\ \clineB{3-9}{3.5}
 		 & &        	
          	\multirow{6}*{BVH It.} &
          		Lenovo 				& 1,55 & 15,43 & 76,68 & 153,65 & 307,55 \\ \cline{4-9}
@@ -2444,7 +2463,7 @@ If we look carefully at the table of results \ref{sc2}, we can see how now the B
          	& & &
          		BOADA - 3 GPU(s) 	& 2,04 & 9,42 & 41,60 & 82,52 & 168,632 	\\ \cline{4-9}
          	& & &
-         		BOADA - 4 GPU(s) 	& 2,29 & 7,98 & 33,77 & 65,64 & 128,26	\\ \cline{3-9}
+         		BOADA - 4 GPU(s) 	& 2,29 & 7,98 & 33,77 & 65,64 & 128,26	\\ \clineB{3-9}{3.5}
          & &        	
          	\multirow{6}*{BVH Rec.} &
          		Lenovo 				& 4,42 & 39,62 & 198,03 & 398,34 & 793,71	\\ \cline{4-9}
@@ -2455,19 +2474,358 @@ If we look carefully at the table of results \ref{sc2}, we can see how now the B
          	& & &
          		BOADA - 2 GPU(s) 	& 4,29 & 34,10 & 164,44 & 330,92 & - \\ \cline{4-9}
          	& & &
-         		BOADA - 3 GPU(s) 	& 4,347 & 32,79 & 158,46 & 317,07 & -	\\ \cline{4-9}
+         		BOADA - 3 GPU(s) 	& 4,347 & 32,79 & 158,46 & 317,07 & - \\ \cline{4-9}
          	& & &
-         		BOADA - 4 GPU(s) 	& 3,93 & 25,69 & 123,68 & 243,43 & - 	\\ \cline{1-9}
+         		BOADA - 4 GPU(s) 	& 3,93 & 25,69 & 123,68 & 243,43 & - \\ \clineB{1-9}{5}
          	
     \end{tabular}
     \end{adjustbox}
     \caption{Scene three time table}
-    \label{sc3}
+    \label{tab:scene3}
 \end{table}
 
-\section{Conclusion and Future Work}
+\section{Filters}
 
-First of all, I would like to comment on the limitation that the environment of BOADA has given us for the phase of experimentation and testing of the applications. At the beginning, the intention was to test the four GPUs that BOADA offers us, but due to the fact that it is a teaching and research cluster, we do not have its resources infinitely as it is the case of our personal computers. The processes that are launched to the execution queue have a limited life limit so the more samples per pixel we add to our render, the more expensive it is and in the end, the system rejects it. In the case of Scene 2, you can see how this limitation has impacted the results, especially in the version without the optimization of the BVH.
+To determine which of the implemented filters behaves better with the generated images, we have chosen the first scene and have been experimenting with the parameters of each filter. For the tests, the images chosen are with 10 SPP and 50 SPP, because both are images in which the noise can be appreciated well and it will be easier to visualize the results of the applied filters.
+
+\subsection{Mean Filter}
+
+For the mean filter we have chosen a window of $[11 \times 11]$, $[17 \times 17]$ and $[21 \times 21]$. In Figure \ref{mean_filter_01} and \ref{mean_filter_02} we can see the results after applying the filter.\footnote{In appendix \ref{mean_filter_appendix} we can see the images with higher resolution.}
+
+\subsubsection{Case 10 SPP}
+
+If we look at the first figure (\ref{mean_filter_01}), we can see how the large amount of noise causes the filtered image to darken. In the case of the $[17\times 17]$, \ref{mean_filter_5}, window we find a greater noise reduction without losing definition of the scene. If we look at the green wall, we see that the centre in Figure \ref{mean_filter_3} is much more uniform than in Figure \ref{mean_filter_2}. Even so, 10 SPP are too few samples to have satisfactory results. For this case we would choose a $[17\times 17]$ window.
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/cornell_normal_10.png}
+		\caption{Original image.}
+		\label{mean_filter_1}
+	\end{subfigure}
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/mean/cornell_normal_10_mean_filter_11.png}
+		\caption{Image filtered with window size $[11 \times 11]$.}
+		\label{mean_filter_2}
+	\end{subfigure}
+
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/mean/cornell_normal_10_mean_filter_17.png}
+		\caption{Image filtered with window size $[17 \times 17]$.}
+		\label{mean_filter_3}
+	\end{subfigure}
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/mean/cornell_normal_10_mean_filter_21.png}
+		\caption{Image filtered with window size $[21 \times 21]$.}
+		\label{mean_filter_4}
+	\end{subfigure}
+	\medskip
+	\caption{Scene one with 10 SPP.}
+	\label{mean_filter_01}
+\end{figure}
+
+\subsubsection{Case 50 SPP}
+
+For 50spp the noise is much lower which allows for smoother filtering. For this case, the $[11\times 11]$, \ref{mean_filter_6}, window size gives the best result. If we look at Figures \ref{mean_filter_7} and \ref{mean_filter_8}, we see that the edges are blurred (although it is still visible). For this case we would choose a $[11\times 11]$ window.
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/cornell_normal_50.png}
+		\caption{Original image.}
+		\label{mean_filter_5}
+	\end{subfigure}
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/mean/cornell_normal_50_mean_filter_11.png}
+		\caption{Image filtered with window size $[11 \times 11]$.}
+		\label{mean_filter_6}
+	\end{subfigure}
+
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/mean/cornell_normal_50_mean_filter_17.png}
+		\caption{Image filtered with window size $[17 \times 17]$.}
+		\label{mean_filter_7}
+	\end{subfigure}
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/mean/cornell_normal_50_mean_filter_21.png}
+		\caption{Image filtered with window size $[21 \times 21]$.}
+		\label{mean_filter_8}
+	\end{subfigure}
+	\medskip
+	\caption{Scene one with 50 SPP.}
+	\label{mean_filter_02}
+\end{figure}
+
+If we look at the timing tables of the scenes tested, we see that for 50 SPP we can get the image generated with the RTX 2080 and iterative BVH quickly (compared to those generated with more SPP) and get decent results with the mean filter. The image with 10 SPP is too noisy so in this case the filter does not succeed in improving the image as much as possible.
+
+\subsection{Median Filter}
+
+For the median filter, we have followed the same scheme as for the media filter. Using the same window sizes $[11 \times 11]$, $[17 \times 17]$ and $[21 \times 21]$ we get the results shown in figures \ref{median_filter_01} and \ref{median_filter_02}. \footnote{In appendix \ref{median_filter_appendix} we can see the images with higher resolution.}
+
+\subsubsection{Case 10 SPP}
+
+The median filter for the image with 10 SSP does not help at all. The image is too noisy, and if is true that some areas like the top of the green and red wall are more dnoised, the result is a very blurred image. In this particular case, the previous filter works much better and achieves a smoother result than the current one.
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/cornell_normal_10.png}
+		\caption{Original image.}
+		\label{median_filter_1}
+	\end{subfigure}
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/median/cornell_normal_10_median_filter_11.png}
+		\caption{Image filtered with window size $[11 \time 11]$.}
+		\label{median_filter_2}
+	\end{subfigure}
+
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/median/cornell_normal_10_median_filter_17.png}
+		\caption{Image filtered with window size $[17 \times 17]$.}
+		\label{median_filter_3}
+	\end{subfigure}
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/median/cornell_normal_10_median_filter_21.png}
+		\caption{Image filtered with window size $[21 \times 21]$.}
+		\label{median_filter_4}
+	\end{subfigure}
+	\medskip
+	\caption{Scene one with 10 SPP.}
+	\label{median_filter_01}
+\end{figure}
+
+\subsubsection{Case 50 SPP}
+
+In the case of the image with 50 SPP, we can see how the edges of the metal box are blurred as we increase the size of the window. For this case, the media filter also works much better than the current one.
+
+Also, it can be seen how the contours of the cubes have been rounded. You can see this effect especially in the focus of light in Figure \ref{median_filter_8}. If we look at the images at a higher resolution in the appendix, we can see that for both cases the median filter behaves worse than the mean filter for a window of size $[11\times 11]$.
+
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/cornell_normal_50.png}
+		\caption{Original image.}
+		\label{median_filter_5}
+	\end{subfigure}
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/median/cornell_normal_50_median_filter_11.png}
+		\caption{Image filtered with window size $[11 \times 11]$.}
+		\label{median_filter_6}
+	\end{subfigure}
+
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/median/cornell_normal_50_median_filter_17.png}
+		\caption{Image filtered with window size $[17 \times 17]$.}
+		\label{median_filter_7}
+	\end{subfigure}
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/median/cornell_normal_50_median_filter_21.png}
+		\caption{Image filtered with window size $[21 \times 21]$.}
+		\label{median_filter_8}
+	\end{subfigure}
+	\medskip
+	\caption{Scene one with 50 SPP.}
+	\label{median_filter_02}
+\end{figure}
+
+\subsection{Bilateral Filter}
+
+For the bilateral filter we have set a $[21 \times 21]$ size window and have experimented with the value of the spatial kernel $\delta_s$ and the range kernel $\delta_r$. As you increase the $\delta_r$ parameter, the bilateral filter becomes closer to Gaussian filter. Increasing the $\delta_s$ parameter smooths large features.
+
+\subsubsection{Case 10 SPP}
+
+For each presentation we can see how as we increase the range kernel the image gets blurred. The most suitable configuration is $\delta_s = 10$ and $\delta_r = 60$. Also, it gets better results than the mean filter.
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/bilateral/cornell_normal_10_bilateral_filter_21_5_10.png}
+		\label{bilateral_filter_1}
+	\end{subfigure}
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/bilateral/cornell_normal_10_bilateral_filter_21_5_20.png}
+		\label{bilateral_filter_2}
+	\end{subfigure}
+
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/bilateral/cornell_normal_10_bilateral_filter_21_5_40.png}
+		\label{bilateral_filter_3}
+	\end{subfigure}
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/bilateral/cornell_normal_10_bilateral_filter_21_5_60.png}
+		\label{bilateral_filter_4}
+	\end{subfigure}
+	\caption{Scene on filtered with 10 SPP, $\delta_s = 5$ and $\delta_r = 10, 20, 40, 60$ respectively.}
+	\label{bilateral_filter_01}
+\end{figure}
+
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/bilateral/cornell_normal_10_bilateral_filter_21_10_10.png}
+		\label{bilateral_filter_5}
+	\end{subfigure}
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/bilateral/cornell_normal_10_bilateral_filter_21_10_20.png}
+		\label{bilateral_filter_6}
+	\end{subfigure}
+
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/bilateral/cornell_normal_10_bilateral_filter_21_10_40.png}
+		\label{bilateral_filter_7}
+	\end{subfigure}
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/bilateral/cornell_normal_10_bilateral_filter_21_10_60.png}
+		\label{bilateral_filter_8}
+	\end{subfigure}
+	\caption{Scene on filtered with 10 SPP, $\delta_s = 10$ and $\delta_r = 10, 20, 40, 60$ respectively.}
+	\label{bilateral_filter_02}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/bilateral/cornell_normal_10_bilateral_filter_21_15_10.png}
+		\label{bilateral_filter_9}
+	\end{subfigure}
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/bilateral/cornell_normal_10_bilateral_filter_21_15_20.png}
+		\label{bilateral_filter_10}
+	\end{subfigure}
+
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/bilateral/cornell_normal_10_bilateral_filter_21_15_40.png}
+		\label{bilateral_filter_11}
+	\end{subfigure}
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/bilateral/cornell_normal_10_bilateral_filter_21_15_60.png}
+		\label{bilateral_filter_12}
+	\end{subfigure}
+	\caption{Scene on filtered with 10 SPP, $\delta_s = 15$ and $\delta_r = 10, 20, 40, 60$ respectively.}
+	\label{bilateral_filter_03}
+\end{figure}
+
+\subsubsection{Case 50 SPP}
+
+For the case of 50 SPP, a $\delta_r$ with values of 20, 40 and 60 blurs too much the image so for this parameter with a value of 10 is enough. For $\delta_s$, with a value of 15 we get better image smoothing. It can be noticed if we look at the background wall. So, a good configuration is $\delta_s = 15$ and $\delta_r = 10$. If we compare the image generated by this configuration with the one chosen in the median filter, the bilateral filter is more effective for the image.
+
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/bilateral/cornell_normal_50_bilateral_filter_21_5_10.png}
+		\label{bilateral_filter_13}
+	\end{subfigure}
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/bilateral/cornell_normal_50_bilateral_filter_21_5_20.png}
+		\label{bilateral_filter_14}
+	\end{subfigure}
+
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/bilateral/cornell_normal_50_bilateral_filter_21_5_40.png}
+		\label{bilateral_filter_15}
+	\end{subfigure}
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/bilateral/cornell_normal_50_bilateral_filter_21_5_60.png}
+		\label{bilateral_filter_16}
+	\end{subfigure}
+	\caption{Scene on filtered with 50 SPP, $\delta_s = 5$ and $\delta_r = 10, 20, 40, 60$ respectively.}
+	\label{bilateral_filter_04}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/bilateral/cornell_normal_50_bilateral_filter_21_10_10.png}
+		\label{bilateral_filter_17}
+	\end{subfigure}
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/bilateral/cornell_normal_50_bilateral_filter_21_10_20.png}
+		\label{bilateral_filter_18}
+	\end{subfigure}
+
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/bilateral/cornell_normal_50_bilateral_filter_21_10_40.png}
+		\label{bilateral_filter_19}
+	\end{subfigure}
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/bilateral/cornell_normal_50_bilateral_filter_21_10_60.png}
+		\label{bilateral_filter_20}
+	\end{subfigure}
+	\caption{Scene on filtered with 50 SPP, $\delta_s = 10$ and $\delta_r = 10, 20, 40, 60$ respectively.}
+	\label{bilateral_filter_05}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/bilateral/cornell_normal_50_bilateral_filter_21_15_10.png}
+		\label{bilateral_filter_21}
+	\end{subfigure}
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/bilateral/cornell_normal_50_bilateral_filter_21_15_20.png}
+		\label{bilateral_filter_22}
+	\end{subfigure}
+
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/bilateral/cornell_normal_50_bilateral_filter_21_15_40.png}
+		\label{bilateral_filter_23}
+	\end{subfigure}
+	\begin{subfigure}{.48\textwidth}
+		\centering
+		\includegraphics[scale=0.2]{media/bilateral/cornell_normal_50_bilateral_filter_21_15_60.png}
+		\label{bilateral_filter_24}
+	\end{subfigure}
+	\caption{Scene on filtered with 50 SPP, $\delta_s = 15$ and $\delta_r = 10, 20, 40, 60$ respectively.}
+	\label{bilateral_filter_06}
+\end{figure}
+
+\chapter{Conclusions and Future Work}
+
+\section{Conclusions}
+
+First of all, I would like to comment on the limitation that the environment of BOADA has given us for the phase of experimentation and testing of the applications. At the beginning, the intention was to test the four GPUs that BOADA offers us, but due to the fact that it is a teaching and research cluster, we do not have its resources infinitely as it is the case of our personal computers. The processes that are launched to the execution queue have a limited life limit so the more samples per pixel we add to our render, the more expensive it is and in the end, the system rejects it. In the case of second scene \ref{sc2}, you can see how this limitation has impacted the results, especially in the version without the optimization of the BVH.
 
 Undoubtedly we see how for relatively small scenes (<500~1000 triangles) the BVH introduces a huge expense for all versions. So for these cases it would be better not to use this data structure. Instead, for scenes with a large geometry, the use of these data structures is crucial for the performance of the application.
 
@@ -2488,10 +2846,43 @@ Perhaps in the future we will be able to render photo-realistic images in real t
 
 \printbibliography
 
+\listoffigures
+
+\listoftables
+
 \begin{appendices}
+
 \chapter{Gantt Diagram}
 
 \uselandscape
+
+%\begin{figure}[H]
+%	\centering
+%	\includegraphics[scale=0.1]{media/gantt/gannt_total.jpeg}
+%	\captionof{figure}{Complete Gantt Chart.}
+%	\label{gantt_esp}
+%\end{figure}
+%
+%\begin{figure}[H]
+%	\centering
+%	\includegraphics[scale=0.30]{media/gantt/gannt_gep.jpeg}
+%	\captionof{figure}{GEP Stage.}
+%	\label{gantt_esp}
+%\end{figure}
+%
+%\begin{figure}[H]
+%	\centering
+%	\includegraphics[scale=0.30]{media/gantt/gannt_dev.jpeg}
+%	\captionof{figure}{Development Stage.}
+%	\label{gantt_esp}
+%\end{figure}
+%
+%\begin{figure}[H]
+%	\centering
+%	\includegraphics[scale=0.30]{media/gantt/gannt_final.jpeg}
+%	\captionof{figure}{Final Stage.}
+%	\label{gantt_esp}
+%\end{figure}
 
 \begin{figure}[H]
 	\centering
@@ -2537,10 +2928,309 @@ Perhaps in the future we will be able to render photo-realistic images in real t
 
 \useportrait
 
+\chapter{Filter Images}
+
+\section{Mean Filter}\label{mean_filter_appendix}
+
+\subsection{Case 10 SPP}
+
+\begin{figure}[H]
+	\centering
+  	\includegraphics[scale=0.5]{media/cornell_normal_10.png}
+  	\captionof{figure}{Original image. 10 SPP}
+  	\label{ap1}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+  	\includegraphics[scale=0.5]{media/mean/cornell_normal_10_mean_filter_11.png}
+  	\captionof{figure}{Image filtered with window size $[11 \times 11]$. 10 SPP}
+  	\label{ap2}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+  	\includegraphics[scale=0.5]{media/mean/cornell_normal_10_mean_filter_17.png}
+  	\captionof{figure}{Image filtered with window size $[17 \times 17]$. 10 SPP}
+  	\label{ap3}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+  	\includegraphics[scale=0.5]{media/mean/cornell_normal_10_mean_filter_21.png}
+  	\captionof{figure}{Image filtered with window size $[21 \times 21]$. 10 SPP}
+  	\label{ap4}
+\end{figure}
+
+\subsection{Case 50 SPP}
+
+\begin{figure}[H]
+	\centering
+  	\includegraphics[scale=0.5]{media/cornell_normal_50.png}
+  	\captionof{figure}{Original image. 50 SPP}
+  	\label{ap5}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+  	\includegraphics[scale=0.5]{media/mean/cornell_normal_50_mean_filter_11.png}
+  	\captionof{figure}{Image filtered with window size $[11 \times 11]$. 50 SPP}
+  	\label{ap6}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+  	\includegraphics[scale=0.5]{media/mean/cornell_normal_50_mean_filter_17.png}
+  	\captionof{figure}{Image filtered with window size $[17 \times 17]$. 50 SPP}
+  	\label{ap7}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+  	\includegraphics[scale=0.5]{media/mean/cornell_normal_50_mean_filter_21.png}
+  	\captionof{figure}{Image filtered with window size $[21 \times 21]$. 50 SPP}
+  	\label{ap8}
+\end{figure}
+
+
+\section{Median Filter}\label{median_filter_appendix}
+
+\subsection{Case 10 SPP}
+
+\begin{figure}[H]
+	\centering
+  	\includegraphics[scale=0.5]{media/cornell_normal_10.png}
+  	\captionof{figure}{Original image. 10 SPP}
+  	\label{ap9}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+  	\includegraphics[scale=0.5]{media/median/cornell_normal_10_median_filter_11.png}
+  	\captionof{figure}{Image filtered with window size $[11 \times 11]$. 10 SPP}
+  	\label{ap10}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+  	\includegraphics[scale=0.5]{media/median/cornell_normal_10_median_filter_17.png}
+  	\captionof{figure}{Image filtered with window size $[17 \times 17]$. 10 SPP}
+  	\label{ap11}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+  	\includegraphics[scale=0.5]{media/median/cornell_normal_10_median_filter_21.png}
+  	\captionof{figure}{Image filtered with window size $[21 \times 21]$. 10 SPP}
+  	\label{ap12}
+\end{figure}
+
+\subsection{Case 50 SPP}
+
+\begin{figure}[H]
+	\centering
+  	\includegraphics[scale=0.5]{media/cornell_normal_50.png}
+  	\captionof{figure}{Original image. 50 SPP}
+  	\label{ap13}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+  	\includegraphics[scale=0.5]{media/median/cornell_normal_50_median_filter_11.png}
+  	\captionof{figure}{Image filtered with window size $[11 \times 11]$. 50 SPP}
+  	\label{ap14}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+  	\includegraphics[scale=0.5]{media/median/cornell_normal_50_median_filter_17.png}
+  	\captionof{figure}{Image filtered with window size $[17 \times 17]$. 50 SPP}
+  	\label{ap15}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+  	\includegraphics[scale=0.5]{media/median/cornell_normal_50_median_filter_21.png}
+  	\captionof{figure}{Image filtered with window size $[21 \times 21]$. 50 SPP}
+  	\label{ap16}
+\end{figure}
+
+
+
+\section{Bilateral Filter}
+
+\subsection{Case 10 SPP}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{media/bilateral/cornell_normal_10_bilateral_filter_21_5_10.png}
+	\captionof{figure}{Image filtered with window size $[21 \times 21]$, $\delta_s = 5$ and $\delta_r = 10$. 10 SPP}
+	\label{ap17}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{media/bilateral/cornell_normal_10_bilateral_filter_21_5_20.png}
+\captionof{figure}{Image filtered with window size $[21 \times 21]$, $\delta_s = 5$ and $\delta_r = 20$. 10 SPP}	
+	\label{ap18}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{media/bilateral/cornell_normal_10_bilateral_filter_21_5_40.png}
+	\captionof{figure}{Image filtered with window size $[21 \times 21]$, $\delta_s = 5$ and $\delta_r = 40$. 10 SPP}
+	\label{ap19}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{media/bilateral/cornell_normal_10_bilateral_filter_21_5_60.png}
+	\captionof{figure}{Image filtered with window size $[21 \times 21]$, $\delta_s = 5$ and $\delta_r = 60$. 10 SPP}	
+	\label{ap20}
+\end{figure}	
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{media/bilateral/cornell_normal_10_bilateral_filter_21_10_10.png}
+	\captionof{figure}{Image filtered with window size $[21 \times 21]$, $\delta_s = 10$ and $\delta_r = 10$. 10 SPP}
+	\label{ap21}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{media/bilateral/cornell_normal_10_bilateral_filter_21_10_20.png}
+	\captionof{figure}{Image filtered with window size $[21 \times 21]$, $\delta_s = 10$ and $\delta_r = 20$. 10 SPP}
+	\label{ap22}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{media/bilateral/cornell_normal_10_bilateral_filter_21_10_40.png}
+	\captionof{figure}{Image filtered with window size $[21 \times 21]$, $\delta_s = 10$ and $\delta_r = 40$. 10 SPP}
+	\label{ap23}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{media/bilateral/cornell_normal_10_bilateral_filter_21_10_60.png}
+	\captionof{figure}{Image filtered with window size $[21 \times 21]$, $\delta_s = 10$ and $\delta_r = 60$. 10 SPP}
+	\label{ap24}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{media/bilateral/cornell_normal_10_bilateral_filter_21_15_10.png}
+	\captionof{figure}{Image filtered with window size $[21 \times 21]$, $\delta_s = 15$ and $\delta_r = 10$. 10 SPP}
+	\label{ap25}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{media/bilateral/cornell_normal_10_bilateral_filter_21_15_20.png}
+	\captionof{figure}{Image filtered with window size $[21 \times 21]$, $\delta_s = 15$ and $\delta_r = 20$. 10 SPP}
+	\label{ap26}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{media/bilateral/cornell_normal_10_bilateral_filter_21_15_40.png}
+	\captionof{figure}{Image filtered with window size $[21 \times 21]$, $\delta_s = 15$ and $\delta_r = 40$. 10 SPP}
+	\label{ap27}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{media/bilateral/cornell_normal_10_bilateral_filter_21_15_60.png}
+	\captionof{figure}{Image filtered with window size $[21 \times 21]$, $\delta_s = 15$ and $\delta_r = 60$. 10 SPP}
+	\label{ap28}
+\end{figure}
+
+\subsection{Case 50 SPP}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{media/bilateral/cornell_normal_50_bilateral_filter_21_5_10.png}
+	\captionof{figure}{Image filtered with window size $[21 \times 21]$, $\delta_s = 5$ and $\delta_r = 10$. 50 SPP}
+	\label{ap29}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{media/bilateral/cornell_normal_50_bilateral_filter_21_5_20.png}
+\captionof{figure}{Image filtered with window size $[21 \times 21]$, $\delta_s = 5$ and $\delta_r = 20$. 50 SPP}	
+	\label{ap30}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{media/bilateral/cornell_normal_50_bilateral_filter_21_5_40.png}
+	\captionof{figure}{Image filtered with window size $[21 \times 21]$, $\delta_s = 5$ and $\delta_r = 40$. 50 SPP}
+	\label{ap31}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{media/bilateral/cornell_normal_50_bilateral_filter_21_5_60.png}
+	\captionof{figure}{Image filtered with window size $[21 \times 21]$, $\delta_s = 5$ and $\delta_r = 60$. 50 SPP}	
+	\label{ap32}
+\end{figure}	
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{media/bilateral/cornell_normal_50_bilateral_filter_21_10_10.png}
+	\captionof{figure}{Image filtered with window size $[21 \times 21]$, $\delta_s = 10$ and $\delta_r = 10$. 50 SPP}
+	\label{ap33}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{media/bilateral/cornell_normal_50_bilateral_filter_21_10_20.png}
+	\captionof{figure}{Image filtered with window size $[21 \times 21]$, $\delta_s = 10$ and $\delta_r = 20$. 50 SPP}
+	\label{ap34}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{media/bilateral/cornell_normal_50_bilateral_filter_21_10_40.png}
+	\captionof{figure}{Image filtered with window size $[21 \times 21]$, $\delta_s = 10$ and $\delta_r = 40$. 50 SPP}
+	\label{ap35}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{media/bilateral/cornell_normal_50_bilateral_filter_21_10_60.png}
+	\captionof{figure}{Image filtered with window size $[21 \times 21]$, $\delta_s = 10$ and $\delta_r = 60$. 50 SPP}
+	\label{ap36}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{media/bilateral/cornell_normal_50_bilateral_filter_21_15_10.png}
+	\captionof{figure}{Image filtered with window size $[21 \times 21]$, $\delta_s = 15$ and $\delta_r = 10$. 50 SPP}
+	\label{ap37}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{media/bilateral/cornell_normal_50_bilateral_filter_21_15_20.png}
+	\captionof{figure}{Image filtered with window size $[21 \times 21]$, $\delta_s = 15$ and $\delta_r = 20$. 50 SPP}
+	\label{ap38}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{media/bilateral/cornell_normal_50_bilateral_filter_21_15_40.png}
+	\captionof{figure}{Image filtered with window size $[21 \times 21]$, $\delta_s = 15$ and $\delta_r = 40$. 50 SPP}
+	\label{ap39}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{media/bilateral/cornell_normal_50_bilateral_filter_21_15_60.png}
+	\captionof{figure}{Image filtered with window size $[21 \times 21]$, $\delta_s = 15$ and $\delta_r = 60$. 50 SPP}
+	\label{ap40}
+\end{figure}
+
+
 \end{appendices}
-
-\listoffigures
-
-\listoftables
 
 \end{document}

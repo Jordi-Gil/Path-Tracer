@@ -72,7 +72,22 @@
 \BOOKMARK [2][-]{subsection.5.2.1}{Results}{section.5.2}% 72
 \BOOKMARK [1][-]{section.5.3}{Scene three}{chapter.5}% 73
 \BOOKMARK [2][-]{subsection.5.3.1}{Results}{section.5.3}% 74
-\BOOKMARK [1][-]{section.5.4}{Conclusion and Future Work}{chapter.5}% 75
-\BOOKMARK [1][-]{section.5.5}{Future Work}{chapter.5}% 76
-\BOOKMARK [0][-]{section*.81}{Appendices}{}% 77
-\BOOKMARK [0][-]{Appendix.a.A}{Gantt Diagram}{}% 78
+\BOOKMARK [1][-]{section.5.4}{Filters}{chapter.5}% 75
+\BOOKMARK [2][-]{subsection.5.4.1}{Mean Filter}{section.5.4}% 76
+\BOOKMARK [2][-]{subsection.5.4.2}{Median Filter}{section.5.4}% 77
+\BOOKMARK [2][-]{subsection.5.4.3}{Bilateral Filter}{section.5.4}% 78
+\BOOKMARK [0][-]{chapter.6}{Conclusions and Future Work}{}% 79
+\BOOKMARK [1][-]{section.6.1}{Conclusions}{chapter.6}% 80
+\BOOKMARK [1][-]{section.6.2}{Future Work}{chapter.6}% 81
+\BOOKMARK [0][-]{section*.99}{Appendices}{}% 82
+\BOOKMARK [0][-]{Appendix.a.A}{Gantt Diagram}{}% 83
+\BOOKMARK [0][-]{Appendix.a.B}{Filter Images}{}% 84
+\BOOKMARK [1][-]{section.a.B.1}{Mean Filter}{Appendix.a.B}% 85
+\BOOKMARK [2][-]{subsection.a.B.1.1}{Case 10 SPP}{section.a.B.1}% 86
+\BOOKMARK [2][-]{subsection.a.B.1.2}{Case 50 SPP}{section.a.B.1}% 87
+\BOOKMARK [1][-]{section.a.B.2}{Median Filter}{Appendix.a.B}% 88
+\BOOKMARK [2][-]{subsection.a.B.2.1}{Case 10 SPP}{section.a.B.2}% 89
+\BOOKMARK [2][-]{subsection.a.B.2.2}{Case 50 SPP}{section.a.B.2}% 90
+\BOOKMARK [1][-]{section.a.B.3}{Bilateral Filter}{Appendix.a.B}% 91
+\BOOKMARK [2][-]{subsection.a.B.3.1}{Case 10 SPP}{section.a.B.3}% 92
+\BOOKMARK [2][-]{subsection.a.B.3.2}{Case 50 SPP}{section.a.B.3}% 93

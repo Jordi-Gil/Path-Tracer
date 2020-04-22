@@ -223,16 +223,58 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {5.2}Scene Two}{82}{section.5.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.2.1}Results}{83}{subsection.5.2.1}
+\contentsline {subsection}{\numberline {5.2.1}Results}{84}{subsection.5.2.1}
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {5.3}Scene three}{84}{section.5.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.3.1}Results}{84}{subsection.5.3.1}
+\contentsline {subsection}{\numberline {5.3.1}Results}{86}{subsection.5.3.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5.4}Conclusion and Future Work}{84}{section.5.4}
+\contentsline {section}{\numberline {5.4}Filters}{86}{section.5.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5.5}Future Work}{85}{section.5.5}
+\contentsline {subsection}{\numberline {5.4.1}Mean Filter}{87}{subsection.5.4.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{Appendices}{89}{section*.81}
+\contentsline {subsubsection}{Case 10 SPP}{87}{section*.82}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {A}Gantt Diagram}{90}{Appendix.a.A}
+\contentsline {subsubsection}{Case 50 SPP}{88}{section*.84}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {5.4.2}Median Filter}{88}{subsection.5.4.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Case 10 SPP}{89}{section*.86}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Case 50 SPP}{89}{section*.88}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {5.4.3}Bilateral Filter}{90}{subsection.5.4.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Case 10 SPP}{90}{section*.90}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{Case 50 SPP}{92}{section*.94}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {6}Conclusions and Future Work}{94}{chapter.6}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {6.1}Conclusions}{94}{section.6.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {6.2}Future Work}{95}{section.6.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{Appendices}{103}{section*.99}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {A}Gantt Diagram}{104}{Appendix.a.A}
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {B}Filter Images}{110}{Appendix.a.B}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {B.1}Mean Filter}{110}{section.a.B.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {B.1.1}Case 10 SPP}{110}{subsection.a.B.1.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {B.1.2}Case 50 SPP}{112}{subsection.a.B.1.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {B.2}Median Filter}{115}{section.a.B.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {B.2.1}Case 10 SPP}{115}{subsection.a.B.2.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {B.2.2}Case 50 SPP}{117}{subsection.a.B.2.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {B.3}Bilateral Filter}{120}{section.a.B.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {B.3.1}Case 10 SPP}{120}{subsection.a.B.3.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {B.3.2}Case 50 SPP}{126}{subsection.a.B.3.2}
