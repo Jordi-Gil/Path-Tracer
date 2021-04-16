@@ -1,5 +1,6 @@
 GCC = g++
 GCC_FLAGS = -O2 -Wno-uninitialized -Wno-sign-compare -std=c++17 -I Header/
+#-Wall -Wextra -Werror
 
 OMP = -fopenmp
 
@@ -21,6 +22,9 @@ path_tracing_sec: $(OBJ)
 
 $(OBJDIR)/$(MAINDIR)/%.o: %.cc
 	$(GCC) $(GCC_FLAGS) -o $@ -c $< $(OMP)
+	
+$(OBJDIR)/$(MAINDIRTR)/%.o: %.cc
+	$(GCC) $(GCC_FLAGS) -o $@ -c $<
 
 $(OBJDIR)/%.o: Source/%.cc Header/%.hh
 	$(GCC) $(GCC_FLAGS) -o $@ -c $<

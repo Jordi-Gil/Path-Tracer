@@ -25,7 +25,7 @@ public:
   Scene() {}
   Scene(int d, int x, int y) : dist(d), nx(x), ny(y) {}
   
-  void loadScene(int loadType, const std::string &filename = "", bool oneTex = false);
+  void loadScene(int loadType, const std::string &filename = "", const bool oneTex = false);
   void sceneRandom();
   void sceneFromFile(const std::string &filename, const bool oneTex);
   void sceneTriangle();
@@ -41,7 +41,7 @@ public:
   Camera getCamera();
   unsigned int getSize();
   Triangle *getObjects();
-  Skybox *getSkybox();
+  Skybox getSkybox();
   unsigned char **getTextures();
   unsigned int getNumTextures();
   Vector3 *getTextureSizes();
@@ -61,17 +61,17 @@ private:
 };
 
 struct ObjEval{
-    
   inline bool operator()(Triangle a, Triangle b){
     return (a.getMorton() < b.getMorton());
   }
 };
 
 struct ObjEval2{
-    
   inline bool operator()(Sphere a, Sphere b){
     return (a.getMorton() < b.getMorton());
   }
 };
+
+
 
 #endif //SCENE_HH

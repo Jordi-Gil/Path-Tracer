@@ -19,19 +19,19 @@ public:
   float getAspect() {return aspect;}
   float getAperture(){return aperture;}
   float getFocus(){return focus_dist;}
+  
+private:
     
-private:    
-    
-    Vector3 origin;
-    Vector3 lower_left_corner;
-    Vector3 horizontal;
-    Vector3 vertical;
-    Vector3 w,u,v;
-    float time0, time1;
-    float lens_radius;
-    
-    Vector3 lookfrom, lookat, vup;
-    float vfov, aspect, aperture, focus_dist;
+  Vector3 origin;
+  Vector3 lower_left_corner;
+  Vector3 horizontal;
+  Vector3 vertical;
+  Vector3 w,u,v;
+  float time0, time1;
+  float lens_radius;
+
+  Vector3 lookfrom, lookat, vup;
+  float vfov, aspect, aperture, focus_dist;
 };
 
 #endif /* CAMERA_HH_INCLUDE */

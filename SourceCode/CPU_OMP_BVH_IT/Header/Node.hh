@@ -20,12 +20,12 @@ class Node {
 public:
   Node();
 
-  bool intersect(const Ray& r, float tmin, float tmax, hit_record& rec);
+  bool intersect(Node* root, const Ray& r, float tmin, float tmax, hit_record& rec);
   
   Node *left;   // Left child
   Node *right;  // Right child
   Node *parent; // Parent
-
+  
   Triangle *obj;
   aabb box;
   bool isLeaf = false;

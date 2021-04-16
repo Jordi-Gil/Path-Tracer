@@ -17,7 +17,6 @@ public:
 
   
   inline bool hit(const Ray& r, float tmin, float tmax) const {
-    
     for (int i = 0; i < 3; i++) {
     
       float invD = 1.0f / r.direction()[i];

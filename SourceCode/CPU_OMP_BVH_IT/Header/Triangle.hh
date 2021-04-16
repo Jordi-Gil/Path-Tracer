@@ -5,6 +5,7 @@
 
 #include "Material.hh"
 #include "aabb.hh"
+#include "Math.hh"
 
 class Triangle {
   

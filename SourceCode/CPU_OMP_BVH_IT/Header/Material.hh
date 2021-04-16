@@ -18,10 +18,9 @@ public:
   Material(int t, const Texture a, float f = -1.0, float ri = -1.0);
   
   bool scatter(const Ray& r_in, const hit_record &rec, Vector3& attenuation, Ray& scattered, bool oneTex = false, unsigned char **textures = 0);
-  
   Vector3 emitted(float u, float v, bool oneTex = false, unsigned char **textures = 0);
   
-  bool Lambertian(const Ray& r_in, const hit_record &rec, Vector3 &attenuation, Ray &scattered, bool oneTex = false, unsigned char **textures = 0 );
+  bool Lambertian(const Ray& r_in, const hit_record &rec, Vector3 &attenuation, Ray &scattered, bool oneTex = false, unsigned char **textures = 0);
   bool Metal(const Ray &r_in, const hit_record &rec, Vector3 &attenuation, Ray &scattered, bool oneTex = false, unsigned char **textures = 0);
   bool Dielectric(const Ray &r_in, const hit_record &rec, Vector3 &attenuation, Ray &scattered, bool oneTex = false, unsigned char **textures = 0);
   

@@ -11,34 +11,34 @@ void Skybox::load(const std::string &dir){
   std::string filename;
   
   //Front
-  filename = "Textures/" + dir + "/front.jpg";
+  filename = "../Resources/Textures/" + dir + "/front.jpg";
   image = stbi_load(filename.c_str(), &nx, &ny, &nn, 0);
-  list[0] = Rectangle(bottomLeft.x(), topRight.x(), bottomLeft.y(), topRight.y(), topRight.z(), Material(SKYBOX, Texture(IMAGE, Vector3::Zero(), image, nx, ny, 999, false, true, false)), FRONT, true);
+  list[0] = Rectangle(bottomLeft.x(), topRight.x(), bottomLeft.y(), topRight.y(), topRight.z(), Material(SKYBOX, Texture(IMAGE, Vector3::Zero(), image, nx, ny, 999, true, true, true)), FRONT);
   
   //Back
-  filename = "Textures/" + dir + "/back.jpg";
+  filename = "../Resources/Textures/" + dir + "/back.jpg";
   image = stbi_load(filename.c_str(), &nx, &ny, &nn, 0);
-  list[1] = Rectangle(bottomLeft.x(), topRight.x(), bottomLeft.y(), topRight.y(), bottomLeft.z(), Material(SKYBOX, Texture(IMAGE, Vector3::Zero(), image, nx, ny, 999, true, true, false)), BACK);
+  list[1] = Rectangle(bottomLeft.x(), topRight.x(), bottomLeft.y(), topRight.y(), bottomLeft.z(), Material(SKYBOX, Texture(IMAGE, Vector3::Zero(), image, nx, ny, 999, false, true, true)), BACK);
   
   //Top
-  filename = "Textures/" + dir + "/top.jpg";
+  filename = "../Resources/Textures/" + dir + "/top.jpg";
   image = stbi_load(filename.c_str(), &nx, &ny, &nn, 0);
-  list[2] = Rectangle(bottomLeft.x(), topRight.x(), bottomLeft.z(), topRight.z(), topRight.y(), Material(SKYBOX, Texture(IMAGE, Vector3::Zero(), image, nx, ny, 999)), BOTTOM, true);
+  list[2] = Rectangle(bottomLeft.x(), topRight.x(), bottomLeft.z(), topRight.z(), topRight.y(), Material(SKYBOX, Texture(IMAGE, Vector3::Zero(), image, nx, ny, 999, true, false, true)), TOP);
   
   //Bottom
-  filename = "Textures/" + dir + "/bottom.jpg";
+  filename = "../Resources/Textures/" + dir + "/bottom.jpg";
   image = stbi_load(filename.c_str(), &nx, &ny, &nn, 0);
-  list[3] = Rectangle(bottomLeft.x(), topRight.x(), bottomLeft.z(), topRight.z(), bottomLeft.y(), Material(SKYBOX, Texture(IMAGE, Vector3::Zero(), image, nx, ny, 999, false, true, false)), TOP);
-  
-  //Right
-  filename = "Textures/" + dir + "/right.jpg";
-  image = stbi_load(filename.c_str(), &nx, &ny, &nn, 0);
-  list[4] = Rectangle(bottomLeft.y(), topRight.y(), bottomLeft.z(), topRight.z(), topRight.x(), Material(SKYBOX, Texture(IMAGE, Vector3::Zero(), image, nx, ny, 999, true, true, true)), RIGHT, true);
+  list[3] = Rectangle(bottomLeft.x(), topRight.x(), bottomLeft.z(), topRight.z(), bottomLeft.y(), Material(SKYBOX, Texture(IMAGE, Vector3::Zero(), image, nx, ny, 999, true, true, true)), BOTTOM);
   
   //Left
-  filename = "Textures/" + dir + "/left.jpg";
+  filename = "../Resources/Textures/" + dir + "/left.jpg";
   image = stbi_load(filename.c_str(), &nx, &ny, &nn, 0);
-  list[5] = Rectangle(bottomLeft.y(), topRight.y(), bottomLeft.z(), topRight.z(), bottomLeft.x(), Material(SKYBOX, Texture(IMAGE, Vector3::Zero(), image, nx, ny, 999, true, false, true)), LEFT);
+  list[4] = Rectangle(bottomLeft.y(), topRight.y(), bottomLeft.z(), topRight.z(), topRight.x(), Material(SKYBOX, Texture(IMAGE, Vector3::Zero(), image, nx, ny, 999, true, false, false)), LEFT);
+  
+  //Right
+  filename = "../Resources/Textures/" + dir + "/right.jpg";
+  image = stbi_load(filename.c_str(), &nx, &ny, &nn, 0);
+  list[5] = Rectangle(bottomLeft.y(), topRight.y(), bottomLeft.z(), topRight.z(), bottomLeft.x(), Material(SKYBOX, Texture(IMAGE, Vector3::Zero(), image, nx, ny, 999, true, true, false)), RIGHT);
   
 }
 

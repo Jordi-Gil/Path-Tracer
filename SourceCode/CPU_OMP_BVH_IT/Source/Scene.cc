@@ -53,7 +53,7 @@ Camera Scene::loadCamera(const std::string &line, int nx, int ny) {
   return Camera(paramV3[0], paramV3[1], paramV3[2], paramF[0], float(nx)/float(ny), paramF[1], paramF[2], 0.0, 1.0);
 }
 
-Material Scene::loadMaterial(const std::string &line,int type, int texType, bool oneTex) {
+Material Scene::loadMaterial(const std::string &line, int type, int texType, bool oneTex) {
   
   std::stringstream ssin(line);  
   std::string par;
@@ -68,11 +68,11 @@ Material Scene::loadMaterial(const std::string &line,int type, int texType, bool
   unsigned char *image;
   
   while(ssin >> par and !loaded) {
-    if(albedoCount < 3 and texType == CONSTANT){
+    if(albedoCount < 3 and texType == CONSTANT) {
       albedo[albedoCount] = stof(par);
       albedoCount++;
     } else {
-      if(texType == IMAGE){
+      if(texType == IMAGE) {
         imageFilename = "../Resources/Textures/"+par;
         loaded = true;
         if(type == METAL) ssin >> par;
@@ -132,10 +132,10 @@ Triangle Scene::loadTriangle(const std::string &line, int num) {
       
       int type = (par2 == "CONSTANT") ? CONSTANT : IMAGE;
       
-      if(par == "L") mat = loadMaterial(line.substr(line.find(par2)+par2.size()),LAMBERTIAN,type);
-      else if(par == "M") mat = loadMaterial(line.substr(line.find(par2)+par2.size()),METAL,type);
-      else if(par == "D") mat = loadMaterial(line.substr(line.find(par2)+par2.size()),DIELECTRIC,type);
-      else if(par == "DL") mat = loadMaterial(line.substr(line.find(par2)+par2.size()),DIFFUSE_LIGHT,type);
+      if(par == "L") mat = loadMaterial(line.substr(line.find(par2)+par2.size()), LAMBERTIAN, type);
+      else if(par == "M") mat = loadMaterial(line.substr(line.find(par2)+par2.size()), METAL, type);
+      else if(par == "D") mat = loadMaterial(line.substr(line.find(par2)+par2.size()), DIELECTRIC, type);
+      else if(par == "DL") mat = loadMaterial(line.substr(line.find(par2)+par2.size()), DIFFUSE_LIGHT, type);
     }
   }
   return Triangle(position[0],position[1],position[2], mat);
@@ -257,45 +257,45 @@ Obj Scene::loadObj(const std::string &line, bool oneTex) {
       ssin >> par;
       if(par == "L") {
         ssin >> par;
-        if(par == "CONSTANT"){
-          mat = loadMaterial(line.substr(line.find(par)+par.size()+1),LAMBERTIAN,CONSTANT);
+        if(par == "CONSTANT") {
+          mat = loadMaterial(line.substr(line.find(par)+par.size()+1), LAMBERTIAN, CONSTANT);
           ssin >> par; ssin >> par; ssin >> par;
         }
-        else if(par == "IMAGE"){
-          mat = loadMaterial(line.substr(line.find(par)+par.size()+1),LAMBERTIAN,IMAGE,oneTex);
+        else if(par == "IMAGE") {
+          mat = loadMaterial(line.substr(line.find(par)+par.size()+1), LAMBERTIAN, IMAGE, oneTex);
           ssin >> par;
         }
       }
       else if(par == "M") {
         ssin >> par;
         if(par == "CONSTANT") {
-          mat = loadMaterial(line.substr(line.find(par)+par.size()+1),METAL,CONSTANT);
+          mat = loadMaterial(line.substr(line.find(par)+par.size()+1), METAL, CONSTANT);
           ssin >> par; ssin >> par; ssin >> par; ssin >> par;
         }
         else if(par == "IMAGE") {
-          mat = loadMaterial(line.substr(line.find(par)+par.size()+1),METAL,IMAGE,oneTex);
+          mat = loadMaterial(line.substr(line.find(par)+par.size()+1), METAL, IMAGE, oneTex);
           ssin >> par; ssin >> par;
         }
       }
-      else if(par == "D") { 
+      else if(par == "D") {
         ssin >> par;
         if(par == "CONSTANT") {
-          mat = loadMaterial(line.substr(line.find(par)+par.size()+1),DIELECTRIC,CONSTANT);
+          mat = loadMaterial(line.substr(line.find(par)+par.size()+1), DIELECTRIC, CONSTANT);
           ssin >> par; ssin >> par; ssin >> par; ssin >> par;
         }
         else if(par == "IMAGE") {
-          mat = loadMaterial(line.substr(line.find(par)+par.size()+1),DIELECTRIC,IMAGE,oneTex);
+          mat = loadMaterial(line.substr(line.find(par)+par.size()+1), DIELECTRIC, IMAGE, oneTex);
           ssin >> par; ssin >> par;
         }
       }
       else if(par == "DL") {
         ssin >> par;
         if(par == "CONSTANT") {
-          mat = loadMaterial(line.substr(line.find(par)+par.size()+1),DIFFUSE_LIGHT,CONSTANT);
+          mat = loadMaterial(line.substr(line.find(par)+par.size()+1), DIFFUSE_LIGHT, CONSTANT);
           ssin >> par; ssin >> par; ssin >> par;
         }
         if(par == "IMAGE") {
-          mat = loadMaterial(line.substr(line.find(par)+par.size()+1),DIFFUSE_LIGHT,IMAGE,oneTex);
+          mat = loadMaterial(line.substr(line.find(par)+par.size()+1), DIFFUSE_LIGHT, IMAGE, oneTex);
           ssin >> par;
         }
       }
@@ -350,10 +350,10 @@ Sphere Scene::loadSphere(const std::string &line) {
       ssin >> par2;
       int type = (par2 == "CONSTANT") ? CONSTANT : IMAGE;
       
-      if(par == "L") mat = loadMaterial(line.substr(line.find(par2)+par2.size()),LAMBERTIAN,type);
-      else if(par == "M") mat = loadMaterial(line.substr(line.find(par2)+par2.size()),METAL,type);
-      else if(par == "D") mat = loadMaterial(line.substr(line.find(par2)+par2.size()),DIELECTRIC,type);
-      else if(par == "DL") mat = loadMaterial(line.substr(line.find(par2)+par2.size()),DIFFUSE_LIGHT,type);
+      if(par == "L") mat = loadMaterial(line.substr(line.find(par2)+par2.size()), LAMBERTIAN, type);
+      else if(par == "M") mat = loadMaterial(line.substr(line.find(par2)+par2.size()), METAL, type);
+      else if(par == "D") mat = loadMaterial(line.substr(line.find(par2)+par2.size()), DIELECTRIC, type);
+      else if(par == "DL") mat = loadMaterial(line.substr(line.find(par2)+par2.size()), DIFFUSE_LIGHT, type);
     }
   }
   return Sphere(center,radius,mat);
@@ -472,7 +472,6 @@ void Scene::sceneFromFile(const std::string &filename, const bool oneTex) {
   std::cout << "Real size " << num_objects << std::endl;
   
   Triangle *list_aux = new Triangle[num_objects];
-  
   std::copy(list_1, list_1 + num_tr, list_aux);
 
   int p = num_tr;
@@ -498,7 +497,7 @@ void Scene::sceneFromFile(const std::string &filename, const bool oneTex) {
     point[1] = ((point[1] - min_y)/(max_y - min_y));
     point[2] = ((point[2] - min_z)/(max_z - min_z));
     
-    list_aux[idx].setMorton(Helper::morton3D(point[0],point[1],point[2])+(idx*2 + idx));
+    list_aux[idx].setMorton(Helper::morton3D(point[0],point[1],point[2]));
   }
 
   std::cout << "Max " <<  max << " Min " << min << std::endl;
@@ -656,8 +655,8 @@ Camera Scene::getCamera() {
   return cam;
 }
 
-Skybox *Scene::getSkybox() {
-  return &sky;
+Skybox Scene::getSkybox() {
+  return sky;
 }
 
 unsigned char **Scene::getTextures() {

@@ -83,56 +83,59 @@ void help(){
 void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, int &dist, std::string &image, std::string &filename, bool &light, bool &random, bool &filter, int &diameterBi, float &gs, float &gr, int &diameterMean, int &diameterMedian, bool &skybox, bool &oneTex){
   
   if(argc <= 1) error("Error usage. Use [-h] [--help] to see the usage.");
-
-  nx = 1280; ny = 720; ns = 50; depth = 50; dist = 11; image = "image"; 
-  filter = false; gs = 0; gr = 0; diameterBi = 11, diameterMean = 3; diameterMedian = 3;
+  
+  nx = 1280; ny = 720; ns = 50; depth = 50; dist = 11; image = "image";
+  filter = false; gs = 0; gr = 0; diameterBi = 11; diameterMean = 3; diameterMedian = 3;
   
   skybox = false; oneTex = false;
   light = true; random = true;
+  
+  bool imageName = false;
 
   bool v_default = false;
   
-  for(int i = 1; i < argc; i += 2) {
-
+  for(int i = 1; i < argc; i += 2){
+    
     if(v_default) error("Error usage. Use [-h] [--help] to see the usage.");
-
-    if (std::string(argv[i]) == "-d" || std::string(argv[i]) == "--default") {
-      if ((i+1) < argc) error("The default parameter cannot have more arguments.");
+    
+    if (std::string(argv[i]) == "-d" || std::string(argv[i]) == "--default"){
+      if((i+1) < argc) error("The default parameter cannot have more arguments.");
       std::cerr << "Default\n";
       v_default = true;
-    } 
+    }
     else if (std::string(argv[i]) == "-sizeX"){
-      if ((i+1) >= argc) error("-sizeX value expected");
+      if((i+1) >= argc) error("-sizeX value expected");
       nx = atoi(argv[i+1]);
       if(nx == 0) error("-sizeX value expected or cannot be 0");
-    } 
-    else if (std::string(argv[i]) == "-sizeY") {
-      if ((i+1) >= argc) error("-sizeY value expected");
+    }
+    else if(std::string(argv[i]) == "-sizeY"){
+      if((i+1) >= argc) error("-sizeY value expected");
       ny = atoi(argv[i+1]);
       if(ny == 0) error("-sizeY value expected or cannot be 0");
-    } 
-    else if (std::string(argv[i]) == "-AAit") {
-      if ((i+1) >= argc) error("-AAit value expected");
+    }
+    else if(std::string(argv[i]) == "-AAit"){
+      if((i+1) >= argc) error("-AAit value expected");
       ns = atoi(argv[i+1]);
       if(ns == 0) error("-AAit value expected or cannot be 0");
-    } 
-    else if (std::string(argv[i]) == "-depth") {
-      if ((i+1) >= argc) error("-depth value expected");
+    }
+    else if(std::string(argv[i]) == "-depth"){
+      if((i+1) >= argc) error("-depth value expected");
       depth = atoi(argv[i+1]);
       if(depth == 0) error("-depth value expected or cannot be 0");
-    } 
-    else if (std::string(argv[i]) == "-i" || std::string(argv[i]) == "--image"){
-      if ((i+1) >= argc) error("--image / -i value expected");
-      image = std::string(argv[i+1]);
     }
-    else if (std::string(argv[i]) == "-f" || std::string(argv[i]) == "--file"){
-      if ((i+1) >= argc) error("--file / -f value expected");
+    else if(std::string(argv[i]) == "-i" || std::string(argv[i]) == "--image"){
+      if((i+1) >= argc) error("--image / -i file expected");
       filename = std::string(argv[i+1]);
-      image = filename;
-      filename = filename+".txt";    
+      imageName = true;
+    }
+    else if(std::string(argv[i]) == "-f" || std::string(argv[i]) == "--file"){
+      if((i+1) >= argc) error("-name file expected");
+      filename = std::string(argv[i+1]);
+      if(!imageName) image = filename;
+      filename = filename+".txt";
       random = false;
-    } 
-    else if (std::string(argv[i]) == "-light") {
+    }
+    else if(std::string(argv[i]) == "-light") {
       if((i+1) >= argc) error("-light value expected");
       if(std::string(argv[i+1]) == "ON") light = true;
       else if(std::string(argv[i+1]) == "OFF") light = false;
@@ -145,10 +148,11 @@ void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, in
       gs = atof(argv[i]);
       gr = atof(argv[i+1]);
       
-      i +=2;
+      i+=2;
       diameterMean = atoi(argv[i]);
       diameterMedian = atoi(argv[i+1]);
-    }else if(std::string(argv[i]) == "-skybox") {
+    }
+    else if(std::string(argv[i]) == "-skybox") {
       if((i+1) >= argc) error("-skybox value expected");
       if(std::string(argv[i+1]) == "ON") skybox = true;
       else if(std::string(argv[i+1]) == "OFF") skybox = false;
@@ -158,10 +162,10 @@ void parse_argv(int argc, char **argv, int &nx, int &ny, int &ns, int &depth, in
       if(std::string(argv[i+1]) == "ON") oneTex = true;
       else if(std::string(argv[i+1]) == "OFF") oneTex = false;
     }
-    else if (std::string(argv[i]) == "-h" || std::string(argv[i]) == "--help" ){
+    else if(std::string(argv[i]) == "-h" || std::string(argv[i]) == "--help" ){
       help();
     }
-    else {
+    else{
       error("Error usage. Use [-h] [--help] to see the usage.");
     }
   }
@@ -288,97 +292,103 @@ int2 determineRange(Triangle *d_list, int idx, int objs) {
 
 Node* generateHierarchy(Triangle *d_list, int numberObj) {
     
-    Node* leafNodes = new Node[numberObj];
-    Node* internalNodes = new Node[numberObj - 1];
+  Node* leafNodes = new Node[numberObj];
+  Node* internalNodes = new Node[numberObj - 1];
     
-    for(int idx = 0; idx < numberObj; idx++) {
+  for(int idx = 0; idx < numberObj; idx++) {
         
-        d_list[idx].setMorton(d_list[idx].getMorton()+idx);
+    d_list[idx].setMorton(d_list[idx].getMorton()+idx);
         
-        leafNodes[idx].obj = &d_list[idx];
-    }
+    leafNodes[idx].obj = &d_list[idx];
+  }
 
-    int idx;
-    #pragma omp parallel for schedule(static, 8)
-    for(int idx = 0; idx < numberObj - 1; idx++) {
-        
-        //determine range
-        int2 range = determineRange(d_list, idx, numberObj-1);
-        
-        int first = range.x;
-        int last = range.y;
-        
-        //find partition point
-        int split = findSplit(d_list, first, last);
-        
-        if(split == -1){
-          split = (first+last) >> 1;
-          ++last;
-        }
-        
-        Node *childA;
-        Node *childB;
-        
-        if(split == first){
-          childA = &leafNodes[split];
-          childA->isLeaf = true;
-          childA->isLeft = true;
-          }
-        else childA = &internalNodes[split];
-        
-        if (split + 1 == last) childB = &leafNodes[split + 1];
-        else{ 
-          childB = &internalNodes[split + 1];
-          childA->isLeaf = true;
-          childA->isRight = true;
-        }
-        
-        internalNodes[idx].left = childA;
-        internalNodes[idx].right = childB;
-        childA->parent = &internalNodes[idx];
-        childB->parent = &internalNodes[idx];
+  int maxthreads = omp_get_max_threads();
+  omp_set_num_threads(maxthreads);
+  #pragma omp parallel for schedule(static, maxthreads)
+  for(int idx = 0; idx < numberObj - 1; idx++) {
+      
+    //determine range
+    int2 range = determineRange(d_list, idx, numberObj-1);
+    
+    int first = range.x;
+    int last = range.y;
+    
+    //find partition point
+    int split = findSplit(d_list, first, last);
+    
+    Node *childA;
+    Node *childB;
+    
+    if(split == -1) {
+      split = (first+last) >> 1;
+      ++last;
     }
     
-    return &internalNodes[0];
+    if(split == first) {
+      childA = &leafNodes[split];
+      childA->isLeaf = true;
+      childA->isLeft = true;
+    }
+    else {
+      childA = &internalNodes[split];
+      childA->isLeft = true;
+    }
+    
+    if (split + 1 == last) {
+      childB = &leafNodes[split + 1];
+      childB->isLeaf = true;
+      childB->isRight = true;
+    }
+    else {
+      childB = &internalNodes[split + 1];
+      childB->isRight = true;
+    }
+    
+    internalNodes[idx].left = childA;
+    internalNodes[idx].right = childB;
+    childA->parent = &internalNodes[idx];
+    childB->parent = &internalNodes[idx];
+  }
+    
+  return &internalNodes[0];
 }
 
-Vector3 color(const Ray& ray, Node *world, int depth, bool light, int const _depth, Skybox sky) {
+Vector3 color(const Ray& ray, Node *world, int depth, bool light, bool skybox, int const _depth, Skybox sky, bool oneTex, unsigned char **textures) {
   hit_record rec;
-  if(world->intersect(ray, 0.00001, FLT_MAX, rec)){
+  if(world->intersect(world, ray, 0.00001, FLT_MAX, rec)){
       Ray scattered;
       Vector3 attenuation;
-      Vector3 emitted = rec.mat_ptr.emitted(rec.u, rec.v);
+      Vector3 emitted = rec.mat_ptr.emitted(rec.u, rec.v, oneTex, textures);
       if(depth < _depth and rec.mat_ptr.scatter(ray, rec, attenuation, scattered)){
-          return emitted + attenuation*color(scattered, world, depth+1,light, _depth, sky);
+          return emitted + attenuation*color(scattered, world, depth+1, light, skybox, _depth, sky, oneTex, textures);
       }
       else return emitted;
   }
   else{
-//     if(sky.hit(ray, 0.00001, FLT_MAX, rec)){
-      return rec.mat_ptr.emitted(rec.u, rec.v);
-//     }
-//     else{
+    if(skybox && sky.hit(ray, 0.00001, FLT_MAX, rec)){
+      return rec.mat_ptr.emitted(rec.u, rec.v, oneTex, textures);
+    }
+    else{
       if(light) {
         Vector3 unit_direction = unit_vector(ray.direction());
         float t = 0.5 * (unit_direction.y() + 1.0);
         return (1.0-t) * Vector3::One() + t*Vector3(0.5, 0.7, 1.0);
       }
       else return Vector3::Zero();
-//     }
+    }
   }
 }
 
-void render(std::vector<std::vector<Vector3>> &pic, Node *world, int nx, int ny, int ns, int depth, Camera cam, bool light, Skybox sky){
+void render(std::vector<std::vector<Vector3>> &pic, Node *world, int nx, int ny, int ns, int depth, Camera cam, bool light, bool skybox, Skybox sky, bool oneTex, unsigned char **textures){
   
   std::cout << "Creating image..." << std::endl;
-  
-  int maxthreads = omp_get_max_threads();
-  omp_set_num_threads(maxthreads/2);
-  
   double stamp;
   START_COUNT_TIME;
   
-//   #pragma omp parallel for collapse(2) schedule(static,maxthreads)
+  int maxthreads = omp_get_max_threads();
+  omp_set_num_threads(maxthreads);
+  
+  #pragma omp parallel for collapse(2) schedule(static,maxthreads)
   for(int j = ny - 1; j >= 0; j--){
     for(int i = 0; i < nx; i++){
       
@@ -391,7 +401,7 @@ void render(std::vector<std::vector<Vector3>> &pic, Node *world, int nx, int ny,
 
         Ray r = cam.get_ray(u, v);
 
-        col += color(r, world, 0, light, depth, sky);
+        col += color(r, world, 0, light, skybox, depth, sky, oneTex, textures);
       }
       
       col /= float(ns);
@@ -404,9 +414,7 @@ void render(std::vector<std::vector<Vector3>> &pic, Node *world, int nx, int ny,
   
   STOP_COUNT_TIME;
   std::cout << "Image created in " << stamp << " seconds" << std::endl;
-
 }
-
 
 int main(int argc, char **argv) {
     
@@ -417,39 +425,38 @@ int main(int argc, char **argv) {
 
   parse_argv(argc, argv, nx, ny, ns, depth, dist, image, filename, light, random, filter, diameterBi, gs, gr, diameterMean, diameterMedian, skybox, oneTex);
   
-  int num_pixels = nx*ny;
-  int size = 0;
-  int num_textures = 0;
-  
   Camera cam;
-  Skybox *sky;
+  Skybox sky;
+  unsigned char **textures;
+  int size;
   
-  Scene scene(dist, nx, ny);
+  Scene scene = Scene(dist, nx, ny);
+  
   if(random) scene.loadScene(TRIANGL);
-  else scene.loadScene(FFILE, filename, oneTex);
-
-  cam = scene.getCamera();
-  sky = scene.getSkybox();
+  else scene.loadScene(FFILE,filename, oneTex);
   
   size = scene.getSize();
+  cam = scene.getCamera();
+  sky = scene.getSkybox();
+  if(oneTex){
+    textures = scene.getTextures();
+  }
   
   double stamp;
   START_COUNT_TIME;
-  
   Node *world = generateHierarchy(scene.getObjects(), scene.getSize());
   computeBoundingBox(world);
-  
   STOP_COUNT_TIME;
   std::cout << "BVH created in " << stamp << " seconds" << std::endl;
   
-  std::cout << "Creating " << image << " with (" << nx << "," << ny << ") pixels" << std::endl;
+  std::cout << "Creating " << image << " with (" << nx << "," << ny << ") pixels." << std::endl;
   std::cout << "With " << ns << " iterations for AntiAliasing and depth of " << depth << "." << std::endl;
   std::cout << "The world have " << size << " objects." << std::endl;
   if(light) std::cout << "Ambient light ON" << std::endl;
   else std::cout << "Ambient light OFF" << std::endl;
   
   std::vector<std::vector<Vector3>> pic(nx,std::vector<Vector3>(ny, Vector3(-1,-1,-1)));
-  render(pic, world, nx, ny, ns, depth, cam, light, *sky);
+  render(pic, world, nx, ny, ns, depth, cam, light, skybox, sky, oneTex, textures);
   
   uint8_t *data = new uint8_t[nx*ny*3];
   int count = 0;
@@ -471,8 +478,9 @@ int main(int argc, char **argv) {
   }
   
   image = "../Resources/Images/CPU_OMP_BVH_IT/"+image;
-  stbi_write_png(image.c_str(), nx, ny, 3, data, nx*3);
   
+  stbi_write_png(image.c_str(), nx, ny, 3, data, nx*3);
+
   if(filter){
     std::cout << "Filtering image using bilateral filter with Gs = " << gs << " and Gr = " << gr << " and window of diameter " << diameterBi << std::endl;
     std::string filenameFiltered = image.substr(0, image.length()-4) + "_bilateral_filter.png";

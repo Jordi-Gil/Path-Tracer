@@ -7,16 +7,16 @@ float schlick(float cosine, float ref_idx){
 }
 
 bool refract(const Vector3 &v, const Vector3 &n, float ni_over_nt, Vector3 &refracted){
-  
-  Vector3 uv = normalize(v);
-  float dt = dot(uv, n);
-  float discriminant = 1.0 - ni_over_nt*ni_over_nt*(1-dt*dt);
+    Vector3 uv = unit_vector(v);
+    float dt = dot(uv, n);
+    float discriminant = 1.0 - ni_over_nt*ni_over_nt*(1-dt*dt);
     
-  if(discriminant > 0){
-    refracted = ni_over_nt*(uv - n*dt) - n*sqrt(discriminant);
-    return true;
-  }
-  else return false;
+    if(discriminant > 0){
+        refracted = ni_over_nt*(uv - n*dt) - n*sqrt(discriminant);
+        
+        return true;
+    }
+    else return false;
 }
 
 Vector3 reflect(const Vector3& v, const Vector3& n){
@@ -61,7 +61,8 @@ bool Material::scatter(const Ray& r_in, const hit_record &rec, Vector3 &attenuat
 }
 
 Vector3 Material::emitted(float u, float v, bool oneTex, unsigned char **textures) {
-  if(type == DIFFUSE_LIGHT || type == SKYBOX) return albedo.value(u, v, oneTex, textures);
+  if(type == DIFFUSE_LIGHT) return albedo.value(u, v, oneTex, textures);
+  else if (type == SKYBOX) return albedo.value(u, v, oneTex, textures);
   else return Vector3::Zero();
 }
 
@@ -69,7 +70,7 @@ bool Material::Lambertian(const Ray& r_in, const hit_record &rec, Vector3 &atten
     
     Vector3 target = rec.point + rec.normal + random_in_unit_sphere();
     
-    scattered = Ray(rec.point, target-rec.point, r_in.time());
+    scattered = Ray(rec.point, target-rec.point,r_in.time());
     attenuation = albedo.value(rec.u, rec.v, oneTex, textures);
     
     return true;
@@ -77,7 +78,7 @@ bool Material::Lambertian(const Ray& r_in, const hit_record &rec, Vector3 &atten
 
 bool Material::Metal(const Ray& r_in, const hit_record& rec, Vector3& attenuation, Ray& scattered, bool oneTex, unsigned char **textures) {
     
-  Vector3 reflected = reflect( normalize( r_in.direction()), rec.normal);
+  Vector3 reflected = reflect( unit_vector( r_in.direction()), rec.normal);
     
   scattered = Ray(rec.point, reflected + fuzz*random_in_unit_sphere(), r_in.time());
   attenuation = albedo.value(rec.u, rec.v, oneTex, textures);

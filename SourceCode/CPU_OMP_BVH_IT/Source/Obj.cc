@@ -3,9 +3,9 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-Material loadMat(const std::string &line,int type, int texType) {
-  
-  std::stringstream ssin(line); 
+Material loadMat(const std::string &line, int type, int texType) {
+
+  std::stringstream ssin(line);
   std::string par;
   
   int albedoCount = 0;
@@ -18,7 +18,7 @@ Material loadMat(const std::string &line,int type, int texType) {
   unsigned char *image;
   
   while(ssin >> par and !loaded) {
-    
+  
     if(albedoCount < 3 and texType == CONSTANT){
       albedo[albedoCount] = stof(par);
       albedoCount++;
@@ -27,7 +27,7 @@ Material loadMat(const std::string &line,int type, int texType) {
         imageFilename = "../Resources/Textures/"+par;
         loaded = true;
       }
-      if(type == METAL){ fuzz = stof(par); loaded = true; }
+      if(type == METAL) { fuzz = stof(par); loaded = true; }
       else if(type == DIELECTRIC) { ref_idx = stof(par); loaded = true; }
       else if(albedoCount == 3) loaded = true;
     }
@@ -35,8 +35,7 @@ Material loadMat(const std::string &line,int type, int texType) {
   
   if(texType == IMAGE) image = stbi_load(imageFilename.c_str(), &nx, &ny, &nc, 0);
   
-  if(texType == CONSTANT) return Material(type,Texture(texType, albedo), fuzz,ref_idx);
-  
+  if(texType == CONSTANT) return Material(type,Texture(texType, albedo) , fuzz, ref_idx);
   return Material(type, Texture(texType, Vector3::Zero(), image, nx, ny), fuzz, ref_idx);
 }
 
@@ -90,10 +89,10 @@ void Obj::loadFromTXT(const std::string &filename) {
         std::string par2;
         ssin >> par2;
         int type = (par2 == "CONSTANT") ? CONSTANT : IMAGE;
-        if(par == "L") mat = loadMat(line.substr(line.find(par2)+par2.size()),LAMBERTIAN,type);
-        else if(par == "M") mat = loadMat(line.substr(line.find(par2)+par2.size()),METAL,type);
-        else if(par == "D") mat = loadMat(line.substr(line.find(par2)+par2.size()),DIELECTRIC,type);
-        else if(par == "DL") mat = loadMat(line.substr(line.find(par2)+par2.size()),DIFFUSE_LIGHT,type);
+        if(par == "L") mat = loadMat(line.substr(line.find(par2)+par2.size()), LAMBERTIAN, type);
+        else if(par == "M") mat = loadMat(line.substr(line.find(par2)+par2.size()), METAL, type);
+        else if(par == "D") mat = loadMat(line.substr(line.find(par2)+par2.size()), DIELECTRIC, type);
+        else if(par == "DL") mat = loadMat(line.substr(line.find(par2)+par2.size()), DIFFUSE_LIGHT, type);
         
         cTri = 0;
         triangles[count] = Triangle(tri[0],tri[1],tri[2],(materialB) ? material : mat);

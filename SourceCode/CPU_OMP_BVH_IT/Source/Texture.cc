@@ -1,7 +1,6 @@
 #include "Texture.hh"
 
 Texture::Texture(int t, const Vector3 &a, unsigned char *data, int sx, int sy, int _textureIndex, bool _fH, bool _fV, bool _flipUV) {
-  
   type = t;
   albedo = a;
   image = data;
@@ -14,7 +13,6 @@ Texture::Texture(int t, const Vector3 &a, unsigned char *data, int sx, int sy, i
 }
 
 Vector3 Texture::imValue(float u, float v, bool oneTex, unsigned char **textures){
-  
   u = flipHorizontal ? 1-u : u; 
   v = flipVertical ? 1-v : v;
   
@@ -39,10 +37,10 @@ Vector3 Texture::imValue(float u, float v, bool oneTex, unsigned char **textures
     b = int(image[3*i*nx + 3*j + 2]) / 255.0f;
   }
   else{
-    unsigned char *aux_im = textures[textureIndex];
-    r = int(aux_im[3*i*nx + 3*j + 0]) / 255.0f;
-    g = int(aux_im[3*i*nx + 3*j + 1]) / 255.0f;
-    b = int(aux_im[3*i*nx + 3*j + 2]) / 255.0f;
+    unsigned char *aux_image = textures[textureIndex];
+    r = int(aux_image[3*i*nx + 3*j + 0]) / 255.0f;
+    g = int(aux_image[3*i*nx + 3*j + 1]) / 255.0f;
+    b = int(aux_image[3*i*nx + 3*j + 2]) / 255.0f;
   }
   
   return Vector3(r,g,b);
